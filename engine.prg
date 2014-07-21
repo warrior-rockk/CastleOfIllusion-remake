@@ -128,28 +128,16 @@ Begin
 		
 	//Leemos datos del mapa
 	log("Leyendo datos archivo del mapa");
+	
 	fread(levelMapFile,level.numTiles); 	//cargamos el numero de tiles que usa el mapa
 	fread(levelMapFile,level.numTilesX);   //cargamos el numero de columnas de tiles
 	fread(levelMapFile,level.numTilesY);   //cargamos el numero de filas de tiles
-		
+	
 	//Creamos la matriz dinamica del mapeado
 	tileMap = calloc(level.numTilesY ,sizeof(tile*));
 	from i = 0 to level.numTilesX-1;
 		tileMap[i] = calloc(level.numTilesX ,sizeof(tile));
 	end;
-		
-	//Cargamos la informacion del grafico de los tiles del fichero de mapa
-	for (i=0;i<level.numTilesY;i++)
-		for (j=0;j<level.numTilesX;j++)
-			fread(levelMapFile,tileMap[i][j].tileGraph);	
-		end;
-	end;
-	//Cargamos el codigo de los tiles del fichero de mapa
-	for (i=0;i<level.numTilesY;i++)
-		for (j=0;j<level.numTilesX;j++)
-			fread(levelMapFile,tileMap[i][j].tileCode);	
-		end;
-	end;   
 	
 	//cerramos el archivo
 	fclose(levelMapFile);
@@ -159,7 +147,7 @@ End;
 
 function WGE_DrawMap()
 private
-	int i,j;				//Indices auxiliares
+	int i,j,x_inicial,y_inicial;				//Indices auxiliares
 	
 	byte out_scr_x = 0; 	//marca fuera de pantalla en x
 	byte out_scr_y = 0;     //marca fuera de pantalla en y
@@ -212,17 +200,35 @@ Begin
 	scroll[0].x0 = x_inicial;
 	scroll[0].y0 = y_inicial;
     */
-	x_inicial = level.playerx0;
-	y_inicial = level.playery0;
+	x_inicial = 0;//level.playerx0;
+	y_inicial = 0;//level.playery0;
 	
 	//creamos los procesos tiles segun la posicion x e y iniciales y la longitud de resolucion de pantalla
-	for (i=(y_inicial/cTileSize);i<=(((res_y+y_inicial)/cTileSize)+1);i++)
+	for (i=(y_inicial/cTileSize);i<=(((cResy+y_inicial)/cTileSize)+1);i++)
 		for (j=(x_inicial/cTileSize);j<=(((cResX+x_inicial)/cTileSize)+1);j++)
-			tile(tileMap[i][j].tileGraph,(j*cTileSize)+(cTileSize/2),(i*cTileSize)+(cTileSize/2),i,j);
+			say(i + "  " + j);
+			ptile(tileMap[i][j].tileGraph,(j*cTileSize)+(cTileSize/2),(i*cTileSize)+(cTileSize/2),i,j);
 			frame;		
 		end;
 	end;
 End;
+
+process ptile(byte nada,int x, int y,int nada2,int nada3)
+BEGIN
+	alto = 32;
+	ancho = 32;
+	graph = map_new(alto,ancho,8);
+	drawing_map(0,graph);
+	drawing_color(300);
+	draw_box(0,0,alto,ancho);
+	fx = x;
+	fy = y;
+	ctype = c_scroll;
+	loop
+		
+		frame;
+	end;
+end;
 
 //Creacion de los elementos del nivel
 function WGE_CreateLevel()
