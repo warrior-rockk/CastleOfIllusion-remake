@@ -33,14 +33,21 @@ Begin
 	WGE_InitScreen();
 	//Iniciamos Scroll
 	WGE_InitScroll();
-
+	//Cargamos archivo nivel
+	WGE_LoadLevel("test\testLevel.dat");
+	//Cargamos el mapeado del nivel
+	WGE_LoadMapLevel("test\testMap.bin");
+	//Dibujamos el mapeado
+	WGE_DrawMap();
+	//Creamos el nivel cargado
+	//WGE_CreateLevel();
+	
 	//Bucle principal
 	Loop
 		   
 		//salimos el juego
 		If(key(_esc)) 
 			WGE_Quit();
-			exit();
 		End;
 		
 		Frame;

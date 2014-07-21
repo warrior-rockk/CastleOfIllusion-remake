@@ -58,20 +58,30 @@ End;
 //Path
 Type path						//Tipo de dato path
 	int numPuntos;				//Numero de puntos
-	point punto[100];			//Array de puntos
+	point* punto;	     		//Array Dinamico de puntos
+end;
+
+//Tile
+Type tile
+	byte tileGraph; 				//Imagen del tile
+	byte tileCode;      		//Codigo del tile	
 end;
 
 //Variables Globales
 Global
-	int FrameCount;			//Contador de Frames Global
-	struct level        	//Estructura de un nivel
-		int playerX0;		//Posicion inicial X
-		int playerY0;		//Posicion inicial Y
-		int numObjectos; 	//Numero objetos
-		int numPaths;		//Numero de trackings (paths de objetos)
-	End;
-	objeto* objetos;		//Array Dinamico de objetos
-	path* paths;			//Array Dinamico de paths
+	int FrameCount;				//Contador de Frames Global
+	struct level        		//Estructura de un nivel
+		int playerX0;			//Posicion inicial X
+		int playerY0;			//Posicion inicial Y
+		int numObjects; 		//Numero objetos
+		int numPaths;			//Numero de trackings (paths de objetos)
+		int numTiles;       	//Numero de tiles que componen el mapa del nivel
+		int numTilesX;      	//Tamaño horizontal en tiles del mapa 
+		int numTilesY;			//Tamaño vertical en tiles del mapa
+	End;	
+	objeto* objetos;			//Array Dinamico de objetos
+	path* paths;				//Array Dinamico de paths
+	tile** tileMap;  	        //Matriz Dinamica del mapa de tiles del nivel
 End;
 
 //Variables locales
