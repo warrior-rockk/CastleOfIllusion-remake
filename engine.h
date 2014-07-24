@@ -28,15 +28,15 @@
 //Constantes del motor
 const
 	//Pantalla
-	cNumFPS     = 60;   //Frames por segundo
-	cResX 		= 320;	//Resolucion Horizontal Pantalla
-	cResY 		= 240;  //Resolucion Vertical Pantalla
-	cGameScroll = 0;    //Numero Scroll
-	cGameRegion = 1;    //Numero Region Pantalla Juego
-	cRegionX1 	= 0;	//Region Horizontal Pantalla de juego (Representacion Mapeado) 
-	cRegionY1 	= 0;	//Region Vertical Pantalla de juego (Representacion Mapeado)
-	cRegionX2 	= 320;	//Region Horizontal Pantalla de juego (Representacion Mapeado) 
-	cRegionY2 	= 176;	//Region Vertical Pantalla de juego (Representacion Mapeado)	
+	cNumFPS     = 60;   		//Frames por segundo
+	cResX 		= 320;			//Resolucion Horizontal Pantalla
+	cResY 		= 240;  		//Resolucion Vertical Pantalla
+	cGameScroll = 0;    		//Numero Scroll
+	cGameRegion = 1;    		//Numero Region Pantalla Juego
+	cRegionX1 	= 0;			//Region Horizontal Pantalla de juego (Representacion Mapeado) 
+	cRegionY1 	= 0;			//Region Vertical Pantalla de juego (Representacion Mapeado)
+	cRegionX2 	= 320;			//Region Horizontal Pantalla de juego (Representacion Mapeado) 
+	cRegionY2 	= DEBUGINFOY;	//Region Vertical Pantalla de juego (Representacion Mapeado)	
 	
 	//Mapeado
 	cTileSize   = 16;   //Tamaño tiles (Ancho y alto iguales)

@@ -22,6 +22,7 @@ begin
 	//comprobaciones iniciales
 	
 	//Resoluciones multiplo tamaño tile
+	/*
 	if (cResX mod cTileSize)
 		log("La resolucion X configurada:"+cResX+" no es multiplo del tamaño tile:"+cTileSize);
 		WGE_Quit();
@@ -46,7 +47,7 @@ begin
 		log("La Region Y2 configurada:"+cRegionY2+" no es multiplo del tamaño tile:"+cTileSize);
 		WGE_Quit();
 	end;
-		
+	*/	
 	//creamos el cursor de debug
 	cursorMap = map_new(cTileSize,cTileSize,8);
 	drawing_map(0,cursorMap);
