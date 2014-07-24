@@ -46,6 +46,7 @@ Begin
 	WGE_LoadMapLevel("test\random.bin");
 	//Dibujamos el mapeado
 	WGE_DrawMap();
+	borrame();
 	//Creamos el nivel cargado
 	//WGE_CreateLevel();
 	

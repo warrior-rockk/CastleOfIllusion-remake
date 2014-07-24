@@ -68,9 +68,9 @@ begin
 			mouse.graph = cursorMap; 
 			mouse.region = cGameRegion;
 			//mostramos informacion de debug
-			idDebugText[0] = write(0,DEBUGINFOX,DEBUGINFOY,0,0,"FPS:" + fps);
-			idDebugText[1] = write(0,DEBUGINFOX,DEBUGINFOY+10,0,0,"X:" + mouse.x);
-			idDebugText[2] = write(0,DEBUGINFOX,DEBUGINFOY+20,0,0,"Y:" + mouse.y);
+			idDebugText[0] = write(0,DEBUGINFOX,DEBUGINFOY,0,"FPS:" + fps);
+			idDebugText[1] = write(0,DEBUGINFOX,DEBUGINFOY+10,0,"X:" + mouse.x);
+			idDebugText[2] = write(0,DEBUGINFOX,DEBUGINFOY+20,0,"Y:" + mouse.y);
 		else
 			//ocultamos todas las informaciones de debug
 			mouse.graph = 0;			
@@ -130,7 +130,7 @@ begin
 	//Nos situamos al principio del archivo
 	fseek(levelFile,0,SEEK_SET);  
 	
-	//Leemos posicion inicial jugador
+	//Leemos icion inicial jugador
 	log("Leyendo datos nivel");
 	fread(levelFile,level.playerX0); 
 	fread(levelFile,level.playerY0);
@@ -193,7 +193,7 @@ begin
 	//Nos situamos al principio del archivo
 	fseek(levelFile,0,SEEK_SET);  
 	
-	//Escribimos posicion inicial jugador
+	//Escribimos icion inicial jugador
 	randInt = 0;
 	fwrite(levelFile,randInt); 
 	fwrite(levelFile,randInt);
@@ -210,7 +210,7 @@ begin
 	
 end;
 
-//Cargamos archivo del mapeado
+//Cargamos archivo del tileMap
 Function WGE_LoadMapLevel(string file_)
 private 
 	int levelMapFile;		//Archivo del nivel
@@ -237,7 +237,7 @@ Begin
 	fread(levelMapFile,level.numTilesY);   //cargamos el numero de filas de tiles
 	
 	
-	//Creamos la matriz dinamica del mapeado
+	//Creamos la matriz dinamica del tileMap
 	tileMap = calloc(level.numTilesY,sizeof(tile*));
 	from i = 0 to level.numTilesX-1;
 		tileMap[i] = calloc(level.numTilesX ,sizeof(tile));
@@ -277,6 +277,7 @@ private
 	int i,j;				//Indices auxiliares
 	byte randByte;			//Byte aleatorio
 	int randInt;			//Int aleatorio
+	int numTilesX,numTilesY;
 Begin
 	
 	//creamos el archivo de mapa
@@ -286,24 +287,30 @@ Begin
 		
 	//Escribimos los datos del mapa
 	
-	randInt = (cResX/cTileSize)*(cResY/cTileSize);
-	fwrite(levelMapFile,randInt); 	//escribimos el numero de tiles que usa el mapa
-	randInt = (cResX/cTileSize);
+	//randInt = (cResX/cTileSize)*(cResY/cTileSize);
+	numTilesX = 200;
+	numTilesY = 150;
+	
+	randint = numTilesX*numTilesY;
+	fwrite(levelMapFile,randInt); 		//escribimos el numero de tiles que usa el mapa
+	//randInt = (cResX/cTileSize);
+	randint = numTilesX;
 	fwrite(levelMapFile,randInt);   	//escribimos el numero de columnas de tiles
-	randInt = (cResY/cTileSize);
+	//randInt = (cResY/cTileSize);
+	randint = numTilesY;
 	fwrite(levelMapFile,randInt);   	//escribimos el numero de filas de tiles	
 	
 	//Escribimos la informacion del grafico de los tiles del fichero de mapa
-	for (i=0;i<15;i++)
-		for (j=0;j<20;j++)
+	for (i=0;i<numTilesY;i++)
+		for (j=0;j<numTilesX;j++)
 			randByte = rand(0,255);
 			fwrite(levelMapFile,randByte); 
 		end;
 	end;
 	
 	//Escribimos el codigo de los tiles del fichero de mapa
-	for (i=0;i<15;i++)
-		for (j=0;j<20;j++)
+	for (i=0;i<numTilesY;i++)
+		for (j=0;j<numTilesX;j++)
 			randByte = rand(0,10);
 			fwrite(levelMapFile,randByte); 
 		end;
@@ -331,54 +338,54 @@ private
 Begin                    
 	/*
 	//Calculamos los limites de la pantalla
-	limite_x_izq = res_x>>1;
-	limite_x_der = (tiles_x*C_TAMANO_TILE)-(res_x>>1);
+	limite_x_izq = cResX>>1;
+	limite_x_der = (tiles_x*cTileSize)-(cResX>>1);
 	limite_y_sup = C_REGION_Y>>1;
-	limite_y_inf = (tiles_y*C_TAMANO_TILE)-(C_REGION_Y>>1);
+	limite_y_inf = (tiles_y*cTileSize)-(C_REGION_Y>>1);
 
 	//SI usamos autoscroll, inicialmente enfocamos al personaje
 	if (auto_scroll == 1) scroll[0].camera = p_personaje; end;
 
-	//Seteamos la posicion inicial para pintar los tiles segun la resolucion de pantalla
+	//Seteamos la icion inicial para pintar los tiles segun la resolucion de pantalla
 	if (x_inicial<=limite_x_izq)  			
 		x_inicial = 0;								      //borde izquierdo de la pantalla
 		scroll[0].camera = 0;
 	elseif (x_inicial>=limite_x_der) 
-		x_inicial = (tiles_x*C_TAMANO_TILE)-res_x;		  //borde derecho de la pantalla
+		x_inicial = (tiles_x*cTileSize)-cResX;		  //borde derecho de la pantalla
 		scroll[0].camera = 0;
 	else
-		x_inicial = x_inicial - (res_x>>1);				  //mitad de la pantalla
+		x_inicial = x_inicial - (cResX>>1);				  //mitad de la pantalla
 	end;
 	if (auto_scroll == 1) //Si usamos autoscroll (camara en personaje)
 		if (y_inicial<=limite_y_sup)					  //borde superior pantalla 
 			y_inicial = 0;
 			scroll[0].camera = 0;		
 		elseif (y_inicial >= limite_y_inf)                //borde inferior pantalla
-			y_inicial = (tiles_y*C_TAMANO_TILE)-C_REGION_Y;
+			y_inicial = (tiles_y*cTileSize)-C_REGION_Y;
 			scroll[0].camera = 0;
 		else 
-			y_inicial = y_inicial - (res_y>>1);			  //mitad de la pantalla
+			y_inicial = y_inicial - (cResY>>1);			  //mitad de la pantalla
 		end;
 	else
 		//sin autoscroll
 		//LA COORDENADA Y INICIAL PARA SCROLL FIJO DE MASTER SYSTEM VA DE 160 EN 160 MAS 2 TILES ENTRE SCROLLS
 		//QUE SOLO SE VE AL CRUZARLO. ESTA COORDENADA SIRVE TANTO PARA EMPEZAR A DIBUJAR LOS TILES COMO CENTRAR EL SCROLL
-		y_inicial = (y_inicial/(C_REGION_Y+(2*C_TAMANO_TILE)))*(C_REGION_Y+(2*C_TAMANO_TILE)); 
+		y_inicial = (y_inicial/(C_REGION_Y+(2*cTileSize)))*(C_REGION_Y+(2*cTileSize)); 
 	end;
 
-	//Centramos el scroll en la posicion inicial
+	//Centramos el scroll en la icion inicial
 	scroll[0].x0 = x_inicial;
 	scroll[0].y0 = y_inicial;
     */
 	x_inicial = 0;//level.playerx0;
 	y_inicial = 0;//level.playery0;
 	
-	//creamos los procesos tiles segun la posicion x e y iniciales y la longitud de resolucion de pantalla
+	//creamos los procesos tiles segun la icion x e y iniciales y la longitud de resolucion de pantalla
 	for (i=(y_inicial/cTileSize);i<=(((cResY+y_inicial)/cTileSize)+1);i++)
 		for (j=(x_inicial/cTileSize);j<=(((cResX+x_inicial)/cTileSize)+1);j++)
-			//ptile(tileMap[i][j].tileGraph,(j*cTileSize)+(cTileSize/2),(i*cTileSize)+(cTileSize/2),i,j);
+			//ptile(tileMap[i][j].tileGraph,(j*cTileSize)+(cTileSize>>1),(i*cTileSize)+(cTileSize>>1),i,j);
 			//say(tileMap[i][j].tileGraph);
-			ptile(1,(j*cTileSize)+(cTileSize/2),(i*cTileSize)+(cTileSize/2),i,j);
+			ptile(1,(j*cTileSize)+(cTileSize>>1),(i*cTileSize)+(cTileSize>>1),i,j);
 			//if (debugMode) frame; end;
 		end;
 	end;
@@ -399,7 +406,60 @@ BEGIN
 	region = cGameRegion;
 	loop
 		
+		//Si sale el tile por la izquierda
+		if (scroll[0].x0-(x+(cTileSize>>1))>=cTileSize) 
+			drawing_map(0,graph);
+			drawing_color(tileMap[i][(j+(cResX/cTileSize))+2].tileGraph);
+			draw_box(0,0,alto,ancho);
+			//graph=tileMap[i][(j+(cResX/cTileSize))+2];
+			x=x+(cResX+(cTileSize*2));
+			y=y;                               
+			i=i;
+			j=j+(cResX/cTileSize)+2;
+		end;
+			
+		//Si sale el tile por la derecha
+		if ((x-(cTileSize>>1))-scroll[0].x0>((cResX+cTileSize)-(cTileSize))
+			&& (x-(cTileSize>>1))-scroll[0].x0<((cResX+cTileSize)+(cTileSize))
+			) 
+			drawing_map(0,graph);
+			drawing_color(tileMap[i][(j-(cResX/cTileSize)-2)].tileGraph);
+			draw_box(0,0,alto,ancho);
+			//graph=tileMap[i][(j-(cResX/cTileSize)-2)];
+			x=x-(cResX+(cTileSize*2));
+			y=y;
+			i=i;
+			j=j-(cResX/cTileSize)-2;
+		end;
+		
+		//Si sale por arriba
+		if (scroll[0].y0-(y)>=cTileSize) 
+			drawing_map(0,graph);
+			drawing_color(tileMap[i+(cResY/cTileSize)+2][j].tileGraph);
+			draw_box(0,0,alto,ancho);
+			//graph=tileMap[i+(cResY/cTileSize)+2][j];
+			x=x;
+			y=y+(cResY+(cTileSize*2))-(cTileSize>>1);
+			i=i+(cResY/cTileSize)+2;
+			j=j;       
+		end;
+		
+		//Si sale por abajo
+		if ((y-(cTileSize>>1))-scroll[0].y0>((cResY+cTileSize-(cTileSize>>1))-(cTileSize>>1))
+			&& (y-(cTileSize>>1))-scroll[0].y0<((cResY+cTileSize-(cTileSize>>1))+(cTileSize>>1))
+			)
+			drawing_map(0,graph);
+			drawing_color(tileMap[i-(cResY/cTileSize)-2][j].tileGraph);
+			draw_box(0,0,alto,ancho);
+			//graph=tileMap[i-(cResY/cTileSize)-2][j];
+			x=x;
+			y=y-(cResY+(cTileSize))-(cTileSize>>1);
+			i=i-(cResY/cTileSize)-2;
+			j=j;       
+		end;
+		
 		frame;
+	
 	end;
 end;
 
@@ -410,11 +470,11 @@ private
 end
 Begin
 	
-	//Cargamos el archivo del mapeado
+	//Cargamos el archivo del tileMap
 	//carga_tiles(Niveles[num_nivel]+"toyland.bin",Niveles[num_nivel]+"tiles.fpg",Niveles[num_nivel]+"durezas.fpg"); //funcion importada de "tileador.inc"
 	
-	//Dibujamos el mapeado
-	//dibuja_tiles(player_x0,player_y0,C_RES_X,C_RES_Y,0); //funcion importada de "tileador.inc"
+	//Dibujamos el tileMap
+	//dibuja_tiles(player_x0,player_y0,C_cResX,C_cResY,0); //funcion importada de "tileador.inc"
 	
 	//creamos los objetos del nivel
 	for (i=0;i<level.numObjects;i++) 
@@ -431,12 +491,16 @@ End;
 process borrame()
 begin
 	graph = mouse.graph;
-	x = 10;
-	y = 10;
+	x = cResX>>1;
+	y = cResY>>1;
 	region = cGameRegion;
+	//scroll[cGameScroll].camera = id;
 	loop
-		if (key(_left)) x++; end;
-		if (key(_right)) x--; end;
+		if (key(_left)) x--; end;
+		//if (key(_right)) x++; end;
+		scroll[cGameScroll].x0+=key(_right);
+		y-=key(_up);
+		y+=key(_down);
 		frame;
 	end;
 end;
