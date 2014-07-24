@@ -14,7 +14,7 @@
 //Defines del modo debug
 #define CURSORCOLOR 	100			//Color del cursor de debugMode
 #define DEBUGINFOX  	10			//Posicion X de la informacion de debug
-#define DEBUGINFOY  	10			//Posicion Y de la informacion de debug
+#define DEBUGINFOY  	176			//Posicion Y de la informacion de debug
 #define MAXDEBUGINFO	10			//Maximo lineas informacion de debug
 
 //Teclas 
@@ -34,9 +34,9 @@ const
 	cGameScroll = 0;    //Numero Scroll
 	cGameRegion = 1;    //Numero Region Pantalla Juego
 	cRegionX1 	= 0;	//Region Horizontal Pantalla de juego (Representacion Mapeado) 
-	cRegionY1 	= 16;	//Region Vertical Pantalla de juego (Representacion Mapeado)
+	cRegionY1 	= 0;	//Region Vertical Pantalla de juego (Representacion Mapeado)
 	cRegionX2 	= 320;	//Region Horizontal Pantalla de juego (Representacion Mapeado) 
-	cRegionY2 	= 240;	//Region Vertical Pantalla de juego (Representacion Mapeado)	
+	cRegionY2 	= 176;	//Region Vertical Pantalla de juego (Representacion Mapeado)	
 	
 	//Mapeado
 	cTileSize   = 16;   //Tamaño tiles (Ancho y alto iguales)

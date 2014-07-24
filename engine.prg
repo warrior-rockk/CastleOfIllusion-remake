@@ -64,7 +64,8 @@ begin
 		//Tareas del modo debug
 		if (debugMode)
 			//visualizamos cursor
-			mouse.graph = cursorMap; 	
+			mouse.graph = cursorMap; 
+			mouse.region = cGameRegion;
 			//mostramos informacion de debug
 			idDebugText[0] = write(0,DEBUGINFOX,DEBUGINFOY,0,0,"FPS:" + fps);
 			idDebugText[1] = write(0,DEBUGINFOX,DEBUGINFOY+10,0,0,"X:" + mouse.x);
@@ -91,9 +92,8 @@ end;
 //Definicion Region y Scroll
 function WGE_InitScroll()
 begin
-	
 	define_region(cGameRegion,cRegionX1,cRegionY1,cRegionX2,cRegionY2);
-	start_scroll(cGameScroll,0,map_new(abs(cRegionX2-cRegionX1),abs(cRegionY2-cRegionY1),8),0,cGameRegion,0); 
+	start_scroll(cGameScroll,0,map_new(cRegionX2+cRegionX1,cRegionY2+cRegionY1,8),0,cGameRegion,3); 
 	scroll[cGameScroll].ratio = 100;
 	log("Scroll creado");
 end;
@@ -373,7 +373,7 @@ Begin
 	y_inicial = 0;//level.playery0;
 	
 	//creamos los procesos tiles segun la posicion x e y iniciales y la longitud de resolucion de pantalla
-	for (i=((y_inicial+cRegionY1)/cTileSize);i<=(((cRegionY2+y_inicial)/cTileSize)+1);i++)
+	for (i=(y_inicial/cTileSize);i<=(((cResY+y_inicial)/cTileSize)+1);i++)
 		for (j=(x_inicial/cTileSize);j<=(((cResX+x_inicial)/cTileSize)+1);j++)
 			//ptile(tileMap[i][j].tileGraph,(j*cTileSize)+(cTileSize/2),(i*cTileSize)+(cTileSize/2),i,j);
 			//say(tileMap[i][j].tileGraph);
@@ -384,13 +384,13 @@ Begin
 	log("Mapa dibujado correctamente");
 End;
 
-process ptile(byte nada,int x, int y,int nada2,int nada3)
+process ptile(byte nada,int x, int y,int i,int j)
 BEGIN
 	alto = 32;
 	ancho = 32;
 	graph = map_new(alto,ancho,8);
 	drawing_map(0,graph);
-	drawing_color(300);
+	drawing_color(tileMap[i][j].tileGraph);
 	draw_box(0,0,alto,ancho);
 	fx = x;
 	fy = y;
@@ -426,5 +426,18 @@ Begin
 	//if (C_AHORRO_OBJETOS)control_sectores();end;
 	          
 End;
+
+process borrame()
+begin
+	graph = mouse.graph;
+	x = 10;
+	y = 10;
+	region = cGameRegion;
+	loop
+		if (key(_left)) x++; end;
+		if (key(_right)) x--; end;
+		frame;
+	end;
+end;
 
 
