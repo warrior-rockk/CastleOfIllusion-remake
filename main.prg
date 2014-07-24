@@ -36,10 +36,12 @@ Begin
 	WGE_InitScreen();
 	//Iniciamos Scroll
 	WGE_InitScroll();
+	//Creamos datos nivel aleatorios
+	WGE_GenLevelData("test\random.dat");
 	//Cargamos archivo nivel
-	WGE_LoadLevel("test\testLevel.dat");
+	WGE_LoadLevel("test\random.dat");
 	//Creamos un mapa aleatorio
-	//WGE_GenRandomMapFile("test\random.bin");
+	WGE_GenRandomMapFile("test\random.bin");
 	//Cargamos el mapeado del nivel
 	WGE_LoadMapLevel("test\random.bin");
 	//Dibujamos el mapeado

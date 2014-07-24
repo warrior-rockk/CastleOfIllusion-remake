@@ -66,7 +66,7 @@ function WGE_InitScroll()
 begin
 	
 	define_region(cGameRegion,cRegionX1,cRegionY1,cRegionX2,cRegionY2);
-	start_scroll(cGameScroll,0,map_new(cRegionX2-cRegionX1,cRegionY2-cRegionY1,8),0,cGameRegion,0); 
+	start_scroll(cGameScroll,0,map_new(abs(cRegionX2-cRegionX1),abs(cRegionY2-cRegionY1),8),0,cGameRegion,0); 
 	scroll[cGameScroll].ratio = 100;
 	log("Scroll creado");
 end;
@@ -104,12 +104,13 @@ begin
 	
 	//Leemos posicion inicial jugador
 	log("Leyendo datos nivel");
-	fread(levelFile,level.playerX0);
+	fread(levelFile,level.playerX0); 
 	fread(levelFile,level.playerY0);
 	
 	//Leemos numero de objetos
 	log("Leyendo objetos nivel");
 	fread(levelFile,level.numObjects);
+	
 	//Asignamos tamaño dinamico al array de objetos
 	objetos = calloc(level.numObjects ,sizeof(objeto));
 	//Leemos los datos de los objetos
@@ -148,6 +149,38 @@ begin
 	
 end;  
 
+//Genera in archivo de nivel aleatorio
+function WGE_GenLevelData(string file_)
+private 
+	int levelFile;		//Archivo del nivel
+	int i,j;			//Indices auxiliares
+	byte randByte;		//Byte aleatorio
+	int randInt;		//Int aleatorio
+end
+
+begin 
+		
+	//Abrimos el archivo
+	levelFile = fopen(file_,O_WRITE);
+	//Nos situamos al principio del archivo
+	fseek(levelFile,0,SEEK_SET);  
+	
+	//Escribimos posicion inicial jugador
+	randInt = 0;
+	fwrite(levelFile,randInt); 
+	fwrite(levelFile,randInt);
+	
+	//Escribimos numero de objetos
+	fwrite(levelFile,randInt);
+	
+	//Escribimos numero de paths
+	fwrite(levelFile,randInt);
+		
+	//cerramos el archivo
+	fclose(levelFile);
+	log("Fichero nivel creado");	
+	
+end;
 
 //Cargamos archivo del mapeado
 Function WGE_LoadMapLevel(string file_)
@@ -225,11 +258,11 @@ Begin
 		
 	//Escribimos los datos del mapa
 	
-	randInt = 300;
+	randInt = (cResX/cTileSize)*(cResY/cTileSize);
 	fwrite(levelMapFile,randInt); 	//escribimos el numero de tiles que usa el mapa
-	randInt = 20;
+	randInt = (cResX/cTileSize);
 	fwrite(levelMapFile,randInt);   	//escribimos el numero de columnas de tiles
-	randInt = 15;
+	randInt = (cResY/cTileSize);
 	fwrite(levelMapFile,randInt);   	//escribimos el numero de filas de tiles	
 	
 	//Escribimos la informacion del grafico de los tiles del fichero de mapa
@@ -316,11 +349,12 @@ Begin
 	for (i=(y_inicial/cTileSize);i<=(((cResY+y_inicial)/cTileSize)+1);i++)
 		for (j=(x_inicial/cTileSize);j<=(((cResX+x_inicial)/cTileSize)+1);j++)
 			//ptile(tileMap[i][j].tileGraph,(j*cTileSize)+(cTileSize/2),(i*cTileSize)+(cTileSize/2),i,j);
-			say(tileMap[i][j].tileGraph);
+			//say(tileMap[i][j].tileGraph);
 			ptile(1,(j*cTileSize)+(cTileSize/2),(i*cTileSize)+(cTileSize/2),i,j);
-			if (debugMode) frame; end;
+			//if (debugMode) frame; end;
 		end;
 	end;
+	log("Mapa dibujado correctamente");
 End;
 
 process ptile(byte nada,int x, int y,int nada2,int nada3)
@@ -334,6 +368,7 @@ BEGIN
 	fx = x;
 	fy = y;
 	ctype = c_scroll;
+	region = cGameRegion;
 	loop
 		
 		frame;
