@@ -12,7 +12,7 @@
 #define MAXOBJPARAMS  9
 
 //Defines del modo debug
-#define CURSORCOLOR 	300			//Color del cursor de debugMode
+#define CURSORCOLOR 	100			//Color del cursor de debugMode
 #define DEBUGINFOX  	10			//Posicion X de la informacion de debug
 #define DEBUGINFOY  	10			//Posicion Y de la informacion de debug
 #define MAXDEBUGINFO	10			//Maximo lineas informacion de debug

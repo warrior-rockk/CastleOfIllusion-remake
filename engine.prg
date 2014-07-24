@@ -182,26 +182,77 @@ Begin
 		tileMap[i] = calloc(level.numTilesX ,sizeof(tile));
 	end;
 	
-	/*
+	
 	//Cargamos la informacion del grafico de los tiles del fichero de mapa
 	for (i=0;i<level.numTilesY;i++)
 		for (j=0;j<level.numTilesX;j++)
-			fread(levelMapFile,tileMap[i][j].tileGraph);	
+			if (fread(levelMapFile,tileMap[i][j].tileGraph)  == 0)
+				log("Fallo leyendo grafico de tiles ("+j+","+i+") en: " + file_);
+				WGE_Quit();
+			end;
 		end;
 	end;
 	
 	//Cargamos el codigo de los tiles del fichero de mapa
 	for (i=0;i<level.numTilesY;i++)
 		for (j=0;j<level.numTilesX;j++)
-			fread(levelMapFile,tileMap[i][j].tileCode);	
+			if (fread(levelMapFile,tileMap[i][j].tileCode) == 0)
+				log("Fallo leyendo codigo de tiles ("+j+","+i+") en: " + file_);
+				WGE_Quit();
+			end;
 		end;
 	end;  
-	*/
+	
 	//cerramos el archivo
 	fclose(levelMapFile);
 	log("Fichero mapa leído con " + level.numTiles + " Tiles. " + level.numTilesX + " Tiles en X y " + level.numTilesY + " Tiles en Y");   
 	
 End;
+
+//funcion para generar un archivo de mapa aleatorio
+function WGE_GenRandomMapFile(string file_)
+private 
+	int levelMapFile;		//Archivo del nivel
+	int i,j;				//Indices auxiliares
+	byte randByte;			//Byte aleatorio
+	int randInt;			//Int aleatorio
+Begin
+	
+	//creamos el archivo de mapa
+	levelMapFile = fopen(file_,O_WRITE);
+	//Nos situamos al principio del archivo
+	fseek(levelMapFile,0,SEEK_SET);  
+		
+	//Escribimos los datos del mapa
+	
+	randInt = 300;
+	fwrite(levelMapFile,randInt); 	//escribimos el numero de tiles que usa el mapa
+	randInt = 20;
+	fwrite(levelMapFile,randInt);   	//escribimos el numero de columnas de tiles
+	randInt = 15;
+	fwrite(levelMapFile,randInt);   	//escribimos el numero de filas de tiles	
+	
+	//Escribimos la informacion del grafico de los tiles del fichero de mapa
+	for (i=0;i<15;i++)
+		for (j=0;j<20;j++)
+			randByte = rand(0,255);
+			fwrite(levelMapFile,randByte); 
+		end;
+	end;
+	
+	//Escribimos el codigo de los tiles del fichero de mapa
+	for (i=0;i<15;i++)
+		for (j=0;j<20;j++)
+			randByte = rand(0,10);
+			fwrite(levelMapFile,randByte); 
+		end;
+	end; 
+	
+	//cerramos el archivo
+	fclose(levelMapFile);
+	log("Fichero mapa aleatorio creado");   
+	
+end;
 
 function WGE_DrawMap()
 private
@@ -265,8 +316,9 @@ Begin
 	for (i=(y_inicial/cTileSize);i<=(((cResY+y_inicial)/cTileSize)+1);i++)
 		for (j=(x_inicial/cTileSize);j<=(((cResX+x_inicial)/cTileSize)+1);j++)
 			//ptile(tileMap[i][j].tileGraph,(j*cTileSize)+(cTileSize/2),(i*cTileSize)+(cTileSize/2),i,j);
+			say(tileMap[i][j].tileGraph);
 			ptile(1,(j*cTileSize)+(cTileSize/2),(i*cTileSize)+(cTileSize/2),i,j);
-			frame;		
+			if (debugMode) frame; end;
 		end;
 	end;
 End;
