@@ -12,6 +12,46 @@ begin
 	say ("WGE: " + texto);
 end;
 
+//Tareas de inicializacion del engine
+process WGE_Init()
+private
+int cursorMap;						//Id grafico  cursor
+int idDebugText[MAXDEBUGINFO-1];	//Textos debug
+int i; 								//Variables auxiliares
+begin
+	
+	//creamos el cursor de debug
+	cursorMap = map_new(cTileSize,cTileSize,8);
+	drawing_map(0,cursorMap);
+	drawing_color(CURSORCOLOR);
+	draw_line(1,cTileSize>>1,cTileSize,cTileSize>>1);
+	draw_line(cTileSize>>1,1,cTileSize>>1,cTileSize);
+	
+	//Bucle principal de control del engine
+	Loop 
+		//limpiamos los textos
+		for (i=0;i<MAXDEBUGINFO;i++)
+			delete_text(idDebugText[i]);
+		end;
+
+		//Tareas del modo debug
+		if (debugMode)
+			//visualizamos cursor
+			mouse.graph = cursorMap; 	
+			//mostramos informacion de debug
+			idDebugText[0] = write(0,DEBUGINFOX,DEBUGINFOY,0,0,"FPS:" + fps);
+			idDebugText[1] = write(0,DEBUGINFOX,DEBUGINFOY+10,0,0,"X:" + mouse.x);
+			idDebugText[2] = write(0,DEBUGINFOX,DEBUGINFOY+20,0,0,"Y:" + mouse.y);
+		else
+			//ocultamos todas las informaciones de debug
+			mouse.graph = 0;			
+		end;
+		
+		frame;
+	end;
+	
+end;
+
 //Inicialización del modo grafico
 function WGE_InitScreen()
 begin
@@ -24,6 +64,7 @@ end;
 //Definicion Region y Scroll
 function WGE_InitScroll()
 begin
+	
 	define_region(cGameRegion,cRegionX1,cRegionY1,cRegionX2,cRegionY2);
 	start_scroll(cGameScroll,0,map_new(cRegionX2-cRegionX1,cRegionY2-cRegionY1,8),0,cGameRegion,0); 
 	scroll[cGameScroll].ratio = 100;
@@ -37,6 +78,7 @@ begin
 	free(objetos);
 	free(paths);
 	free(tileMap);
+	
 	log("Se finaliza la ejecución");
 	exit();
 end;
@@ -133,12 +175,28 @@ Begin
 	fread(levelMapFile,level.numTilesX);   //cargamos el numero de columnas de tiles
 	fread(levelMapFile,level.numTilesY);   //cargamos el numero de filas de tiles
 	
+	
 	//Creamos la matriz dinamica del mapeado
-	tileMap = calloc(level.numTilesY ,sizeof(tile*));
+	tileMap = calloc(level.numTilesY,sizeof(tile*));
 	from i = 0 to level.numTilesX-1;
 		tileMap[i] = calloc(level.numTilesX ,sizeof(tile));
 	end;
 	
+	/*
+	//Cargamos la informacion del grafico de los tiles del fichero de mapa
+	for (i=0;i<level.numTilesY;i++)
+		for (j=0;j<level.numTilesX;j++)
+			fread(levelMapFile,tileMap[i][j].tileGraph);	
+		end;
+	end;
+	
+	//Cargamos el codigo de los tiles del fichero de mapa
+	for (i=0;i<level.numTilesY;i++)
+		for (j=0;j<level.numTilesX;j++)
+			fread(levelMapFile,tileMap[i][j].tileCode);	
+		end;
+	end;  
+	*/
 	//cerramos el archivo
 	fclose(levelMapFile);
 	log("Fichero mapa leído con " + level.numTiles + " Tiles. " + level.numTilesX + " Tiles en X y " + level.numTilesY + " Tiles en Y");   
@@ -204,10 +262,10 @@ Begin
 	y_inicial = 0;//level.playery0;
 	
 	//creamos los procesos tiles segun la posicion x e y iniciales y la longitud de resolucion de pantalla
-	for (i=(y_inicial/cTileSize);i<=(((cResy+y_inicial)/cTileSize)+1);i++)
+	for (i=(y_inicial/cTileSize);i<=(((cResY+y_inicial)/cTileSize)+1);i++)
 		for (j=(x_inicial/cTileSize);j<=(((cResX+x_inicial)/cTileSize)+1);j++)
-			say(i + "  " + j);
-			ptile(tileMap[i][j].tileGraph,(j*cTileSize)+(cTileSize/2),(i*cTileSize)+(cTileSize/2),i,j);
+			//ptile(tileMap[i][j].tileGraph,(j*cTileSize)+(cTileSize/2),(i*cTileSize)+(cTileSize/2),i,j);
+			ptile(1,(j*cTileSize)+(cTileSize/2),(i*cTileSize)+(cTileSize/2),i,j);
 			frame;		
 		end;
 	end;

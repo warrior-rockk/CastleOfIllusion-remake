@@ -7,17 +7,23 @@
 // ========================================================================
 
 //Defines del engine
-#define WGE_Engine
+#define WGE_ENGINE
 #define bit_cmp(a,b) ( (a & b) == b )
-#define MaxObjParams  9
+#define MAXOBJPARAMS  9
+
+//Defines del modo debug
+#define CURSORCOLOR 	300			//Color del cursor de debugMode
+#define DEBUGINFOX  	10			//Posicion X de la informacion de debug
+#define DEBUGINFOY  	10			//Posicion Y de la informacion de debug
+#define MAXDEBUGINFO	10			//Maximo lineas informacion de debug
 
 //Teclas 
-#define	cKUp 	  _UP 
-#define	cKDown	  _DOWN 
-#define	cKLeft	  _LEFT 
-#define	cKRight	  _RIGHT 
-#define	cKBt1	  _ALT 
-#define	cKBt2	  _SPACE
+#define	CKUP 	  _UP 
+#define	CKDOWN	  _DOWN 
+#define	CKLEFT    _LEFT 
+#define	CKRIGHT	  _RIGHT 
+#define	CKBT1	  _ALT 
+#define	CKBT2	  _SPACE
 	
 //Constantes del motor
 const
@@ -30,7 +36,7 @@ const
 	cRegionX1 	= 0;	//Region Horizontal Pantalla de juego (Representacion Mapeado) 
 	cRegionY1 	= 0;	//Region Vertical Pantalla de juego (Representacion Mapeado)
 	cRegionX2 	= 320;	//Region Horizontal Pantalla de juego (Representacion Mapeado) 
-	cRegionY2 	= 240;	//Region Vertical Pantalla de juego (Representacion Mapeado)
+	cRegionY2 	= 208;	//Region Vertical Pantalla de juego (Representacion Mapeado)	
 	
 	//Mapeado
 	cTileSize   = 16;   //Tamaño tiles (Ancho y alto iguales)
@@ -63,13 +69,14 @@ end;
 
 //Tile
 Type tile
-	byte tileGraph; 				//Imagen del tile
+	byte tileGraph; 			//Imagen del tile
 	byte tileCode;      		//Codigo del tile	
 end;
 
 //Variables Globales
 Global
 	int FrameCount;				//Contador de Frames Global
+	byte debugMode;				//Modo debug del engine
 	struct level        		//Estructura de un nivel
 		int playerX0;			//Posicion inicial X
 		int playerY0;			//Posicion inicial Y

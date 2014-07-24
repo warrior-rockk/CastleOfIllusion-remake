@@ -29,6 +29,9 @@ include "engine.h";      //archivo de definiciones y variables globales
 Process main()
 Begin
 	
+	//Iniciamos el engine
+	debugMode = 1;
+	WGE_Init();
 	//Iniciamos modo grafico
 	WGE_InitScreen();
 	//Iniciamos Scroll
