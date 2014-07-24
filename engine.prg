@@ -19,7 +19,34 @@ int cursorMap;						//Id grafico  cursor
 int idDebugText[MAXDEBUGINFO-1];	//Textos debug
 int i; 								//Variables auxiliares
 begin
+	//comprobaciones iniciales
 	
+	//Resoluciones multiplo tamaño tile
+	if (cResX mod cTileSize)
+		log("La resolucion X configurada:"+cResX+" no es multiplo del tamaño tile:"+cTileSize);
+		WGE_Quit();
+	end;
+	if (cResY mod cTileSize)
+		log("La resolucion Y configurada:"+cResY+" no es multiplo del tamaño tile:"+cTileSize);
+		WGE_Quit();
+	end;
+	if (cRegionX1 mod cTileSize)
+		log("La Region X1 configurada:"+cRegionX1+" no es multiplo del tamaño tile:"+cTileSize);
+		WGE_Quit();
+	end;
+	if (cRegionX2 mod cTileSize)
+		log("La Region X2 configurada:"+cRegionX2+" no es multiplo del tamaño tile:"+cTileSize);
+		WGE_Quit();
+	end;
+	if (cRegionY1 mod cTileSize)
+		log("La Region Y1 configurada:"+cRegionY1+" no es multiplo del tamaño tile:"+cTileSize);
+		WGE_Quit();
+	end;
+	if (cRegionY2 mod cTileSize)
+		log("La Region Y2 configurada:"+cRegionY2+" no es multiplo del tamaño tile:"+cTileSize);
+		WGE_Quit();
+	end;
+		
 	//creamos el cursor de debug
 	cursorMap = map_new(cTileSize,cTileSize,8);
 	drawing_map(0,cursorMap);
@@ -346,7 +373,7 @@ Begin
 	y_inicial = 0;//level.playery0;
 	
 	//creamos los procesos tiles segun la posicion x e y iniciales y la longitud de resolucion de pantalla
-	for (i=(y_inicial/cTileSize);i<=(((cResY+y_inicial)/cTileSize)+1);i++)
+	for (i=((y_inicial+cRegionY1)/cTileSize);i<=(((cRegionY2+y_inicial)/cTileSize)+1);i++)
 		for (j=(x_inicial/cTileSize);j<=(((cResX+x_inicial)/cTileSize)+1);j++)
 			//ptile(tileMap[i][j].tileGraph,(j*cTileSize)+(cTileSize/2),(i*cTileSize)+(cTileSize/2),i,j);
 			//say(tileMap[i][j].tileGraph);

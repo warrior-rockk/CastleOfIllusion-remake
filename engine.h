@@ -34,9 +34,9 @@ const
 	cGameScroll = 0;    //Numero Scroll
 	cGameRegion = 1;    //Numero Region Pantalla Juego
 	cRegionX1 	= 0;	//Region Horizontal Pantalla de juego (Representacion Mapeado) 
-	cRegionY1 	= 0;	//Region Vertical Pantalla de juego (Representacion Mapeado)
+	cRegionY1 	= 16;	//Region Vertical Pantalla de juego (Representacion Mapeado)
 	cRegionX2 	= 320;	//Region Horizontal Pantalla de juego (Representacion Mapeado) 
-	cRegionY2 	= 160;	//Region Vertical Pantalla de juego (Representacion Mapeado)	
+	cRegionY2 	= 240;	//Region Vertical Pantalla de juego (Representacion Mapeado)	
 	
 	//Mapeado
 	cTileSize   = 16;   //Tamaño tiles (Ancho y alto iguales)
