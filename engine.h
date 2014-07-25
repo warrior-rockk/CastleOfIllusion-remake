@@ -7,9 +7,11 @@
 // ========================================================================
 
 //Defines del engine
-#define WGE_ENGINE
-#define bit_cmp(a,b) ( (a & b) == b )
-#define MAXOBJPARAMS  9
+#define WGE_ENGINE							//Utilizando WGE engine
+#define bit_cmp(a,b) 	( (a & b) == b )	//Funcion comparar bit
+#define MAXOBJPARAMS   	9					//Numero de parametros objetos
+#define TILESXOFFSCREEN 2					//Tiles fuera de la pantalla en X
+#define TILESYOFFSCREEN 0					//Tiles fuera de la pantalla en Y
 
 //Defines del modo debug
 #define CURSORCOLOR 	100			//Color del cursor de debugMode
@@ -36,7 +38,7 @@ const
 	cRegionX1 	= 0;			//Region Horizontal Pantalla de juego (Representacion Mapeado) 
 	cRegionY1 	= 0;			//Region Vertical Pantalla de juego (Representacion Mapeado)
 	cRegionX2 	= 320;			//Region Horizontal Pantalla de juego (Representacion Mapeado) 
-	cRegionY2 	= DEBUGINFOY;	//Region Vertical Pantalla de juego (Representacion Mapeado)	
+	cRegionY2 	= 240;			//Region Vertical Pantalla de juego (Representacion Mapeado)	
 	
 	//Mapeado
 	cTileSize   = 16;   //Tamaño tiles (Ancho y alto iguales)
@@ -89,6 +91,7 @@ Global
 	objeto* objetos;			//Array Dinamico de objetos
 	path* paths;				//Array Dinamico de paths
 	tile** tileMap;  	        //Matriz Dinamica del mapa de tiles del nivel
+	tile tileMap2[150][200];
 End;
 
 //Variables locales

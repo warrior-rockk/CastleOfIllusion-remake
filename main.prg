@@ -37,16 +37,18 @@ Begin
 	//Iniciamos Scroll
 	WGE_InitScroll();
 	//Creamos datos nivel aleatorios
-	WGE_GenLevelData("test\random.dat");
+	//WGE_GenLevelData("test\random.dat");
 	//Cargamos archivo nivel
-	WGE_LoadLevel("test\random.dat");
+	//WGE_LoadLevel("test\random.dat");
 	//Creamos un mapa aleatorio
-	WGE_GenRandomMapFile("test\random.bin");
+	//WGE_GenRandomMapFile("test\random.bin",20,15);
 	//Cargamos el mapeado del nivel
-	WGE_LoadMapLevel("test\random.bin");
+	//WGE_LoadMapLevel("test\random.bin");
 	//Dibujamos el mapeado
+	level.numTilesX = 200;
+	level.numTilesY = 150;
+	level.numTiles = level.numTilesX*level.numTilesY;
 	WGE_DrawMap();
-	borrame();
 	//Creamos el nivel cargado
 	//WGE_CreateLevel();
 	

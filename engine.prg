@@ -15,9 +15,10 @@ end;
 //Tareas de inicializacion del engine
 process WGE_Init()
 private
-int cursorMap;						//Id grafico  cursor
-int idDebugText[MAXDEBUGINFO-1];	//Textos debug
-int i; 								//Variables auxiliares
+	int cursorMap;						//Id grafico  cursor
+	int idDebugText[MAXDEBUGINFO-1];	//Textos debug
+	int i; 								//Variables auxiliares
+	
 begin
 	//comprobaciones iniciales
 	
@@ -67,10 +68,24 @@ begin
 			//visualizamos cursor
 			mouse.graph = cursorMap; 
 			mouse.region = cGameRegion;
+			
 			//mostramos informacion de debug
 			idDebugText[0] = write(0,DEBUGINFOX,DEBUGINFOY,0,"FPS:" + fps);
 			idDebugText[1] = write(0,DEBUGINFOX,DEBUGINFOY+10,0,"X:" + mouse.x);
 			idDebugText[2] = write(0,DEBUGINFOX,DEBUGINFOY+20,0,"Y:" + mouse.y);
+			
+			//movimiento del scroll
+			if (scroll[0].x0 < 368 ) 
+				scroll[cGameScroll].x0+=key(_right);
+			end;
+			scroll[cGameScroll].x0-=key(_left);
+			scroll[cGameScroll].y0-=key(_up);
+			scroll[cGameScroll].y0+=key(_down);
+			
+			move_scroll(cGameScroll);
+			
+			
+			
 		else
 			//ocultamos todas las informaciones de debug
 			mouse.graph = 0;			
@@ -86,6 +101,7 @@ function WGE_InitScreen()
 begin
 	scale_mode=SCALE_NORMAL2X; 
 	set_mode(cResX,cResY,8);
+	//set_mode(640,480,8);
 	set_fps(cNumFPS,0);
 	log("Modo Grafico inicializado");
 end;
@@ -94,7 +110,7 @@ end;
 function WGE_InitScroll()
 begin
 	define_region(cGameRegion,cRegionX1,cRegionY1,cRegionX2,cRegionY2);
-	start_scroll(cGameScroll,0,map_new(cRegionX2+cRegionX1,cRegionY2+cRegionY1,8),0,cGameRegion,3); 
+	start_scroll(cGameScroll,0,map_new(1,1,8),0,cGameRegion,3);
 	scroll[cGameScroll].ratio = 100;
 	log("Scroll creado");
 end;
@@ -105,7 +121,7 @@ begin
 	//Limpiamos la memoria dinamica
 	free(objetos);
 	free(paths);
-	free(tileMap);
+	//free(tileMap);
 	
 	log("Se finaliza la ejecución");
 	exit();
@@ -267,17 +283,17 @@ Begin
 	//cerramos el archivo
 	fclose(levelMapFile);
 	log("Fichero mapa leído con " + level.numTiles + " Tiles. " + level.numTilesX + " Tiles en X y " + level.numTilesY + " Tiles en Y");   
-	
+
 End;
 
-//funcion para generar un archivo de mapa aleatorio
-function WGE_GenRandomMapFile(string file_)
+//funcion para generar un archivo de mapa especificando numero de tiles o aleatorio (numero tiles=0)
+function WGE_GenRandomMapFile(string file_,int numTilesX,int numTilesY)
 private 
 	int levelMapFile;		//Archivo del nivel
 	int i,j;				//Indices auxiliares
 	byte randByte;			//Byte aleatorio
 	int randInt;			//Int aleatorio
-	int numTilesX,numTilesY;
+	
 Begin
 	
 	//creamos el archivo de mapa
@@ -285,25 +301,20 @@ Begin
 	//Nos situamos al principio del archivo
 	fseek(levelMapFile,0,SEEK_SET);  
 		
+	//Si no pasamos numero de tiles, lo generamos aleatorio	(10 pantallas maximo)
+	if (numTilesX == 0) numTilesX = rand((cResX/cTileSize),(cTileSize*10)); end;
+	if (numTilesY == 0) numTilesY = rand((cResY/cTileSize),(cTileSize*10)); end;
+		
 	//Escribimos los datos del mapa
-	
-	//randInt = (cResX/cTileSize)*(cResY/cTileSize);
-	numTilesX = 200;
-	numTilesY = 150;
-	
-	randint = numTilesX*numTilesY;
-	fwrite(levelMapFile,randInt); 		//escribimos el numero de tiles que usa el mapa
-	//randInt = (cResX/cTileSize);
-	randint = numTilesX;
-	fwrite(levelMapFile,randInt);   	//escribimos el numero de columnas de tiles
-	//randInt = (cResY/cTileSize);
-	randint = numTilesY;
-	fwrite(levelMapFile,randInt);   	//escribimos el numero de filas de tiles	
+	randInt = numTilesX*numTilesY;
+	fwrite(levelMapFile,randInt); 					//escribimos el numero de tiles que usa el mapa
+	fwrite(levelMapFile,numTilesX);   				//escribimos el numero de columnas de tiles
+	fwrite(levelMapFile,numTilesY);   				//escribimos el numero de filas de tiles	
 	
 	//Escribimos la informacion del grafico de los tiles del fichero de mapa
 	for (i=0;i<numTilesY;i++)
 		for (j=0;j<numTilesX;j++)
-			randByte = rand(0,255);
+			randByte = rand(0,254);
 			fwrite(levelMapFile,randByte); 
 		end;
 	end;
@@ -380,58 +391,125 @@ Begin
 	x_inicial = 0;//level.playerx0;
 	y_inicial = 0;//level.playery0;
 	
-	//creamos los procesos tiles segun la icion x e y iniciales y la longitud de resolucion de pantalla
-	for (i=(y_inicial/cTileSize);i<=(((cResY+y_inicial)/cTileSize)+1);i++)
-		for (j=(x_inicial/cTileSize);j<=(((cResX+x_inicial)/cTileSize)+1);j++)
-			//ptile(tileMap[i][j].tileGraph,(j*cTileSize)+(cTileSize>>1),(i*cTileSize)+(cTileSize>>1),i,j);
-			//say(tileMap[i][j].tileGraph);
-			ptile(1,(j*cTileSize)+(cTileSize>>1),(i*cTileSize)+(cTileSize>>1),i,j);
-			//if (debugMode) frame; end;
+	//creamos los procesos tiles segun la posicion x e y iniciales y la longitud de resolucion de pantalla
+	//En los extremos de la pantalla se crean el numero definido de tiles (TILESOFFSCREEN) extras para asegurar la fluidez
+	for (i=((y_inicial/cTileSize)-TILESYOFFSCREEN);i<(((cResY+y_inicial)/cTileSize)+TILESYOFFSCREEN);i++)
+		for (j=((x_inicial/cTileSize)-TILESXOFFSCREEN);j<(((cResX+x_inicial)/cTileSize)+TILESXOFFSCREEN);j++)
+			debugMode = 0;
+			if (debugMode) 
+				repeat
+					frame; 
+				until(not key(_space));
+				repeat
+					frame; 
+				until(key(_space));
+			end;
+			debugMode = 1;
+			//Comprobamos la longitud del mapeado para no acceder a posiciones no existentes
+			//if (i<level.numTilesY && j<level.numTilesX)
+				//ptile(tileMap[i][j].tileGraph,(j*cTileSize)+(cTileSize>>1),(i*cTileSize)+(cTileSize>>1),i,j);
+				ptile(i,j);
+			/*else
+				log("No puedo crear el tile x:" + j + " y:" + i + " porque el mapeado es de sólo " + (level.numTilesX-1) + 
+				    "x" + (level.numTilesY-1));
+				log("Lo creo, pero vacío");
+				//ptile(0,(j*cTileSize)+(cTileSize>>1),(i*cTileSize)+(cTileSize>>1),i,j);
+				ptile(i,j);
+			end;*/
+			
 		end;
 	end;
 	log("Mapa dibujado correctamente");
 End;
 
-process ptile(byte nada,int x, int y,int i,int j)
+//proceso tile
+//process ptile(byte tileData,int x, int y,int i,int j)
+process ptile(int i,int j)
+private	
+	byte tileColor;
+	
 BEGIN
-	alto = 32;
-	ancho = 32;
-	graph = map_new(alto,ancho,8);
-	drawing_map(0,graph);
-	drawing_color(tileMap[i][j].tileGraph);
-	draw_box(0,0,alto,ancho);
-	fx = x;
-	fy = y;
+	//definimos propiedades iniciales
+	alto = cTileSize;
+	ancho = cTileSize;
 	ctype = c_scroll;
 	region = cGameRegion;
+	
+	//establecemos su posicion inicial
+	x = (j*cTileSize)+(cTileSize>>1);
+	y = (i*cTileSize)+(cTileSize>>1);
+	
+	//comprobamos si el tile existe en el mapeado
+	//y leemos su grafico
+	if (i<level.numTilesY && j<level.numTilesX && i>=0 && j>=0)
+		tileColor = tileMap2[i][j].tileGraph;
+	else
+		tileColor = 255;
+	end;
+	
+	//dibujamos el tile
+	graph = map_new(alto,ancho,8);
+	drawing_map(0,graph);
+	drawing_color(tileColor);
+	draw_box(0,0,alto,ancho);
+	
 	loop
+				
+		//if (scroll[0].x0 == 368 ) say("estoy en 368 1"); end;
 		
 		//Si sale el tile por la izquierda
 		if (scroll[0].x0-(x+(cTileSize>>1))>=cTileSize) 
-			drawing_map(0,graph);
-			drawing_color(tileMap[i][(j+(cResX/cTileSize))+2].tileGraph);
-			draw_box(0,0,alto,ancho);
-			//graph=tileMap[i][(j+(cResX/cTileSize))+2];
-			x=x+(cResX+(cTileSize*2));
-			y=y;                               
+			
+			//nueva posicion
 			i=i;
 			j=j+(cResX/cTileSize)+2;
-		end;
+			x=x+(cResX+(cTileSize*2));
+			y=y;
 			
+			//nuevo grafico
+			if (i<level.numTilesY && j<level.numTilesX && i>=0 && j>=0)
+				tileColor = tileMap2[i][j].tileGraph;
+			else
+				tileColor = 255;
+			end;
+			
+			//dibujamos el grafico
+			//drawing_map(0,graph);
+			//drawing_color(tileColor);
+			//draw_box(0,0,alto,ancho);	
+			//graph=tileMap[i][(j+(cResX/cTileSize))+2];
+			   
+			log("Paso de izq a der "+i+","+j);
+		end;
+		
 		//Si sale el tile por la derecha
 		if ((x-(cTileSize>>1))-scroll[0].x0>((cResX+cTileSize)-(cTileSize))
 			&& (x-(cTileSize>>1))-scroll[0].x0<((cResX+cTileSize)+(cTileSize))
 			) 
-			drawing_map(0,graph);
-			drawing_color(tileMap[i][(j-(cResX/cTileSize)-2)].tileGraph);
-			draw_box(0,0,alto,ancho);
-			//graph=tileMap[i][(j-(cResX/cTileSize)-2)];
-			x=x-(cResX+(cTileSize*2));
-			y=y;
+			
+			//nueva posicion
 			i=i;
 			j=j-(cResX/cTileSize)-2;
+			x=x-(cResX+(cTileSize*2));
+			y=y;
+			
+			//nuevo grafico
+			if (i<level.numTilesY && j<level.numTilesX && i>=0 && j>=0)
+				tileColor = tileMap2[i][j].tileGraph;
+			else
+				tileColor = 255;
+			end;
+			
+			//dibujamos el grafico
+			drawing_map(0,graph);
+			drawing_color(tileColor);
+			draw_box(0,0,alto,ancho);
+			//graph=tileMap[i][(j-(cResX/cTileSize)-2)];
+			
+			log("Paso de der a izq "+i+","+j);
 		end;
 		
+		/*
 		//Si sale por arriba
 		if (scroll[0].y0-(y)>=cTileSize) 
 			drawing_map(0,graph);
@@ -442,6 +520,7 @@ BEGIN
 			y=y+(cResY+(cTileSize*2))-(cTileSize>>1);
 			i=i+(cResY/cTileSize)+2;
 			j=j;       
+			log("arriba");
 		end;
 		
 		//Si sale por abajo
@@ -456,8 +535,16 @@ BEGIN
 			y=y-(cResY+(cTileSize))-(cTileSize>>1);
 			i=i-(cResY/cTileSize)-2;
 			j=j;       
+			log("abajo");
 		end;
-		
+		*/
+		/*
+		if (i>=level.NumTilesY) 	log("acceso a mapeado Y fuera de rango:" + i); end;
+		if (j>=level.NumTilesX)		log("acceso a mapeado X fuera de rango:" + j); end;
+		if (i<0) 					log("acceso a mapeado Y NEGATIVO!:" + i); 	  end;
+		if (j<0)					log("acceso a mapeado X NEGATIVO!:" + j); 	  end;
+		*/
+				
 		frame;
 	
 	end;
@@ -488,7 +575,7 @@ Begin
 	          
 End;
 
-process borrame()
+process WGE_DebugMoveScroll()
 begin
 	graph = mouse.graph;
 	x = cResX>>1;
@@ -496,11 +583,11 @@ begin
 	region = cGameRegion;
 	//scroll[cGameScroll].camera = id;
 	loop
-		if (key(_left)) x--; end;
-		//if (key(_right)) x++; end;
 		scroll[cGameScroll].x0+=key(_right);
-		y-=key(_up);
-		y+=key(_down);
+		scroll[cGameScroll].x0-=key(_right);
+		scroll[cGameScroll].y0-=key(_up);
+		scroll[cGameScroll].y0+=key(_down);
+		
 		frame;
 	end;
 end;
