@@ -426,18 +426,17 @@ End;
 process ptile(int i,int j)
 private	
 	byte tileColor;
-	int halfTileSize;
+	byte redraw = 0;
 BEGIN
 	//definimos propiedades iniciales
 	alto = cTileSize;
 	ancho = cTileSize;
 	ctype = c_scroll;
 	region = cGameRegion;
-	halfTileSize = (cTileSize >>1);
-	
+		
 	//establecemos su posicion inicial
-	x = (j*cTileSize)+(cTileSize>>1);
-	y = (i*cTileSize)+(cTileSize>>1);
+	x = (j*cTileSize)+cHalfTSize;
+	y = (i*cTileSize)+cHalfTSize;
 	
 	//comprobamos si el tile existe en el mapeado
 	//y leemos su grafico
@@ -455,7 +454,7 @@ BEGIN
 	set_text_color((255-TileColor)+1);
 	map_put(0,graph,write_in_map(0,i,3),16,10);
 	map_put(0,graph,write_in_map(0,j,3),16,18);
-	//graph = write_in_map(0,i+" "+j,0);
+	
 	loop
 				
 		//Si el tile desaparece por la izquierda
@@ -464,26 +463,9 @@ BEGIN
 			//Se multiplica por 2 porque tenemos tiles offscreen a ambos lados
 			i=i;
 			j=j+(cResX/cTileSize)+(TILESXOFFSCREEN*2);
-			//x=x+(cResX+(cTileSize*(TILESXOFFSCREEN*2)));
-			x = (j*cTileSize)+(cTileSize>>1);
-			y=y;
-			
-			//nuevo grafico
-			if (i<level.numTilesY && j<level.numTilesX && i>=0 && j>=0)
-				tileColor = tileMap[i][j].tileGraph;
-			else
-				tileColor = 255;
-			end;
-			
-			//dibujamos el grafico
-			drawing_map(0,graph);
-			drawing_color(tileColor);
-			draw_box(0,0,alto,ancho);	
-			//graph=tileMap[i][(j+(cResX/cTileSize))+2];
-			set_text_color((255-TileColor)+1);
-			map_put(0,graph,write_in_map(0,i,3),16,10);
-			map_put(0,graph,write_in_map(0,j,3),16,18);   
+			  
 			log("Paso de izq a der "+i+","+j);
+			redraw = 1;
 		end;
 		
 		
@@ -493,83 +475,47 @@ BEGIN
 			//Se multiplica por 2 porque tenemos tiles offscreen a ambos lados
 			i=i;
 			j=j-(cResX/cTileSize)-(TILESXOFFSCREEN*2);
-			//x=x-(cResX+(cTileSize*(TILESXOFFSCREEN*2)));
-			x=(j*cTileSize)+(cTileSize>>1);
-			y=y;
 			
-			//nuevo grafico
-			if (i<level.numTilesY && j<level.numTilesX && i>=0 && j>=0)
-				tileColor = tileMap[i][j].tileGraph;
-			else
-				tileColor = 255;
-			end;
-			
-			//dibujamos el grafico
-			drawing_map(0,graph);
-			drawing_color(tileColor);
-			draw_box(0,0,alto,ancho);
-			//graph=tileMap[i][(j-(cResX/cTileSize)-2)];
-			set_text_color((255-TileColor)+1);
-			map_put(0,graph,write_in_map(0,i,3),16,10);
-			map_put(0,graph,write_in_map(0,j,3),16,18);
 			log("Paso de der a izq "+i+","+j);
+			redraw = 1;
 		end;
 		
 		
 		//Si sale por arriba
-		//if (scroll[0].y0-(y)>=cTileSize) 
 		if (scroll[0].y0 > (y+(cTileSize*TILESYOFFSCREEN)) )
 		
 			//nueva posicion
-			//i=i+(cResY/cTileSize)+2;
 			i=i+(cResY/cTileSize)+(TILESYOFFSCREEN*2);
 			j=j;       
-			x=x;
-			//y=y+(cResY+(cTileSize*2))-(cTileSize>>1);
-			//y=y+(cResy+(halfTileSize*(TILESYOFFSCREEN*2)));
-			y = (i*cTileSize)+(cTileSize>>1);
-			
-			//nuevo grafico
-			if (i<level.numTilesY && j<level.numTilesX && i>=0 && j>=0)
-				tileColor = tileMap[i][j].tileGraph;
-			else
-				tileColor = 255;
-			end;
-			
-			//dibujamos el grafico
-			drawing_map(0,graph);
-			drawing_color(tileColor);
-			draw_box(0,0,alto,ancho);
-			//graph=tileMap[i+(cResY/cTileSize)+2][j];
-			set_text_color((255-TileColor)+1);
-			map_put(0,graph,write_in_map(0,i,3),16,10);
-			map_put(0,graph,write_in_map(0,j,3),16,18);
 			
 			log("Paso de arrib a abaj "+i+","+j);
+			redraw = 1;
 		end;
 		
 		//Si sale por abajo
-		//if ((y-(cTileSize>>1))-scroll[0].y0>((cResY+cTileSize-(cTileSize>>1))-(cTileSize>>1))
-		//	&& (y-(cTileSize>>1))-scroll[0].y0<((cResY+cTileSize-(cTileSize>>1))+(cTileSize>>1))
-		//	)
 		if ((scroll[0].y0+cResY) < (y-(cTileSize*TILESYOFFSCREEN))) 
 		
 			//nueva posicion
-			//i=i-(cResY/cTileSize)-2;
 			i=i-(cResY/cTileSize)-(TILESYOFFSCREEN*2);
 			j=j;       
-			x=x;
-			//y=y-(cResY+(cTileSize))-(cTileSize>>1);
-			y = (i*cTileSize)+(cTileSize>>1);
+					
+			log("Paso de abajo a arriba "+i+","+j);
+			redraw = 1;
+		end;
+		
+		//Redibujamos el tile
+		if (redraw)
+			//posicion
+			x=(j*cTileSize)+cHalfTSize;
+			y = (i*cTileSize)+cHalfTSize;
 			
-			//nuevo grafico
+			//grafico
 			if (i<level.numTilesY && j<level.numTilesX && i>=0 && j>=0)
 				tileColor = tileMap[i][j].tileGraph;
 			else
 				tileColor = 255;
 			end;
-			
-			//dibujamos el grafico
+		
 			drawing_map(0,graph);
 			drawing_color(tileColor);
 			draw_box(0,0,alto,ancho);
@@ -578,8 +524,7 @@ BEGIN
 			map_put(0,graph,write_in_map(0,i,3),16,10);
 			map_put(0,graph,write_in_map(0,j,3),16,18);
 			
-			log("Paso de abajo a arriba "+i+","+j);
-		
+			redraw = 0;
 		end;
 		
 		/*

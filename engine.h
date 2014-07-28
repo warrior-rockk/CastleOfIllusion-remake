@@ -34,18 +34,19 @@
 //Constantes del motor
 const
 	//Pantalla
-	cNumFPS     = 60;   		//Frames por segundo
-	cResX 		= 640;			//Resolucion Horizontal Pantalla
-	cResY 		= 480;  		//Resolucion Vertical Pantalla
-	cGameScroll = 0;    		//Numero Scroll
-	cGameRegion = 1;    		//Numero Region Pantalla Juego
-	cRegionX 	= 0;			//Region Horizontal Pantalla de juego (Representacion Mapeado) 
-	cRegionY 	= 0;			//Region Vertical Pantalla de juego (Representacion Mapeado)
-	cRegionW 	= cResX;			//Region Horizontal Pantalla de juego (Representacion Mapeado) 
-	cRegionH 	= cResY;			//Region Vertical Pantalla de juego (Representacion Mapeado)	
+	cNumFPS     = 60;   				//Frames por segundo
+	cResX 		= 640;					//Resolucion Horizontal Pantalla
+	cResY 		= 480;  				//Resolucion Vertical Pantalla
+	cGameScroll = 0;    				//Numero Scroll
+	cGameRegion = 1;    				//Numero Region Pantalla Juego
+	cRegionX 	= 0;					//Region Horizontal Pantalla de juego (Representacion Mapeado) 
+	cRegionY 	= 0;					//Region Vertical Pantalla de juego (Representacion Mapeado)
+	cRegionW 	= cResX;				//Region Horizontal Pantalla de juego (Representacion Mapeado) 
+	cRegionH 	= cResY;				//Region Vertical Pantalla de juego (Representacion Mapeado)	
 	
 	//Mapeado
-	cTileSize   = 64;   //Tamaño tiles (Ancho y alto iguales)
+	cTileSize   = 64;   				//Tamaño tiles (Ancho y alto iguales)
+	cHalfTSize = cTileSize >> 1; 		//Mitad del tamaño tile (util para todo el proyecto)
 End;
 
 //Data Types
