@@ -99,7 +99,7 @@ function WGE_InitScreen()
 begin
 	//scale_mode=SCALE_NORMAL2X; 
 	//set_mode(cResX,cResY,8);
-	set_mode(800,480,8);
+	set_mode(992,480,8);
 	set_fps(cNumFPS,0);
 	log("Modo Grafico inicializado");
 end;
@@ -107,8 +107,8 @@ end;
 //Definicion Region y Scroll
 function WGE_InitScroll()
 begin
-	//define_region(cGameRegion,cRegionX1,cRegionY1,cRegionX2,cRegionY2);
-	define_region(cGameRegion,cRegionX1,cRegionY1,800,cRegionY2);
+	//define_region(cGameRegion,cRegionX,cRegionY,cRegionW,cRegionH);
+	define_region(cGameRegion,cRegionX,cRegionY,992,cRegionH);
 	start_scroll(cGameScroll,0,map_new(1,1,8),0,cGameRegion,3);
 	scroll[cGameScroll].ratio = 100;
 	log("Scroll creado");
@@ -426,13 +426,14 @@ End;
 process ptile(int i,int j)
 private	
 	byte tileColor;
-	
+	int halfTileSize;
 BEGIN
 	//definimos propiedades iniciales
 	alto = cTileSize;
 	ancho = cTileSize;
 	ctype = c_scroll;
 	region = cGameRegion;
+	halfTileSize = (cTileSize >>1);
 	
 	//establecemos su posicion inicial
 	x = (j*cTileSize)+(cTileSize>>1);
@@ -457,15 +458,12 @@ BEGIN
 	//graph = write_in_map(0,i+" "+j,0);
 	loop
 				
-		//if (scroll[0].x0 == 368 ) say("estoy en 368 1"); end;
-		
-		//Si sale el tile por la izquierda
-		if (scroll[0].x0-(x+(cTileSize>>1))>=cTileSize) 
-			
-			//nueva posicion
+		//Si el tile desaparece por la izquierda
+		if (scroll[0].x0 > (x+(cTileSize*TILESXOFFSCREEN)) )	
+			//nueva posicion:a la derecha del tile de offscreen (que pasa a ser onscreen)
 			i=i;
-			j=j+(cResX/cTileSize)+2;
-			x=x+(cResX+(cTileSize*2));
+			j=j+(cResX/cTileSize)+(TILESXOFFSCREEN+1);
+			x=x+(cResX+(cTileSize*(TILESXOFFSCREEN+1)));
 			y=y;
 			
 			//nuevo grafico
@@ -486,15 +484,13 @@ BEGIN
 			log("Paso de izq a der "+i+","+j);
 		end;
 		
+		
 		//Si sale el tile por la derecha
-		if ((x-(cTileSize>>1))-scroll[0].x0>((cResX+cTileSize)-(cTileSize))
-			&& (x-(cTileSize>>1))-scroll[0].x0<((cResX+cTileSize)+(cTileSize))
-			) 
-			
+		if ((scroll[0].x0+cResX)< (x-(cTileSize*TILESXOFFSCREEN)))
 			//nueva posicion
 			i=i;
-			j=j-(cResX/cTileSize)-2;
-			x=x-(cResX+(cTileSize*2));
+			j=j-(cResX/cTileSize)-(TILESXOFFSCREEN+1);
+			x=x-(cResX+(cTileSize*(TILESXOFFSCREEN+1)));
 			y=y;
 			
 			//nuevo grafico
@@ -515,7 +511,7 @@ BEGIN
 			log("Paso de der a izq "+i+","+j);
 		end;
 		
-		
+		/*
 		//Si sale por arriba
 		if (scroll[0].y0-(y)>=cTileSize) 
 			
@@ -572,7 +568,7 @@ BEGIN
 			map_put(0,graph,write_in_map(0,j,3),16,18);
 			log("abajo");
 		end;
-		
+		*/
 		/*
 		if (i>=level.NumTilesY) 	log("acceso a mapeado Y fuera de rango:" + i); end;
 		if (j>=level.NumTilesX)		log("acceso a mapeado X fuera de rango:" + j); end;
