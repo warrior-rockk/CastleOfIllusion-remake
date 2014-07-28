@@ -91,7 +91,6 @@ Global
 	objeto* objetos;			//Array Dinamico de objetos
 	path* paths;				//Array Dinamico de paths
 	tile** tileMap;  	        //Matriz Dinamica del mapa de tiles del nivel
-	tile tileMap2[150][200];
 End;
 
 //Variables locales

@@ -75,9 +75,7 @@ begin
 			idDebugText[2] = write(0,DEBUGINFOX,DEBUGINFOY+20,0,"Y:" + mouse.y);
 			
 			//movimiento del scroll
-			if (scroll[0].x0 < 368 ) 
-				scroll[cGameScroll].x0+=key(_right);
-			end;
+			scroll[cGameScroll].x0+=key(_right);
 			scroll[cGameScroll].x0-=key(_left);
 			scroll[cGameScroll].y0-=key(_up);
 			scroll[cGameScroll].y0+=key(_down);
@@ -99,7 +97,7 @@ end;
 //Inicialización del modo grafico
 function WGE_InitScreen()
 begin
-	scale_mode=SCALE_NORMAL2X; 
+	//scale_mode=SCALE_NORMAL2X; 
 	set_mode(cResX,cResY,8);
 	//set_mode(640,480,8);
 	set_fps(cNumFPS,0);
@@ -442,7 +440,7 @@ BEGIN
 	//comprobamos si el tile existe en el mapeado
 	//y leemos su grafico
 	if (i<level.numTilesY && j<level.numTilesX && i>=0 && j>=0)
-		tileColor = tileMap2[i][j].tileGraph;
+		tileColor = tileMap[i][j].tileGraph;
 	else
 		tileColor = 255;
 	end;
@@ -468,15 +466,15 @@ BEGIN
 			
 			//nuevo grafico
 			if (i<level.numTilesY && j<level.numTilesX && i>=0 && j>=0)
-				tileColor = tileMap2[i][j].tileGraph;
+				tileColor = tileMap[i][j].tileGraph;
 			else
 				tileColor = 255;
 			end;
 			
 			//dibujamos el grafico
-			//drawing_map(0,graph);
-			//drawing_color(tileColor);
-			//draw_box(0,0,alto,ancho);	
+			drawing_map(0,graph);
+			drawing_color(tileColor);
+			draw_box(0,0,alto,ancho);	
 			//graph=tileMap[i][(j+(cResX/cTileSize))+2];
 			   
 			log("Paso de izq a der "+i+","+j);
@@ -495,7 +493,7 @@ BEGIN
 			
 			//nuevo grafico
 			if (i<level.numTilesY && j<level.numTilesX && i>=0 && j>=0)
-				tileColor = tileMap2[i][j].tileGraph;
+				tileColor = tileMap[i][j].tileGraph;
 			else
 				tileColor = 255;
 			end;
