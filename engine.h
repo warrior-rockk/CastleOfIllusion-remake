@@ -10,6 +10,10 @@
 #define WGE_ENGINE							//Utilizando WGE engine
 #define bit_cmp(a,b) 	( (a & b) == b )	//Funcion comparar bit
 #define MAXOBJPARAMS   	9					//Numero de parametros objetos
+
+//Numero de tiles fuera de la pantalla. 
+//Si la resolucion no es multiplo del tamaño del tile,es aconsejable usar 
+//al menos 2 tiles OffScreen. Si es multiplo, con 1 es suficiente
 #define TILESXOFFSCREEN 1					//Tiles fuera de la pantalla en X
 #define TILESYOFFSCREEN 2					//Tiles fuera de la pantalla en Y
 
@@ -37,8 +41,8 @@ const
 	cGameRegion = 1;    		//Numero Region Pantalla Juego
 	cRegionX 	= 0;			//Region Horizontal Pantalla de juego (Representacion Mapeado) 
 	cRegionY 	= 0;			//Region Vertical Pantalla de juego (Representacion Mapeado)
-	cRegionW 	= 640;			//Region Horizontal Pantalla de juego (Representacion Mapeado) 
-	cRegionH 	= 480;			//Region Vertical Pantalla de juego (Representacion Mapeado)	
+	cRegionW 	= cResX;			//Region Horizontal Pantalla de juego (Representacion Mapeado) 
+	cRegionH 	= cResY;			//Region Vertical Pantalla de juego (Representacion Mapeado)	
 	
 	//Mapeado
 	cTileSize   = 64;   //Tamaño tiles (Ancho y alto iguales)

@@ -99,7 +99,7 @@ function WGE_InitScreen()
 begin
 	//scale_mode=SCALE_NORMAL2X; 
 	//set_mode(cResX,cResY,8);
-	set_mode(992,480,8);
+	set_mode(992,600,8);
 	set_fps(cNumFPS,0);
 	log("Modo Grafico inicializado");
 end;
@@ -108,7 +108,7 @@ end;
 function WGE_InitScroll()
 begin
 	//define_region(cGameRegion,cRegionX,cRegionY,cRegionW,cRegionH);
-	define_region(cGameRegion,cRegionX,cRegionY,992,cRegionH);
+	define_region(cGameRegion,cRegionX,cRegionY,992,600);
 	start_scroll(cGameScroll,0,map_new(1,1,8),0,cGameRegion,3);
 	scroll[cGameScroll].ratio = 100;
 	log("Scroll creado");
@@ -461,9 +461,11 @@ BEGIN
 		//Si el tile desaparece por la izquierda
 		if (scroll[0].x0 > (x+(cTileSize*TILESXOFFSCREEN)) )	
 			//nueva posicion:a la derecha del tile de offscreen (que pasa a ser onscreen)
+			//Se multiplica por 2 porque tenemos tiles offscreen a ambos lados
 			i=i;
-			j=j+(cResX/cTileSize)+(TILESXOFFSCREEN+1);
-			x=x+(cResX+(cTileSize*(TILESXOFFSCREEN+1)));
+			j=j+(cResX/cTileSize)+(TILESXOFFSCREEN*2);
+			//x=x+(cResX+(cTileSize*(TILESXOFFSCREEN*2)));
+			x = (j*cTileSize)+(cTileSize>>1);
 			y=y;
 			
 			//nuevo grafico
@@ -487,10 +489,12 @@ BEGIN
 		
 		//Si sale el tile por la derecha
 		if ((scroll[0].x0+cResX)< (x-(cTileSize*TILESXOFFSCREEN)))
-			//nueva posicion
+			//nueva posicion:a la derecha del tile de offscreen (que pasa a ser onscreen)
+			//Se multiplica por 2 porque tenemos tiles offscreen a ambos lados
 			i=i;
-			j=j-(cResX/cTileSize)-(TILESXOFFSCREEN+1);
-			x=x-(cResX+(cTileSize*(TILESXOFFSCREEN+1)));
+			j=j-(cResX/cTileSize)-(TILESXOFFSCREEN*2);
+			//x=x-(cResX+(cTileSize*(TILESXOFFSCREEN*2)));
+			x=(j*cTileSize)+(cTileSize>>1);
 			y=y;
 			
 			//nuevo grafico
@@ -511,15 +515,19 @@ BEGIN
 			log("Paso de der a izq "+i+","+j);
 		end;
 		
-		/*
+		
 		//Si sale por arriba
-		if (scroll[0].y0-(y)>=cTileSize) 
-			
+		//if (scroll[0].y0-(y)>=cTileSize) 
+		if (scroll[0].y0 > (y+(cTileSize*TILESYOFFSCREEN)) )
+		
 			//nueva posicion
-			i=i+(cResY/cTileSize)+2;
+			//i=i+(cResY/cTileSize)+2;
+			i=i+(cResY/cTileSize)+(TILESYOFFSCREEN*2);
 			j=j;       
 			x=x;
-			y=y+(cResY+(cTileSize*2))-(cTileSize>>1);
+			//y=y+(cResY+(cTileSize*2))-(cTileSize>>1);
+			//y=y+(cResy+(halfTileSize*(TILESYOFFSCREEN*2)));
+			y = (i*cTileSize)+(cTileSize>>1);
 			
 			//nuevo grafico
 			if (i<level.numTilesY && j<level.numTilesX && i>=0 && j>=0)
@@ -537,19 +545,22 @@ BEGIN
 			map_put(0,graph,write_in_map(0,i,3),16,10);
 			map_put(0,graph,write_in_map(0,j,3),16,18);
 			
-			log("arriba");
+			log("Paso de arrib a abaj "+i+","+j);
 		end;
 		
 		//Si sale por abajo
-		if ((y-(cTileSize>>1))-scroll[0].y0>((cResY+cTileSize-(cTileSize>>1))-(cTileSize>>1))
-			&& (y-(cTileSize>>1))-scroll[0].y0<((cResY+cTileSize-(cTileSize>>1))+(cTileSize>>1))
-			)
-			
+		//if ((y-(cTileSize>>1))-scroll[0].y0>((cResY+cTileSize-(cTileSize>>1))-(cTileSize>>1))
+		//	&& (y-(cTileSize>>1))-scroll[0].y0<((cResY+cTileSize-(cTileSize>>1))+(cTileSize>>1))
+		//	)
+		if ((scroll[0].y0+cResY) < (y-(cTileSize*TILESYOFFSCREEN))) 
+		
 			//nueva posicion
-			i=i-(cResY/cTileSize)-2;
+			//i=i-(cResY/cTileSize)-2;
+			i=i-(cResY/cTileSize)-(TILESYOFFSCREEN*2);
 			j=j;       
 			x=x;
-			y=y-(cResY+(cTileSize))-(cTileSize>>1);
+			//y=y-(cResY+(cTileSize))-(cTileSize>>1);
+			y = (i*cTileSize)+(cTileSize>>1);
 			
 			//nuevo grafico
 			if (i<level.numTilesY && j<level.numTilesX && i>=0 && j>=0)
@@ -566,9 +577,11 @@ BEGIN
 			set_text_color((255-TileColor)+1);
 			map_put(0,graph,write_in_map(0,i,3),16,10);
 			map_put(0,graph,write_in_map(0,j,3),16,18);
-			log("abajo");
+			
+			log("Paso de abajo a arriba "+i+","+j);
+		
 		end;
-		*/
+		
 		/*
 		if (i>=level.NumTilesY) 	log("acceso a mapeado Y fuera de rango:" + i); end;
 		if (j>=level.NumTilesX)		log("acceso a mapeado X fuera de rango:" + j); end;
@@ -610,15 +623,15 @@ process WGE_Frame()
 begin
 	//ctype = c_scroll;
 	region = cGameRegion;
-	graph = map_new(641,481,8);
+	graph = map_new(cResX+1,cResY+1,8);
 	drawing_map(0,graph);
 	drawing_color(300);
-	draw_line(0,0,640,0);
-	draw_line(0,0,0,480);
-	draw_line(640,0,640,480);
-	draw_line(640,0,640,480);
-	x = 640/2;
-	y = 480 / 2;
+	draw_line(0,0,cRegionW,0);
+	draw_line(0,0,0,cRegionH);
+	draw_line(cRegionW,0,cRegionW,cRegionH);
+	draw_line(0,cRegionH,cRegionW,cRegionH);
+	x = cResX>>1;
+	y = cResY>>1;
 	loop
 		frame;
 	end;
