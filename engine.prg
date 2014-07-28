@@ -98,8 +98,8 @@ end;
 function WGE_InitScreen()
 begin
 	//scale_mode=SCALE_NORMAL2X; 
-	set_mode(cResX,cResY,8);
-	//set_mode(640,480,8);
+	//set_mode(cResX,cResY,8);
+	set_mode(800,480,8);
 	set_fps(cNumFPS,0);
 	log("Modo Grafico inicializado");
 end;
@@ -107,7 +107,8 @@ end;
 //Definicion Region y Scroll
 function WGE_InitScroll()
 begin
-	define_region(cGameRegion,cRegionX1,cRegionY1,cRegionX2,cRegionY2);
+	//define_region(cGameRegion,cRegionX1,cRegionY1,cRegionX2,cRegionY2);
+	define_region(cGameRegion,cRegionX1,cRegionY1,800,cRegionY2);
 	start_scroll(cGameScroll,0,map_new(1,1,8),0,cGameRegion,3);
 	scroll[cGameScroll].ratio = 100;
 	log("Scroll creado");
@@ -450,7 +451,10 @@ BEGIN
 	drawing_map(0,graph);
 	drawing_color(tileColor);
 	draw_box(0,0,alto,ancho);
-	
+	set_text_color((255-TileColor)+1);
+	map_put(0,graph,write_in_map(0,i,3),16,10);
+	map_put(0,graph,write_in_map(0,j,3),16,18);
+	//graph = write_in_map(0,i+" "+j,0);
 	loop
 				
 		//if (scroll[0].x0 == 368 ) say("estoy en 368 1"); end;
@@ -476,7 +480,9 @@ BEGIN
 			drawing_color(tileColor);
 			draw_box(0,0,alto,ancho);	
 			//graph=tileMap[i][(j+(cResX/cTileSize))+2];
-			   
+			set_text_color((255-TileColor)+1);
+			map_put(0,graph,write_in_map(0,i,3),16,10);
+			map_put(0,graph,write_in_map(0,j,3),16,18);   
 			log("Paso de izq a der "+i+","+j);
 		end;
 		
@@ -503,21 +509,38 @@ BEGIN
 			drawing_color(tileColor);
 			draw_box(0,0,alto,ancho);
 			//graph=tileMap[i][(j-(cResX/cTileSize)-2)];
-			
+			set_text_color((255-TileColor)+1);
+			map_put(0,graph,write_in_map(0,i,3),16,10);
+			map_put(0,graph,write_in_map(0,j,3),16,18);
 			log("Paso de der a izq "+i+","+j);
 		end;
 		
-		/*
+		
 		//Si sale por arriba
 		if (scroll[0].y0-(y)>=cTileSize) 
-			drawing_map(0,graph);
-			drawing_color(tileMap[i+(cResY/cTileSize)+2][j].tileGraph);
-			draw_box(0,0,alto,ancho);
-			//graph=tileMap[i+(cResY/cTileSize)+2][j];
-			x=x;
-			y=y+(cResY+(cTileSize*2))-(cTileSize>>1);
+			
+			//nueva posicion
 			i=i+(cResY/cTileSize)+2;
 			j=j;       
+			x=x;
+			y=y+(cResY+(cTileSize*2))-(cTileSize>>1);
+			
+			//nuevo grafico
+			if (i<level.numTilesY && j<level.numTilesX && i>=0 && j>=0)
+				tileColor = tileMap[i][j].tileGraph;
+			else
+				tileColor = 255;
+			end;
+			
+			//dibujamos el grafico
+			drawing_map(0,graph);
+			drawing_color(tileColor);
+			draw_box(0,0,alto,ancho);
+			//graph=tileMap[i+(cResY/cTileSize)+2][j];
+			set_text_color((255-TileColor)+1);
+			map_put(0,graph,write_in_map(0,i,3),16,10);
+			map_put(0,graph,write_in_map(0,j,3),16,18);
+			
 			log("arriba");
 		end;
 		
@@ -525,17 +548,31 @@ BEGIN
 		if ((y-(cTileSize>>1))-scroll[0].y0>((cResY+cTileSize-(cTileSize>>1))-(cTileSize>>1))
 			&& (y-(cTileSize>>1))-scroll[0].y0<((cResY+cTileSize-(cTileSize>>1))+(cTileSize>>1))
 			)
-			drawing_map(0,graph);
-			drawing_color(tileMap[i-(cResY/cTileSize)-2][j].tileGraph);
-			draw_box(0,0,alto,ancho);
-			//graph=tileMap[i-(cResY/cTileSize)-2][j];
-			x=x;
-			y=y-(cResY+(cTileSize))-(cTileSize>>1);
+			
+			//nueva posicion
 			i=i-(cResY/cTileSize)-2;
 			j=j;       
+			x=x;
+			y=y-(cResY+(cTileSize))-(cTileSize>>1);
+			
+			//nuevo grafico
+			if (i<level.numTilesY && j<level.numTilesX && i>=0 && j>=0)
+				tileColor = tileMap[i][j].tileGraph;
+			else
+				tileColor = 255;
+			end;
+			
+			//dibujamos el grafico
+			drawing_map(0,graph);
+			drawing_color(tileColor);
+			draw_box(0,0,alto,ancho);
+			//graph=tileMap[i-(cResY/cTileSize)-2][j];
+			set_text_color((255-TileColor)+1);
+			map_put(0,graph,write_in_map(0,i,3),16,10);
+			map_put(0,graph,write_in_map(0,j,3),16,18);
 			log("abajo");
 		end;
-		*/
+		
 		/*
 		if (i>=level.NumTilesY) 	log("acceso a mapeado Y fuera de rango:" + i); end;
 		if (j>=level.NumTilesX)		log("acceso a mapeado X fuera de rango:" + j); end;
@@ -572,6 +609,24 @@ Begin
 	//if (C_AHORRO_OBJETOS)control_sectores();end;
 	          
 End;
+
+process WGE_Frame()
+begin
+	//ctype = c_scroll;
+	region = cGameRegion;
+	graph = map_new(641,481,8);
+	drawing_map(0,graph);
+	drawing_color(300);
+	draw_line(0,0,640,0);
+	draw_line(0,0,0,480);
+	draw_line(640,0,640,480);
+	draw_line(640,0,640,480);
+	x = 640/2;
+	y = 480 / 2;
+	loop
+		frame;
+	end;
+end;
 
 process WGE_DebugMoveScroll()
 begin

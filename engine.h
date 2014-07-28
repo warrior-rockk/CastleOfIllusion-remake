@@ -11,7 +11,7 @@
 #define bit_cmp(a,b) 	( (a & b) == b )	//Funcion comparar bit
 #define MAXOBJPARAMS   	9					//Numero de parametros objetos
 #define TILESXOFFSCREEN 2					//Tiles fuera de la pantalla en X
-#define TILESYOFFSCREEN 0					//Tiles fuera de la pantalla en Y
+#define TILESYOFFSCREEN 2					//Tiles fuera de la pantalla en Y
 
 //Defines del modo debug
 #define CURSORCOLOR 	100			//Color del cursor de debugMode
@@ -31,17 +31,17 @@
 const
 	//Pantalla
 	cNumFPS     = 60;   		//Frames por segundo
-	cResX 		= 320;			//Resolucion Horizontal Pantalla
-	cResY 		= 240;  		//Resolucion Vertical Pantalla
+	cResX 		= 640;			//Resolucion Horizontal Pantalla
+	cResY 		= 480;  		//Resolucion Vertical Pantalla
 	cGameScroll = 0;    		//Numero Scroll
 	cGameRegion = 1;    		//Numero Region Pantalla Juego
 	cRegionX1 	= 0;			//Region Horizontal Pantalla de juego (Representacion Mapeado) 
 	cRegionY1 	= 0;			//Region Vertical Pantalla de juego (Representacion Mapeado)
-	cRegionX2 	= 320;			//Region Horizontal Pantalla de juego (Representacion Mapeado) 
-	cRegionY2 	= 240;			//Region Vertical Pantalla de juego (Representacion Mapeado)	
+	cRegionX2 	= 640;			//Region Horizontal Pantalla de juego (Representacion Mapeado) 
+	cRegionY2 	= 480;			//Region Vertical Pantalla de juego (Representacion Mapeado)	
 	
 	//Mapeado
-	cTileSize   = 16;   //Tamaño tiles (Ancho y alto iguales)
+	cTileSize   = 64;   //Tamaño tiles (Ancho y alto iguales)
 End;
 
 //Data Types
