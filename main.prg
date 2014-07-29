@@ -41,7 +41,7 @@ Begin
 	//Cargamos archivo nivel
 	//WGE_LoadLevel("test\random.dat");
 	//Creamos un mapa aleatorio
-	WGE_GenRandomMapFile("test\random.bin",10,7);
+	//WGE_GenRandomMapFile("test\random.bin",10,7);
 	//Cargamos el mapeado del nivel
 	WGE_LoadMapLevel("test\random.bin");
 	//Dibujamos el mapeado

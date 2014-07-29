@@ -20,35 +20,7 @@ private
 	int i; 								//Variables auxiliares
 	
 begin
-	//comprobaciones iniciales
-	
-	//Resoluciones multiplo tamaño tile
-	/*
-	if (cResX mod cTileSize)
-		log("La resolucion X configurada:"+cResX+" no es multiplo del tamaño tile:"+cTileSize);
-		WGE_Quit();
-	end;
-	if (cResY mod cTileSize)
-		log("La resolucion Y configurada:"+cResY+" no es multiplo del tamaño tile:"+cTileSize);
-		WGE_Quit();
-	end;
-	if (cRegionX1 mod cTileSize)
-		log("La Region X1 configurada:"+cRegionX1+" no es multiplo del tamaño tile:"+cTileSize);
-		WGE_Quit();
-	end;
-	if (cRegionX2 mod cTileSize)
-		log("La Region X2 configurada:"+cRegionX2+" no es multiplo del tamaño tile:"+cTileSize);
-		WGE_Quit();
-	end;
-	if (cRegionY1 mod cTileSize)
-		log("La Region Y1 configurada:"+cRegionY1+" no es multiplo del tamaño tile:"+cTileSize);
-		WGE_Quit();
-	end;
-	if (cRegionY2 mod cTileSize)
-		log("La Region Y2 configurada:"+cRegionY2+" no es multiplo del tamaño tile:"+cTileSize);
-		WGE_Quit();
-	end;
-	*/	
+		
 	//creamos el cursor de debug
 	cursorMap = map_new(cTileSize,cTileSize,8);
 	drawing_map(0,cursorMap);
@@ -258,7 +230,6 @@ Begin
 		tileMap[i] = calloc(level.numTilesX ,sizeof(tile));
 	end;
 	
-	
 	//Cargamos la informacion del grafico de los tiles del fichero de mapa
 	for (i=0;i<level.numTilesY;i++)
 		for (j=0;j<level.numTilesX;j++)
@@ -334,7 +305,8 @@ end;
 
 function WGE_DrawMap()
 private
-	int i,j,x_inicial,y_inicial;				//Indices auxiliares
+	int i,j,					//Indices auxiliares
+	int x_inicial,y_inicial;	//Posiciones iniciales del mapeado			
 	
 	byte out_scr_x = 0; 	//marca fuera de pantalla en x
 	byte out_scr_y = 0;     //marca fuera de pantalla en y
@@ -387,8 +359,12 @@ Begin
 	scroll[0].x0 = x_inicial;
 	scroll[0].y0 = y_inicial;
     */
-	x_inicial = 0;//level.playerx0;
-	y_inicial = 0;//level.playery0;
+
+	x_inicial = 1000;//level.playerx0;
+	y_inicial = 1000;//level.playery0;
+	
+	scroll[0].x0 = x_inicial; 
+	scroll[0].y0 = y_inicial;
 	
 	//creamos los procesos tiles segun la posicion x e y iniciales y la longitud de resolucion de pantalla
 	//En los extremos de la pantalla se crean el numero definido de tiles (TILESOFFSCREEN) extras para asegurar la fluidez
@@ -404,25 +380,15 @@ Begin
 				until(key(_space));
 			end;
 			debugMode = 1;
-			//Comprobamos la longitud del mapeado para no acceder a posiciones no existentes
-			//if (i<level.numTilesY && j<level.numTilesX)
-				//ptile(tileMap[i][j].tileGraph,(j*cTileSize)+(cTileSize>>1),(i*cTileSize)+(cTileSize>>1),i,j);
-				ptile(i,j);
-			/*else
-				log("No puedo crear el tile x:" + j + " y:" + i + " porque el mapeado es de sólo " + (level.numTilesX-1) + 
-				    "x" + (level.numTilesY-1));
-				log("Lo creo, pero vacío");
-				//ptile(0,(j*cTileSize)+(cTileSize>>1),(i*cTileSize)+(cTileSize>>1),i,j);
-				ptile(i,j);
-			end;*/
 			
+			ptile(i,j);
+			log("Creado tile: "+i+" "+j);	
 		end;
 	end;
 	log("Mapa dibujado correctamente");
 End;
 
 //proceso tile
-//process ptile(byte tileData,int x, int y,int i,int j)
 process ptile(int i,int j)
 private	
 	byte tileColor;
@@ -483,7 +449,6 @@ BEGIN
 		
 		//Si sale por arriba
 		if (scroll[0].y0 > (y+(cTileSize*TILESYOFFSCREEN)) )
-		
 			//nueva posicion
 			i=i+(cResY/cTileSize)+(TILESYOFFSCREEN*2);
 			j=j;       
@@ -494,7 +459,6 @@ BEGIN
 		
 		//Si sale por abajo
 		if ((scroll[0].y0+cResY) < (y-(cTileSize*TILESYOFFSCREEN))) 
-		
 			//nueva posicion
 			i=i-(cResY/cTileSize)-(TILESYOFFSCREEN*2);
 			j=j;       
@@ -527,13 +491,6 @@ BEGIN
 			redraw = 0;
 		end;
 		
-		/*
-		if (i>=level.NumTilesY) 	log("acceso a mapeado Y fuera de rango:" + i); end;
-		if (j>=level.NumTilesX)		log("acceso a mapeado X fuera de rango:" + j); end;
-		if (i<0) 					log("acceso a mapeado Y NEGATIVO!:" + i); 	  end;
-		if (j<0)					log("acceso a mapeado X NEGATIVO!:" + j); 	  end;
-		*/
-				
 		frame;
 	
 	end;
