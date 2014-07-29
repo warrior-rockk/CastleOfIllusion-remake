@@ -307,7 +307,7 @@ function WGE_DrawMap()
 private
 	int i,j,					//Indices auxiliares
 	int x_inicial,y_inicial;	//Posiciones iniciales del mapeado			
-	
+	int numTilesDraw = 0;		//Numero de tiles dibujados
 	byte out_scr_x = 0; 	//marca fuera de pantalla en x
 	byte out_scr_y = 0;     //marca fuera de pantalla en y
 
@@ -360,16 +360,16 @@ Begin
 	scroll[0].y0 = y_inicial;
     */
 
-	x_inicial = 1000;//level.playerx0;
-	y_inicial = 1000;//level.playery0;
+	x_inicial = 0;//level.playerx0;
+	y_inicial = 0;//level.playery0;
 	
 	scroll[0].x0 = x_inicial; 
 	scroll[0].y0 = y_inicial;
 	
 	//creamos los procesos tiles segun la posicion x e y iniciales y la longitud de resolucion de pantalla
 	//En los extremos de la pantalla se crean el numero definido de tiles (TILESOFFSCREEN) extras para asegurar la fluidez
-	for (i=((y_inicial/cTileSize)-TILESYOFFSCREEN);i<(((cResY+y_inicial)/cTileSize)+TILESYOFFSCREEN);i++)
-		for (j=((x_inicial/cTileSize)-TILESXOFFSCREEN);j<(((cResX+x_inicial)/cTileSize)+TILESXOFFSCREEN);j++)
+	for (i=((y_inicial/cTileSize)-TILESYOFFSCREEN);i<(((cRegionH+y_inicial)/cTileSize)+TILESYOFFSCREEN);i++)
+		for (j=((x_inicial/cTileSize)-TILESXOFFSCREEN);j<(((cRegionW+x_inicial)/cTileSize)+TILESXOFFSCREEN);j++)
 			debugMode = 0;
 			if (debugMode) 
 				repeat
@@ -382,10 +382,11 @@ Begin
 			debugMode = 1;
 			
 			ptile(i,j);
-			log("Creado tile: "+i+" "+j);	
+			log("Creado tile: "+i+" "+j);
+			numTilesDraw++;
 		end;
 	end;
-	log("Mapa dibujado correctamente");
+	log("Mapa dibujado correctamente. Creados "+numTilesDraw+" tiles");
 End;
 
 //proceso tile
@@ -428,7 +429,7 @@ BEGIN
 			//nueva posicion:a la derecha del tile de offscreen (que pasa a ser onscreen)
 			//Se multiplica por 2 porque tenemos tiles offscreen a ambos lados
 			i=i;
-			j=j+(cResX/cTileSize)+(TILESXOFFSCREEN*2);
+			j=j+(cRegionW/cTileSize)+(TILESXOFFSCREEN*2);
 			  
 			log("Paso de izq a der "+i+","+j);
 			redraw = 1;
@@ -436,11 +437,11 @@ BEGIN
 		
 		
 		//Si sale el tile por la derecha
-		if ((scroll[0].x0+cResX)< (x-(cTileSize*TILESXOFFSCREEN)))
+		if ((scroll[0].x0+cRegionW)< (x-(cTileSize*TILESXOFFSCREEN)))
 			//nueva posicion:a la derecha del tile de offscreen (que pasa a ser onscreen)
 			//Se multiplica por 2 porque tenemos tiles offscreen a ambos lados
 			i=i;
-			j=j-(cResX/cTileSize)-(TILESXOFFSCREEN*2);
+			j=j-(cRegionW/cTileSize)-(TILESXOFFSCREEN*2);
 			
 			log("Paso de der a izq "+i+","+j);
 			redraw = 1;
@@ -450,7 +451,7 @@ BEGIN
 		//Si sale por arriba
 		if (scroll[0].y0 > (y+(cTileSize*TILESYOFFSCREEN)) )
 			//nueva posicion
-			i=i+(cResY/cTileSize)+(TILESYOFFSCREEN*2);
+			i=i+(cRegionH/cTileSize)+(TILESYOFFSCREEN*2);
 			j=j;       
 			
 			log("Paso de arrib a abaj "+i+","+j);
@@ -458,9 +459,9 @@ BEGIN
 		end;
 		
 		//Si sale por abajo
-		if ((scroll[0].y0+cResY) < (y-(cTileSize*TILESYOFFSCREEN))) 
+		if ((scroll[0].y0+cRegionH) < (y-(cTileSize*TILESYOFFSCREEN))) 
 			//nueva posicion
-			i=i-(cResY/cTileSize)-(TILESYOFFSCREEN*2);
+			i=i-(cRegionH/cTileSize)-(TILESYOFFSCREEN*2);
 			j=j;       
 					
 			log("Paso de abajo a arriba "+i+","+j);
