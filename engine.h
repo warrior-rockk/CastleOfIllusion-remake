@@ -32,8 +32,8 @@
 #define	CKBT2	  _SPACE
 
 //Profundidades
-#define ZACTOR	-1		//Profundidad del actor
-#define ZMAP     1  	//Profundidad del mapeado
+#define ZPLAYER		-1		//Profundidad del player
+#define ZMAP     	1  		//Profundidad del mapeado
 
 //Constantes del motor
 const
@@ -100,6 +100,7 @@ Global
 	objeto* objetos;			//Array Dinamico de objetos
 	path* paths;				//Array Dinamico de paths
 	tile** tileMap;  	        //Matriz Dinamica del mapa de tiles del nivel
+	idPlayer; 					//Identificador del proceso del jugador
 End;
 
 //Variables locales

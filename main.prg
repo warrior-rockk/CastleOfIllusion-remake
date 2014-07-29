@@ -27,31 +27,32 @@ include "engine.h";      //archivo de definiciones y variables globales
 
 //Proceso principal
 Process main()
-private
-	idActor;
+
 Begin
 	
 	//Iniciamos el engine
 	WGE_Init();
 	//Iniciamos modo grafico
 	WGE_InitScreen();
-	//Iniciamos Scroll
-	WGE_InitScroll();
 	//Creamos datos nivel aleatorios
 	//WGE_GenLevelData("test\random.dat");
 	//Cargamos archivo nivel
 	//WGE_LoadLevel("test\random.dat");
 	//Creamos un mapa aleatorio
-	//WGE_GenRandomMapFile("test\random.bin",12,8);
+	WGE_GenRandomMapFile("test\random.bin",12,8);
 	//Cargamos el mapeado del nivel
 	WGE_LoadMapLevel("test\random.bin");
-	//donde iria esto??
-	idActor = actor();
-	WGE_ControlScroll(idActor);
+	//Iniciamos Scroll
+	WGE_InitScroll();
 	//Dibujamos el mapeado
 	WGE_DrawMap();
 	//Creamos el nivel cargado
 	//WGE_CreateLevel();
+	
+	
+	//Creamos el jugador
+	idPlayer = player();
+	
 	//Bucle principal
 	Loop
 		   
@@ -65,14 +66,14 @@ Begin
 
 End; //Fin del main
 
-process actor()
+process player()
 begin
 	ancho = 32;
 	alto = 32;
 	
 	region = cGameRegion;
 	ctype = c_scroll;
-	z = ZACTOR;
+	z = ZPLAYER;
 	
 	graph = map_new(ancho,ancho,8);
 	drawing_map(0,graph);

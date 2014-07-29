@@ -147,6 +147,9 @@ begin
 	
 	scroll[cGameScroll].ratio = 100;
 	log("Scroll creado");
+	
+	WGE_ControlScroll();
+
 end;
 
 //Desactivación del engine y liberacion de memoria
@@ -170,7 +173,7 @@ end
 
 begin 
 	//Comprobamos si existe el archivo de datos del nivel
-	if (not file_exists(file_))
+	if (not fexists(file_))
 		log("No existe el fichero: " + file_);
 		WGE_Quit();
 	end;
@@ -269,7 +272,7 @@ private
 Begin
 	
 	//Comprobamos si existe el archivo de mapa del nivel
-	if (not file_exists(file_))
+	if (not fexists(file_))
 		log("No existe el fichero de mapa: " + file_);
 		WGE_Quit();
 	end;
@@ -292,7 +295,7 @@ Begin
 	from i = 0 to level.numTilesX-1;
 		tileMap[i] = calloc(level.numTilesX ,sizeof(tile));
 	end;
-	
+
 	//Cargamos la informacion del grafico de los tiles del fichero de mapa
 	for (i=0;i<level.numTilesY;i++)
 		for (j=0;j<level.numTilesX;j++)
@@ -328,6 +331,12 @@ private
 	int randInt;			//Int aleatorio
 	
 Begin
+	
+	//Borramos el anterior si existe
+	if (fexists(file_))
+		fremove(file_);
+		log("Borramos el archivo anterior");
+	end;
 	
 	//creamos el archivo de mapa
 	levelMapFile = fopen(file_,O_WRITE);
@@ -569,12 +578,13 @@ begin
 	map_del(0,graph);
 end;
 
-process WGE_ControlScroll(int idActor)
+process WGE_ControlScroll()
 private
-	byte outXDer;
-	byte outXIzq;
-	byte outYSup;
-	byte outYInf;
+	byte outXDer;	//Limite Derecho
+	byte outXIzq;	//Limite Izquierdo
+	byte outYSup;	//Limite Superior
+	byte outYInf;	//Limite Inferior
+	
 begin
 	
 	//Centramos el scroll en la icion inicial
@@ -591,41 +601,47 @@ begin
 		outYSup = scroll[cGameScroll].y0 <= 0;
 		outYInf = (scroll[cGameScroll].y0+cRegionH) >= (level.numTilesY*cTileSize);
 		
-		//Mov Derecha
-		if (idActor.x - ((cRegionW>>1)+scroll[cGameScroll].x0) > 0 )
-			scroll[cGameScroll].x0 = idActor.x - (cRegionW>>1);
-			if (outXDer)
-				scroll[cGameScroll].x0 = (level.numTilesX*cTileSize)-cRegionW;
+		//Si el jugador ya está definido
+		if (idPlayer <> 0 )
+		
+			//Mov Derecha
+			if (idPlayer.x - ((cRegionW>>1)+scroll[cGameScroll].x0) > 0 )
+				scroll[cGameScroll].x0 = idPlayer.x - (cRegionW>>1);
+				if (outXDer)
+					scroll[cGameScroll].x0 = (level.numTilesX*cTileSize)-cRegionW;
+				end;
 			end;
-		end;
+				
+			//Mov Izquierda
+			if (((cRegionW>>1)+scroll[cGameScroll].x0) - idPlayer.x > 0 )
+				scroll[cGameScroll].x0 = idPlayer.x - (cRegionW>>1);
+				if (outXIzq)
+					scroll[cGameScroll].x0 = 0;
+				end;
+			end;
 			
-		//Mov Izquierda
-		if (((cRegionW>>1)+scroll[cGameScroll].x0) - idActor.x > 0 )
-			scroll[cGameScroll].x0 = idActor.x - (cRegionW>>1);
-			if (outXIzq)
-				scroll[cGameScroll].x0 = 0;
+			//Mov Inferior
+			if (idPlayer.y - ((cRegionH>>1)+scroll[cGameScroll].y0) > 0 )
+				scroll[cGameScroll].y0 = idPlayer.y - (cRegionH>>1);
+				if (outYInf)
+					scroll[cGameScroll].y0 = (level.numTilesY*cTileSize)-cRegionH;
+				end;
 			end;
-		end;
-		
-		//Mov Inferior
-		if (idActor.y - ((cRegionH>>1)+scroll[cGameScroll].y0) > 0 )
-			scroll[cGameScroll].y0 = idActor.y - (cRegionH>>1);
-			if (outYInf)
-				scroll[cGameScroll].y0 = (level.numTilesY*cTileSize)-cRegionH;
+			
+			//Mov Superior
+			if (((cRegionH>>1)+scroll[cGameScroll].y0) - idPlayer.y > 0 )
+				scroll[cGameScroll].y0 = idPlayer.y - (cRegionH>>1);
+				if (outYSup)
+					scroll[cGameScroll].y0 = 0;
+				end;
 			end;
-		end;
 		
-		//Mov Superior
-		if (((cRegionH>>1)+scroll[cGameScroll].y0) - idActor.y > 0 )
-			scroll[cGameScroll].y0 = idActor.y - (cRegionH>>1);
-			if (outYSup)
-				scroll[cGameScroll].y0 = 0;
-			end;
-		end;
+			move_scroll(cGameScroll);
 		
-		move_scroll(cGameScroll);
+		end;
 		
 		frame;
+	
 	end;
 end;
 
