@@ -30,6 +30,9 @@ Process main()
 
 Begin
 	
+	level.playerx0 = 700;
+	level.playery0 = 0;
+	
 	//Iniciamos el engine
 	WGE_Init();
 	//Iniciamos modo grafico
@@ -48,7 +51,6 @@ Begin
 	WGE_DrawMap();
 	//Creamos el nivel cargado
 	//WGE_CreateLevel();
-	
 	
 	//Creamos el jugador
 	idPlayer = player();
@@ -80,8 +82,8 @@ begin
 	drawing_color(300);
 	draw_box(0,0,ancho,alto);
 	
-	x = 10;
-	y = 10;
+	x = level.playerx0;
+	y = level.playery0;
 	
 	loop
 		x+=key(_right)*2;

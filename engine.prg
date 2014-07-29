@@ -240,7 +240,13 @@ private
 end
 
 begin 
-		
+	
+	//Borramos el anterior si existe
+	if (fexists(file_))
+		fremove(file_);
+		log("Borramos el archivo DataLevel anterior");
+	end;	
+	
 	//Abrimos el archivo
 	levelFile = fopen(file_,O_WRITE);
 	//Nos situamos al principio del archivo
@@ -335,7 +341,7 @@ Begin
 	//Borramos el anterior si existe
 	if (fexists(file_))
 		fremove(file_);
-		log("Borramos el archivo anterior");
+		log("Borramos el archivo MapData anterior");
 	end;
 	
 	//creamos el archivo de mapa
@@ -387,8 +393,8 @@ Begin
 	x_inicial = level.playerx0;
 	y_inicial = level.playery0;
 	
-	scroll[cGameScroll].x0 = x_inicial; 
-	scroll[cGameScroll].y0 = y_inicial;
+	//scroll[cGameScroll].x0 = x_inicial; 
+	//scroll[cGameScroll].y0 = y_inicial;
 	
 	//creamos los procesos tiles segun la posicion x e y iniciales y la longitud de resolucion de pantalla
 	//En los extremos de la pantalla se crean el numero definido de tiles (TILESOFFSCREEN) extras para asegurar la fluidez
@@ -586,9 +592,9 @@ private
 	byte outYInf;	//Limite Inferior
 	
 begin
-	
+	debug;
 	//Centramos el scroll en la icion inicial
-	scroll[cGameScroll].x0 = level.playerx0;
+	scroll[cGameScroll].x0 = (level.playerx0/(cRegionW>>1))*(level.playerx0 MOD (cRegionW>>1));
 	scroll[cGameScroll].y0 = level.playery0;
 	
 	loop
