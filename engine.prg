@@ -96,6 +96,8 @@ begin
 		if (debugMode && not actDebugMode)
 			//creamos el cursor
 			idCursor = WGE_DebugCursor();
+			//creamos frame de la region
+			WGE_RegionFrame();
 			//mostramos informacion de debug
 			idDebugText[0] = write_int(0,DEBUGINFOX,DEBUGINFOY,0,&fps);
 			idDebugText[1] = write_int(0,DEBUGINFOX,DEBUGINFOY+10,0,&idCursor.x);
@@ -107,14 +109,7 @@ begin
 		//Tareas ciclicas del modo debug
 		if (actDebugMode)
 			
-			//movimiento del scroll
-			scroll[cGameScroll].x0+=key(_right);
-			scroll[cGameScroll].x0-=key(_left);
-			scroll[cGameScroll].y0-=key(_up);
-			scroll[cGameScroll].y0+=key(_down);
-			
-			move_scroll(cGameScroll);
-			
+			;			
 		end;
 		
 		//Tareas salida del modo debug
@@ -136,8 +131,8 @@ end;
 function WGE_InitScreen()
 begin
 	//scale_mode=SCALE_NORMAL2X; 
-	//set_mode(cResX,cResY,8);
-	set_mode(992,600,8);
+	set_mode(cResX,cResY,8);
+	//set_mode(992,600,8);
 	set_fps(cNumFPS,0);
 	log("Modo Grafico inicializado");
 end;
@@ -145,9 +140,11 @@ end;
 //Definicion Region y Scroll
 function WGE_InitScroll()
 begin
-	//define_region(cGameRegion,cRegionX,cRegionY,cRegionW,cRegionH);
-	define_region(cGameRegion,cRegionX,cRegionY,992,600);
-	start_scroll(cGameScroll,0,map_new(1,1,8),0,cGameRegion,3);
+	define_region(cGameRegion,cRegionX,cRegionY,cRegionW,cRegionH);
+	//define_region(cGameRegion,cRegionX,cRegionY,992,600);
+	//Caida de frames radical si el mapa del scroll es pequeño (por tener que repetirlo?)
+	start_scroll(cGameScroll,0,map_new(cRegionW,cRegionH,8),0,cGameRegion,3);
+	
 	scroll[cGameScroll].ratio = 100;
 	log("Scroll creado");
 end;
@@ -374,63 +371,15 @@ private
 	int i,j,					//Indices auxiliares
 	int x_inicial,y_inicial;	//Posiciones iniciales del mapeado			
 	int numTilesDraw = 0;		//Numero de tiles dibujados
-	byte out_scr_x = 0; 	//marca fuera de pantalla en x
-	byte out_scr_y = 0;     //marca fuera de pantalla en y
-
-	int tiles_id[100][100]; //array de procesos de tiles
-	int temp;
-	int x0_ant; 
-	int limite_x_izq,limite_x_der,limite_y_sup,limite_y_inf; //limites pantalla
-	byte scroll_manual = 0;
 
 Begin                    
-	/*
-	//Calculamos los limites de la pantalla
-	limite_x_izq = cResX>>1;
-	limite_x_der = (tiles_x*cTileSize)-(cResX>>1);
-	limite_y_sup = C_REGION_Y>>1;
-	limite_y_inf = (tiles_y*cTileSize)-(C_REGION_Y>>1);
-
-	//SI usamos autoscroll, inicialmente enfocamos al personaje
-	if (auto_scroll == 1) scroll[0].camera = p_personaje; end;
-
-	//Seteamos la icion inicial para pintar los tiles segun la resolucion de pantalla
-	if (x_inicial<=limite_x_izq)  			
-		x_inicial = 0;								      //borde izquierdo de la pantalla
-		scroll[0].camera = 0;
-	elseif (x_inicial>=limite_x_der) 
-		x_inicial = (tiles_x*cTileSize)-cResX;		  //borde derecho de la pantalla
-		scroll[0].camera = 0;
-	else
-		x_inicial = x_inicial - (cResX>>1);				  //mitad de la pantalla
-	end;
-	if (auto_scroll == 1) //Si usamos autoscroll (camara en personaje)
-		if (y_inicial<=limite_y_sup)					  //borde superior pantalla 
-			y_inicial = 0;
-			scroll[0].camera = 0;		
-		elseif (y_inicial >= limite_y_inf)                //borde inferior pantalla
-			y_inicial = (tiles_y*cTileSize)-C_REGION_Y;
-			scroll[0].camera = 0;
-		else 
-			y_inicial = y_inicial - (cResY>>1);			  //mitad de la pantalla
-		end;
-	else
-		//sin autoscroll
-		//LA COORDENADA Y INICIAL PARA SCROLL FIJO DE MASTER SYSTEM VA DE 160 EN 160 MAS 2 TILES ENTRE SCROLLS
-		//QUE SOLO SE VE AL CRUZARLO. ESTA COORDENADA SIRVE TANTO PARA EMPEZAR A DIBUJAR LOS TILES COMO CENTRAR EL SCROLL
-		y_inicial = (y_inicial/(C_REGION_Y+(2*cTileSize)))*(C_REGION_Y+(2*cTileSize)); 
-	end;
-
-	//Centramos el scroll en la icion inicial
-	scroll[0].x0 = x_inicial;
-	scroll[0].y0 = y_inicial;
-    */
-
-	x_inicial = 0;//level.playerx0;
-	y_inicial = 0;//level.playery0;
 	
-	scroll[0].x0 = x_inicial; 
-	scroll[0].y0 = y_inicial;
+	//Leemos la posicion inicial para dibujar
+	x_inicial = level.playerx0;
+	y_inicial = level.playery0;
+	
+	scroll[cGameScroll].x0 = x_inicial; 
+	scroll[cGameScroll].y0 = y_inicial;
 	
 	//creamos los procesos tiles segun la posicion x e y iniciales y la longitud de resolucion de pantalla
 	//En los extremos de la pantalla se crean el numero definido de tiles (TILESOFFSCREEN) extras para asegurar la fluidez
@@ -458,8 +407,9 @@ End;
 //proceso tile
 process pTile(int i,int j)
 private	
-	byte tileColor;
-	byte redraw = 0;
+	byte tileColor;		//Color del tile (modo debug)
+	byte redraw = 0;	//Flag redibujar y posicionar el tile
+	
 BEGIN
 	//definimos propiedades iniciales
 	alto = cTileSize;
@@ -596,9 +546,10 @@ Begin
 	          
 End;
 
-process WGE_Frame()
+//Grafico que encuadra la region actual
+process WGE_RegionFrame()
 begin
-	//ctype = c_scroll;
+	
 	region = cGameRegion;
 	graph = map_new(cResX+1,cResY+1,8);
 	drawing_map(0,graph);
@@ -609,23 +560,54 @@ begin
 	draw_line(0,cRegionH,cRegionW,cRegionH);
 	x = cResX>>1;
 	y = cResY>>1;
-	loop
+	
+	repeat
 		frame;
-	end;
+	until(not debugMode);
+	
+	map_del(0,graph);
 end;
 
-process WGE_DebugMoveScroll()
+process WGE_ControlScroll()
 begin
-	graph = mouse.graph;
-	x = cResX>>1;
-	y = cResY>>1;
-	region = cGameRegion;
-	//scroll[cGameScroll].camera = id;
+	
+	//Centramos el scroll en la icion inicial
+	scroll[cGameScroll].x0 = level.playerx0;
+	scroll[cGameScroll].y0 = level.playery0;
+	
 	loop
-		scroll[cGameScroll].x0+=key(_right);
-		scroll[cGameScroll].x0-=key(_right);
-		scroll[cGameScroll].y0-=key(_up);
-		scroll[cGameScroll].y0+=key(_down);
+		
+		//movimiento del scroll
+		
+		//limite derecha
+		if ( (scroll[cGameScroll].x0+cRegionW) >= (level.numTilesX*cTileSize) )
+			scroll[cGameScroll].x0 = (level.numTilesX*cTileSize)-cRegionW;
+		else
+			scroll[cGameScroll].x0+=key(_right);
+		end;
+		
+		//limite izquierda
+		if ( scroll[cGameScroll].x0 <= 0)
+			scroll[cGameScroll].x0 = 0;
+		else
+			scroll[cGameScroll].x0-=key(_left);
+		end;
+		
+		//limite superior
+		if ( scroll[cGameScroll].y0 <= 0 )
+			scroll[cGameScroll].y0 = 0;
+		else
+			scroll[cGameScroll].y0-=key(_up);
+		end;
+		
+		//limite inferior
+		if ( (scroll[cGameScroll].y0+cRegionH) >= (level.numTilesY*cTileSize) )
+			scroll[cGameScroll].y0 = (level.numTilesY*cTileSize)-cRegionH;
+		else
+			scroll[cGameScroll].y0+=key(_down);
+		end;
+		
+		move_scroll(cGameScroll);
 		
 		frame;
 	end;

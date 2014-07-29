@@ -30,7 +30,6 @@ Process main()
 Begin
 	
 	//Iniciamos el engine
-	debugMode = 0;
 	WGE_Init();
 	//Iniciamos modo grafico
 	WGE_InitScreen();
@@ -41,14 +40,16 @@ Begin
 	//Cargamos archivo nivel
 	//WGE_LoadLevel("test\random.dat");
 	//Creamos un mapa aleatorio
-	//WGE_GenRandomMapFile("test\random.bin",10,7);
+	//WGE_GenRandomMapFile("test\random.bin",12,8);
 	//Cargamos el mapeado del nivel
 	WGE_LoadMapLevel("test\random.bin");
+	//donde iria esto??
+	WGE_ControlScroll();
 	//Dibujamos el mapeado
 	WGE_DrawMap();
 	//Creamos el nivel cargado
 	//WGE_CreateLevel();
-	WGE_Frame();
+	actor();
 	//Bucle principal
 	Loop
 		   
@@ -61,3 +62,28 @@ Begin
 	End;
 
 End; //Fin del main
+
+process actor()
+begin
+	ancho = 32;
+	alto = 32;
+	
+	region = cGameRegion;
+	ctype = c_scroll;
+	
+	graph = map_new(ancho,ancho,8);
+	drawing_map(0,graph);
+	drawing_color(300);
+	draw_box(0,0,ancho,alto);
+	
+	x = 10;
+	y = 10;
+	
+	loop
+		x+=key(_right)*2;
+		x-=key(_left)*2;
+		y+=key(_down)*2;
+		y-=key(_up)*2;
+		frame;
+	end;
+end;
