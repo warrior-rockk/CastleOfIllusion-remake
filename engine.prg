@@ -416,7 +416,8 @@ BEGIN
 	ancho = cTileSize;
 	ctype = c_scroll;
 	region = cGameRegion;
-		
+	z = ZMAP;
+	
 	//establecemos su posicion inicial
 	x = (j*cTileSize)+cHalfTSize;
 	y = (i*cTileSize)+cHalfTSize;
@@ -568,7 +569,12 @@ begin
 	map_del(0,graph);
 end;
 
-process WGE_ControlScroll()
+process WGE_ControlScroll(int idActor)
+private
+	byte outXDer;
+	byte outXIzq;
+	byte outYSup;
+	byte outYInf;
 begin
 	
 	//Centramos el scroll en la icion inicial
@@ -579,32 +585,42 @@ begin
 		
 		//movimiento del scroll
 		
-		//limite derecha
-		if ( (scroll[cGameScroll].x0+cRegionW) >= (level.numTilesX*cTileSize) )
-			scroll[cGameScroll].x0 = (level.numTilesX*cTileSize)-cRegionW;
-		else
-			scroll[cGameScroll].x0+=key(_right);
+		//calculamos limites
+		outXDer = (scroll[cGameScroll].x0+cRegionW) >= (level.numTilesX*cTileSize);
+		outXIzq = scroll[cGameScroll].x0 <= 0;
+		outYSup = scroll[cGameScroll].y0 <= 0;
+		outYInf = (scroll[cGameScroll].y0+cRegionH) >= (level.numTilesY*cTileSize);
+		
+		//Mov Derecha
+		if (idActor.x - ((cRegionW>>1)+scroll[cGameScroll].x0) > 0 )
+			scroll[cGameScroll].x0 = idActor.x - (cRegionW>>1);
+			if (outXDer)
+				scroll[cGameScroll].x0 = (level.numTilesX*cTileSize)-cRegionW;
+			end;
+		end;
+			
+		//Mov Izquierda
+		if (((cRegionW>>1)+scroll[cGameScroll].x0) - idActor.x > 0 )
+			scroll[cGameScroll].x0 = idActor.x - (cRegionW>>1);
+			if (outXIzq)
+				scroll[cGameScroll].x0 = 0;
+			end;
 		end;
 		
-		//limite izquierda
-		if ( scroll[cGameScroll].x0 <= 0)
-			scroll[cGameScroll].x0 = 0;
-		else
-			scroll[cGameScroll].x0-=key(_left);
+		//Mov Inferior
+		if (idActor.y - ((cRegionH>>1)+scroll[cGameScroll].y0) > 0 )
+			scroll[cGameScroll].y0 = idActor.y - (cRegionH>>1);
+			if (outYInf)
+				scroll[cGameScroll].y0 = (level.numTilesY*cTileSize)-cRegionH;
+			end;
 		end;
 		
-		//limite superior
-		if ( scroll[cGameScroll].y0 <= 0 )
-			scroll[cGameScroll].y0 = 0;
-		else
-			scroll[cGameScroll].y0-=key(_up);
-		end;
-		
-		//limite inferior
-		if ( (scroll[cGameScroll].y0+cRegionH) >= (level.numTilesY*cTileSize) )
-			scroll[cGameScroll].y0 = (level.numTilesY*cTileSize)-cRegionH;
-		else
-			scroll[cGameScroll].y0+=key(_down);
+		//Mov Superior
+		if (((cRegionH>>1)+scroll[cGameScroll].y0) - idActor.y > 0 )
+			scroll[cGameScroll].y0 = idActor.y - (cRegionH>>1);
+			if (outYSup)
+				scroll[cGameScroll].y0 = 0;
+			end;
 		end;
 		
 		move_scroll(cGameScroll);

@@ -30,7 +30,11 @@
 #define	CKRIGHT	  _RIGHT 
 #define	CKBT1	  _ALT 
 #define	CKBT2	  _SPACE
-	
+
+//Profundidades
+#define ZACTOR	-1		//Profundidad del actor
+#define ZMAP     1  	//Profundidad del mapeado
+
 //Constantes del motor
 const
 	//Pantalla

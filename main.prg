@@ -27,6 +27,8 @@ include "engine.h";      //archivo de definiciones y variables globales
 
 //Proceso principal
 Process main()
+private
+	idActor;
 Begin
 	
 	//Iniciamos el engine
@@ -44,12 +46,12 @@ Begin
 	//Cargamos el mapeado del nivel
 	WGE_LoadMapLevel("test\random.bin");
 	//donde iria esto??
-	WGE_ControlScroll();
+	idActor = actor();
+	WGE_ControlScroll(idActor);
 	//Dibujamos el mapeado
 	WGE_DrawMap();
 	//Creamos el nivel cargado
 	//WGE_CreateLevel();
-	actor();
 	//Bucle principal
 	Loop
 		   
@@ -70,6 +72,7 @@ begin
 	
 	region = cGameRegion;
 	ctype = c_scroll;
+	z = ZACTOR;
 	
 	graph = map_new(ancho,ancho,8);
 	drawing_map(0,graph);
