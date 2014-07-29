@@ -30,7 +30,7 @@ Process main()
 Begin
 	
 	//Iniciamos el engine
-	debugMode = 1;
+	debugMode = 0;
 	WGE_Init();
 	//Iniciamos modo grafico
 	WGE_InitScreen();

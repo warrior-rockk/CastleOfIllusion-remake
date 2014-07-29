@@ -12,39 +12,100 @@ begin
 	say ("WGE: " + texto);
 end;
 
-//Tareas de inicializacion del engine
-process WGE_Init()
+process WGE_DebugCursor()
 private
-	int cursorMap;						//Id grafico  cursor
-	int idDebugText[MAXDEBUGINFO-1];	//Textos debug
-	int i; 								//Variables auxiliares
-	
+	int cursorMap;	//Id grafico  cursor
+	int posTileX;	//posicion X Tile Clicado
+	int posTileY;	//posicion Y Tile Clicado
 begin
-		
 	//creamos el cursor de debug
 	cursorMap = map_new(cTileSize,cTileSize,8);
 	drawing_map(0,cursorMap);
 	drawing_color(CURSORCOLOR);
-	draw_line(1,cTileSize>>1,cTileSize,cTileSize>>1);
-	draw_line(cTileSize>>1,1,cTileSize>>1,cTileSize);
+	draw_line(1,chalfTSize,cTileSize,chalfTSize);
+	draw_line(chalfTSize,1,chalfTSize,cTileSize);
 	
+	//visualizamos cursor
+	graph = cursorMap; 
+	region = cGameRegion;
+	mouse.region  = region;
+	ctype = c_scroll;
+	//posicionamos el cursor a mitad de pantalla
+	mouse.x = (cRegionW>>1);
+	mouse.y = (cRegionH>>1);
+	
+	repeat
+		
+		//actualizamos posicion del cursor
+		x = mouse.x + scroll[cGameScroll].x0;
+		y = mouse.y + scroll[cGameScroll].y0;
+		
+		//Al hacer clic, mostramos informacion de tile
+		if (mouse.left)
+			
+			posTileX = x/cTileSize;
+			posTileY = y/cTileSize;
+			
+			if (posTileX < level.numTilesX && x >= 0 &&
+			    posTileY < level.numTilesY && y >= 0  )
+				log("TilePosX: "+posTileX+" TilePosY: "+posTileY + 
+				    " TileGraph: "+tileMap[posTileY][posTileX].tileGraph + 
+					" TileCode: "+tileMap[posTileY][posTileX].tileCode);
+			else
+				log("TilePosX: "+posTileX+" TilePosY: "+posTileY + 
+				    " fuera del mapeado");
+			end;
+			
+			repeat
+				frame;
+			until(not mouse.left);
+			
+		end;
+				
+		frame;
+	
+	until(not debugMode)
+	
+	//eliminamos grafico cursor
+	graph = 0;
+	map_del(0,cursorMap);
+end;
+
+//Tareas de inicializacion del engine
+process WGE_Init()
+private
+	byte actDebugMode = 0;					//Modo debug activado
+	int idDebugText[MAXDEBUGINFO-1];	//Textos debug
+	int idCursor;						//Id proceso cursor
+		
+	int i; 								//Variables auxiliares
+begin
+		
 	//Bucle principal de control del engine
 	Loop 
-		//limpiamos los textos
-		for (i=0;i<MAXDEBUGINFO;i++)
-			delete_text(idDebugText[i]);
+		
+		//activacion/desactivacion del modo debug
+		if (key(_control) && key(_d))
+			debugMode = not debugMode;
+			repeat
+				frame;
+			until(not key(_control) || not key(_d));
 		end;
-
-		//Tareas del modo debug
-		if (debugMode)
-			//visualizamos cursor
-			mouse.graph = cursorMap; 
-			mouse.region = cGameRegion;
-			
+		
+		//Tareas de entrada al modo debug
+		if (debugMode && not actDebugMode)
+			//creamos el cursor
+			idCursor = WGE_DebugCursor();
 			//mostramos informacion de debug
-			idDebugText[0] = write(0,DEBUGINFOX,DEBUGINFOY,0,"FPS:" + fps);
-			idDebugText[1] = write(0,DEBUGINFOX,DEBUGINFOY+10,0,"X:" + mouse.x);
-			idDebugText[2] = write(0,DEBUGINFOX,DEBUGINFOY+20,0,"Y:" + mouse.y);
+			idDebugText[0] = write_int(0,DEBUGINFOX,DEBUGINFOY,0,&fps);
+			idDebugText[1] = write_int(0,DEBUGINFOX,DEBUGINFOY+10,0,&idCursor.x);
+			idDebugText[2] = write_int(0,DEBUGINFOX,DEBUGINFOY+20,0,&idCursor.y);
+			//activamos el modo debug
+			actDebugMode = 1;
+		end;
+		
+		//Tareas ciclicas del modo debug
+		if (actDebugMode)
 			
 			//movimiento del scroll
 			scroll[cGameScroll].x0+=key(_right);
@@ -54,11 +115,16 @@ begin
 			
 			move_scroll(cGameScroll);
 			
-			
-			
-		else
-			//ocultamos todas las informaciones de debug
-			mouse.graph = 0;			
+		end;
+		
+		//Tareas salida del modo debug
+		if (not debugMode && actDebugMode)
+			//limpiamos los textos
+			for (i=0;i<MAXDEBUGINFO;i++)
+				delete_text(idDebugText[i]);
+			end;
+			//desactivamos el modo debug
+			actDebugMode = 0;
 		end;
 		
 		frame;
@@ -370,7 +436,7 @@ Begin
 	//En los extremos de la pantalla se crean el numero definido de tiles (TILESOFFSCREEN) extras para asegurar la fluidez
 	for (i=((y_inicial/cTileSize)-TILESYOFFSCREEN);i<(((cRegionH+y_inicial)/cTileSize)+TILESYOFFSCREEN);i++)
 		for (j=((x_inicial/cTileSize)-TILESXOFFSCREEN);j<(((cRegionW+x_inicial)/cTileSize)+TILESXOFFSCREEN);j++)
-			debugMode = 0;
+			/*
 			if (debugMode) 
 				repeat
 					frame; 
@@ -379,9 +445,9 @@ Begin
 					frame; 
 				until(key(_space));
 			end;
-			debugMode = 1;
+			*/
 			
-			ptile(i,j);
+			pTile(i,j);
 			log("Creado tile: "+i+" "+j);
 			numTilesDraw++;
 		end;
@@ -390,7 +456,7 @@ Begin
 End;
 
 //proceso tile
-process ptile(int i,int j)
+process pTile(int i,int j)
 private	
 	byte tileColor;
 	byte redraw = 0;
@@ -418,9 +484,13 @@ BEGIN
 	drawing_map(0,graph);
 	drawing_color(tileColor);
 	draw_box(0,0,alto,ancho);
-	set_text_color((255-TileColor)+1);
-	map_put(0,graph,write_in_map(0,i,3),16,10);
-	map_put(0,graph,write_in_map(0,j,3),16,18);
+	
+	//en modo debug, escribimos su posicion
+	if (debugMode)
+		set_text_color((255-TileColor)+1);
+		map_put(0,graph,write_in_map(0,i,3),16,10);
+		map_put(0,graph,write_in_map(0,j,3),16,18);
+	end;
 	
 	loop
 				
@@ -485,9 +555,13 @@ BEGIN
 			drawing_color(tileColor);
 			draw_box(0,0,alto,ancho);
 			//graph=tileMap[i-(cResY/cTileSize)-2][j];
-			set_text_color((255-TileColor)+1);
-			map_put(0,graph,write_in_map(0,i,3),16,10);
-			map_put(0,graph,write_in_map(0,j,3),16,18);
+			
+			//en modo debug, escribimos su posicion
+			if (debugMode)
+				set_text_color((255-TileColor)+1);
+				map_put(0,graph,write_in_map(0,i,3),16,10);
+				map_put(0,graph,write_in_map(0,j,3),16,18);
+			end;
 			
 			redraw = 0;
 		end;
