@@ -393,24 +393,18 @@ Begin
 	x_inicial = level.playerx0;
 	y_inicial = level.playery0;
 	
-	//scroll[cGameScroll].x0 = x_inicial; 
-	//scroll[cGameScroll].y0 = y_inicial;
-	
 	//creamos los procesos tiles segun la posicion x e y iniciales y la longitud de resolucion de pantalla
 	//En los extremos de la pantalla se crean el numero definido de tiles (TILESOFFSCREEN) extras para asegurar la fluidez
 	for (i=((y_inicial/cTileSize)-TILESYOFFSCREEN);i<(((cRegionH+y_inicial)/cTileSize)+TILESYOFFSCREEN);i++)
 		for (j=((x_inicial/cTileSize)-TILESXOFFSCREEN);j<(((cRegionW+x_inicial)/cTileSize)+TILESXOFFSCREEN);j++)
-			/*
-			if (debugMode) 
-				repeat
-					frame; 
-				until(not key(_space));
-				repeat
-					frame; 
-				until(key(_space));
-			end;
-			*/
 			
+			repeat
+				frame; 
+			until(not key(_space));
+			repeat
+				frame; 
+			until(key(_space));
+					
 			pTile(i,j);
 			log("Creado tile: "+i+" "+j);
 			numTilesDraw++;
@@ -592,10 +586,10 @@ private
 	byte outYInf;	//Limite Inferior
 	
 begin
-	debug;
-	//Centramos el scroll en la icion inicial
-	scroll[cGameScroll].x0 = (level.playerx0/(cRegionW>>1))*(level.playerx0 MOD (cRegionW>>1));
-	scroll[cGameScroll].y0 = level.playery0;
+	
+	//Centramos el scroll en la posicion inicial
+	scroll[cGameScroll].x0 = level.playerX0 - (cRegionW>>1);
+	scroll[cGameScroll].y0 = level.playerY0 - (cRegionH>>1);	
 	
 	loop
 		
@@ -607,44 +601,33 @@ begin
 		outYSup = scroll[cGameScroll].y0 <= 0;
 		outYInf = (scroll[cGameScroll].y0+cRegionH) >= (level.numTilesY*cTileSize);
 		
-		//Si el jugador ya está definido
+		//Si el jugador ya está en ejecución, lo enfocamos
 		if (idPlayer <> 0 )
-		
-			//Mov Derecha
-			if (idPlayer.x - ((cRegionW>>1)+scroll[cGameScroll].x0) > 0 )
-				scroll[cGameScroll].x0 = idPlayer.x - (cRegionW>>1);
-				if (outXDer)
-					scroll[cGameScroll].x0 = (level.numTilesX*cTileSize)-cRegionW;
-				end;
-			end;
-				
-			//Mov Izquierda
-			if (((cRegionW>>1)+scroll[cGameScroll].x0) - idPlayer.x > 0 )
-				scroll[cGameScroll].x0 = idPlayer.x - (cRegionW>>1);
-				if (outXIzq)
-					scroll[cGameScroll].x0 = 0;
-				end;
-			end;
-			
-			//Mov Inferior
-			if (idPlayer.y - ((cRegionH>>1)+scroll[cGameScroll].y0) > 0 )
-				scroll[cGameScroll].y0 = idPlayer.y - (cRegionH>>1);
-				if (outYInf)
-					scroll[cGameScroll].y0 = (level.numTilesY*cTileSize)-cRegionH;
-				end;
-			end;
-			
-			//Mov Superior
-			if (((cRegionH>>1)+scroll[cGameScroll].y0) - idPlayer.y > 0 )
-				scroll[cGameScroll].y0 = idPlayer.y - (cRegionH>>1);
-				if (outYSup)
-					scroll[cGameScroll].y0 = 0;
-				end;
-			end;
-		
-			move_scroll(cGameScroll);
-		
+			scroll[cGameScroll].x0 = idPlayer.x - (cRegionW>>1);
+			scroll[cGameScroll].y0 = idPlayer.y - (cRegionH>>1);	
 		end;
+		
+		//Ajustamos limites pantalla
+		
+		//Limite izquierdo
+		if (scroll[cGameScroll].x0 < 0 )
+			scroll[cGameScroll].x0 = 0;
+		end;
+		//Limite derecho
+		if ((scroll[cGameScroll].x0+cRegionW) > (level.numTilesX*cTileSize))
+			scroll[cGameScroll].x0 = (level.numTilesX*cTileSize)-cRegionW;
+		end;
+		//Limite inferior
+		if (scroll[cGameScroll].y0 < 0 )
+			scroll[cGameScroll].y0 = 0;
+		end;
+		//Limite superior
+		if ((scroll[cGameScroll].y0+cRegionH) > (level.numTilesY*cTileSize))
+			scroll[cGameScroll].y0 = (level.numTilesY*cTileSize)-cRegionH;
+		end;
+		
+		//Actualizamos el scroll
+		move_scroll(cGameScroll);
 		
 		frame;
 	

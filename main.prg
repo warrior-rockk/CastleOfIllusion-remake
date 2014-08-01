@@ -30,8 +30,8 @@ Process main()
 
 Begin
 	
-	level.playerx0 = 700;
-	level.playery0 = 0;
+	level.playerx0 = 440;
+	level.playery0 = 340;
 	
 	//Iniciamos el engine
 	WGE_Init();
@@ -42,8 +42,9 @@ Begin
 	//Cargamos archivo nivel
 	//WGE_LoadLevel("test\random.dat");
 	//Creamos un mapa aleatorio
-	WGE_GenRandomMapFile("test\random.bin",12,8);
+	//WGE_GenRandomMapFile("test\random.bin",12,8);
 	//Cargamos el mapeado del nivel
+	debug;
 	WGE_LoadMapLevel("test\random.bin");
 	//Iniciamos Scroll
 	WGE_InitScroll();
