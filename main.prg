@@ -15,7 +15,7 @@ import "Mod_screen";
 import "Mod_draw";
 import "Mod_grproc";
 import "Mod_rand";
-import "mod_file";
+import "mod_file"; 
 import "mod_math";
 import "mod_say";
 import "mod_debug";
@@ -33,7 +33,7 @@ Begin
 	level.playerx0 = 120;
 	level.playery0 = 0;
 	priority = MAINPRIOR;	
-	
+		
 	//Iniciamos el engine
 	WGE_Init();
 	//Iniciamos modo grafico

@@ -138,10 +138,13 @@ end;
 //Inicialización del modo grafico
 function WGE_InitScreen()
 begin
+	//Complete restore para evitar "flickering"
+	restore_type = COMPLETE_RESTORE;
 	//scale_mode=SCALE_NORMAL2X; 
 	set_mode(cResX,cResY,8);
 	//set_mode(992,600,8);
 	set_fps(cNumFPS,0);
+	
 	log("Modo Grafico inicializado");
 end;
 

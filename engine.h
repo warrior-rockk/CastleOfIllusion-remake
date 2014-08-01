@@ -42,10 +42,10 @@
 #define COLDER   	4
 
 //Prioridades (orden ejecucion)
-#define MAINPRIOR	 2
-#define PLAYERPRIOR	 1
-#define SCROLLPRIOR -1
-#define TILEPRIOR	-2
+#define MAINPRIOR	 	2
+#define PLAYERPRIOR	 	1
+#define SCROLLPRIOR 	-1
+#define TILEPRIOR		-2
 
 //Constantes del motor
 const
