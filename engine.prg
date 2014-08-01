@@ -389,9 +389,9 @@ private
 
 Begin                    
 	
-	//Leemos la posicion inicial para dibujar
-	x_inicial = level.playerx0;
-	y_inicial = level.playery0;
+	//Leemos la posicion inicial de la pantalla para dibujar
+	x_inicial = scroll[cGameScroll].x0;
+	y_inicial = scroll[cGameScroll].y0;
 	
 	//creamos los procesos tiles segun la posicion x e y iniciales y la longitud de resolucion de pantalla
 	//En los extremos de la pantalla se crean el numero definido de tiles (TILESOFFSCREEN) extras para asegurar la fluidez
