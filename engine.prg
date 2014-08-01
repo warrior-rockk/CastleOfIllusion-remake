@@ -87,9 +87,19 @@ begin
 		//activacion/desactivacion del modo debug
 		if (key(_control) && key(_d))
 			debugMode = not debugMode;
-			repeat
-				frame;
-			until(not key(_control) || not key(_d));
+			WGE_Wait(20);
+		end;
+		
+		//Seteo de fps a 0
+		if (key(_control) && key(_f))
+			if (FPS<=cNumFPS)
+				set_fps(0,0);
+				log("Pasamos a 0 FPS");
+			else
+				set_fps(cNumFPS,0);
+				log("Pasamos a "+cNumFps+" FPS");
+			end;
+			WGE_Wait(20);
 		end;
 		
 		//Tareas de entrada al modo debug
@@ -284,7 +294,8 @@ Begin
 	end;
 	
 	//leemos el archivo de mapa
-	levelMapFile = fopen(file_,o_read);
+	levelMapFile = fopen(file_,O_READ);
+			
 	//Nos situamos al principio del archivo
 	fseek(levelMapFile,0,SEEK_SET);  
 		
@@ -381,6 +392,73 @@ Begin
 	
 end;
 
+//funcion para generar un archivo de mapa especificando el matriz de obstaculos
+function WGE_GenMatrixMapFile(string file_)
+private 
+	int levelMapFile;		//Archivo del nivel
+	int i,j;				//Indices auxiliares
+	byte randByte;			//Byte aleatorio
+	int randInt;			//Int aleatorio
+	int numTilesX = 21;
+	int numTilesY = 9;
+	int matrixMap[8][20] = 	1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+							1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+							1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,1,
+							1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1,
+							1,0,0,1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,
+							1,0,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,1,1,1,
+							1,0,0,1,0,0,0,1,1,1,0,0,0,0,0,1,1,0,0,0,1,
+							1,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,1,1,
+							1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1;
+Begin
+	
+	//Borramos el anterior si existe
+	if (fexists(file_))
+		fremove(file_);
+		log("Borramos el archivo MapData anterior");
+	end;
+	
+	//creamos el archivo de mapa
+	levelMapFile = fopen(file_,O_WRITE);
+	//Nos situamos al principio del archivo
+	fseek(levelMapFile,0,SEEK_SET);  
+		
+	//Escribimos los datos del mapa
+	randInt = numTilesX*numTilesY;
+	fwrite(levelMapFile,randInt); 					//escribimos el numero de tiles que usa el mapa
+	fwrite(levelMapFile,numTilesX);   				//escribimos el numero de columnas de tiles
+	fwrite(levelMapFile,numTilesY);   				//escribimos el numero de filas de tiles	
+	
+	//Escribimos la informacion del grafico de los tiles del fichero de mapa
+	for (i=0;i<numTilesY;i++)
+		for (j=0;j<numTilesX;j++)
+			if (matrixMap[i][j] == 0)
+				randByte = 0;				//Posicion libre
+			else
+				randByte = 200;				//Obstaculo
+			end;
+			fwrite(levelMapFile,randByte); 
+		end;
+	end;
+	
+	//Escribimos el codigo de los tiles del fichero de mapa
+	for (i=0;i<numTilesY;i++)
+		for (j=0;j<numTilesX;j++)
+			if (matrixMap[i][j] == 0)
+				randByte = 0;				//Posicion libre
+			else
+				randByte = 1;				//Obstaculo
+			end;
+			fwrite(levelMapFile,randByte); 
+		end;
+	end; 
+	
+	//cerramos el archivo
+	fclose(levelMapFile);
+	log("Fichero mapa aleatorio creado");   
+	
+end;
+
 function WGE_DrawMap()
 private
 	int i,j,					//Indices auxiliares
@@ -397,20 +475,21 @@ Begin
 	//En los extremos de la pantalla se crean el numero definido de tiles (TILESOFFSCREEN) extras para asegurar la fluidez
 	for (i=((y_inicial/cTileSize)-TILESYOFFSCREEN);i<(((cRegionH+y_inicial)/cTileSize)+TILESYOFFSCREEN);i++)
 		for (j=((x_inicial/cTileSize)-TILESXOFFSCREEN);j<(((cRegionW+x_inicial)/cTileSize)+TILESXOFFSCREEN);j++)
-			
-			repeat
+			/*repeat
 				frame; 
 			until(not key(_space));
 			repeat
 				frame; 
-			until(key(_space));
+			until(key(_space));*/
 					
 			pTile(i,j);
 			log("Creado tile: "+i+" "+j);
 			numTilesDraw++;
 		end;
 	end;
+
 	log("Mapa dibujado correctamente. Creados "+numTilesDraw+" tiles");
+	
 End;
 
 //proceso tile
@@ -634,4 +713,52 @@ begin
 	end;
 end;
 
+function int WGE_Wait(int t)
+Begin
+    t += timer[0];
+    While(timer[0]<t) frame; End
+    return t-timer[0];
+End
 
+//Funcion de chequeo de colision entre proceso y AABB
+function int colCheckAABB(int idShapeA, int shapeBx,int shapeBy,int shapeBW,int shapeBH)
+private
+float vcX,vcY,hWidths,hHeights,oX,oY;
+int ColDir;
+begin
+    // get the vectors to check against
+	vcX = (idShapeA.fx) - (shapeBx );
+	vcY = (idShapeA.fy) - (shapeBy );
+	// add the half widths and half heights of the objects
+	hWidths =  (idShapeA.ancho / 2) + (shapeBW / 2);
+	hHeights = (idShapeA.alto / 2) + (shapeBH / 2);
+	colDir = 0;
+
+    // if the x and y vector are less than the half width or half height, they we must be inside the object, causing a collision
+    if (abs(vcX) < hWidths && abs(vcY) < hHeights) 
+        // figures out on which side we are colliding (top, bottom, left, or right)
+        oX = hWidths - abs(vcX);
+        oY = hHeights - abs(vcY);
+        if (oX >= oY) 
+            if (vcY > 0) 
+				colDir = COLUP;
+                idShapeA.fy += oY;
+             else 
+                colDir = COLDOWN;
+                idShapeA.fy -= oY;
+             end;
+        else 
+            if (vcX > 0) 
+                colDir = COLIZQ;
+                idShapeA.fx += oX;
+             else 
+                colDir = COLDER;
+                idShapeA.fx -= oX;
+             end;
+	     end;
+	end;
+        
+    
+    return colDir;
+
+end;

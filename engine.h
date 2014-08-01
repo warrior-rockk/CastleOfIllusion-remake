@@ -35,10 +35,16 @@
 #define ZPLAYER		-1		//Profundidad del player
 #define ZMAP     	1  		//Profundidad del mapeado
 
+//Direccion colision
+#define COLUP		1
+#define COLDOWN		2
+#define COLIZQ		3
+#define COLDER   	4
+
 //Constantes del motor
 const
 	//Pantalla
-	cNumFPS     = 0;  					//Frames por segundo
+	cNumFPS     = 60;  					//Frames por segundo
 	cResX 		= 640;					//Resolucion Horizontal Pantalla
 	cResY 		= 480;  				//Resolucion Vertical Pantalla
 	cGameScroll = 0;    				//Numero Scroll
