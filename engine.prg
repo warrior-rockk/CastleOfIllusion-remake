@@ -724,44 +724,49 @@ Begin
 End
 
 //Funcion de chequeo de colision entre proceso y AABB
+//Devuelve un int con el sentido de la colision o 0 si no hay
 function int colCheckAABB(int idShapeA, int shapeBx,int shapeBy,int shapeBW,int shapeBH)
 private
-float vcX,vcY,hWidths,hHeights,oX,oY;
+float vcX,vcY,hW,hH,oX,oY;
 int ColDir;
+
 begin
-    // get the vectors to check against
+    //Obtiene los vectores de los centros para comparar
 	vcX = (idShapeA.fx) - (shapeBx );
 	vcY = (idShapeA.fy) - (shapeBy );
-	// add the half widths and half heights of the objects
-	hWidths =  (idShapeA.ancho / 2) + (shapeBW / 2);
-	hHeights = (idShapeA.alto / 2) + (shapeBH / 2);
+	// suma las mitades de los anchos y los altos
+	hW =  (idShapeA.ancho / 2) + (shapeBW / 2);
+	hH = (idShapeA.alto / 2) + (shapeBH / 2);
+	
 	colDir = 0;
 
-    // if the x and y vector are less than the half width or half height, they we must be inside the object, causing a collision
-    if (abs(vcX) < hWidths && abs(vcY) < hHeights) 
-        // figures out on which side we are colliding (top, bottom, left, or right)
-        oX = hWidths - abs(vcX);
-        oY = hHeights - abs(vcY);
-        if (oX >= oY) 
-            if (vcY > 0) 
+    //si los vectores e x y son menores que las mitades de anchos y altos, ESTAN colisionando
+	if (abs(vcX) < hW && abs(vcY) < hH) 
+        
+		//calculamos el sentido de la colision (top, bottom, left, or right)
+        oX = hW - abs(vcX);
+        oY = hH - abs(vcY);
+        
+		if (oX >= oY) 
+            if (vcY > 0) 			//Arriba
 				colDir = COLUP;
                 idShapeA.fy += oY;
              else 
-                colDir = COLDOWN;
+                colDir = COLDOWN;	//Abajo
                 idShapeA.fy -= oY;
              end;
         else 
             if (vcX > 0) 
-                colDir = COLIZQ;
+                colDir = COLIZQ;	//Izquierda
                 idShapeA.fx += oX;
              else 
-                colDir = COLDER;
+                colDir = COLDER;	//Derecha
                 idShapeA.fx -= oX;
              end;
 	     end;
 	end;
         
-    
+    //Devolvemos el sentido de la colision o 0 si no hay
     return colDir;
 
 end;

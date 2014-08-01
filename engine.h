@@ -114,6 +114,10 @@ Global
 	path* paths;				//Array Dinamico de paths
 	tile** tileMap;  	        //Matriz Dinamica del mapa de tiles del nivel
 	idPlayer; 					//Identificador del proceso del jugador
+	
+	//Fisicas
+	float gravity 	= 0.3;		//Aceleracion gravedad
+	float friction 	= 0.8;		//Friccion
 End;
 
 //Variables locales

@@ -101,17 +101,23 @@ end;
 
 process player_gravity()
 private 
-int i,j;
-int dir;
-float velX,velY,friction,gravity,c_vel;
-int jumping,grounded;
+
+byte jumping,	//Flag salto
+byte grounded; //Flag en suelo
+float velMax;	//Velocidad Maxima
+int dir;		//Direccion de la colision
+
 struct tiles_comprobar[8]
 	int posx;
 	int posy;
 end;
+
+int i,j;		//Variables auxiliares
+
 BEGIN
 	ancho = 32;
 	alto = 32;
+	velMax = 3.4;
 	
 	region = cGameRegion;
 	ctype = c_scroll;
@@ -132,41 +138,36 @@ BEGIN
 		flags = 0;
 	end;
 	
-
-	c_vel = 3.4;
-	friction = 0.8;
-	gravity  = 0.3;
-	
 	fx = x;
 	fy = y;
 	
 	loop
 	
-		//hero controls
-		if (key(_up)) 
+		//Control movimiento
+		if (key(CKUP)) 
 			if(!jumping && grounded) 
 				jumping = true;
 				grounded = false;
-				vY = -c_vel*2;
+				vY = -velMax*2;
 			end;
 		end;
 		
-		if (key(_right)) 
-			if (vX < c_vel) 
+		if (key(CKRIGHT)) 
+			if (vX < velMax) 
 				vX++;
 			end;
 		end;
-		if (key(_left)) 
-			if (vX > -c_vel) 
+		if (key(CKLEFT)) 
+			if (vX > -velMax) 
 				vX--;
 			end;
 		end;
 		
-		//physics
+		//Fisicas
 		vX *= friction;
 		vY += gravity;
 		
-		//collisions
+		//Colisiones
 		grounded = false;
 		 
 		//comprobamos 9 tiles alrededor del actor
@@ -215,14 +216,15 @@ BEGIN
 					grounded = true;
 					jumping = false;
 				elseif (dir == COLUP) 
-					vY = 0;		
-					//velY *= -1;
+					vY = 0;			//Flota por el techo	
+					//vY *= -1;		//Rebota hacia abajo con la velocida que subia
+					//vY = 2;		//Rebota hacia abajo con valor fijo
 				end;
 			end;
 		end;
 		
 		
-		//update c_vels
+		//Actualizar velocidades
 		if (grounded)
 			vY = 0;
 		end;
@@ -230,7 +232,7 @@ BEGIN
 		fx += vX;
 		fy += vY;
 		
-		//escalamos la posicion de floats en enteros
+		//Escalamos la posicion de floats en enteros
 		if (abs(fx-x)>=1 ) //si la diferencia entre el float y el entero es una unidad
 			x = fx;
 		end;
