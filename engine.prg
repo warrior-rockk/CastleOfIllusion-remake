@@ -30,6 +30,8 @@ begin
 	region = cGameRegion;
 	mouse.region  = region;
 	ctype = c_scroll;
+	z = ZCURSOR;
+	
 	//posicionamos el cursor a mitad de pantalla
 	mouse.x = (cRegionW>>1);
 	mouse.y = (cRegionH>>1);

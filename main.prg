@@ -99,6 +99,8 @@ begin
 	end;
 end;
 
+//TODO: Que patine cuando cambies de direccion segun friccion
+//TODO: Aceleracion vertical
 process player_gravity()
 private 
 

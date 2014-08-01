@@ -32,6 +32,7 @@
 #define	CKBT2	  _SPACE
 
 //Profundidades
+#define ZCURSOR     -2      //Profundidad del cursor de Debug
 #define ZPLAYER		-1		//Profundidad del player
 #define ZMAP     	1  		//Profundidad del mapeado
 
