@@ -56,9 +56,7 @@ begin
 				    " fuera del mapeado");
 			end;
 			
-			repeat
-				frame;
-			until(not mouse.left);
+			WGE_Wait(20);
 			
 		end;
 				
@@ -80,7 +78,7 @@ private
 		
 	int i; 								//Variables auxiliares
 begin
-		
+	
 	//Bucle principal de control del engine
 	Loop 
 		
@@ -92,9 +90,9 @@ begin
 		
 		//Seteo de fps a 0
 		if (key(_control) && key(_f))
-			if (FPS<=cNumFPS)
-				set_fps(0,0);
-				log("Pasamos a 0 FPS");
+			if (FPS==cNumFPS)
+				set_fps(cNumFPSDebug,0);
+				log("Pasamos a "+cNumFPSDebug+" FPS");
 			else
 				set_fps(cNumFPS,0);
 				log("Pasamos a "+cNumFps+" FPS");
@@ -505,6 +503,7 @@ BEGIN
 	ctype = c_scroll;
 	region = cGameRegion;
 	z = ZMAP;
+	priority = TILEPRIOR;
 	
 	//establecemos su posicion inicial
 	x = (j*cTileSize)+cHalfTSize;
@@ -665,6 +664,7 @@ private
 	byte outYInf;	//Limite Inferior
 	
 begin
+	priority = SCROLLPRIOR;
 	
 	//Centramos el scroll en la posicion inicial
 	scroll[cGameScroll].x0 = level.playerX0 - (cRegionW>>1);

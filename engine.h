@@ -41,18 +41,25 @@
 #define COLIZQ		3
 #define COLDER   	4
 
+//Prioridades (orden ejecucion)
+#define MAINPRIOR	 2
+#define PLAYERPRIOR	 1
+#define SCROLLPRIOR -1
+#define TILEPRIOR	-2
+
 //Constantes del motor
 const
 	//Pantalla
-	cNumFPS     = 60;  					//Frames por segundo
-	cResX 		= 640;					//Resolucion Horizontal Pantalla
-	cResY 		= 480;  				//Resolucion Vertical Pantalla
-	cGameScroll = 0;    				//Numero Scroll
-	cGameRegion = 1;    				//Numero Region Pantalla Juego
-	cRegionX 	= 0;					//Region Horizontal Pantalla de juego (Representacion Mapeado) 
-	cRegionY 	= 0;					//Region Vertical Pantalla de juego (Representacion Mapeado)
-	cRegionW 	= cResX;				//Region Horizontal Pantalla de juego (Representacion Mapeado) 
-	cRegionH 	= cResY;				//Region Vertical Pantalla de juego (Representacion Mapeado)	
+	cNumFPS    	 	= 60;  					//Frames por segundo
+	cNumFPSDebug 	= 0;					//Frames por segundo en debug (CTRL+F)
+	cResX 			= 640;					//Resolucion Horizontal Pantalla
+	cResY 			= 480;  				//Resolucion Vertical Pantalla
+	cGameScroll 	= 0;    				//Numero Scroll
+	cGameRegion 	= 1;    				//Numero Region Pantalla Juego
+	cRegionX 		= 0;					//Region Horizontal Pantalla de juego (Representacion Mapeado) 
+	cRegionY 		= 0;					//Region Vertical Pantalla de juego (Representacion Mapeado)
+	cRegionW 		= cResX;				//Region Horizontal Pantalla de juego (Representacion Mapeado) 
+	cRegionH 		= cResY;				//Region Vertical Pantalla de juego (Representacion Mapeado)	
 	
 	//Mapeado
 	cTileSize   = 64;   				//Tamaño tiles (Ancho y alto iguales)
