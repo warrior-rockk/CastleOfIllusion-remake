@@ -99,8 +99,6 @@ begin
 	end;
 end;
 
-//TODO: Que patine cuando cambies de direccion segun friccion
-//TODO: Aceleracion vertical
 process player_gravity()
 private 
 
@@ -207,26 +205,21 @@ BEGIN
 		tiles_comprobar[8].posy = (y/cTileSize)-1;
 		
 		for (i=0;i<9;i++)
-			//si existe el tile en el mapeado
-			if (tileExists(tiles_comprobar[i].posy,tiles_comprobar[i].posx)) 
-				if (tileMap[tiles_comprobar[i].posy][tiles_comprobar[i].posx].tileCode <> 0) //si es tile solido
-					dir = colCheckAABB(id,(tiles_comprobar[i].posx*cTileSize)+cHalfTSize,(tiles_comprobar[i].posy*cTileSize)+cHalfTSize,cTileSize,cTileSize);
-				else
-					dir = 0;
-				end;
-				
-				if (dir == COLIZQ || dir == COLDER) 
-					vX = 0;
-					jumping = false;
-				elseif (dir == COLDOWN) 
-					grounded = true;
-					jumping = false;
-				elseif (dir == COLUP) 
-					vY = 0;			//Flota por el techo	
-					//vY *= -1;		//Rebota hacia abajo con la velocida que subia
-					//vY = 2;		//Rebota hacia abajo con valor fijo
-				end;
+						
+			dir = colCheckTile(id,tiles_comprobar[i].posX,tiles_comprobar[i].posY);
+			
+			if (dir == COLIZQ || dir == COLDER) 
+				vX = 0;
+				jumping = false;
+			elseif (dir == COLDOWN) 
+				grounded = true;
+				jumping = false;
+			elseif (dir == COLUP) 
+				vY = 0;			//Flota por el techo	
+				//vY *= -1;		//Rebota hacia abajo con la velocida que subia
+				//vY = 2;		//Rebota hacia abajo con valor fijo
 			end;
+			
 		end;
 		
 		

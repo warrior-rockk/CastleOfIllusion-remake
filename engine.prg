@@ -410,7 +410,7 @@ private
 							1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1,
 							1,0,0,1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,
 							1,0,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,1,1,1,
-							1,0,0,1,0,0,0,1,1,1,0,0,0,0,0,1,1,0,0,0,1,
+							1,0,0,1,0,0,0,1,1,1,0,0,0,0,0,2,2,0,0,0,1,
 							1,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,1,1,
 							1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1;
 Begin
@@ -450,7 +450,7 @@ Begin
 			if (matrixMap[i][j] == 0)
 				randByte = 0;				//Posicion libre
 			else
-				randByte = 1;				//Obstaculo
+				randByte = matrixMap[i][j];	//Obstaculo
 			end;
 			fwrite(levelMapFile,randByte); 
 		end;
@@ -767,4 +767,57 @@ function int tileExists(int i,int j)
 begin
 
 	Return (i<level.numTilesY && j<level.numTilesX && i>=0 && j>=0);
+end;
+
+//Funcion de chequeo de colision entre proceso y tile (dando sus coordenadas en mapa)
+//Devuelve un int con el sentido de la colision o 0 si no hay
+function int colCheckTile(int idShapeA,int posX,int posY)
+private
+float vcX,vcY,hW,hH,oX,oY;
+int ColDir;
+
+begin
+    //Si el tile no es sólido, o no existe en el mapa, no hay colision
+	if ( tileMap[posY][posX].tileCode == 0 || !tileExists(posy,posx))
+		return 0;
+	end;
+	
+	//Obtiene los vectores de los centros para comparar
+	vcX = (idShapeA.fx) - ((posX*cTileSize)+cHalfTSize);
+	vcY = (idShapeA.fy) - ((posY*cTileSize)+cHalfTSize);
+	// suma las mitades de los anchos y los altos
+	hW =  (idShapeA.ancho / 2) + chalfTSize;
+	hH =  (idShapeA.alto / 2) + chalfTSize;
+	
+	colDir = 0;
+
+    //si los vectores e x y son menores que las mitades de anchos y altos, ESTAN colisionando
+	if (abs(vcX) < hW && abs(vcY) < hH) 
+        
+		//calculamos el sentido de la colision (top, bottom, left, or right)
+        oX = hW - abs(vcX);
+        oY = hH - abs(vcY);
+        
+		if (oX >= oY) 
+            if (vcY > 0) 			//Arriba
+				colDir = COLUP;
+                idShapeA.fy += oY;
+             else 
+                colDir = COLDOWN;	//Abajo
+                idShapeA.fy -= oY;
+             end;
+        else 
+            if (vcX > 0) 
+                colDir = COLIZQ;	//Izquierda
+                idShapeA.fx += oX;
+             else 
+                colDir = COLDER;	//Derecha
+                idShapeA.fx -= oX;
+             end;
+	     end;
+	end;
+    
+	//Devolvemos el sentido de la colision o 0 si no hay
+    return colDir;
+
 end;
