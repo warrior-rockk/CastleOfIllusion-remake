@@ -104,9 +104,11 @@ end;
 process player_gravity()
 private 
 
-byte jumping,	//Flag salto
-byte grounded; //Flag en suelo
-float velMax,accelx;	//Velocidad Maxima
+byte jumping,		//Flag salto
+byte grounded; 		//Flag en suelo
+float velMaxX;		//Velocidad Maxima Horizontal
+float accelx;		//Aceleracion Maxima Horizontal
+float accelY;		//Aceleracion Maxima Vertical
 int dir;		//Direccion de la colision
 
 struct tiles_comprobar[8]
@@ -119,8 +121,9 @@ int i,j;		//Variables auxiliares
 BEGIN
 	ancho = 32;
 	alto = 32;
-	velMax = 3.4;
+	velMaxX = 3.4;
 	accelx = 0.9;
+	accelY = 8;
 	
 	region = cGameRegion;
 	ctype = c_scroll;
@@ -151,17 +154,17 @@ BEGIN
 			if(!jumping && grounded) 
 				jumping = true;
 				grounded = false;
-				vY = -velMax*2;
+				vY = -accelY;
 			end;
 		end;
 		
 		if (key(CKRIGHT)) 
-			if (vX < velMax) 
+			if (vX < velMaxX) 
 				vX+=accelx*(1-friction);
 			end;
 		end;
 		if (key(CKLEFT)) 
-			if (vX > -velMax) 
+			if (vX > -velMaxX) 
 				vX-=accelx*(1-friction);
 			end;
 		end;
@@ -205,9 +208,7 @@ BEGIN
 		
 		for (i=0;i<9;i++)
 			//si existe el tile en el mapeado
-			if (tiles_comprobar[i].posy<level.numTilesY && tiles_comprobar[i].posx<level.numTilesX 
-			     && tiles_comprobar[i].posy>=0 && tiles_comprobar[i].posx>=0)
-				 
+			if (tileExists(tiles_comprobar[i].posy,tiles_comprobar[i].posx)) 
 				if (tileMap[tiles_comprobar[i].posy][tiles_comprobar[i].posx].tileCode <> 0) //si es tile solido
 					dir = colCheckAABB(id,(tiles_comprobar[i].posx*cTileSize)+cHalfTSize,(tiles_comprobar[i].posy*cTileSize)+cHalfTSize,cTileSize,cTileSize);
 				else

@@ -516,7 +516,7 @@ BEGIN
 	
 	//comprobamos si el tile existe en el mapeado
 	//y leemos su grafico
-	if (i<level.numTilesY && j<level.numTilesX && i>=0 && j>=0)
+	if (tileExists(i,j))
 		tileColor = tileMap[i][j].tileGraph;
 	else
 		tileColor = 255;
@@ -588,7 +588,7 @@ BEGIN
 			y = (i*cTileSize)+cHalfTSize;
 			
 			//grafico
-			if (i<level.numTilesY && j<level.numTilesX && i>=0 && j>=0)
+			if (tileExists(i,j))
 				tileColor = tileMap[i][j].tileGraph;
 			else
 				tileColor = 255;
@@ -662,11 +662,6 @@ begin
 end;
 
 process WGE_ControlScroll()
-private
-	byte outXDer;	//Limite Derecho
-	byte outXIzq;	//Limite Izquierdo
-	byte outYSup;	//Limite Superior
-	byte outYInf;	//Limite Inferior
 	
 begin
 	priority = SCROLLPRIOR;
@@ -678,12 +673,6 @@ begin
 	loop
 		
 		//movimiento del scroll
-		
-		//calculamos limites
-		outXDer = (scroll[cGameScroll].x0+cRegionW) >= (level.numTilesX*cTileSize);
-		outXIzq = scroll[cGameScroll].x0 <= 0;
-		outYSup = scroll[cGameScroll].y0 <= 0;
-		outYInf = (scroll[cGameScroll].y0+cRegionH) >= (level.numTilesY*cTileSize);
 		
 		//Si el jugador ya está en ejecución, lo enfocamos
 		if (idPlayer <> 0 )
@@ -771,4 +760,11 @@ begin
     //Devolvemos el sentido de la colision o 0 si no hay
     return colDir;
 
+end;
+
+//Funcion que comprueba si una posicion del tile existe en el mapa
+function int tileExists(int i,int j)
+begin
+
+	Return (i<level.numTilesY && j<level.numTilesX && i>=0 && j>=0);
 end;
