@@ -106,7 +106,7 @@ private
 
 byte jumping,	//Flag salto
 byte grounded; //Flag en suelo
-float velMax;	//Velocidad Maxima
+float velMax,accelx;	//Velocidad Maxima
 int dir;		//Direccion de la colision
 
 struct tiles_comprobar[8]
@@ -120,6 +120,7 @@ BEGIN
 	ancho = 32;
 	alto = 32;
 	velMax = 3.4;
+	accelx = 0.9;
 	
 	region = cGameRegion;
 	ctype = c_scroll;
@@ -156,17 +157,19 @@ BEGIN
 		
 		if (key(CKRIGHT)) 
 			if (vX < velMax) 
-				vX++;
+				vX+=accelx*(1-friction);
 			end;
 		end;
 		if (key(CKLEFT)) 
 			if (vX > -velMax) 
-				vX--;
+				vX-=accelx*(1-friction);
 			end;
 		end;
 		
 		//Fisicas
-		vX *= friction;
+		if (!key(CKLEFT) && !key(CKRIGHT))
+			vX *= friction;
+		end;
 		vY += gravity;
 		
 		//Colisiones

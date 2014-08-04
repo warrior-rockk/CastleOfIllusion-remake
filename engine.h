@@ -118,7 +118,7 @@ Global
 	
 	//Fisicas
 	float gravity 	= 0.3;		//Aceleracion gravedad
-	float friction 	= 0.8;		//Friccion
+	float friction 	= 0.9;		//Friccion
 End;
 
 //Variables locales
