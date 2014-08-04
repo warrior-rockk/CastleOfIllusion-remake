@@ -121,7 +121,7 @@ BEGIN
 	alto = 32;
 	velMaxX = 3.4;
 	accelx = 0.9;
-	accelY = 8;
+	accelY = 12;
 	
 	region = cGameRegion;
 	ctype = c_scroll;
@@ -146,7 +146,7 @@ BEGIN
 	fy = y;
 	
 	loop
-	
+		
 		//Control movimiento
 		if (key(CKUP)) 
 			if(!jumping && grounded) 
@@ -205,7 +205,7 @@ BEGIN
 		tiles_comprobar[8].posy = (y/cTileSize)-1;
 		
 		for (i=0;i<9;i++)
-						
+			
 			dir = colCheckTile(id,tiles_comprobar[i].posX,tiles_comprobar[i].posY);
 			
 			if (dir == COLIZQ || dir == COLDER) 

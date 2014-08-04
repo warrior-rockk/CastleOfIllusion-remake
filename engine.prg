@@ -778,7 +778,9 @@ int ColDir;
 
 begin
     //Si el tile no es sólido, o no existe en el mapa, no hay colision
-	if ( tileMap[posY][posX].tileCode == 0 || !tileExists(posy,posx))
+	if (!tileExists(posy,posx))
+		return 0;
+	elseif(tileMap[posY][posX].tileCode == 0)
 		return 0;
 	end;
 	
