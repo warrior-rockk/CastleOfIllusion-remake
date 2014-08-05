@@ -31,11 +31,6 @@
 #define	CKBT1	  _ALT 
 #define	CKBT2	  _SPACE
 
-//Profundidades
-#define ZCURSOR     -2      //Profundidad del cursor de Debug
-#define ZPLAYER		-1		//Profundidad del player
-#define ZMAP     	1  		//Profundidad del mapeado
-
 //Direccion colision
 #define COLUP		1
 #define COLDOWN		2
@@ -47,6 +42,39 @@
 #define PLAYERPRIOR	 	1
 #define SCROLLPRIOR 	-1
 #define TILEPRIOR		-2
+
+//Profundidades
+#define ZCURSOR     -3      //Profundidad del cursor de Debug
+#define ZMAP2	    -2      //Profundidad del mapeado encima del personaje
+#define ZPLAYER		-1		//Profundidad del player
+#define ZMAP1 	     1 		//Profundidad del mapeado tras player
+
+//Codigos de tile
+#define TILE_OPACO 		32
+#define TILE_DELANTE 	64
+#define TILE_ALPHA      128
+
+//bit 0:Opacidad del tile.1:el tile es cuadrado.0:el tile tiene transparencia
+//bit 1:Profundidad Z del tile.1:Delante del personaje.0.Detras
+//bit 2:Transparencia del tile.0:el tile es opaco.1:el tile es semitransparente
+//bits del 3 al 7: Tipo especial de tile (si me quedo corto,usar solidez como tipo):
+//				Tipo 0: Traspasable
+//				Tipo 1: Agua
+//				Tipo 2: Rompible
+//				Tipo 3: Cinta a derechas
+//				Tipo 4: Cinta a izquierdas
+//				Tipo 5: Escalera
+//				Tipo 6: Base de la escalera
+//				Tipo 7: Dañino
+//				Tipo 8: Normal
+//				Tipo 9: Suelo no techo
+//				Tipo 10: Sumergido
+//				Tipo 11: Sumergido/traspasable
+//				Tipo 12: Detencion scroll X der
+//				Tipo 13: Detencion scroll X izq
+//				Tipo 14: Pendiente 135º
+//				Tipo 15: Pendiente 45*
+//              ..31
 
 //Constantes del motor
 const

@@ -112,6 +112,8 @@ begin
 			idDebugText[0] = write_int(0,DEBUGINFOX,DEBUGINFOY,0,&fps);
 			idDebugText[1] = write_int(0,DEBUGINFOX,DEBUGINFOY+10,0,&idCursor.x);
 			idDebugText[2] = write_int(0,DEBUGINFOX,DEBUGINFOY+20,0,&idCursor.y);
+			//Hacemos al player un blend aditivo para ver las colisiones
+			if (idPlayer<>0) idPlayer.flags = idPlayer.flags & B_ABLEND; end;
 			//activamos el modo debug
 			actDebugMode = 1;
 		end;
@@ -128,6 +130,8 @@ begin
 			for (i=0;i<MAXDEBUGINFO;i++)
 				delete_text(idDebugText[i]);
 			end;
+			//Quitamos al player el blend aditivo para ver las colisiones
+			if (idPlayer<>0) idPlayer.flags = idPlayer.flags | B_ABLEND; end;
 			//desactivamos el modo debug
 			actDebugMode = 0;
 		end;
@@ -411,7 +415,7 @@ private
 							1,0,0,1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,
 							1,0,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,1,1,1,
 							1,0,0,1,0,0,0,1,1,1,0,0,0,0,0,2,2,0,0,0,1,
-							1,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,1,1,
+							1,0,0,0,0,0,1,1,1,1,0,0,0,192,224,0,0,0,0,1,1,
 							1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1;
 Begin
 	
@@ -496,6 +500,7 @@ Begin
 End;
 
 //proceso tile
+//TODO: Quitar transparencia del tile (falgs= B_NOCOLORKEY) si no es necesario para ahorrar dibujado
 process pTile(int i,int j)
 private	
 	byte tileColor;		//Color del tile (modo debug)
@@ -507,7 +512,6 @@ BEGIN
 	ancho = cTileSize;
 	ctype = c_scroll;
 	region = cGameRegion;
-	z = ZMAP;
 	priority = TILEPRIOR;
 	
 	//establecemos su posicion inicial
@@ -515,9 +519,22 @@ BEGIN
 	y = (i*cTileSize)+cHalfTSize;
 	
 	//comprobamos si el tile existe en el mapeado
-	//y leemos su grafico
+	//y leemos sus datos
 	if (tileExists(i,j))
+		//Dibujamos su grafico
 		tileColor = tileMap[i][j].tileGraph;
+		//Establecemos sus propiedades segun TileCode
+		if (bit_cmp(tileMap[i][j].tileCode,TILE_OPACO))
+			flags = flags & B_NOCOLORKEY;
+		end;
+		if (bit_cmp(tileMap[i][j].tileCode,TILE_DELANTE))
+			z = ZMAP2;
+		else
+			z = ZMAP1;
+		end;
+		if (bit_cmp(tileMap[i][j].tileCode,TILE_ALPHA))
+			flags = flags & B_ALPHA;
+		end;
 	else
 		tileColor = 255;
 	end;
@@ -590,6 +607,19 @@ BEGIN
 			//grafico
 			if (tileExists(i,j))
 				tileColor = tileMap[i][j].tileGraph;
+				
+				//Establecemos sus propiedades segun TileCode
+				if (bit_cmp(tileMap[i][j].tileCode,TILE_OPACO))
+					flags = flags & B_NOCOLORKEY;
+				end;
+				if (bit_cmp(tileMap[i][j].tileCode,TILE_ALPHA))
+					flags = flags & B_ALPHA;
+				end;
+				if (bit_cmp(tileMap[i][j].tileCode,TILE_DELANTE))
+					z = ZMAP2;
+				else
+					z = ZMAP1;
+				end;
 			else
 				tileColor = 255;
 			end;
@@ -780,7 +810,7 @@ begin
     //Si el tile no es sólido, o no existe en el mapa, no hay colision
 	if (!tileExists(posy,posx))
 		return 0;
-	elseif(tileMap[posY][posX].tileCode == 0)
+	elseif((tileMap[posY][posX].tileCode & 31) == 0 )
 		return 0;
 	end;
 	

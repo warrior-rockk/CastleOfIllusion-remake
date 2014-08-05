@@ -108,21 +108,17 @@ BEGIN
 	drawing_map(0,graph);
 	drawing_color(300);
 	draw_box(0,0,ancho,alto);
+	drawing_color(200);
+	draw_fcircle(ancho-8,alto-16,4);
 	
 	x = level.playerx0;
 	y = level.playery0;
-	
-	if (debugMode)
-		flags = B_ABLEND;
-	else
-		flags = 0;
-	end;
 	
 	fx = x;
 	fy = y;
 	
 	loop
-		
+				
 		//Control movimiento
 		if (key(CKUP)) 
 			if(!jumping && grounded) 
