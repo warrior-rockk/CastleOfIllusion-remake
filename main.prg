@@ -45,7 +45,7 @@ Begin
 	//Creamos un mapa aleatorio
 	//WGE_GenRandomMapFile("test\random.bin",12,8);
 	//Creamos un mapa con matriz definida
-	//WGE_GenMatrixMapFile("test\random.bin");
+	WGE_GenMatrixMapFile("test\random.bin");
 	//Cargamos el mapeado del nivel
 	//debug;
 	WGE_LoadMapLevel("test\random.bin");
@@ -73,32 +73,8 @@ Begin
 
 End; //Fin del main
 
-process player()
-begin
-	ancho = 32;
-	alto = 32;
-	
-	region = cGameRegion;
-	ctype = c_scroll;
-	z = ZPLAYER;
-	
-	graph = map_new(ancho,ancho,8);
-	drawing_map(0,graph);
-	drawing_color(300);
-	draw_box(0,0,ancho,alto);
-	
-	x = level.playerx0;
-	y = level.playery0;
-	
-	loop
-		x+=key(_right)*2;
-		x-=key(_left)*2;
-		y+=key(_down)*2;
-		y-=key(_up)*2;
-		frame;
-	end;
-end;
 
+//TODO: Calcular nivel inferior al que seria muerte segun tamaño mapeado
 process player_gravity()
 private 
 
@@ -120,7 +96,7 @@ BEGIN
 	ancho = 32;
 	alto = 32;
 	velMaxX = 3.4;
-	accelx = 0.9;
+	accelx = 1.2;
 	accelY = 12;
 	
 	region = cGameRegion;
@@ -174,9 +150,8 @@ BEGIN
 		vY += gravity;
 		
 		//Colisiones
-		grounded = false;
-		 
-		//comprobamos 9 tiles alrededor del actor
+				 
+		//comprobamos 9 tiles alrededor del player
 		tiles_comprobar[0].posx = x/cTileSize;
 		tiles_comprobar[0].posy = y/cTileSize;
 		
@@ -204,8 +179,12 @@ BEGIN
 		tiles_comprobar[8].posx = (x/cTileSize)-1;
 		tiles_comprobar[8].posy = (y/cTileSize)-1;
 		
+		grounded = false;
+		
+		//Recorremos la lista de tiles a comprobar
 		for (i=0;i<9;i++)
 			
+			//Lanzamos comprobacion de colision con el tile actual
 			dir = colCheckTile(id,tiles_comprobar[i].posX,tiles_comprobar[i].posY);
 			
 			if (dir == COLIZQ || dir == COLDER) 
@@ -239,4 +218,31 @@ BEGIN
 
 		frame;
 end;
+end;
+
+
+process player_no_gravity()
+begin
+	ancho = 32;
+	alto = 32;
+	
+	region = cGameRegion;
+	ctype = c_scroll;
+	z = ZPLAYER;
+	
+	graph = map_new(ancho,ancho,8);
+	drawing_map(0,graph);
+	drawing_color(300);
+	draw_box(0,0,ancho,alto);
+	
+	x = level.playerx0;
+	y = level.playery0;
+	
+	loop
+		x+=key(_right)*2;
+		x-=key(_left)*2;
+		y+=key(_down)*2;
+		y-=key(_up)*2;
+		frame;
+	end;
 end;

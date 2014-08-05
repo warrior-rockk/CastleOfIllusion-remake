@@ -716,18 +716,18 @@ End
 
 //Funcion de chequeo de colision entre proceso y AABB
 //Devuelve un int con el sentido de la colision o 0 si no hay
-function int colCheckAABB(int idShapeA, int shapeBx,int shapeBy,int shapeBW,int shapeBH)
+function int colCheckAABB(int idObject, int shapeBx,int shapeBy,int shapeBW,int shapeBH)
 private
 float vcX,vcY,hW,hH,oX,oY;
 int ColDir;
 
 begin
     //Obtiene los vectores de los centros para comparar
-	vcX = (idShapeA.fx) - (shapeBx );
-	vcY = (idShapeA.fy) - (shapeBy );
+	vcX = (idObject.fx) - (shapeBx );
+	vcY = (idObject.fy) - (shapeBy );
 	// suma las mitades de los anchos y los altos
-	hW =  (idShapeA.ancho / 2) + (shapeBW / 2);
-	hH = (idShapeA.alto / 2) + (shapeBH / 2);
+	hW =  (idObject.ancho / 2) + (shapeBW / 2);
+	hH = (idObject.alto / 2) + (shapeBH / 2);
 	
 	colDir = 0;
 
@@ -741,18 +741,18 @@ begin
 		if (oX >= oY) 
             if (vcY > 0) 			//Arriba
 				colDir = COLUP;
-                idShapeA.fy += oY;
+                idObject.fy += oY;
              else 
                 colDir = COLDOWN;	//Abajo
-                idShapeA.fy -= oY;
+                idObject.fy -= oY;
              end;
         else 
             if (vcX > 0) 
                 colDir = COLIZQ;	//Izquierda
-                idShapeA.fx += oX;
+                idObject.fx += oX;
              else 
                 colDir = COLDER;	//Derecha
-                idShapeA.fx -= oX;
+                idObject.fx -= oX;
              end;
 	     end;
 	end;
@@ -763,15 +763,15 @@ begin
 end;
 
 //Funcion que comprueba si una posicion del tile existe en el mapa
-function int tileExists(int i,int j)
+function int tileExists(int posY,int posX)
 begin
 
-	Return (i<level.numTilesY && j<level.numTilesX && i>=0 && j>=0);
+	Return (posY<level.numTilesY && posX<level.numTilesX && posY>=0 && posX>=0);
 end;
 
 //Funcion de chequeo de colision entre proceso y tile (dando sus coordenadas en mapa)
 //Devuelve un int con el sentido de la colision o 0 si no hay
-function int colCheckTile(int idShapeA,int posX,int posY)
+function int colCheckTile(int idObject,int posX,int posY)
 private
 float vcX,vcY,hW,hH,oX,oY;
 int ColDir;
@@ -785,11 +785,11 @@ begin
 	end;
 	
 	//Obtiene los vectores de los centros para comparar
-	vcX = (idShapeA.fx) - ((posX*cTileSize)+cHalfTSize);
-	vcY = (idShapeA.fy) - ((posY*cTileSize)+cHalfTSize);
+	vcX = (idObject.fx) - ((posX*cTileSize)+cHalfTSize);
+	vcY = (idObject.fy) - ((posY*cTileSize)+cHalfTSize);
 	// suma las mitades de los anchos y los altos
-	hW =  (idShapeA.ancho / 2) + chalfTSize;
-	hH =  (idShapeA.alto / 2) + chalfTSize;
+	hW =  (idObject.ancho / 2) + chalfTSize;
+	hH =  (idObject.alto / 2) + chalfTSize;
 	
 	colDir = 0;
 
@@ -802,19 +802,27 @@ begin
         
 		if (oX >= oY) 
             if (vcY > 0) 			//Arriba
-				colDir = COLUP;
-                idShapeA.fy += oY;
+				if (checkTileCode(idObject,COLUP,posY,posX))
+					colDir = COLUP;
+					idObject.fy += oY;
+				end;
              else 
-                colDir = COLDOWN;	//Abajo
-                idShapeA.fy -= oY;
+                if (checkTileCode(idObject,COLDOWN,posY,posX))
+					colDir = COLDOWN;	//Abajo
+					idObject.fy -= oY;
+				end;
              end;
         else 
             if (vcX > 0) 
-                colDir = COLIZQ;	//Izquierda
-                idShapeA.fx += oX;
+                if (checkTileCode(idObject,COLIZQ,posY,posX))
+					colDir = COLIZQ;	//Izquierda
+					idObject.fx += oX;
+				end;
              else 
-                colDir = COLDER;	//Derecha
-                idShapeA.fx -= oX;
+				if (checkTileCode(idObject,COLDER,posY,posX))
+					colDir = COLDER;	//Derecha
+					idObject.fx -= oX;
+				end;
              end;
 	     end;
 	end;
@@ -822,4 +830,24 @@ begin
 	//Devolvemos el sentido de la colision o 0 si no hay
     return colDir;
 
+end;
+
+//Funcion que comprueba, segun el codigo del tile, el comportamiento de la colision segun la direccion
+//Devuelve 1 si colisiona en esa direccion o 0 si no colisiona.
+function int checkTileCode(int idObject,int colDir,int posY,int posX)
+begin
+	switch(colDir)
+		case COLUP:
+			return tileMap[posY][posX].tileCode <> 2;
+		end;
+		case COLDOWN:
+			return (tileMap[posY][posX].tileCode<>2) || (tileMap[posY][posX].tileCode==2 && idObject.vY>0);
+		end;
+		case COLIZQ:
+			return tileMap[posY][posX].tileCode <> 2;
+		end;
+		case COLDER:
+			return tileMap[posY][posX].tileCode <> 2;
+		end;
+	end;
 end;
