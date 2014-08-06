@@ -291,7 +291,8 @@ Function WGE_LoadMapLevel(string file_)
 private 
 	int levelMapFile;		//Archivo del nivel
 	int i,j;				//Indices auxiliares
-
+	byte mapTileCode;       //Codigo leido del mapa
+	
 Begin
 	
 	//Comprobamos si existe el archivo de mapa del nivel
@@ -333,9 +334,15 @@ Begin
 	//Cargamos el codigo de los tiles del fichero de mapa
 	for (i=0;i<level.numTilesY;i++)
 		for (j=0;j<level.numTilesX;j++)
-			if (fread(levelMapFile,tileMap[i][j].tileCode) == 0)
+			if (fread(levelMapFile,mapTileCode) == 0)
 				log("Fallo leyendo codigo de tiles ("+j+","+i+") en: " + file_);
 				WGE_Quit();
+			else
+				//decodificamos los datos del codigo de tile a propiedades
+				tileMap[i][j].tileShape = bit_cmp(mapTileCode,TILE_SHAPE);
+				tileMap[i][j].tileProf 	= bit_cmp(mapTileCode,TILE_DELANTE);
+				tileMap[i][j].tileAlpha = bit_cmp(mapTileCode,TILE_ALPHA);
+				tileMap[i][j].tileCode 	= mapTileCode & 31;		
 			end;
 		end;
 	end;  
@@ -524,15 +531,15 @@ BEGIN
 		//Dibujamos su grafico
 		tileColor = tileMap[i][j].tileGraph;
 		//Establecemos sus propiedades segun TileCode
-		if (bit_cmp(tileMap[i][j].tileCode,TILE_OPACO))
+		if (tileMap[i][j].tileShape)
 			flags = flags & B_NOCOLORKEY;
 		end;
-		if (bit_cmp(tileMap[i][j].tileCode,TILE_DELANTE))
+		if (tileMap[i][j].tileProf)
 			z = ZMAP2;
 		else
 			z = ZMAP1;
 		end;
-		if (bit_cmp(tileMap[i][j].tileCode,TILE_ALPHA))
+		if (tileMap[i][j].tileAlpha)
 			flags = flags & B_ALPHA;
 		end;
 	else
@@ -609,13 +616,13 @@ BEGIN
 				tileColor = tileMap[i][j].tileGraph;
 				
 				//Establecemos sus propiedades segun TileCode
-				if (bit_cmp(tileMap[i][j].tileCode,TILE_OPACO))
+				if (tileMap[i][j].tileShape)
 					flags = flags & B_NOCOLORKEY;
 				end;
-				if (bit_cmp(tileMap[i][j].tileCode,TILE_ALPHA))
+				if (tileMap[i][j].tileAlpha)
 					flags = flags & B_ALPHA;
 				end;
-				if (bit_cmp(tileMap[i][j].tileCode,TILE_DELANTE))
+				if (tileMap[i][j].tileProf)
 					z = ZMAP2;
 				else
 					z = ZMAP1;
@@ -810,7 +817,7 @@ begin
     //Si el tile no es sólido, o no existe en el mapa, no hay colision
 	if (!tileExists(posy,posx))
 		return 0;
-	elseif((tileMap[posY][posX].tileCode & 31) == 0 )
+	elseif((tileMap[posY][posX].tileCode) == 0 )
 		return 0;
 	end;
 	

@@ -50,7 +50,7 @@
 #define ZMAP1 	     1 		//Profundidad del mapeado tras player
 
 //Codigos de tile
-#define TILE_OPACO 		32
+#define TILE_SHAPE 		32
 #define TILE_DELANTE 	64
 #define TILE_ALPHA      128
 
@@ -123,7 +123,10 @@ end;
 //Tile
 Type tile
 	byte tileGraph; 			//Imagen del tile
-	byte tileCode;      		//Codigo del tile	
+	byte tileShape;      		//Propiedad del tile: Forma
+	byte tileProf;				//Propiedad del tile: Profundidad
+	byte tileAlpha;             //Propiedad del tile: Opacidad
+	byte tileCode; 				//Codigo del tile
 end;
 
 //Variables Globales
