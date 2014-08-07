@@ -45,7 +45,7 @@ Begin
 	//Creamos un mapa aleatorio
 	//WGE_GenRandomMapFile("test\random.bin",12,8);
 	//Creamos un mapa con matriz definida
-	WGE_GenMatrixMapFile("test\random.bin");
+	//WGE_GenMatrixMapFile("test\random.bin");
 	//Cargamos el mapeado del nivel
 	//debug;
 	WGE_LoadMapLevel("test\random.bin");
@@ -183,7 +183,7 @@ BEGIN
 			//Lanzamos comprobacion de colision con el tile actual
 			//dir = colCheckTile(ID,tiles_comprobar[i].posX,tiles_comprobar[i].posY);
 			
-			dir = colCheckTileTerrain(ID); 
+			dir = colCheckTileTerrainX(ID); 
 			
 			if (dir == COLIZQ || dir == COLDER) 
 				vX = 0;
@@ -197,6 +197,19 @@ BEGIN
 				//vY = 2;		//Rebota hacia abajo con valor fijo
 			end;
 			
+			dir = colCheckTileTerrainY(ID); 
+			
+			if (dir == COLIZQ || dir == COLDER) 
+				vX = 0;
+				jumping = false;
+			elseif (dir == COLDOWN) 
+				grounded = true;
+				jumping = false;
+			elseif (dir == COLUP) 
+				vY = 0;			//Flota por el techo	
+				//vY *= -1;		//Rebota hacia abajo con la velocida que subia
+				//vY = 2;		//Rebota hacia abajo con valor fijo
+			end;
 		//end;
 		
 		

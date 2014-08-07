@@ -909,13 +909,50 @@ end;
 
 //PRUEBAS CON METODO COLISIONES DEL CASTLE OF REMAKE
 
-function int colCheckTileTerrain(int idObject)
-private colision_en_y;
+function int colCheckTileTerrainX(int idObject)
+private colision_en_y,colision_en_x;
 int pos;
+int ini, fin;
 begin
+		//COLISIONES EN X
+		//if (father.v_x>0)
+		//	colision_en_x=colision_x(fich_nivel,dur_nivel,father.alto,father.x+(father.ancho>>1),father.y,(father.x+16+father.v_x),C_DUR_SUELO);
+		//else
+		//	colision_en_x=colision_x(fich_nivel,dur_nivel,father.alto,father.x-(father.ancho>>1),father.y,(father.x-16+father.v_x),C_DUR_SUELO);	
+	    //end;
+	    ini = (idObject.x-(idObject.ancho/2));
+		fin = (idObject.x+idObject.vX);
 		
+		colision_en_x=colision_x(0,mapBox,idObject.alto,ini,idObject.y,fin,0);
+		
+		
+		//If (colision_en_x>=0 && ((colision_en_x/100)-10)==C_DUR_SUELO)
+		//colision_en_x = decode(colision_en_x);end;
+		
+		If (colision_en_x>=0)
+			if (idObject.vX>0) 
+				idObject.x+= colision_en_x-1;
+				return COLDER;
+			end;
+			if (idObject.vX<0) 
+				idObject.x-= colision_en_x-1;
+				return COLIZQ;
+			end;
+			
+			//father.v_x = 0;
+		End;  
+		
+		
+end; 
+
+function int colCheckTileTerrainY(int idObject)
+private colision_en_y,colision_en_x;
+int pos;
+int ini, fin;
+begin
+				
+		//COLISIONES EN Y
 		pos = idObject.y+idObject.vY;
-		
 		colision_en_y=colision_y(0,mapBox,idObject.alto,idObject.x,idObject.y,pos,0,1);
 		
 		//If (colision_en_y>=0) 
@@ -932,11 +969,71 @@ begin
 		End;                                 
 		If (colision_en_y>=0 && idObject.vY<0) //techo
 			//father.v_y =colision_en_y*(-1);
+			idObject.fy -= colision_en_y;
 			return COLUP;
 		End;
 		
-		//return colision_en_y;
 end; 
+
+//funcion que devuelve el numero de pixeles en x hasta la dureza, o -1 si no hay
+function int colision_x(Int fich,Int graf,float alto,int x_org,Int y_org,int x_dest,Int color)
+Private 
+byte i;
+int inc_x;
+byte num_dur_tile_center;
+byte num_dur_tile_down;
+byte num_dur_tile_up; 
+fich_up;
+fich_down;
+Begin
+ 
+If (x_dest>x_org)inc_x=1;Else inc_x=-1;End;
+      
+	    Repeat
+		    
+			//num_dur_tile_center = tiles[y_org/C_TAMANO_TILE][x_org/C_TAMANO_TILE].tile_graf;
+			
+		   	  			   	
+		   	if (color == 0 )		   	    
+			    // TODO: falta archivo tipos
+				//linea provisional, me falta archivo de tipos?? tonteria usarlo porque una escalera siempre es cuadrada
+				//if (num_dur_tile_center == 5 || num_dur_tile_up == 5 || num_dur_tile_down == 5 ) Return (((C_DUR_STAIR+10)*100)+1);End;
+				//if (num_dur_tile_center == 6 || num_dur_tile_up == 6 || num_dur_tile_down == 6 ) Return (((C_DUR_UP_STAIR+10)*100)+1);End;
+				
+				//If (map_get_pixel(fich,num_dur_tile_center,(x_org%C_TAMANO_TILE),(y_org%C_TAMANO_TILE))== C_DUR_SUELO)Return (((C_DUR_SUELO+10)*100)+i);End;
+			    
+				if (tileMap[y_org/cTileSize][x_org/cTileSize].tileCode <> NO_SOLID)
+					if(map_get_pixel(fich,mapBox,(x_org%cTileSize),(y_org%cTileSize)) <> 0)
+						return i;
+					end;
+				end;
+				
+				/*If (map_get_pixel(fich_up,num_dur_tile_up,(x_org%C_TAMANO_TILE),(((y_org-((alto/2)-altura_pendiente))%C_TAMANO_TILE))) == C_DUR_SUELO)Return (((C_DUR_SUELO+10)*100)+i);End;  
+			    If (map_get_pixel(fich_down,num_dur_tile_down,(x_org%C_TAMANO_TILE),(((y_org+((alto/2)-altura_pendiente))%C_TAMANO_TILE)))== C_DUR_SUELO)Return (((C_DUR_SUELO+10)*100)+i);End;  
+			    
+			    //TODO: si solo dejo el down, no tiembla pero no es solucion
+				If (map_get_pixel(fich,num_dur_tile_center,(x_org%C_TAMANO_TILE),(y_org%C_TAMANO_TILE))== C_DUR_STAIR)Return (((C_DUR_STAIR+10)*100)+i);End;
+			    If (map_get_pixel(fich_up,num_dur_tile_up,(x_org%C_TAMANO_TILE),(((y_org-((alto/3)))%C_TAMANO_TILE))) == C_DUR_STAIR)Return (((C_DUR_STAIR+10)*100)+i);End;  
+			    If (map_get_pixel(fich_down,num_dur_tile_down,(x_org%C_TAMANO_TILE),(((y_org+((alto/3)))%C_TAMANO_TILE)))== C_DUR_STAIR)Return (((C_DUR_STAIR+10)*100)+i);End;  
+			    
+			    If (map_get_pixel(fich,num_dur_tile_center,(x_org%C_TAMANO_TILE),(y_org%C_TAMANO_TILE))== C_DUR_UP_STAIR)Return (((C_DUR_UP_STAIR+10)*100)+i);End;
+			    If (map_get_pixel(fich_up,num_dur_tile_up,(x_org%C_TAMANO_TILE),(((y_org-((alto/3)))%C_TAMANO_TILE))) == C_DUR_UP_STAIR)Return (((C_DUR_UP_STAIR+10)*100)+i);End;  
+			    If (map_get_pixel(fich_down,num_dur_tile_down,(x_org%C_TAMANO_TILE),(((y_org+((alto/3)))%C_TAMANO_TILE)))== C_DUR_UP_STAIR)Return (((C_DUR_UP_STAIR+10)*100)+i);End;  
+  				*/
+		    else
+		    	/*
+				If (map_get_pixel(fich,num_dur_tile_center,(x_org%C_TAMANO_TILE),(y_org%C_TAMANO_TILE))== color)Return (((color+10)*100)+i);End;
+			    If (map_get_pixel(fich_up,num_dur_tile_up,(x_org%C_TAMANO_TILE),(((y_org-((alto/2)-altura_pendiente))%C_TAMANO_TILE))) == color)Return (((color+10)*100)+i);End;  
+			    If (map_get_pixel(fich_down,num_dur_tile_down,(x_org%C_TAMANO_TILE),(((y_org+((alto/2)-altura_pendiente))%C_TAMANO_TILE)))== color)Return (((color+10)*100)+i);End;  
+				*/
+		    end;
+				    
+		    i++;
+		    x_org+=inc_x;
+	    Until((x_org>x_dest && inc_x==1) || (x_org<x_dest && inc_x==-1))
+	    
+	Return -1; 
+End
 
 //funcion que devuelve el numero de pixeles en y hasta la dureza, o -1 si no hay
 //El byte "modo", determina si la comprobacion es el numero de pixeles hasta llegar
@@ -964,7 +1061,8 @@ Begin
 				
 				if (num_dur_tile <> 0 )
 					return i;
-				/*switch (num_dur_tile)
+				/*
+				switch (num_dur_tile)
 					case (C_DUR_SUELO):
 						Return(((C_DUR_SUELO+10)*100)+i);
 					end;
