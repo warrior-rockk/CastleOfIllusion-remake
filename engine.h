@@ -50,9 +50,12 @@
 #define ZMAP1 	     1 		//Profundidad del mapeado tras player
 
 //Codigos de tile
-#define TILE_SHAPE 		32
+#define TILE_SHAPE 		128
 #define TILE_DELANTE 	64
-#define TILE_ALPHA      128
+#define TILE_ALPHA      32
+
+//Nivel transparencia Alpha
+#define TRANSLEVEL	128
 
 //bit 0:Opacidad del tile.1:el tile es cuadrado.0:el tile tiene transparencia
 //bit 1:Profundidad Z del tile.1:Delante del personaje.0.Detras
@@ -93,6 +96,7 @@ const
 	//Mapeado
 	cTileSize   = 64;   				//Tamaño tiles (Ancho y alto iguales)
 	cHalfTSize = cTileSize >> 1; 		//Mitad del tamaño tile (util para todo el proyecto)
+
 End;
 
 //Data Types
@@ -131,8 +135,13 @@ end;
 
 //Variables Globales
 Global
+	//engine
 	int FrameCount;				//Contador de Frames Global
+	int maxFPS;					//FPS Maximo
+	int minFPS;					//FPS Mínimo
+	
 	byte debugMode;				//Modo debug del engine
+	//nivel y mapeado
 	struct level        		//Estructura de un nivel
 		int playerX0;			//Posicion inicial X
 		int playerY0;			//Posicion inicial Y
@@ -145,8 +154,9 @@ Global
 	objeto* objetos;			//Array Dinamico de objetos
 	path* paths;				//Array Dinamico de paths
 	tile** tileMap;  	        //Matriz Dinamica del mapa de tiles del nivel
-	idPlayer; 					//Identificador del proceso del jugador
-	
+	byte mapUsesAlpha;				//Bit que indica que el mapa usa propiedad alpha (relentiza la carga)
+	//jugador
+	int idPlayer;				//Identificador del proceso del jugador
 	//Fisicas
 	float gravity 	= 0.3;		//Aceleracion gravedad
 	float friction 	= 0.9;		//Friccion

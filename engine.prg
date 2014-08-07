@@ -31,7 +31,7 @@ begin
 	mouse.region  = region;
 	ctype = c_scroll;
 	z = ZCURSOR;
-	
+		
 	//posicionamos el cursor a mitad de pantalla
 	mouse.x = (cRegionW>>1);
 	mouse.y = (cRegionH>>1);
@@ -52,7 +52,10 @@ begin
 			    posTileY < level.numTilesY && y >= 0  )
 				log("TilePosX: "+posTileX+" TilePosY: "+posTileY + 
 				    " TileGraph: "+tileMap[posTileY][posTileX].tileGraph + 
-					" TileCode: "+tileMap[posTileY][posTileX].tileCode);
+					" TileShape: "+tileMap[posTileY][posTileX].tileShape +
+					" TileProf: " +tileMap[posTileY][posTileX].tileProf +
+					" TileAlpha: "+tileMap[posTileY][posTileX].tileAlpha +
+					" TileCode: " +tileMap[posTileY][posTileX].tileCode);
 			else
 				log("TilePosX: "+posTileX+" TilePosY: "+posTileY + 
 				    " fuera del mapeado");
@@ -83,6 +86,13 @@ begin
 	
 	//Bucle principal de control del engine
 	Loop 
+		//Medicion fps
+		if (fps > maxFPS)
+			maxFPS = fps;
+		end;
+		if (fps < minFPS)
+			minFPS = fps;
+		end;
 		
 		//activacion/desactivacion del modo debug
 		if (key(_control) && key(_d))
@@ -100,6 +110,9 @@ begin
 				log("Pasamos a "+cNumFps+" FPS");
 			end;
 			WGE_Wait(20);
+			//Reseteamos mediciones
+			maxFPS = 0;
+			minFPS = 0;
 		end;
 		
 		//Tareas de entrada al modo debug
@@ -144,7 +157,7 @@ end;
 //Inicialización del modo grafico
 function WGE_InitScreen()
 begin
-	//Complete restore para evitar "flickering"
+	//Complete restore para evitar "flickering" (no funciona)
 	restore_type = COMPLETE_RESTORE;
 	//scale_mode=SCALE_NORMAL2X; 
 	set_mode(cResX,cResY,8);
@@ -178,7 +191,21 @@ begin
 	//free(tileMap);
 	
 	log("Se finaliza la ejecución");
+	log("FPS Max: "+maxFPS);
+	log("FPS Min: "+minFPS);
 	exit();
+end;
+
+//Funcion que setea el modo alpha.Solo se usa cuando se necesita porque
+//demora unos segundos generar las tablas de transparencia
+process WGE_InitAlpha()
+begin
+	log("Activando modo alpha");
+		
+	drawing_alpha(TRANSLEVEL);
+	drawing_alpha(255);
+	
+	log("Modo alpha activado"); 
 end;
 
 //Carga de archivo de nivel
@@ -332,6 +359,8 @@ Begin
 	end;
 	
 	//Cargamos el codigo de los tiles del fichero de mapa
+	mapUsesAlpha = 0;	//seteamos que no usuara propiedad alpha el mapa
+	
 	for (i=0;i<level.numTilesY;i++)
 		for (j=0;j<level.numTilesX;j++)
 			if (fread(levelMapFile,mapTileCode) == 0)
@@ -342,10 +371,17 @@ Begin
 				tileMap[i][j].tileShape = bit_cmp(mapTileCode,TILE_SHAPE);
 				tileMap[i][j].tileProf 	= bit_cmp(mapTileCode,TILE_DELANTE);
 				tileMap[i][j].tileAlpha = bit_cmp(mapTileCode,TILE_ALPHA);
-				tileMap[i][j].tileCode 	= mapTileCode & 31;		
+				tileMap[i][j].tileCode 	= mapTileCode & 31;	
+
+				//Comprobamos si algun tile usa alpha
+				if (tileMap[i][j].tileAlpha) mapUsesAlpha = 1; end;
+							
 			end;
 		end;
 	end;  
+	
+	//Si algun tile usa alpha, lo inicializamos
+	if (mapUsesAlpha) WGE_InitAlpha(); end;
 	
 	//cerramos el archivo
 	fclose(levelMapFile);
@@ -422,7 +458,7 @@ private
 							1,0,0,1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,
 							1,0,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,1,1,1,
 							1,0,0,1,0,0,0,1,1,1,0,0,0,0,0,2,2,0,0,0,1,
-							1,0,0,0,0,0,1,1,1,1,0,0,0,192,224,0,0,0,0,1,1,
+							1,0,0,0,0,0,1,1,1,1,0,0,0,224,128,0,0,0,0,1,1,
 							1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1;
 Begin
 	
@@ -520,7 +556,7 @@ BEGIN
 	ctype = c_scroll;
 	region = cGameRegion;
 	priority = TILEPRIOR;
-	
+		
 	//establecemos su posicion inicial
 	x = (j*cTileSize)+cHalfTSize;
 	y = (i*cTileSize)+cHalfTSize;
@@ -532,15 +568,19 @@ BEGIN
 		tileColor = tileMap[i][j].tileGraph;
 		//Establecemos sus propiedades segun TileCode
 		if (tileMap[i][j].tileShape)
-			flags = flags & B_NOCOLORKEY;
+			flags &= B_NOCOLORKEY;
+		else
+			flags |= B_NOCOLORKEY;
+		end;
+		if (tileMap[i][j].tileAlpha)
+			alpha = TRANSLEVEL;
+		else
+			alpha = 255;
 		end;
 		if (tileMap[i][j].tileProf)
 			z = ZMAP2;
 		else
 			z = ZMAP1;
-		end;
-		if (tileMap[i][j].tileAlpha)
-			flags = flags & B_ALPHA;
 		end;
 	else
 		tileColor = 255;
@@ -617,10 +657,14 @@ BEGIN
 				
 				//Establecemos sus propiedades segun TileCode
 				if (tileMap[i][j].tileShape)
-					flags = flags & B_NOCOLORKEY;
+					flags |= B_NOCOLORKEY;
+				else
+					flags &= B_NOCOLORKEY;
 				end;
 				if (tileMap[i][j].tileAlpha)
-					flags = flags & B_ALPHA;
+					alpha = TRANSLEVEL;
+				else
+					alpha = 255;
 				end;
 				if (tileMap[i][j].tileProf)
 					z = ZMAP2;
