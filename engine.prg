@@ -368,9 +368,9 @@ Begin
 				WGE_Quit();
 			else
 				//decodificamos los datos del codigo de tile a propiedades
-				tileMap[i][j].tileShape = bit_cmp(mapTileCode,TILE_SHAPE);
-				tileMap[i][j].tileProf 	= bit_cmp(mapTileCode,TILE_DELANTE);
-				tileMap[i][j].tileAlpha = bit_cmp(mapTileCode,TILE_ALPHA);
+				tileMap[i][j].tileShape = bit_cmp(mapTileCode,BIT_TILE_SHAPE);
+				tileMap[i][j].tileProf 	= bit_cmp(mapTileCode,BIT_TILE_DELANTE);
+				tileMap[i][j].tileAlpha = bit_cmp(mapTileCode,BIT_TILE_ALPHA);
 				tileMap[i][j].tileCode 	= mapTileCode & 31;	
 
 				//Comprobamos si algun tile usa alpha
@@ -458,7 +458,7 @@ private
 							1,0,0,1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,
 							1,0,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,1,1,1,
 							1,0,0,1,0,0,0,1,1,1,0,0,0,0,0,2,2,0,0,0,1,
-							1,0,0,0,0,0,1,1,1,1,0,0,0,224,128,0,0,0,0,1,1,
+							1,0,0,0,0,0,1,1,1,1,0,0,0,192,128,0,0,0,0,1,1,
 							1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1;
 Begin
 	
@@ -547,7 +547,7 @@ End;
 process pTile(int i,int j)
 private	
 	byte tileColor;		//Color del tile (modo debug)
-	byte redraw = 0;	//Flag redibujar y posicionar el tile
+	byte redraw = 1;	//Flag redibujar y posicionar el tile
 	
 BEGIN
 	//definimos propiedades iniciales
@@ -556,48 +556,11 @@ BEGIN
 	ctype = c_scroll;
 	region = cGameRegion;
 	priority = TILEPRIOR;
-		
+	graph = map_new(alto,ancho,8);
+	
 	//establecemos su posicion inicial
 	x = (j*cTileSize)+cHalfTSize;
 	y = (i*cTileSize)+cHalfTSize;
-	
-	//comprobamos si el tile existe en el mapeado
-	//y leemos sus datos
-	if (tileExists(i,j))
-		//Dibujamos su grafico
-		tileColor = tileMap[i][j].tileGraph;
-		//Establecemos sus propiedades segun TileCode
-		if (tileMap[i][j].tileShape)
-			flags &= B_NOCOLORKEY;
-		else
-			flags |= B_NOCOLORKEY;
-		end;
-		if (tileMap[i][j].tileAlpha)
-			alpha = TRANSLEVEL;
-		else
-			alpha = 255;
-		end;
-		if (tileMap[i][j].tileProf)
-			z = ZMAP2;
-		else
-			z = ZMAP1;
-		end;
-	else
-		tileColor = 255;
-	end;
-	
-	//dibujamos el tile
-	graph = map_new(alto,ancho,8);
-	drawing_map(0,graph);
-	drawing_color(tileColor);
-	draw_box(0,0,alto,ancho);
-	
-	//en modo debug, escribimos su posicion
-	if (debugMode)
-		set_text_color((255-TileColor)+1);
-		map_put(0,graph,write_in_map(0,i,3),16,10);
-		map_put(0,graph,write_in_map(0,j,3),16,18);
-	end;
 	
 	loop
 				
@@ -653,16 +616,16 @@ BEGIN
 			
 			//grafico
 			if (tileExists(i,j))
+				//Dibujamos su grafico
 				tileColor = tileMap[i][j].tileGraph;
-				
 				//Establecemos sus propiedades segun TileCode
 				if (tileMap[i][j].tileShape)
-					flags |= B_NOCOLORKEY;
+					flags &= B_NOCOLORKEY;	
 				else
-					flags &= B_NOCOLORKEY;
+					flags |= B_NOCOLORKEY;
 				end;
 				if (tileMap[i][j].tileAlpha)
-					alpha = TRANSLEVEL;
+					alpha = TRANSLEVEL;		
 				else
 					alpha = 255;
 				end;
@@ -674,7 +637,8 @@ BEGIN
 			else
 				tileColor = 255;
 			end;
-		
+			
+			//dibujamos el tile
 			drawing_map(0,graph);
 			drawing_color(tileColor);
 			draw_box(0,0,alto,ancho);

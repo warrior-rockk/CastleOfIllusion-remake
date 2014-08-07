@@ -49,18 +49,8 @@
 #define ZPLAYER		-1		//Profundidad del player
 #define ZMAP1 	     1 		//Profundidad del mapeado tras player
 
-//Codigos de tile
-#define TILE_SHAPE 		128
-#define TILE_DELANTE 	64
-#define TILE_ALPHA      32
-
-//Nivel transparencia Alpha
-#define TRANSLEVEL	128
-
-//bit 0:Opacidad del tile.1:el tile es cuadrado.0:el tile tiene transparencia
-//bit 1:Profundidad Z del tile.1:Delante del personaje.0.Detras
-//bit 2:Transparencia del tile.0:el tile es opaco.1:el tile es semitransparente
-//bits del 3 al 7: Tipo especial de tile (si me quedo corto,usar solidez como tipo):
+//Codigo del tile
+//bits del 0 al 4 del mapa de tiles
 //				Tipo 0: Traspasable
 //				Tipo 1: Agua
 //				Tipo 2: Rompible
@@ -78,6 +68,19 @@
 //				Tipo 14: Pendiente 135º
 //				Tipo 15: Pendiente 45*
 //              ..31
+
+//Propiedades de tile
+//bit 7:Opacidad del tile.0:el tile es cuadrado 1:el tile tiene transparencia
+//bit 6:Profundidad Z del tile.1:Delante del personaje.0.Detras
+//bit 5:Transparencia del tile.0:el tile es opaco.1:el tile es semitransparente
+#define BIT_TILE_SHAPE 		128
+#define BIT_TILE_DELANTE 	64
+#define BIT_TILE_ALPHA      32
+
+//Nivel transparencia Alpha
+#define TRANSLEVEL	128
+
+
 
 //Constantes del motor
 const
@@ -139,7 +142,7 @@ Global
 	int FrameCount;				//Contador de Frames Global
 	int maxFPS;					//FPS Maximo
 	int minFPS;					//FPS Mínimo
-	
+	//debug
 	byte debugMode;				//Modo debug del engine
 	//nivel y mapeado
 	struct level        		//Estructura de un nivel
