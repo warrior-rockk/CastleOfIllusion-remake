@@ -83,7 +83,12 @@ private
 		
 	int i; 								//Variables auxiliares
 begin
-	
+	//testeo:
+	mapBox = map_new(cTileSize,cTileSize,8);
+	drawing_map(0,mapBox);
+	drawing_color(300);
+	draw_box(0,0,cTileSize,cTileSize);
+		
 	//Bucle principal de control del engine
 	Loop 
 		//Medicion fps
@@ -825,7 +830,7 @@ begin
     //Si el tile no es sólido, o no existe en el mapa, no hay colision
 	if (!tileExists(posy,posx))
 		return 0;
-	elseif((tileMap[posY][posX].tileCode) == 0 )
+	elseif((tileMap[posY][posX].tileCode) == NO_SOLID )
 		return 0;
 	end;
 	
@@ -882,17 +887,117 @@ end;
 function int checkTileCode(int idObject,int colDir,int posY,int posX)
 begin
 	switch(colDir)
+		//Colisiones superiores
 		case COLUP:
 			return tileMap[posY][posX].tileCode <> SOLID_ON_FALL;
 		end;
+		//Colisiones inferiores
 		case COLDOWN:
-			return (tileMap[posY][posX].tileCode<> SOLID_ON_FALL) || (tileMap[posY][posX].tileCode==SOLID_ON_FALL && idObject.vY>0);
+			return (tileMap[posY][posX].tileCode<> SOLID_ON_FALL) || 
+			       (tileMap[posY][posX].tileCode==SOLID_ON_FALL && idObject.vY>0);
 		end;
+		//Colisiones lateral izquierdas
 		case COLIZQ:
 			return tileMap[posY][posX].tileCode <> SOLID_ON_FALL;
 		end;
+		//Colisiones lateral derechas
 		case COLDER:
 			return tileMap[posY][posX].tileCode <> SOLID_ON_FALL;
 		end;
 	end;
 end;
+
+//PRUEBAS CON METODO COLISIONES DEL CASTLE OF REMAKE
+
+function int colCheckTileTerrain(int idObject)
+private colision_en_y;
+int pos;
+begin
+		
+		pos = idObject.y+idObject.vY;
+		
+		colision_en_y=colision_y(0,mapBox,idObject.alto,idObject.x,idObject.y,pos,0,1);
+		
+		//If (colision_en_y>=0) 
+		//colision_en_y = decode(colision_en_y);end;
+		
+		If ((colision_en_y>=0 && idObject.vY>=0)) //suelo
+			//father.v_y =0; 
+			//father.tierra = 1;
+			idObject.fy += colision_en_y;
+			return COLDOWN;
+			//v_x --;
+		Else
+	 	   //father.tierra = 0;
+		End;                                 
+		If (colision_en_y>=0 && idObject.vY<0) //techo
+			//father.v_y =colision_en_y*(-1);
+			return COLUP;
+		End;
+		
+		//return colision_en_y;
+end; 
+
+//funcion que devuelve el numero de pixeles en y hasta la dureza, o -1 si no hay
+//El byte "modo", determina si la comprobacion es el numero de pixeles hasta llegar
+//al color (modo 1) o a salir del color (modo 0)
+Function int colision_y(int fich,int graf,float alto,int x_org,int y_org,int y_dest,int color,byte modo)
+Private 
+byte i=0;
+Int inc_y;
+byte num_dur_tile;
+Begin
+	If (y_dest>=y_org || !modo )inc_y=1;Else inc_y=-1;End
+	y_org += (alto/2)*inc_y;
+	y_dest += (alto/2)*inc_y;
+	y_org += 0*inc_y;  //linea que delimita cuantos px estara el personaje sobre el suelo (con 1, estara justo 1 pix por encima de la linea de suelo)
+	if (!modo) inc_y=-1;end;
+	Repeat
+					
+			if (tileMap[y_org/cTileSize][x_org/cTileSize].tileCode == NO_SOLID)
+				num_dur_tile = 0;
+			else
+				num_dur_tile = map_get_pixel(fich,mapBox,(x_org%cTileSize),(y_org%cTileSize));
+			end;	
+			
+			If (modo)	
+				
+				if (num_dur_tile <> 0 )
+					return i;
+				/*switch (num_dur_tile)
+					case (C_DUR_SUELO):
+						Return(((C_DUR_SUELO+10)*100)+i);
+					end;
+					case (C_DUR_UP_STAIR):
+						Return(((C_DUR_UP_STAIR+10)*100)+i);
+					end;
+					case (C_DUR_AVANCE_X_DER):
+						Return(((C_DUR_AVANCE_X_DER+10)*100)+i);
+					end;
+					case (C_DUR_AVANCE_X_IZQ):
+						Return(((C_DUR_AVANCE_X_IZQ+10)*100)+i);
+					end;
+					case (C_DUR_SUELO_NOTECHO):
+						Return(((C_DUR_SUELO_NOTECHO+10)*100)+i);
+					end;
+					case (C_DUR_PENDIENTE):
+						Return(((C_DUR_PENDIENTE+10)*100)+i);
+					end;
+					case (C_DUR_PENDIENTE_45):
+						Return(((C_DUR_PENDIENTE_45+10)*100)+i);
+					end;
+				*/
+				end;
+				
+			Else
+				//buscamos salirnos del suelo y la pendiente, en teoria este modo solo se usa para las pendientes
+				//&& num_dur_tile !=C_DUR_PENDIENTE && num_dur_tile !=C_DUR_PENDIENTE_45
+				//If (num_dur_tile !=color )Return (((color+10)*100)+i);End;
+			End;
+					 
+			y_org+=inc_y;
+			i++;
+	
+	Until( (y_org>y_dest && inc_y==1) || (y_org<y_dest && inc_y==-1) )
+	return -1;
+End;   

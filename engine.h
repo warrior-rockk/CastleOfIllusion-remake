@@ -52,14 +52,14 @@
 //Codigo del tile
 //bits del 0 al 4 del mapa de tiles
 //				Tipo 0: No Solido
-//				Tipo 1: Agua
+//				Tipo 1: Solido
 //				Tipo 2: Rompible
 //				Tipo 3: Cinta a derechas
 //				Tipo 4: Cinta a izquierdas
 //				Tipo 5: Escalera
 //				Tipo 6: Base de la escalera
 //				Tipo 7: Dañino
-//				Tipo 8: Normal
+//				Tipo 8: Agua
 //				Tipo 9: Suelo no techo (SOLID_ON_FALL)
 //				Tipo 10: Sumergido
 //				Tipo 11: Sumergido/traspasable
@@ -68,6 +68,8 @@
 //				Tipo 14: Pendiente 135º
 //				Tipo 15: Pendiente 45*
 //              ..31
+#define NO_SOLID      0
+#define SOLID         1
 #define SOLID_ON_FALL 9
 
 //Propiedades de tile
@@ -164,9 +166,12 @@ Global
 	//Fisicas
 	float gravity 	= 0.3;		//Aceleracion gravedad
 	float friction 	= 0.9;		//Friccion
+	//Borrar
+	int mapBox; 
 End;
 
 //Variables locales
+//TODO: alto y ancho no deberian ser float!!
 Local
 	float vX		= 0;     	//Velocidad X
 	float vY		= 0;     	//Velocidad Y

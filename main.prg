@@ -178,10 +178,12 @@ BEGIN
 		grounded = false;
 		
 		//Recorremos la lista de tiles a comprobar
-		for (i=0;i<9;i++)
+		//for (i=0;i<9;i++)
 			
 			//Lanzamos comprobacion de colision con el tile actual
-			dir = colCheckTile(id,tiles_comprobar[i].posX,tiles_comprobar[i].posY);
+			//dir = colCheckTile(ID,tiles_comprobar[i].posX,tiles_comprobar[i].posY);
+			
+			dir = colCheckTileTerrain(ID); 
 			
 			if (dir == COLIZQ || dir == COLDER) 
 				vX = 0;
@@ -195,7 +197,7 @@ BEGIN
 				//vY = 2;		//Rebota hacia abajo con valor fijo
 			end;
 			
-		end;
+		//end;
 		
 		
 		//Actualizar velocidades
