@@ -51,7 +51,7 @@
 
 //Codigo del tile
 //bits del 0 al 4 del mapa de tiles
-//				Tipo 0: Traspasable
+//				Tipo 0: No Solido
 //				Tipo 1: Agua
 //				Tipo 2: Rompible
 //				Tipo 3: Cinta a derechas
@@ -60,7 +60,7 @@
 //				Tipo 6: Base de la escalera
 //				Tipo 7: Dañino
 //				Tipo 8: Normal
-//				Tipo 9: Suelo no techo
+//				Tipo 9: Suelo no techo (SOLID_ON_FALL)
 //				Tipo 10: Sumergido
 //				Tipo 11: Sumergido/traspasable
 //				Tipo 12: Detencion scroll X der
@@ -68,6 +68,7 @@
 //				Tipo 14: Pendiente 135º
 //				Tipo 15: Pendiente 45*
 //              ..31
+#define SOLID_ON_FALL 9
 
 //Propiedades de tile
 //bit 7:Opacidad del tile.0:el tile es cuadrado 1:el tile tiene transparencia

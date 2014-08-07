@@ -457,8 +457,8 @@ private
 							1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1,
 							1,0,0,1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,
 							1,0,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,1,1,1,
-							1,0,0,1,0,0,0,1,1,1,0,0,0,0,0,2,2,0,0,0,1,
-							1,0,0,0,0,0,1,1,1,1,0,0,0,192,128,0,0,0,0,1,1,
+							1,0,0,1,0,0,0,1,1,1,0,0,0,0,0,9,9,0,0,0,1,
+							1,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,1,1,
 							1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1;
 Begin
 	
@@ -883,16 +883,16 @@ function int checkTileCode(int idObject,int colDir,int posY,int posX)
 begin
 	switch(colDir)
 		case COLUP:
-			return tileMap[posY][posX].tileCode <> 2;
+			return tileMap[posY][posX].tileCode <> SOLID_ON_FALL;
 		end;
 		case COLDOWN:
-			return (tileMap[posY][posX].tileCode<>2) || (tileMap[posY][posX].tileCode==2 && idObject.vY>0);
+			return (tileMap[posY][posX].tileCode<> SOLID_ON_FALL) || (tileMap[posY][posX].tileCode==SOLID_ON_FALL && idObject.vY>0);
 		end;
 		case COLIZQ:
-			return tileMap[posY][posX].tileCode <> 2;
+			return tileMap[posY][posX].tileCode <> SOLID_ON_FALL;
 		end;
 		case COLDER:
-			return tileMap[posY][posX].tileCode <> 2;
+			return tileMap[posY][posX].tileCode <> SOLID_ON_FALL;
 		end;
 	end;
 end;
