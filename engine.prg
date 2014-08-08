@@ -909,6 +909,75 @@ end;
 
 //PRUEBAS CON METODO COLISIONES DEL CASTLE OF REMAKE
 
+function int colCheckTileTerrain(int idObject,int i)
+private colision_en_y,colision_en_x;
+int pos;
+int inix, finx;
+int iniy,finy;
+int colDir;
+begin
+		colDir = 0;
+		
+		//COLISIONES EN X
+		if (i == 2 || i == 3)
+			inix = idObject.ColPoints[i].x;
+			finx = inix+idObject.vX;
+			//say("calculo x: "+(finx-inix));
+			colision_en_x=colision_x(0,mapBox,idObject.alto,inix,idObject.y,finx,0);
+			
+			
+			//If (colision_en_x>=0 && ((colision_en_x/100)-10)==C_DUR_SUELO)
+			//colision_en_x = decode(colision_en_x);end;
+			
+			If (colision_en_x>=0)
+				if (i == 2) 
+					if (idObject.vX >= 0)
+						idObject.x+= colision_en_x-1;
+						colDir = COLDER;
+					end;
+				end;
+				if (i == 3) 
+					if (idObject.vX <= 0)
+						idObject.x-= colision_en_x-1;
+						colDir = COLIZQ;
+					end;
+				end;
+				
+				//father.v_x = 0;
+			End;  
+		end;
+		
+		if (i == 0 || i == 1)
+			iniy = idObject.ColPoints[i].y;
+			finy = iniy+idObject.vY;
+			
+			//COLISIONES EN Y
+			//pos = idObject.y+idObject.vY;
+			colision_en_y=colision_y(0,mapBox,idObject.alto,idObject.x,iniy,finy,0,1);
+			
+			//If (colision_en_y>=0) 
+			//colision_en_y = decode(colision_en_y);end;
+			
+			If ((colision_en_y>=0 && idObject.vY>=0)) //suelo
+				//father.v_y =0; 
+				//father.tierra = 1;
+				idObject.fy += colision_en_y;
+				colDir = COLDOWN;
+				//v_x --;
+			Else
+			   //father.tierra = 0;
+			End;                                 
+			If (colision_en_y>=0 && idObject.vY<0) //techo
+				//father.v_y =colision_en_y*(-1);
+				idObject.fy -= colision_en_y;
+				colDir = COLUP;
+			End;
+		end;
+		
+		return colDir;
+end; 
+
+
 function int colCheckTileTerrainX(int idObject)
 private colision_en_y,colision_en_x;
 int pos;
@@ -920,8 +989,9 @@ begin
 		//else
 		//	colision_en_x=colision_x(fich_nivel,dur_nivel,father.alto,father.x-(father.ancho>>1),father.y,(father.x-16+father.v_x),C_DUR_SUELO);	
 	    //end;
-	    ini = (idObject.x-(idObject.ancho/2));
-		fin = (idObject.x+idObject.vX);
+	    //ini = (idObject.x-(idObject.ancho/2));
+		ini = idObject.x+(idObject.ancho/2);
+		fin = (ini+idObject.vX);
 		
 		colision_en_x=colision_x(0,mapBox,idObject.alto,ini,idObject.y,fin,0);
 		
@@ -1095,7 +1165,6 @@ Begin
 					 
 			y_org+=inc_y;
 			i++;
-	
 	Until( (y_org>y_dest && inc_y==1) || (y_org<y_dest && inc_y==-1) )
 	return -1;
 End;   

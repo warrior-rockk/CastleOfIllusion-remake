@@ -181,6 +181,7 @@ Local
 	float alto		= 0;   		//Altura en pixeles del proceso
 	float ancho		= 0;   		//Ancho en pixeles del proceso
 	int   estado 	= 0;   		//Estado de la entidad
+	point colPoints[4]; 		//Puntos deteccion colision
 End;
 
 

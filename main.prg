@@ -148,7 +148,7 @@ BEGIN
 		//Colisiones
 				 
 		//comprobamos 9 tiles alrededor del player
-		tiles_comprobar[0].posx = x/cTileSize;
+		/*tiles_comprobar[0].posx = x/cTileSize;
 		tiles_comprobar[0].posy = y/cTileSize;
 		
 		tiles_comprobar[1].posx = x/cTileSize;
@@ -174,6 +174,21 @@ BEGIN
 		
 		tiles_comprobar[8].posx = (x/cTileSize)-1;
 		tiles_comprobar[8].posy = (y/cTileSize)-1;
+		*/
+		
+		//Comprobamos 4 puntos de deteccion
+		//Inf
+		colPoints[0].x = x;
+		colPoints[0].y = y;//+(alto/2);
+		//sup
+		colPoints[1].x = x;
+		colPoints[1].y = y-(alto/2);
+		//der
+		colPoints[2].x = x+(ancho/2);
+		colPoints[2].y = y;
+		//izq
+		colPoints[3].x = x-(ancho/2);
+		colPoints[3].y = y;
 		
 		grounded = false;
 		
@@ -182,22 +197,14 @@ BEGIN
 			
 			//Lanzamos comprobacion de colision con el tile actual
 			//dir = colCheckTile(ID,tiles_comprobar[i].posX,tiles_comprobar[i].posY);
+		//debug;
+		//Recorremos la lista de puntos a comprobar
+		say("test:");
+		for (i=0;i<4;i++)
 			
-			dir = colCheckTileTerrainX(ID); 
+			dir = colCheckTileTerrain(ID,i); 
 			
-			if (dir == COLIZQ || dir == COLDER) 
-				vX = 0;
-				jumping = false;
-			elseif (dir == COLDOWN) 
-				grounded = true;
-				jumping = false;
-			elseif (dir == COLUP) 
-				vY = 0;			//Flota por el techo	
-				//vY *= -1;		//Rebota hacia abajo con la velocida que subia
-				//vY = 2;		//Rebota hacia abajo con valor fijo
-			end;
-			
-			dir = colCheckTileTerrainY(ID); 
+			//dir = colCheckTileTerrainY(ID);
 			
 			if (dir == COLIZQ || dir == COLDER) 
 				vX = 0;
@@ -210,7 +217,8 @@ BEGIN
 				//vY *= -1;		//Rebota hacia abajo con la velocida que subia
 				//vY = 2;		//Rebota hacia abajo con valor fijo
 			end;
-		//end;
+			say(dir +" " + i);
+		end;
 		
 		
 		//Actualizar velocidades
