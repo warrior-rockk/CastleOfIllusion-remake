@@ -932,13 +932,13 @@ begin
 			If (colision_en_x>=0)
 				if (i == 2) 
 					//if (idObject.vX >= 0)
-						idObject.x-= colision_en_x+1;
+						idObject.fx-= colision_en_x;
 						colDir = COLDER;
 					//end;
 				end;
 				if (i == 3) 
 					//if (idObject.vX <= 0)
-						idObject.x+= colision_en_x+1;
+						idObject.fx+= colision_en_x;
 						colDir = COLIZQ;
 					//end;
 				end;
