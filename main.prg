@@ -184,10 +184,10 @@ BEGIN
 		colPoints[1].x = x;
 		colPoints[1].y = y-(alto/2);
 		//der
-		colPoints[2].x = x+(ancho/2);
+		colPoints[2].x = x+(ancho/2)-1;
 		colPoints[2].y = y;
 		//izq
-		colPoints[3].x = x-(ancho/2);
+		colPoints[3].x = x-(ancho/2)-1;
 		colPoints[3].y = y;
 		
 		grounded = false;

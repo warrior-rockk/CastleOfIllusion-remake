@@ -131,7 +131,7 @@ begin
 			idDebugText[1] = write_int(0,DEBUGINFOX,DEBUGINFOY+10,0,&idCursor.x);
 			idDebugText[2] = write_int(0,DEBUGINFOX,DEBUGINFOY+20,0,&idCursor.y);
 			//Hacemos al player un blend aditivo para ver las colisiones
-			if (idPlayer<>0) idPlayer.flags = idPlayer.flags & B_ABLEND; end;
+			if (idPlayer<>0) idPlayer.flags |= B_ABLEND; end;
 			//activamos el modo debug
 			actDebugMode = 1;
 		end;
@@ -149,7 +149,7 @@ begin
 				delete_text(idDebugText[i]);
 			end;
 			//Quitamos al player el blend aditivo para ver las colisiones
-			if (idPlayer<>0) idPlayer.flags = idPlayer.flags | B_ABLEND; end;
+			if (idPlayer<>0) idPlayer.flags &= B_ABLEND; end;
 			//desactivamos el modo debug
 			actDebugMode = 0;
 		end;
@@ -164,7 +164,7 @@ function WGE_InitScreen()
 begin
 	//Complete restore para evitar "flickering" (no funciona)
 	restore_type = COMPLETE_RESTORE;
-	//scale_mode=SCALE_NORMAL2X; 
+	scale_mode=SCALE_NORMAL2X; 
 	set_mode(cResX,cResY,8);
 	//set_mode(992,600,8);
 	set_fps(cNumFPS,0);
@@ -931,16 +931,16 @@ begin
 			
 			If (colision_en_x>=0)
 				if (i == 2) 
-					if (idObject.vX >= 0)
-						idObject.x+= colision_en_x-1;
+					//if (idObject.vX >= 0)
+						idObject.x-= colision_en_x+1;
 						colDir = COLDER;
-					end;
+					//end;
 				end;
 				if (i == 3) 
-					if (idObject.vX <= 0)
-						idObject.x-= colision_en_x-1;
+					//if (idObject.vX <= 0)
+						idObject.x+= colision_en_x+1;
 						colDir = COLIZQ;
-					end;
+					//end;
 				end;
 				
 				//father.v_x = 0;
@@ -1048,7 +1048,7 @@ end;
 //funcion que devuelve el numero de pixeles en x hasta la dureza, o -1 si no hay
 function int colision_x(Int fich,Int graf,float alto,int x_org,Int y_org,int x_dest,Int color)
 Private 
-byte i;
+byte i=0;
 int inc_x;
 byte num_dur_tile_center;
 byte num_dur_tile_down;
