@@ -919,14 +919,14 @@ begin
 		colDir = 0;
 		
 		//COLISIONES EN X
-		if (i == 2 || i == 3)
-			inix = idObject.ColPoints[i].x;
+		if (i == 2 || i == 3 || i ==4 || i ==5)
+			inix = idObject.fx+idObject.ColPoints[i].x;
 			finx = inix+idObject.vX;
-			
+			iniy = idObject.fy+idObject.ColPoints[i].y;
 			//say("calculo x: "+(finx-inix));
 			log("Comprobamos : "+inix+" con "+finx);
 			
-			colision_en_x=colision_x(0,mapBox,idObject.alto,inix,idObject.y,finx,0);
+			colision_en_x=colision_x(0,mapBox,idObject.alto,inix,iniy,finx,0);
 			
 			
 			//If (colision_en_x>=0 && ((colision_en_x/100)-10)==C_DUR_SUELO)
@@ -934,14 +934,14 @@ begin
 			
 			If (colision_en_x>=0)
 				log("hay colision");
-				if (i == 2) 
+				if (i == 2 || i==4) 
 					//if (idObject.vX > 0)
 						log(idObject.fx + " Hay colision a la derecha "+colision_en_x);
 						idObject.fx+= colision_en_x-1;
 						colDir = COLDER;
 					//end;
 				end;
-				if (i == 3) 
+				if (i == 3 || i ==5) 
 					//if (idObject.vX < 0)
 						log("Hay colision a la izquierda");
 						idObject.fx-= colision_en_x-1;

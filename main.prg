@@ -186,12 +186,27 @@ BEGIN
 		//der
 		colPoints[2].x = fx+(ancho/2)-1;
 		colPoints[2].y = fy;
+		colPoints[4].x = fx+(ancho/2)-1;
+		colPoints[4].y = fy+8;
 		//izq
 		colPoints[3].x = fx-(ancho/2);
 		colPoints[3].y = fy;
+		colPoints[5].x = fx-(ancho/2);
+		colPoints[5].y = fy+8;
 		
 		grounded = false;
 		
+		//der
+		colPoints[2].x = (ancho/2)-1;
+		colPoints[2].y = 0;
+		colPoints[4].x = (ancho/2)-1;
+		colPoints[4].y = 8;
+		//izq
+		colPoints[3].x = -(ancho/2);
+		colPoints[3].y = 0;
+		colPoints[5].x = -(ancho/2);
+		colPoints[5].y = 8;
+
 		//Recorremos la lista de tiles a comprobar
 		//for (i=0;i<9;i++)
 			
@@ -200,8 +215,9 @@ BEGIN
 		//debug;
 		//Recorremos la lista de puntos a comprobar
 		//say("test:");
-		for (i=1;i<4;i++)
+		for (i=1;i<6;i++)
 			
+		
 			dir = colCheckTileTerrain(ID,i); 
 			
 			//dir = colCheckTileTerrainY(ID);
