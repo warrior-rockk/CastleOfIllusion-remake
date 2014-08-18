@@ -120,8 +120,8 @@ End;
 
 //Punto
 Type point						//Tipo de dato punto
-	int x;						//Posicion X
-	int y;						//Posicion Y
+	float x;					//Posicion X
+	float y;					//Posicion Y
 End;
 
 //Path
@@ -144,7 +144,7 @@ Global
 	//engine
 	int FrameCount;				//Contador de Frames Global
 	int maxFPS;					//FPS Maximo
-	int minFPS;					//FPS Mínimo
+	int minFPS; 				//FPS Mínimo
 	int gTileSize = cTileSize; 
 	//debug
 	byte debugMode;				//Modo debug del engine

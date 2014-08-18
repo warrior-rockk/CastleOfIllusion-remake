@@ -95,7 +95,7 @@ begin
 		if (fps > maxFPS)
 			maxFPS = fps;
 		end;
-		if (fps < minFPS)
+		if (fps < maxFPS && fps < ( minFPS || minFPS <> 0 ) && fps>0)
 			minFPS = fps;
 		end;
 		
@@ -164,7 +164,7 @@ function WGE_InitScreen()
 begin
 	//Complete restore para evitar "flickering" (no funciona)
 	restore_type = COMPLETE_RESTORE;
-	scale_mode=SCALE_NORMAL2X; 
+	//scale_mode=SCALE_NORMAL2X; 
 	set_mode(cResX,cResY,8);
 	//set_mode(992,600,8);
 	set_fps(cNumFPS,0);
@@ -922,7 +922,10 @@ begin
 		if (i == 2 || i == 3)
 			inix = idObject.ColPoints[i].x;
 			finx = inix+idObject.vX;
+			
 			//say("calculo x: "+(finx-inix));
+			log("Comprobamos : "+inix+" con "+finx);
+			
 			colision_en_x=colision_x(0,mapBox,idObject.alto,inix,idObject.y,finx,0);
 			
 			
@@ -930,15 +933,18 @@ begin
 			//colision_en_x = decode(colision_en_x);end;
 			
 			If (colision_en_x>=0)
+				log("hay colision");
 				if (i == 2) 
-					//if (idObject.vX >= 0)
-						idObject.fx-= colision_en_x;
+					//if (idObject.vX > 0)
+						log(idObject.fx + " Hay colision a la derecha "+colision_en_x);
+						idObject.fx+= colision_en_x-1;
 						colDir = COLDER;
 					//end;
 				end;
 				if (i == 3) 
-					//if (idObject.vX <= 0)
-						idObject.fx+= colision_en_x;
+					//if (idObject.vX < 0)
+						log("Hay colision a la izquierda");
+						idObject.fx-= colision_en_x-1;
 						colDir = COLIZQ;
 					//end;
 				end;
@@ -1001,11 +1007,11 @@ begin
 		
 		If (colision_en_x>=0)
 			if (idObject.vX>0) 
-				idObject.x+= colision_en_x-1;
+				idObject.x+= colision_en_x;
 				return COLDER;
 			end;
 			if (idObject.vX<0) 
-				idObject.x-= colision_en_x-1;
+				idObject.x-= colision_en_x;
 				return COLIZQ;
 			end;
 			
@@ -1057,7 +1063,15 @@ fich_up;
 fich_down;
 Begin
  
-If (x_dest>x_org)inc_x=1;Else inc_x=-1;End;
+ 
+If (x_dest>=x_org)
+	inc_x=1;
+Else 
+	inc_x=-1;
+	//Si la comprobacion es a izquierdas,restamos uno al origen para tener en cuenta
+	//las coordenadas 0
+	//x_org-=1;
+End;
       
 	    Repeat
 		    
@@ -1071,13 +1085,13 @@ If (x_dest>x_org)inc_x=1;Else inc_x=-1;End;
 				//if (num_dur_tile_center == 6 || num_dur_tile_up == 6 || num_dur_tile_down == 6 ) Return (((C_DUR_UP_STAIR+10)*100)+1);End;
 				
 				//If (map_get_pixel(fich,num_dur_tile_center,(x_org%C_TAMANO_TILE),(y_org%C_TAMANO_TILE))== C_DUR_SUELO)Return (((C_DUR_SUELO+10)*100)+i);End;
-			    
-				if (tileMap[y_org/cTileSize][x_org/cTileSize].tileCode <> NO_SOLID)
-					if(map_get_pixel(fich,mapBox,(x_org%cTileSize),(y_org%cTileSize)) <> 0)
-						return i;
+			    if (tileExists(y_org/cTileSize,x_org/cTileSize))
+					if (tileMap[y_org/cTileSize][x_org/cTileSize].tileCode <> NO_SOLID)
+						if(map_get_pixel(fich,mapBox,(x_org%cTileSize),(y_org%cTileSize)) <> 0)
+							return i;
+						end;
 					end;
 				end;
-				
 				/*If (map_get_pixel(fich_up,num_dur_tile_up,(x_org%C_TAMANO_TILE),(((y_org-((alto/2)-altura_pendiente))%C_TAMANO_TILE))) == C_DUR_SUELO)Return (((C_DUR_SUELO+10)*100)+i);End;  
 			    If (map_get_pixel(fich_down,num_dur_tile_down,(x_org%C_TAMANO_TILE),(((y_org+((alto/2)-altura_pendiente))%C_TAMANO_TILE)))== C_DUR_SUELO)Return (((C_DUR_SUELO+10)*100)+i);End;  
 			    
@@ -1112,7 +1126,7 @@ Function int colision_y(int fich,int graf,float alto,int x_org,int y_org,int y_d
 Private 
 byte i=0;
 Int inc_y;
-byte num_dur_tile;
+byte num_dur_tile=0;
 Begin
 	If (y_dest>=y_org || !modo )inc_y=1;Else inc_y=-1;End
 	y_org += (alto/2)*inc_y;
@@ -1121,11 +1135,13 @@ Begin
 	if (!modo) inc_y=-1;end;
 	Repeat
 					
-			if (tileMap[y_org/cTileSize][x_org/cTileSize].tileCode == NO_SOLID)
-				num_dur_tile = 0;
-			else
-				num_dur_tile = map_get_pixel(fich,mapBox,(x_org%cTileSize),(y_org%cTileSize));
-			end;	
+			if (tileExists(y_org/cTileSize,x_org/cTileSize))
+				if (tileMap[y_org/cTileSize][x_org/cTileSize].tileCode == NO_SOLID)
+					num_dur_tile = 0;
+				else
+					num_dur_tile = map_get_pixel(fich,mapBox,(x_org%cTileSize),(y_org%cTileSize));
+				end;	
+			end;
 			
 			If (modo)	
 				
@@ -1168,3 +1184,18 @@ Begin
 	Until( (y_org>y_dest && inc_y==1) || (y_org<y_dest && inc_y==-1) )
 	return -1;
 End;   
+
+process debugColPoint(int x,int y)
+begin
+	region = cGameRegion;
+	ctype = c_scroll;
+	z = -100;
+
+	graph = map_new(1,1,8);
+	drawing_map(0,graph);
+	drawing_color(100);
+	draw_box(0,0,1,1);
+	
+	frame;
+
+end;

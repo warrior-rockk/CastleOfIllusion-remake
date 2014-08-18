@@ -178,17 +178,17 @@ BEGIN
 		
 		//Comprobamos 4 puntos de deteccion
 		//Inf
-		colPoints[0].x = x;
-		colPoints[0].y = y;//+(alto/2);
+		colPoints[0].x = fx;
+		colPoints[0].y = fy;//+(alto/2);
 		//sup
-		colPoints[1].x = x;
-		colPoints[1].y = y-(alto/2);
+		colPoints[1].x = fx;
+		colPoints[1].y = fy;//-(alto/2);
 		//der
-		colPoints[2].x = x+(ancho/2)-1;
-		colPoints[2].y = y;
+		colPoints[2].x = fx+(ancho/2)-1;
+		colPoints[2].y = fy;
 		//izq
-		colPoints[3].x = x-(ancho/2)-1;
-		colPoints[3].y = y;
+		colPoints[3].x = fx-(ancho/2);
+		colPoints[3].y = fy;
 		
 		grounded = false;
 		
@@ -199,8 +199,8 @@ BEGIN
 			//dir = colCheckTile(ID,tiles_comprobar[i].posX,tiles_comprobar[i].posY);
 		//debug;
 		//Recorremos la lista de puntos a comprobar
-		say("test:");
-		for (i=0;i<4;i++)
+		//say("test:");
+		for (i=1;i<4;i++)
 			
 			dir = colCheckTileTerrain(ID,i); 
 			
@@ -217,7 +217,7 @@ BEGIN
 				//vY *= -1;		//Rebota hacia abajo con la velocida que subia
 				//vY = 2;		//Rebota hacia abajo con valor fijo
 			end;
-			say(dir +" " + i);
+			//say(dir +" " + i);
 		end;
 		
 		
@@ -231,10 +231,13 @@ BEGIN
 		
 		//Escalamos la posicion de floats en enteros
 		if (abs(fx-x)>=1 ) //si la diferencia entre el float y el entero es una unidad
+			log("movemos de "+x+" a");
 			x = fx;
+			log(x+" con vel: "+vX+" desde "+fx);
 		end;
 		y = fy;
-
+		debugColPoint(x+(ancho/2)-1,y);
+		debugColPoint(x-(ancho/2),y);
 		frame;
 end;
 end;
