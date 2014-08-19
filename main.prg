@@ -111,6 +111,25 @@ BEGIN
 	drawing_color(200);
 	draw_fcircle(ancho-8,alto-16,4);
 	
+	//definimos los puntos de colision
+	//respecto al centro del personaje
+	//Inf
+	colPoints[0].x = 0;
+	colPoints[0].y = 0;
+	//sup
+	colPoints[1].x = 0;
+	colPoints[1].y = 0;
+	//der
+	colPoints[2].x = 15;
+	colPoints[2].y = 0;
+	colPoints[4].x = 15;
+	colPoints[4].y = 8;
+	//izq
+	colPoints[3].x = -16;
+	colPoints[3].y = 0;
+	colPoints[5].x = -16;
+	colPoints[5].y = 8;
+	
 	x = level.playerx0;
 	y = level.playery0;
 	
@@ -176,36 +195,9 @@ BEGIN
 		tiles_comprobar[8].posy = (y/cTileSize)-1;
 		*/
 		
-		//Comprobamos 4 puntos de deteccion
-		//Inf
-		colPoints[0].x = fx;
-		colPoints[0].y = fy;//+(alto/2);
-		//sup
-		colPoints[1].x = fx;
-		colPoints[1].y = fy;//-(alto/2);
-		//der
-		colPoints[2].x = fx+(ancho/2)-1;
-		colPoints[2].y = fy;
-		colPoints[4].x = fx+(ancho/2)-1;
-		colPoints[4].y = fy+8;
-		//izq
-		colPoints[3].x = fx-(ancho/2);
-		colPoints[3].y = fy;
-		colPoints[5].x = fx-(ancho/2);
-		colPoints[5].y = fy+8;
-		
 		grounded = false;
 		
-		//der
-		colPoints[2].x = (ancho/2)-1;
-		colPoints[2].y = 0;
-		colPoints[4].x = (ancho/2)-1;
-		colPoints[4].y = 8;
-		//izq
-		colPoints[3].x = -(ancho/2);
-		colPoints[3].y = 0;
-		colPoints[5].x = -(ancho/2);
-		colPoints[5].y = 8;
+		
 
 		//Recorremos la lista de tiles a comprobar
 		//for (i=0;i<9;i++)

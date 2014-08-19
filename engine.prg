@@ -954,12 +954,12 @@ begin
 		end;
 		
 		if (i == 0 || i == 1)
-			iniy = idObject.ColPoints[i].y;
+			iniy = idObject.fy+idObject.ColPoints[i].y;
 			finy = iniy+idObject.vY;
-			
+			inix = idObject.fx+idObject.ColPoints[i].x;
 			//COLISIONES EN Y
 			//pos = idObject.y+idObject.vY;
-			colision_en_y=colision_y(0,mapBox,idObject.alto,idObject.x,iniy,finy,0,1);
+			colision_en_y=colision_y(0,mapBox,idObject.alto,inix,iniy,finy,0,1);
 			
 			//If (colision_en_y>=0) 
 			//colision_en_y = decode(colision_en_y);end;
@@ -984,72 +984,7 @@ begin
 end; 
 
 
-function int colCheckTileTerrainX(int idObject)
-private colision_en_y,colision_en_x;
-int pos;
-int ini, fin;
-begin
-		//COLISIONES EN X
-		//if (father.v_x>0)
-		//	colision_en_x=colision_x(fich_nivel,dur_nivel,father.alto,father.x+(father.ancho>>1),father.y,(father.x+16+father.v_x),C_DUR_SUELO);
-		//else
-		//	colision_en_x=colision_x(fich_nivel,dur_nivel,father.alto,father.x-(father.ancho>>1),father.y,(father.x-16+father.v_x),C_DUR_SUELO);	
-	    //end;
-	    //ini = (idObject.x-(idObject.ancho/2));
-		ini = idObject.x+(idObject.ancho/2);
-		fin = (ini+idObject.vX);
-		
-		colision_en_x=colision_x(0,mapBox,idObject.alto,ini,idObject.y,fin,0);
-		
-		
-		//If (colision_en_x>=0 && ((colision_en_x/100)-10)==C_DUR_SUELO)
-		//colision_en_x = decode(colision_en_x);end;
-		
-		If (colision_en_x>=0)
-			if (idObject.vX>0) 
-				idObject.x+= colision_en_x;
-				return COLDER;
-			end;
-			if (idObject.vX<0) 
-				idObject.x-= colision_en_x;
-				return COLIZQ;
-			end;
-			
-			//father.v_x = 0;
-		End;  
-		
-		
-end; 
 
-function int colCheckTileTerrainY(int idObject)
-private colision_en_y,colision_en_x;
-int pos;
-int ini, fin;
-begin
-				
-		//COLISIONES EN Y
-		pos = idObject.y+idObject.vY;
-		colision_en_y=colision_y(0,mapBox,idObject.alto,idObject.x,idObject.y,pos,0,1);
-		
-		//If (colision_en_y>=0) 
-		//colision_en_y = decode(colision_en_y);end;
-		
-		If ((colision_en_y>=0 && idObject.vY>=0)) //suelo
-			//father.v_y =0; 
-			//father.tierra = 1;
-			idObject.fy += colision_en_y;
-			return COLDOWN;
-			//v_x --;
-		Else
-	 	   //father.tierra = 0;
-		End;                                 
-		If (colision_en_y>=0 && idObject.vY<0) //techo
-			//father.v_y =colision_en_y*(-1);
-			idObject.fy -= colision_en_y;
-			return COLUP;
-		End;
-		
-end; 
 
 //funcion que devuelve el numero de pixeles en x hasta la dureza, o -1 si no hay
 function int colision_x(Int fich,Int graf,float alto,int x_org,Int y_org,int x_dest,Int color)
@@ -1184,6 +1119,73 @@ Begin
 	Until( (y_org>y_dest && inc_y==1) || (y_org<y_dest && inc_y==-1) )
 	return -1;
 End;   
+
+function int colCheckTileTerrainX(int idObject)
+private colision_en_y,colision_en_x;
+int pos;
+int ini, fin;
+begin
+		//COLISIONES EN X
+		//if (father.v_x>0)
+		//	colision_en_x=colision_x(fich_nivel,dur_nivel,father.alto,father.x+(father.ancho>>1),father.y,(father.x+16+father.v_x),C_DUR_SUELO);
+		//else
+		//	colision_en_x=colision_x(fich_nivel,dur_nivel,father.alto,father.x-(father.ancho>>1),father.y,(father.x-16+father.v_x),C_DUR_SUELO);	
+	    //end;
+	    //ini = (idObject.x-(idObject.ancho/2));
+		ini = idObject.x+(idObject.ancho/2);
+		fin = (ini+idObject.vX);
+		
+		colision_en_x=colision_x(0,mapBox,idObject.alto,ini,idObject.y,fin,0);
+		
+		
+		//If (colision_en_x>=0 && ((colision_en_x/100)-10)==C_DUR_SUELO)
+		//colision_en_x = decode(colision_en_x);end;
+		
+		If (colision_en_x>=0)
+			if (idObject.vX>0) 
+				idObject.x+= colision_en_x;
+				return COLDER;
+			end;
+			if (idObject.vX<0) 
+				idObject.x-= colision_en_x;
+				return COLIZQ;
+			end;
+			
+			//father.v_x = 0;
+		End;  
+		
+		
+end; 
+
+function int colCheckTileTerrainY(int idObject)
+private colision_en_y,colision_en_x;
+int pos;
+int ini, fin;
+begin
+				
+		//COLISIONES EN Y
+		pos = idObject.y+idObject.vY;
+		colision_en_y=colision_y(0,mapBox,idObject.alto,idObject.x,idObject.y,pos,0,1);
+		
+		//If (colision_en_y>=0) 
+		//colision_en_y = decode(colision_en_y);end;
+		
+		If ((colision_en_y>=0 && idObject.vY>=0)) //suelo
+			//father.v_y =0; 
+			//father.tierra = 1;
+			idObject.fy += colision_en_y;
+			return COLDOWN;
+			//v_x --;
+		Else
+	 	   //father.tierra = 0;
+		End;                                 
+		If (colision_en_y>=0 && idObject.vY<0) //techo
+			//father.v_y =colision_en_y*(-1);
+			idObject.fy -= colision_en_y;
+			return COLUP;
+		End;
+		
+end; 
 
 process debugColPoint(int x,int y)
 begin
