@@ -771,7 +771,7 @@ Begin
 End
 
 //Funcion de chequeo de colision entre proceso y AABB
-//Devuelve un int con el sentido de la colision o 0 si no hay
+//Posiciona el objeto al borde del tile y devuelve un int con el sentido de la colision o 0 si no hay
 function int colCheckAABB(int idObject, int shapeBx,int shapeBy,int shapeBW,int shapeBH)
 private
 float vcX,vcY,hW,hH,oX,oY;
@@ -826,7 +826,7 @@ begin
 end;
 
 //Funcion de chequeo de colision entre proceso y tile (dando sus coordenadas en mapa)
-//Devuelve un int con el sentido de la colision o 0 si no hay
+//Posiciona el objeto al borde del tile y devuelve un int con el sentido de la colision o 0 si no hay
 function int colCheckTile(int idObject,int posX,int posY)
 private
 float vcX,vcY,hW,hH,oX,oY;
@@ -913,91 +913,92 @@ begin
 	end;
 end;
 
-//PRUEBAS CON METODO COLISIONES DEL CASTLE OF REMAKE
 
+//Funcion de colision con tile segun mapa de durezas
+//Posiciona el objeto en el borde del tile y devuelve un int con el sentido de la colision o 0 si no lo hay
 function int colCheckTileTerrain(int idObject,int i)
-private colision_en_y,colision_en_x;
-int pos;
-int inix, finx;
-int iniy,finy;
-int colDir;
+private 
+int distColX;	//Distancia con la colision en X
+int distColY;	//Distancia con la colision en Y
+int iniX;		//Inicio X
+int finX;		//FIn X
+int iniY;		//Inicio Y
+int finY;		//Fin Y
+int colDir;		//Sentido de la colision
+
 begin
 		colDir = 0;
 		
 		//COLISIONES EN X
+		
+		//si el punto de deteccion es uno de los laterales
 		if (idObject.colPoint[i].colCode == COLDER || idObject.colPoint[i].colCode == COLIZQ )
-			inix = idObject.fx+idObject.colPoint[i].x;
-			finx = inix+idObject.vX;
-			iniy = idObject.fy+idObject.colPoint[i].y;
-			//say("calculo x: "+(finx-inix));
-			//log("Comprobamos : "+inix+" con "+finx);
 			
-			colision_en_x=colision_x(0,mapBox,idObject.alto,inix,iniy,finx,0);
+			//Establecemos el vector a chequear
+			iniX = idObject.fx+idObject.colPoint[i].x;
+			finX = iniX+idObject.vX;
+			iniY = idObject.fy+idObject.colPoint[i].y;
+			finY = iniY;
 			
+			//lanzamos la comprobacion de colision en X
+			distColX = colCheckVectorX(0,mapBox,idObject.alto,inix,iniy,finx,0);
 			
-			//If (colision_en_x>=0 && ((colision_en_x/100)-10)==C_DUR_SUELO)
-			//colision_en_x = decode(colision_en_x);end;
-			
-			If (colision_en_x>=0)
-				//log("hay colision");
+			//Si hay colision
+			If (distColX>=0)
+				//Colision Derecha
 				if (idObject.colPoint[i].colCode == COLDER) 
-					//if (idObject.vX > 0)
-						//log(idObject.fx + " Hay colision a la derecha "+colision_en_x);
-						idObject.fx+= colision_en_x-1;
-						colDir = COLDER;
-					//end;
+					//situamos el objeto al borde de la colision	
+					idObject.fx+= distColX-1;
+					colDir = COLDER;
+					
 				end;
-				if (idObject.colPoint[i].colCode == COLIZQ) 
-					//if (idObject.vX < 0)
-						//log("Hay colision a la izquierda");
-						idObject.fx-= colision_en_x-1;
-						colDir = COLIZQ;
-					//end;
+				//Colision Izquierda
+				if (idObject.colPoint[i].colCode == COLIZQ) 			
+					//situamos el objeto al borde de la colision
+					idObject.fx-= distColX-1;
+					colDir = COLIZQ;
 				end;
-				
-				//father.v_x = 0;
-			End;  
+			end;  
 		end;
 		
+		//COLISIONES EN Y
+		
+		//Si el punto de deteccion es uno de los superiores/inferiores
 		if (idObject.colPoint[i].colCode == COLUP || idObject.colPoint[i].colCode == COLDOWN)
-			iniy = idObject.fy+idObject.colPoint[i].y;
-			finy = iniy+idObject.vY;
-			inix = idObject.fx+idObject.colPoint[i].x;
-			//COLISIONES EN Y
-			//pos = idObject.y+idObject.vY;
-			colision_en_y=colision_y(0,mapBox,idObject.alto,inix,iniy,finy,0,1);
 			
-			//log("Comprobamos : "+iniy+" con "+finy);
+			//Establecemos el vector a comparar
+			iniY = idObject.fy+idObject.colPoint[i].y;
+			finY = iniY+idObject.vY;
+			iniX = idObject.fx+idObject.colPoint[i].x;
+			finX = iniX;
 			
-			//colision_en_y = decode(colision_en_y);end;
-			If (colision_en_y>=0) 
-				//If (idObject.vY>=0) //suelo
+			//Lanzamos la comprobacion de colision en Y
+			distColY = colision_y(0,mapBox,idObject.alto,inix,iniy,finy,0,1);
+			
+			//Si hay colision
+			If (distColY>=0) 
+				//Colision inferior
 				if (idObject.colPoint[i].colCode == COLDOWN && idObject.vY>=0)
-					//father.v_y =0; 
-					//father.tierra = 1;
-					//log("Hay colision a la abajo");
-					idObject.fy += colision_en_y;
+					//Situamos al objeto en el borde de la colision
+					idObject.fy += distColY;
 					colDir = COLDOWN;
-					//v_x --;
 				End;                                 
-				//If (idObject.vY<0) //techo
+				//Colision superior
 				if (idObject.colPoint[i].colCode == COLUP && idObject.vY<0)
-					//father.v_y =colision_en_y*(-1);
-					//log("Hay colision a la arriba");
-					idObject.fy -= colision_en_y;
+					//Situamos al objeto en el borde de la colision
+					idObject.fy -= distColY;
 					colDir = COLUP;
 				End;
 			end;
 		end;
 		
+		//Devolvemos el sentido de la colision
 		return colDir;
 end; 
 
 
-
-
-//funcion que devuelve el numero de pixeles en x hasta la dureza, o -1 si no hay
-function int colision_x(Int fich,Int graf,int alto,int x_org,Int y_org,int x_dest,Int color)
+//Funcion que devuelve el numero de pixeles en x hasta la dureza, o -1 si no hay
+function int colCheckVectorX(Int fich,Int graf,int alto,int x_org,Int y_org,int x_dest,Int color)
 Private 
 byte i=0;
 int inc_x;
