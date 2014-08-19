@@ -1208,7 +1208,7 @@ begin
 	if (numColPoints == 5) return 1; end;
 	
 	idObject.colPoint[5].x 		= -(idObject.ancho>>1);
-	idObject.colPoint[5].y 		= (idObject.alto/4);
+	idObject.colPoint[5].y 		= (idObject.alto/4)-8;
 	idObject.colPoint[5].colCode = COLIZQ;
 	
 	if (numColPoints == 6) return 1; end;
