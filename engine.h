@@ -10,6 +10,7 @@
 #define WGE_ENGINE							//Utilizando WGE engine
 #define bit_cmp(a,b) 	( (a & b) == b )	//Funcion comparar bit
 #define MAXOBJPARAMS   	9					//Numero de parametros objetos
+#define MAXCOLPOINTS    12
 
 //Numero de tiles fuera de la pantalla. 
 //Si la resolucion no es multiplo del tamaño del tile,es aconsejable usar 
@@ -114,14 +115,14 @@ Type objeto         			//Tipo de Dato de objeto
 	int x0;         			//Posicion X
 	int y0;         			//Posicion Y
 	int angulo;     			//Angulo
-	int param[MaxObjParams];	//Parametros del objeto
+	int param[MAXOBJPARAMS];	//Parametros del objeto
 	byte dibujado;				//Flag de si ha sido dibujado (sectorizacion)
 End;
 
 //Punto
 Type point						//Tipo de dato punto
-	float x;					//Posicion X
-	float y;					//Posicion Y
+	int x;						//Posicion X
+	int y;						//Posicion Y
 End;
 
 //Path
@@ -174,14 +175,19 @@ End;
 //Variables locales
 //TODO: alto y ancho no deberian ser float!!
 Local
-	float vX		= 0;     	//Velocidad X
-	float vY		= 0;     	//Velocidad Y
-	float fX		= 0;		//Posicion x coma flotante
-	float fY		= 0;		//Posicion y coma flotante
-	float alto		= 0;   		//Altura en pixeles del proceso
-	float ancho		= 0;   		//Ancho en pixeles del proceso
-	int   estado 	= 0;   		//Estado de la entidad
-	point colPoints[8]; 		//Puntos deteccion colision
+	float vX			= 0;     	//Velocidad X
+	float vY			= 0;     	//Velocidad Y
+	float fX			= 0;		//Posicion x coma flotante
+	float fY			= 0;		//Posicion y coma flotante
+	float alto			= 0;   		//Altura en pixeles del proceso
+	float ancho			= 0;   		//Ancho en pixeles del proceso
+	int   estado 		= 0;   		//Estado de la entidad
+	int	  numColPoints 	= 0;		//Numero de puntos de colision
+	struct colPoint[MAXCOLPOINTS] 		//Puntos deteccion colision
+		float x;
+		float y;
+		byte colCode;
+	end;
 End;
 
 

@@ -164,7 +164,7 @@ function WGE_InitScreen()
 begin
 	//Complete restore para evitar "flickering" (no funciona)
 	restore_type = COMPLETE_RESTORE;
-	//scale_mode=SCALE_NORMAL2X; 
+	scale_mode=SCALE_NORMAL2X; 
 	set_mode(cResX,cResY,8);
 	//set_mode(992,600,8);
 	set_fps(cNumFPS,0);
@@ -919,10 +919,10 @@ begin
 		colDir = 0;
 		
 		//COLISIONES EN X
-		if (i == 2 || i == 3 || i ==4 || i ==5)
-			inix = idObject.fx+idObject.ColPoints[i].x;
+		if (idObject.colPoint[i].colCode == COLDER || idObject.colPoint[i].colCode == COLIZQ )
+			inix = idObject.fx+idObject.colPoint[i].x;
 			finx = inix+idObject.vX;
-			iniy = idObject.fy+idObject.ColPoints[i].y;
+			iniy = idObject.fy+idObject.colPoint[i].y;
 			//say("calculo x: "+(finx-inix));
 			log("Comprobamos : "+inix+" con "+finx);
 			
@@ -934,14 +934,14 @@ begin
 			
 			If (colision_en_x>=0)
 				log("hay colision");
-				if (i == 2 || i==4) 
+				if (idObject.colPoint[i].colCode == COLDER) 
 					//if (idObject.vX > 0)
 						log(idObject.fx + " Hay colision a la derecha "+colision_en_x);
 						idObject.fx+= colision_en_x-1;
 						colDir = COLDER;
 					//end;
 				end;
-				if (i == 3 || i ==5) 
+				if (idObject.colPoint[i].colCode == COLIZQ) 
 					//if (idObject.vX < 0)
 						log("Hay colision a la izquierda");
 						idObject.fx-= colision_en_x-1;
@@ -953,10 +953,10 @@ begin
 			End;  
 		end;
 		
-		if (i == 0 || i == 1)
-			iniy = idObject.fy+idObject.ColPoints[i].y;
+		if (idObject.colPoint[i].colCode == COLUP || idObject.colPoint[i].colCode == COLDOWN)
+			iniy = idObject.fy+idObject.colPoint[i].y;
 			finy = iniy+idObject.vY;
-			inix = idObject.fx+idObject.ColPoints[i].x;
+			inix = idObject.fx+idObject.colPoint[i].x;
 			//COLISIONES EN Y
 			//pos = idObject.y+idObject.vY;
 			colision_en_y=colision_y(0,mapBox,idObject.alto,inix,iniy,finy,0,1);

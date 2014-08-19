@@ -113,22 +113,31 @@ BEGIN
 	
 	//definimos los puntos de colision
 	//respecto al centro del personaje
-	//Inf
-	colPoints[0].x = 0;
-	colPoints[0].y = 0;
-	//sup
-	colPoints[1].x = 0;
-	colPoints[1].y = 0;
-	//der
-	colPoints[2].x = 15;
-	colPoints[2].y = 0;
-	colPoints[4].x = 15;
-	colPoints[4].y = 8;
-	//izq
-	colPoints[3].x = -16;
-	colPoints[3].y = 0;
-	colPoints[5].x = -16;
-	colPoints[5].y = 8;
+	numColPoints = 6;
+	
+	colPoint[0].x 		= 0;
+	colPoint[0].y 		= 0;
+	colPoint[0].colCode = COLDOWN;
+	
+	colPoint[1].x 		= 0;
+	colPoint[1].y 		= 0;
+	colPoint[1].colCode = COLUP;
+	
+	colPoint[2].x 		= 15;
+	colPoint[2].y 		= 0;
+	colPoint[2].colCode = COLDER;
+	
+	colPoint[3].x 		= 15;
+	colPoint[3].y 		= 8;
+	colPoint[3].colCode = COLDER;
+	
+	colPoint[4].x 		= -16;
+	colPoint[4].y 		= 0;
+	colPoint[4].colCode = COLIZQ;
+	
+	colPoint[5].x 		= -16;
+	colPoint[5].y 		= 8;
+	colPoint[5].colCode = COLIZQ;
 	
 	x = level.playerx0;
 	y = level.playery0;
@@ -207,7 +216,7 @@ BEGIN
 		//debug;
 		//Recorremos la lista de puntos a comprobar
 		//say("test:");
-		for (i=1;i<6;i++)
+		for (i=1;i<numColPoints;i++)
 			
 		
 			dir = colCheckTileTerrain(ID,i); 
@@ -244,8 +253,11 @@ BEGIN
 			log(x+" con vel: "+vX+" desde "+fx);
 		end;
 		y = fy;
-		debugColPoint(x+(ancho/2)-1,y);
-		debugColPoint(x-(ancho/2),y);
+		
+		for (i=1;i<numColPoints;i++)
+			debugColPoint(fx+colPoint[i].x,fy+colPoint[i].y);
+		end;
+		
 		frame;
 end;
 end;
