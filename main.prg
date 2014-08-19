@@ -113,18 +113,18 @@ BEGIN
 	
 	//definimos los puntos de colision
 	//respecto al centro del personaje
-	numColPoints = 6;
+	numColPoints = 8;
 	
-	colPoint[0].x 		= 0;
+	colPoint[0].x 		= (ancho/4);
 	colPoint[0].y 		= (alto>>1)-1;
 	colPoint[0].colCode = COLDOWN;
 	
-	colPoint[1].x 		= 0;
+	colPoint[1].x 		= (ancho/4);
 	colPoint[1].y 		= -(alto>>1);
 	colPoint[1].colCode = COLUP;
 	
 	colPoint[2].x 		= (ancho>>1)-1;
-	colPoint[2].y 		= 0;
+	colPoint[2].y 		= -(alto/4);
 	colPoint[2].colCode = COLDER;
 	
 	colPoint[3].x 		= (ancho>>1)-1;
@@ -132,12 +132,20 @@ BEGIN
 	colPoint[3].colCode = COLDER;
 	
 	colPoint[4].x 		= -(ancho>>1);
-	colPoint[4].y 		= 0;
+	colPoint[4].y 		= -(alto/4);
 	colPoint[4].colCode = COLIZQ;
 	
 	colPoint[5].x 		= -(ancho>>1);
 	colPoint[5].y 		= (alto/4);
 	colPoint[5].colCode = COLIZQ;
+	
+	colPoint[6].x 		= -(ancho/4);
+	colPoint[6].y 		= (alto>>1)-1;
+	colPoint[6].colCode = COLDOWN;
+	
+	colPoint[7].x 		= -(ancho/4);;
+	colPoint[7].y 		= -(alto>>1);
+	colPoint[7].colCode = COLUP;
 	
 	x = level.playerx0;
 	y = level.playery0;
