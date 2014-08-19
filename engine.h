@@ -171,6 +171,7 @@ Global
 	float friction 	= 0.9;		//Friccion
 	//Borrar
 	int mapBox; 
+	int mapTriangle;
 End;
 
 //Variables locales

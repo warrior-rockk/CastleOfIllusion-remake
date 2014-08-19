@@ -88,7 +88,10 @@ begin
 	drawing_map(0,mapBox);
 	drawing_color(300);
 	draw_box(0,0,cTileSize,cTileSize);
-		
+	
+	mapTriangle = map_new(cTileSize,cTileSize,8);
+	draw_triangle(mapTriangle);
+	
 	//Bucle principal de control del engine
 	Loop 
 		//Medicion fps
@@ -925,11 +928,11 @@ begin
 		end;
 		//Colisiones lateral izquierdas
 		case COLIZQ:
-			return tileMap[posY][posX].tileCode <> SOLID_ON_FALL;
+			return tileMap[posY][posX].tileCode <> SOLID_ON_FALL && tileMap[posY][posX].tileCode <> SLOPE_135;
 		end;
 		//Colisiones lateral derechas
 		case COLDER:
-			return tileMap[posY][posX].tileCode <> SOLID_ON_FALL;
+			return tileMap[posY][posX].tileCode <> SOLID_ON_FALL && tileMap[posY][posX].tileCode <> SLOPE_135;
 		end;
 	end;
 end;
@@ -1083,7 +1086,11 @@ Begin
 				else
 					//comprobar el codigo del tile
 					if (checkTileCode(idPlayer,COLDOWN,y_org/cTileSize,x_org/cTileSize))
-						num_dur_tile = map_get_pixel(fich,mapBox,(x_org%cTileSize),(y_org%cTileSize));
+						if (tileMap[y_org/cTileSize][x_org/cTileSize].tileCode == SLOPE_135)
+							num_dur_tile = map_get_pixel(fich,mapTriangle,(x_org%cTileSize),(y_org%cTileSize));
+						else
+							num_dur_tile = map_get_pixel(fich,mapBox,(x_org%cTileSize),(y_org%cTileSize));
+						end;
 					end;
 				end;	
 			end;
