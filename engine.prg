@@ -1000,68 +1000,43 @@ end;
 //Funcion que devuelve el numero de pixeles en x hasta la dureza, o -1 si no hay
 function int colCheckVectorX(Int fich,Int graf,int alto,int x_org,Int y_org,int x_dest,Int color)
 Private 
-byte i=0;
-int inc_x;
-byte num_dur_tile_center;
-byte num_dur_tile_down;
-byte num_dur_tile_up; 
-fich_up;
-fich_down;
+int dist=0;		//distancia de colision
+int inc;		//Incremento
+
 Begin
  
- 
-If (x_dest>=x_org)
-	inc_x=1;
-Else 
-	inc_x=-1;
-	//Si la comprobacion es a izquierdas,restamos uno al origen para tener en cuenta
-	//las coordenadas 0
-	//x_org-=1;
-End;
-      
-	    Repeat
-		    
-			//num_dur_tile_center = tiles[y_org/C_TAMANO_TILE][x_org/C_TAMANO_TILE].tile_graf;
-			
-		   	  			   	
-		   	if (color == 0 )		   	    
-			    // TODO: falta archivo tipos
-				//linea provisional, me falta archivo de tipos?? tonteria usarlo porque una escalera siempre es cuadrada
-				//if (num_dur_tile_center == 5 || num_dur_tile_up == 5 || num_dur_tile_down == 5 ) Return (((C_DUR_STAIR+10)*100)+1);End;
-				//if (num_dur_tile_center == 6 || num_dur_tile_up == 6 || num_dur_tile_down == 6 ) Return (((C_DUR_UP_STAIR+10)*100)+1);End;
-				
-				//If (map_get_pixel(fich,num_dur_tile_center,(x_org%C_TAMANO_TILE),(y_org%C_TAMANO_TILE))== C_DUR_SUELO)Return (((C_DUR_SUELO+10)*100)+i);End;
-			    if (tileExists(y_org/cTileSize,x_org/cTileSize))
-					if (tileMap[y_org/cTileSize][x_org/cTileSize].tileCode <> NO_SOLID)
+	//seteamos el sentido del incremento
+	(x_dest>=x_org) ? inc = 1 : inc = -1;
+	
+    //Recorremos el vector buscando colision con pixel 
+	Repeat
+		
+		if (color == 0 )		   	    
+			//si el tile en esta posicion existe
+			if (tileExists(y_org/cTileSize,x_org/cTileSize))
+				//si el tile es solido
+				if (tileMap[y_org/cTileSize][x_org/cTileSize].tileCode <> NO_SOLID)
+					//comprobar el codigo del tile
+					if (checkTileCode(idPlayer,COLDER,y_org/cTileSize,x_org/cTileSize))
 						if(map_get_pixel(fich,mapBox,(x_org%cTileSize),(y_org%cTileSize)) <> 0)
-							return i;
+							return dist;
 						end;
 					end;
 				end;
-				/*If (map_get_pixel(fich_up,num_dur_tile_up,(x_org%C_TAMANO_TILE),(((y_org-((alto/2)-altura_pendiente))%C_TAMANO_TILE))) == C_DUR_SUELO)Return (((C_DUR_SUELO+10)*100)+i);End;  
-			    If (map_get_pixel(fich_down,num_dur_tile_down,(x_org%C_TAMANO_TILE),(((y_org+((alto/2)-altura_pendiente))%C_TAMANO_TILE)))== C_DUR_SUELO)Return (((C_DUR_SUELO+10)*100)+i);End;  
-			    
-			    //TODO: si solo dejo el down, no tiembla pero no es solucion
-				If (map_get_pixel(fich,num_dur_tile_center,(x_org%C_TAMANO_TILE),(y_org%C_TAMANO_TILE))== C_DUR_STAIR)Return (((C_DUR_STAIR+10)*100)+i);End;
-			    If (map_get_pixel(fich_up,num_dur_tile_up,(x_org%C_TAMANO_TILE),(((y_org-((alto/3)))%C_TAMANO_TILE))) == C_DUR_STAIR)Return (((C_DUR_STAIR+10)*100)+i);End;  
-			    If (map_get_pixel(fich_down,num_dur_tile_down,(x_org%C_TAMANO_TILE),(((y_org+((alto/3)))%C_TAMANO_TILE)))== C_DUR_STAIR)Return (((C_DUR_STAIR+10)*100)+i);End;  
-			    
-			    If (map_get_pixel(fich,num_dur_tile_center,(x_org%C_TAMANO_TILE),(y_org%C_TAMANO_TILE))== C_DUR_UP_STAIR)Return (((C_DUR_UP_STAIR+10)*100)+i);End;
-			    If (map_get_pixel(fich_up,num_dur_tile_up,(x_org%C_TAMANO_TILE),(((y_org-((alto/3)))%C_TAMANO_TILE))) == C_DUR_UP_STAIR)Return (((C_DUR_UP_STAIR+10)*100)+i);End;  
-			    If (map_get_pixel(fich_down,num_dur_tile_down,(x_org%C_TAMANO_TILE),(((y_org+((alto/3)))%C_TAMANO_TILE)))== C_DUR_UP_STAIR)Return (((C_DUR_UP_STAIR+10)*100)+i);End;  
-  				*/
-		    else
-		    	/*
-				If (map_get_pixel(fich,num_dur_tile_center,(x_org%C_TAMANO_TILE),(y_org%C_TAMANO_TILE))== color)Return (((color+10)*100)+i);End;
-			    If (map_get_pixel(fich_up,num_dur_tile_up,(x_org%C_TAMANO_TILE),(((y_org-((alto/2)-altura_pendiente))%C_TAMANO_TILE))) == color)Return (((color+10)*100)+i);End;  
-			    If (map_get_pixel(fich_down,num_dur_tile_down,(x_org%C_TAMANO_TILE),(((y_org+((alto/2)-altura_pendiente))%C_TAMANO_TILE)))== color)Return (((color+10)*100)+i);End;  
-				*/
-		    end;
-				    
-		    i++;
-		    x_org+=inc_x;
-	    Until((x_org>x_dest && inc_x==1) || (x_org<x_dest && inc_x==-1))
-	    
+			end;
+			
+		else
+			;
+		end;
+		
+		//Incrementamos distancia
+		dist++;
+		//Incrementamos vector
+		x_org+=inc;
+		
+	Until(x_org==(x_dest+inc))
+	
+	//No ha habido colision
 	Return -1; 
 End
 
@@ -1085,7 +1060,10 @@ Begin
 				if (tileMap[y_org/cTileSize][x_org/cTileSize].tileCode == NO_SOLID)
 					num_dur_tile = 0;
 				else
-					num_dur_tile = map_get_pixel(fich,mapBox,(x_org%cTileSize),(y_org%cTileSize));
+					//comprobar el codigo del tile
+					if (checkTileCode(idPlayer,COLDOWN,y_org/cTileSize,x_org/cTileSize))
+						num_dur_tile = map_get_pixel(fich,mapBox,(x_org%cTileSize),(y_org%cTileSize));
+					end;
 				end;	
 			end;
 			
