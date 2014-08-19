@@ -94,8 +94,9 @@ begin
 		//Medicion fps
 		if (fps > maxFPS)
 			maxFPS = fps;
+			if (minFPS == 0) minFPS = maxFPS; end;
 		end;
-		if (fps < maxFPS && fps < ( minFPS || minFPS <> 0 ) && fps>0)
+		if (fps < minFPS && fps<>0)
 			minFPS = fps;
 		end;
 		
@@ -466,7 +467,7 @@ private
 							1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
 							1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,1,
 							1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1,
-							1,0,0,1,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,
+							1,0,0,1,1,1,0,0,0,1,14,0,0,0,0,0,0,0,0,0,1,
 							1,0,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,1,1,1,
 							1,0,0,1,0,0,0,1,1,1,0,0,0,0,0,9,9,0,0,0,1,
 							1,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,1,1,
@@ -652,7 +653,16 @@ BEGIN
 			//dibujamos el tile
 			drawing_map(0,graph);
 			drawing_color(tileColor);
-			draw_box(0,0,alto,ancho);
+			
+			//provisional
+			if (tileExists(i,j))
+			if (tileMap[i][j].tileCode == SLOPE_135) 
+				draw_triangle(graph);
+			else
+				draw_box(0,0,alto,ancho);
+			end;
+			end;
+			
 			//graph=tileMap[i-(cResY/cTileSize)-2][j];
 			
 			//en modo debug, escribimos su posicion
@@ -667,6 +677,17 @@ BEGIN
 		
 		frame;
 	
+	end;
+end;
+
+function draw_triangle(int map)
+private xx,yy,iniY;
+begin
+	for (xx=0;xx<cTileSize;xx++)
+		for (yy=iniY;yy<cTileSize;yy++)
+			map_put_pixel(0,map,xx,yy,200);
+		end;
+		iniY++;
 	end;
 end;
 

@@ -72,6 +72,7 @@
 #define NO_SOLID      0
 #define SOLID         1
 #define SOLID_ON_FALL 9
+#define SLOPE_135     14
 
 //Propiedades de tile
 //bit 7:Opacidad del tile.0:el tile es cuadrado 1:el tile tiene transparencia
