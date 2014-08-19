@@ -961,23 +961,24 @@ begin
 			//pos = idObject.y+idObject.vY;
 			colision_en_y=colision_y(0,mapBox,idObject.alto,inix,iniy,finy,0,1);
 			
-			//If (colision_en_y>=0) 
-			//colision_en_y = decode(colision_en_y);end;
 			
-			If ((colision_en_y>=0 && idObject.vY>=0)) //suelo
-				//father.v_y =0; 
-				//father.tierra = 1;
-				idObject.fy += colision_en_y;
-				colDir = COLDOWN;
-				//v_x --;
-			Else
-			   //father.tierra = 0;
-			End;                                 
-			If (colision_en_y>=0 && idObject.vY<0) //techo
-				//father.v_y =colision_en_y*(-1);
-				idObject.fy -= colision_en_y;
-				colDir = COLUP;
-			End;
+			//colision_en_y = decode(colision_en_y);end;
+			If (colision_en_y>=0) 
+				//If (idObject.vY>=0) //suelo
+				if (idObject.colPoint[i].colCode == COLDOWN)
+					//father.v_y =0; 
+					//father.tierra = 1;
+					idObject.fy += colision_en_y;
+					colDir = COLDOWN;
+					//v_x --;
+				End;                                 
+				//If (idObject.vY<0) //techo
+				if (idObject.colPoint[i].colCode == COLUP)
+					//father.v_y =colision_en_y*(-1);
+					idObject.fy -= colision_en_y;
+					colDir = COLUP;
+				End;
+			end;
 		end;
 		
 		return colDir;
@@ -987,7 +988,7 @@ end;
 
 
 //funcion que devuelve el numero de pixeles en x hasta la dureza, o -1 si no hay
-function int colision_x(Int fich,Int graf,float alto,int x_org,Int y_org,int x_dest,Int color)
+function int colision_x(Int fich,Int graf,int alto,int x_org,Int y_org,int x_dest,Int color)
 Private 
 byte i=0;
 int inc_x;
@@ -1057,16 +1058,16 @@ End
 //funcion que devuelve el numero de pixeles en y hasta la dureza, o -1 si no hay
 //El byte "modo", determina si la comprobacion es el numero de pixeles hasta llegar
 //al color (modo 1) o a salir del color (modo 0)
-Function int colision_y(int fich,int graf,float alto,int x_org,int y_org,int y_dest,int color,byte modo)
+Function int colision_y(int fich,int graf,int alto,int x_org,int y_org,int y_dest,int color,byte modo)
 Private 
 byte i=0;
 Int inc_y;
 byte num_dur_tile=0;
 Begin
 	If (y_dest>=y_org || !modo )inc_y=1;Else inc_y=-1;End
-	y_org += (alto/2)*inc_y;
-	y_dest += (alto/2)*inc_y;
-	y_org += 0*inc_y;  //linea que delimita cuantos px estara el personaje sobre el suelo (con 1, estara justo 1 pix por encima de la linea de suelo)
+	//y_org += (alto/2)*inc_y;
+	//y_dest += (alto/2)*inc_y;
+	y_org += 1*inc_y;  //linea que delimita cuantos px estara el personaje sobre el suelo (con 1, estara justo 1 pix por encima de la linea de suelo)
 	if (!modo) inc_y=-1;end;
 	Repeat
 					

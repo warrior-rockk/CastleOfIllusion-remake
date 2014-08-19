@@ -179,8 +179,8 @@ Local
 	float vY			= 0;     	//Velocidad Y
 	float fX			= 0;		//Posicion x coma flotante
 	float fY			= 0;		//Posicion y coma flotante
-	float alto			= 0;   		//Altura en pixeles del proceso
-	float ancho			= 0;   		//Ancho en pixeles del proceso
+	int   alto			= 0;   		//Altura en pixeles del proceso
+	int   ancho			= 0;   		//Ancho en pixeles del proceso
 	int   estado 		= 0;   		//Estado de la entidad
 	int	  numColPoints 	= 0;		//Numero de puntos de colision
 	struct colPoint[MAXCOLPOINTS] 		//Puntos deteccion colision

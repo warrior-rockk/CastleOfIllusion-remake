@@ -116,27 +116,27 @@ BEGIN
 	numColPoints = 6;
 	
 	colPoint[0].x 		= 0;
-	colPoint[0].y 		= 0;
+	colPoint[0].y 		= (alto>>1)-1;
 	colPoint[0].colCode = COLDOWN;
 	
 	colPoint[1].x 		= 0;
-	colPoint[1].y 		= 0;
+	colPoint[1].y 		= -(alto>>1);
 	colPoint[1].colCode = COLUP;
 	
-	colPoint[2].x 		= 15;
+	colPoint[2].x 		= (ancho>>1)-1;
 	colPoint[2].y 		= 0;
 	colPoint[2].colCode = COLDER;
 	
-	colPoint[3].x 		= 15;
-	colPoint[3].y 		= 8;
+	colPoint[3].x 		= (ancho>>1)-1;
+	colPoint[3].y 		= (alto/4);
 	colPoint[3].colCode = COLDER;
 	
-	colPoint[4].x 		= -16;
+	colPoint[4].x 		= -(ancho>>1);
 	colPoint[4].y 		= 0;
 	colPoint[4].colCode = COLIZQ;
 	
-	colPoint[5].x 		= -16;
-	colPoint[5].y 		= 8;
+	colPoint[5].x 		= -(ancho>>1);
+	colPoint[5].y 		= (alto/4);
 	colPoint[5].colCode = COLIZQ;
 	
 	x = level.playerx0;
@@ -216,7 +216,7 @@ BEGIN
 		//debug;
 		//Recorremos la lista de puntos a comprobar
 		//say("test:");
-		for (i=1;i<numColPoints;i++)
+		for (i=0;i<numColPoints;i++)
 			
 		
 			dir = colCheckTileTerrain(ID,i); 
@@ -254,7 +254,7 @@ BEGIN
 		end;
 		y = fy;
 		
-		for (i=1;i<numColPoints;i++)
+		for (i=0;i<numColPoints;i++)
 			debugColPoint(fx+colPoint[i].x,fy+colPoint[i].y);
 		end;
 		
