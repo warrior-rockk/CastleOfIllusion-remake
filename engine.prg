@@ -1205,3 +1205,58 @@ begin
 	frame;
 
 end;
+
+//Funcion que crea puntos de colision predefinidos (esquinas naturales)
+function int WGE_CreateDefaultColPoints(int idObject,int numColPoints)
+begin
+	if (numColPoints == 0) return 1; end;
+	
+	idObject.colPoint[0].x 		= (idObject.ancho/4);
+	idObject.colPoint[0].y 		= (idObject.alto>>1)-1;
+	idObject.colPoint[0].colCode = COLDOWN;
+	
+	if (numColPoints == 1) return 1; end;
+	
+	idObject.colPoint[1].x 		= (idObject.ancho/4);
+	idObject.colPoint[1].y 		= -(idObject.alto>>1);
+	idObject.colPoint[1].colCode = COLUP;
+	
+	if (numColPoints == 2) return 1; end;
+	
+	idObject.colPoint[2].x 		= (idObject.ancho>>1)-1;
+	idObject.colPoint[2].y 		= -(idObject.alto/4);
+	idObject.colPoint[2].colCode = COLDER;
+	
+	if (numColPoints == 3) return 1; end;
+	
+	idObject.colPoint[3].x 		= (idObject.ancho>>1)-1;
+	idObject.colPoint[3].y 		= (idObject.alto/4);
+	idObject.colPoint[3].colCode = COLDER;
+	
+	if (numColPoints == 4) return 1; end;
+	
+	idObject.colPoint[4].x 		= -(idObject.ancho>>1);
+	idObject.colPoint[4].y 		= -(idObject.alto/4);
+	idObject.colPoint[4].colCode = COLIZQ;
+	
+	if (numColPoints == 5) return 1; end;
+	
+	idObject.colPoint[5].x 		= -(idObject.ancho>>1);
+	idObject.colPoint[5].y 		= (idObject.alto/4);
+	idObject.colPoint[5].colCode = COLIZQ;
+	
+	if (numColPoints == 6) return 1; end;
+	
+	idObject.colPoint[6].x 		= -(idObject.ancho/4);
+	idObject.colPoint[6].y 		= (idObject.alto>>1)-1;
+	idObject.colPoint[6].colCode = COLDOWN;
+	
+	if (numColPoints == 7) return 1; end;
+	
+	idObject.colPoint[7].x 		= -(idObject.ancho/4);;
+	idObject.colPoint[7].y 		= -(idObject.alto>>1);
+	idObject.colPoint[7].colCode = COLUP;
+
+	return 1;
+	
+end;
