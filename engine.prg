@@ -138,8 +138,14 @@ begin
 		
 		//Tareas ciclicas del modo debug
 		if (actDebugMode)
-			
-			;			
+
+			//Pintamos los puntos de deteccion del jugador
+			if (idPlayer<>0)
+				for (i=0;i<idPlayer.numColPoints;i++)
+					debugColPoint(idPlayer.fx+idPlayer.colPoint[i].x,idPlayer.fy+idPlayer.colPoint[i].y);
+				end;
+			end;
+					
 		end;
 		
 		//Tareas salida del modo debug
@@ -164,7 +170,7 @@ function WGE_InitScreen()
 begin
 	//Complete restore para evitar "flickering" (no funciona)
 	restore_type = COMPLETE_RESTORE;
-	scale_mode=SCALE_NORMAL2X; 
+	//scale_mode=SCALE_NORMAL2X; 
 	set_mode(cResX,cResY,8);
 	//set_mode(992,600,8);
 	set_fps(cNumFPS,0);
@@ -933,17 +939,17 @@ begin
 			//colision_en_x = decode(colision_en_x);end;
 			
 			If (colision_en_x>=0)
-				log("hay colision");
+				//log("hay colision");
 				if (idObject.colPoint[i].colCode == COLDER) 
 					//if (idObject.vX > 0)
-						log(idObject.fx + " Hay colision a la derecha "+colision_en_x);
+						//log(idObject.fx + " Hay colision a la derecha "+colision_en_x);
 						idObject.fx+= colision_en_x-1;
 						colDir = COLDER;
 					//end;
 				end;
 				if (idObject.colPoint[i].colCode == COLIZQ) 
 					//if (idObject.vX < 0)
-						log("Hay colision a la izquierda");
+						//log("Hay colision a la izquierda");
 						idObject.fx-= colision_en_x-1;
 						colDir = COLIZQ;
 					//end;
@@ -961,7 +967,7 @@ begin
 			//pos = idObject.y+idObject.vY;
 			colision_en_y=colision_y(0,mapBox,idObject.alto,inix,iniy,finy,0,1);
 			
-			log("Comprobamos : "+iniy+" con "+finy);
+			//log("Comprobamos : "+iniy+" con "+finy);
 			
 			//colision_en_y = decode(colision_en_y);end;
 			If (colision_en_y>=0) 
@@ -969,7 +975,7 @@ begin
 				if (idObject.colPoint[i].colCode == COLDOWN && idObject.vY>=0)
 					//father.v_y =0; 
 					//father.tierra = 1;
-					log("Hay colision a la abajo");
+					//log("Hay colision a la abajo");
 					idObject.fy += colision_en_y;
 					colDir = COLDOWN;
 					//v_x --;
@@ -977,7 +983,7 @@ begin
 				//If (idObject.vY<0) //techo
 				if (idObject.colPoint[i].colCode == COLUP && idObject.vY<0)
 					//father.v_y =colision_en_y*(-1);
-					log("Hay colision a la arriba");
+					//log("Hay colision a la arriba");
 					idObject.fy -= colision_en_y;
 					colDir = COLUP;
 				End;
@@ -1124,74 +1130,7 @@ Begin
 	return -1;
 End;   
 
-function int colCheckTileTerrainX(int idObject)
-private colision_en_y,colision_en_x;
-int pos;
-int ini, fin;
-begin
-		//COLISIONES EN X
-		//if (father.v_x>0)
-		//	colision_en_x=colision_x(fich_nivel,dur_nivel,father.alto,father.x+(father.ancho>>1),father.y,(father.x+16+father.v_x),C_DUR_SUELO);
-		//else
-		//	colision_en_x=colision_x(fich_nivel,dur_nivel,father.alto,father.x-(father.ancho>>1),father.y,(father.x-16+father.v_x),C_DUR_SUELO);	
-	    //end;
-	    //ini = (idObject.x-(idObject.ancho/2));
-		ini = idObject.x+(idObject.ancho/2);
-		fin = (ini+idObject.vX);
-		
-		colision_en_x=colision_x(0,mapBox,idObject.alto,ini,idObject.y,fin,0);
-		
-		
-		//If (colision_en_x>=0 && ((colision_en_x/100)-10)==C_DUR_SUELO)
-		//colision_en_x = decode(colision_en_x);end;
-		
-		If (colision_en_x>=0)
-			if (idObject.vX>0) 
-				idObject.x+= colision_en_x;
-				return COLDER;
-			end;
-			if (idObject.vX<0) 
-				idObject.x-= colision_en_x;
-				return COLIZQ;
-			end;
-			
-			//father.v_x = 0;
-		End;  
-		
-		
-end; 
-
-function int colCheckTileTerrainY(int idObject)
-private colision_en_y,colision_en_x;
-int pos;
-int ini, fin;
-begin
-				
-		//COLISIONES EN Y
-		pos = idObject.y+idObject.vY;
-		colision_en_y=colision_y(0,mapBox,idObject.alto,idObject.x,idObject.y,pos,0,1);
-		
-		//If (colision_en_y>=0) 
-		//colision_en_y = decode(colision_en_y);end;
-		
-		If ((colision_en_y>=0 && idObject.vY>=0)) //suelo
-			//father.v_y =0; 
-			//father.tierra = 1;
-			idObject.fy += colision_en_y;
-			return COLDOWN;
-			//v_x --;
-		Else
-	 	   //father.tierra = 0;
-		End;                                 
-		If (colision_en_y>=0 && idObject.vY<0) //techo
-			//father.v_y =colision_en_y*(-1);
-			idObject.fy -= colision_en_y;
-			return COLUP;
-		End;
-		
-end; 
-
-process debugColPoint(int x,int y)
+process debugColPoint(float fx,float fy)
 begin
 	region = cGameRegion;
 	ctype = c_scroll;
@@ -1201,7 +1140,8 @@ begin
 	drawing_map(0,graph);
 	drawing_color(100);
 	draw_box(0,0,1,1);
-	
+	x = fx;
+	y = fy;
 	frame;
 
 end;

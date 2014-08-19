@@ -225,15 +225,11 @@ BEGIN
 		
 		//Escalamos la posicion de floats en enteros
 		if (abs(fx-x)>=1 ) //si la diferencia entre el float y el entero es una unidad
-			log("movemos de "+x+" a");
+			//log("movemos de "+x+" a");
 			x = fx;
-			log(x+" con vel: "+vX+" desde "+fx);
+			//log(x+" con vel: "+vX+" desde "+fx);
 		end;
 		y = fy;
-		
-		for (i=0;i<numColPoints;i++)
-			debugColPoint(fx+colPoint[i].x,fy+colPoint[i].y);
-		end;
 		
 		frame;
 end;
