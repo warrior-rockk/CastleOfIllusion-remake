@@ -174,7 +174,7 @@ function WGE_InitScreen()
 begin
 	//Complete restore para evitar "flickering" (no funciona)
 	restore_type = COMPLETE_RESTORE;
-	//scale_mode=SCALE_NORMAL2X; 
+	scale_mode=SCALE_NORMAL2X; 
 	set_mode(cResX,cResY,8);
 	//set_mode(992,600,8);
 	set_fps(cNumFPS,0);
@@ -471,8 +471,8 @@ private
 							1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,1,
 							1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1,
 							1,0,0,1,1,1,0,0,0,1,14,0,0,0,0,0,0,0,0,0,1,
-							1,0,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,1,1,1,
-							1,0,0,1,0,0,0,1,1,1,0,0,0,0,0,9,9,0,0,0,1,
+							1,0,0,1,0,0,0,0,1,1,1,14,0,0,0,0,0,0,1,1,1,
+							1,0,0,1,0,0,0,1,1,1,1,1,14,0,0,9,9,0,0,0,1,
 							1,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,1,1,
 							1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1;
 Begin
@@ -1006,6 +1006,22 @@ begin
 					//Situamos al objeto en el borde de la colision
 					idObject.fy += distColY;
 					colDir = COLDOWN;
+					
+					//deteccion de pendiente. Comprobamos si estamos enterrados
+					//Establecemos el vector a comparar
+					iniY = idObject.fy+idObject.colPoint[i].y;
+					finY = iniY-5; //altura maxima para considerar pendiente??
+					iniX = idObject.fx+idObject.colPoint[i].x;
+					finX = iniX;
+					
+					//Lanzamos la comprobacion de colision en Y
+					distColY = colision_y(0,mapBox,idObject.alto,inix,iniy,finy,0,0);
+					
+					//Subimos al objeto a la pendiente
+					if (distColY >=0)
+						log(distColY);
+						idObject.fy -= distColY-1;
+					end;
 				End;                                 
 				//Colision superior
 				if (idObject.colPoint[i].colCode == COLUP && idObject.vY<0)
@@ -1126,6 +1142,9 @@ Begin
 				end;
 				
 			Else
+				if (num_dur_tile == 0 )
+					return i;
+				end;
 				//buscamos salirnos del suelo y la pendiente, en teoria este modo solo se usa para las pendientes
 				//&& num_dur_tile !=C_DUR_PENDIENTE && num_dur_tile !=C_DUR_PENDIENTE_45
 				//If (num_dur_tile !=color )Return (((color+10)*100)+i);End;
