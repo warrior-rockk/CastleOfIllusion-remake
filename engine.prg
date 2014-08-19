@@ -924,7 +924,7 @@ begin
 			finx = inix+idObject.vX;
 			iniy = idObject.fy+idObject.colPoint[i].y;
 			//say("calculo x: "+(finx-inix));
-			log("Comprobamos : "+inix+" con "+finx);
+			//log("Comprobamos : "+inix+" con "+finx);
 			
 			colision_en_x=colision_x(0,mapBox,idObject.alto,inix,iniy,finx,0);
 			
@@ -961,20 +961,23 @@ begin
 			//pos = idObject.y+idObject.vY;
 			colision_en_y=colision_y(0,mapBox,idObject.alto,inix,iniy,finy,0,1);
 			
+			log("Comprobamos : "+iniy+" con "+finy);
 			
 			//colision_en_y = decode(colision_en_y);end;
 			If (colision_en_y>=0) 
 				//If (idObject.vY>=0) //suelo
-				if (idObject.colPoint[i].colCode == COLDOWN)
+				if (idObject.colPoint[i].colCode == COLDOWN && idObject.vY>=0)
 					//father.v_y =0; 
 					//father.tierra = 1;
+					log("Hay colision a la abajo");
 					idObject.fy += colision_en_y;
 					colDir = COLDOWN;
 					//v_x --;
 				End;                                 
 				//If (idObject.vY<0) //techo
-				if (idObject.colPoint[i].colCode == COLUP)
+				if (idObject.colPoint[i].colCode == COLUP && idObject.vY<0)
 					//father.v_y =colision_en_y*(-1);
+					log("Hay colision a la arriba");
 					idObject.fy -= colision_en_y;
 					colDir = COLUP;
 				End;
