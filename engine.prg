@@ -1008,10 +1008,10 @@ begin
 					colDir = COLDOWN;
 					
 					//deteccion de pendiente. Comprobamos si estamos enterrados
-					//Establecemos el vector a comparar
-					iniY = idObject.fy+idObject.colPoint[i].y;
+					//Establecemos el vector a comparar (centro/inferior del objeto)
+					iniY = idObject.fy+(idObject.ancho>>1)-1;
 					finY = iniY-5; //altura maxima para considerar pendiente??
-					iniX = idObject.fx+idObject.colPoint[i].x;
+					iniX = idObject.fx;
 					finX = iniX;
 					
 					//Lanzamos la comprobacion de colision en Y
@@ -1032,9 +1032,9 @@ begin
 			
 			else //si no hay colision, comprobamos si pendiente por debajo
 				
-				//Establecemos el vector a comparar (centro/inferior del objecto)
+				//Establecemos el vector a comparar (centro/inferior del objeto)
 				iniY = idObject.fy+(idObject.ancho>>1)-1;
-				finY = iniY+5; //altura maxima para considerar pendiente??
+				finY = iniY+idObject.vY+5; //altura maxima para considerar pendiente??
 				iniX = idObject.fx;
 				finX = iniX;
 				
