@@ -1019,7 +1019,7 @@ begin
 					
 					//Subimos al objeto a la pendiente
 					if (distColY >=0)
-						log(distColY);
+						//log("Subimos a :"+distColY);
 						idObject.fy -= distColY-1;
 					end;
 				End;                                 
@@ -1029,7 +1029,26 @@ begin
 					idObject.fy -= distColY;
 					colDir = COLUP;
 				End;
-			end;
+			
+			else //si no hay colision, comprobamos si pendiente por debajo
+				
+				//Establecemos el vector a comparar
+				iniY = idObject.fy+(idObject.ancho>>1)-1;
+				finY = iniY+10; //altura maxima para considerar pendiente??
+				iniX = idObject.fx;
+				finX = iniX;
+				
+				//Lanzamos la comprobacion de colision en Y
+				distColY = colision_y(0,mapBox,idObject.alto,inix,iniy,finy,0,1);
+				
+				//Bajamos al objeto a la pendiente
+				if (distColY >0)
+					log("Bajamos a :"+distColY);
+					idObject.fy += distColY;
+				end;	
+				
+			end; 
+			
 		end;
 		
 		//Devolvemos el sentido de la colision
@@ -1232,7 +1251,7 @@ begin
 	idObject.colPoint[i].x 		= -(idObject.ancho/4);;
 	idObject.colPoint[i].y 		= -(idObject.alto>>1);
 	idObject.colPoint[i].colCode = COLUP;
-
+	
 	return 1;
 	
 end;

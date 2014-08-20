@@ -115,7 +115,7 @@ BEGIN
 	//respecto al centro del personaje
 	numColPoints = 8;
 	WGE_CreateDefaultColPoints(id,numColPoints);
-	
+		
 	x = level.playerx0;
 	y = level.playery0;
 	
