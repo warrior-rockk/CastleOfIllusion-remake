@@ -473,7 +473,7 @@ private
 							1,0,0,1,1,1,0,0,0,1,14,0,0,0,0,0,0,0,0,0,1,
 							1,0,0,1,0,0,0,0,1,1,1,14,0,0,0,0,0,0,1,1,1,
 							1,0,0,1,0,0,0,1,1,1,1,1,14,0,0,9,9,0,0,0,1,
-							1,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,1,1,
+							1,0,0,0,0,0,1,1,1,1,1,1,1,14,0,0,0,0,0,1,1,
 							1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1;
 Begin
 	
@@ -1221,7 +1221,7 @@ begin
 	i = 3;
 	
 	idObject.colPoint[i].x 		= -(idObject.ancho>>1);
-	idObject.colPoint[i].y 		= (idObject.alto/4)-8;
+	idObject.colPoint[i].y 		= (idObject.alto/4);
 	idObject.colPoint[i].colCode = COLIZQ;
 	
 	if (numColPoints == 4) return 1; end;

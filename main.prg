@@ -45,7 +45,7 @@ Begin
 	//Creamos un mapa aleatorio
 	//WGE_GenRandomMapFile("test\random.bin",12,8);
 	//Creamos un mapa con matriz definida
-	//WGE_GenMatrixMapFile("test\random.bin");
+	WGE_GenMatrixMapFile("test\random.bin");
 	//Cargamos el mapeado del nivel
 	//debug;
 	WGE_LoadMapLevel("test\random.bin");
