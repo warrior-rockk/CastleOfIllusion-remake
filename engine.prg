@@ -688,7 +688,7 @@ private xx,yy,iniY;
 begin
 	for (xx=0;xx<cTileSize;xx++)
 		for (yy=iniY;yy<cTileSize;yy++)
-			map_put_pixel(0,map,xx,yy,200);
+			map_put_pixel(0,map,xx,yy,250);
 		end;
 		iniY++;
 	end;
@@ -1032,9 +1032,9 @@ begin
 			
 			else //si no hay colision, comprobamos si pendiente por debajo
 				
-				//Establecemos el vector a comparar
+				//Establecemos el vector a comparar (centro/inferior del objecto)
 				iniY = idObject.fy+(idObject.ancho>>1)-1;
-				finY = iniY+10; //altura maxima para considerar pendiente??
+				finY = iniY+5; //altura maxima para considerar pendiente??
 				iniX = idObject.fx;
 				finX = iniX;
 				
