@@ -1174,54 +1174,64 @@ end;
 
 //Funcion que crea puntos de colision predefinidos (esquinas naturales)
 function int WGE_CreateDefaultColPoints(int idObject,int numColPoints)
+private
+i= 0; 	//Variables auxiliares
+
 begin
 	if (numColPoints == 0) return 1; end;
 	
-	idObject.colPoint[0].x 		= (idObject.ancho/4);
-	idObject.colPoint[0].y 		= (idObject.alto>>1)-1;
-	idObject.colPoint[0].colCode = COLDOWN;
+	idObject.colPoint[i].x 		= (idObject.ancho>>1)-1;
+	idObject.colPoint[i].y 		= -(idObject.alto/4);
+	idObject.colPoint[i].colCode = COLDER;
 	
 	if (numColPoints == 1) return 1; end;
+	i = 1;
 	
-	idObject.colPoint[1].x 		= (idObject.ancho/4);
-	idObject.colPoint[1].y 		= -(idObject.alto>>1);
-	idObject.colPoint[1].colCode = COLUP;
+	idObject.colPoint[i].x 		= (idObject.ancho>>1)-1;
+	idObject.colPoint[i].y 		= (idObject.alto/4);
+	idObject.colPoint[i].colCode = COLDER;
 	
 	if (numColPoints == 2) return 1; end;
+	i = 2;
 	
-	idObject.colPoint[2].x 		= (idObject.ancho>>1)-1;
-	idObject.colPoint[2].y 		= -(idObject.alto/4);
-	idObject.colPoint[2].colCode = COLDER;
+	idObject.colPoint[i].x 		= -(idObject.ancho>>1);
+	idObject.colPoint[i].y 		= -(idObject.alto/4);
+	idObject.colPoint[i].colCode = COLIZQ;
 	
 	if (numColPoints == 3) return 1; end;
+	i = 3;
 	
-	idObject.colPoint[3].x 		= (idObject.ancho>>1)-1;
-	idObject.colPoint[3].y 		= (idObject.alto/4);
-	idObject.colPoint[3].colCode = COLDER;
+	idObject.colPoint[i].x 		= -(idObject.ancho>>1);
+	idObject.colPoint[i].y 		= (idObject.alto/4)-8;
+	idObject.colPoint[i].colCode = COLIZQ;
 	
 	if (numColPoints == 4) return 1; end;
+	i = 4;
 	
-	idObject.colPoint[4].x 		= -(idObject.ancho>>1);
-	idObject.colPoint[4].y 		= -(idObject.alto/4);
-	idObject.colPoint[4].colCode = COLIZQ;
+	idObject.colPoint[i].x 		= (idObject.ancho/4);
+	idObject.colPoint[i].y 		= (idObject.alto>>1)-1;
+	idObject.colPoint[i].colCode = COLDOWN;
 	
 	if (numColPoints == 5) return 1; end;
+	i = 5;
 	
-	idObject.colPoint[5].x 		= -(idObject.ancho>>1);
-	idObject.colPoint[5].y 		= (idObject.alto/4)-8;
-	idObject.colPoint[5].colCode = COLIZQ;
+	idObject.colPoint[i].x 		= -(idObject.ancho/4);
+	idObject.colPoint[i].y 		= (idObject.alto>>1)-1;
+	idObject.colPoint[i].colCode = COLDOWN;
 	
 	if (numColPoints == 6) return 1; end;
-	
-	idObject.colPoint[6].x 		= -(idObject.ancho/4);
-	idObject.colPoint[6].y 		= (idObject.alto>>1)-1;
-	idObject.colPoint[6].colCode = COLDOWN;
+	i = 6;
+		
+	idObject.colPoint[i].x 		= (idObject.ancho/4);
+	idObject.colPoint[i].y 		= -(idObject.alto>>1);
+	idObject.colPoint[i].colCode = COLUP;
 	
 	if (numColPoints == 7) return 1; end;
+	i = 7;
 	
-	idObject.colPoint[7].x 		= -(idObject.ancho/4);;
-	idObject.colPoint[7].y 		= -(idObject.alto>>1);
-	idObject.colPoint[7].colCode = COLUP;
+	idObject.colPoint[i].x 		= -(idObject.ancho/4);;
+	idObject.colPoint[i].y 		= -(idObject.alto>>1);
+	idObject.colPoint[i].colCode = COLUP;
 
 	return 1;
 	
