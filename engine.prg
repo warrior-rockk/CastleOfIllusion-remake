@@ -1007,6 +1007,7 @@ begin
 					idObject.fy += distColY;
 					colDir = COLDOWN;
 					
+					
 					//deteccion de pendiente. Comprobamos si estamos enterrados
 					//Establecemos el vector a comparar (centro/inferior del objeto)
 					iniY = idObject.fy+(idObject.ancho>>1)-1;
@@ -1018,10 +1019,13 @@ begin
 					distColY = colision_y(0,mapBox,idObject.alto,inix,iniy,finy,0,0);
 					
 					//Subimos al objeto a la pendiente
-					if (distColY >=0)
+					if (distColY >0)
 						//log("Subimos a :"+distColY);
 						idObject.fy -= distColY-1;
+						//reposicionamos el punto de control lateral
+						//idObject.colPoint[3].y 		= -(idObject.alto/4);
 					end;
+					
 				End;                                 
 				//Colision superior
 				if (idObject.colPoint[i].colCode == COLUP && idObject.vY<0)
@@ -1043,8 +1047,10 @@ begin
 				
 				//Bajamos al objeto a la pendiente
 				if (distColY >0)
-					log("Bajamos a :"+distColY);
+					//log("Bajamos a :"+distColY);
 					idObject.fy += distColY;
+					//reposicionamos el punto de control lateral
+					idObject.colPoint[3].y 		= -(idObject.alto/4);
 				end;	
 				
 			end; 
