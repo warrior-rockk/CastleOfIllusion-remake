@@ -83,14 +83,17 @@ private
 		
 	int i; 								//Variables auxiliares
 begin
-	//testeo:
+	//Dibujamos mapas para testeo (esto ira eliminado)
 	mapBox = map_new(cTileSize,cTileSize,8);
 	drawing_map(0,mapBox);
 	drawing_color(300);
 	draw_box(0,0,cTileSize,cTileSize);
 	
-	mapTriangle = map_new(cTileSize,cTileSize,8);
-	draw_triangle(mapTriangle);
+	mapTriangle135 = map_new(cTileSize,cTileSize,8);
+	draw_triangle(mapTriangle135,135);
+	
+	mapTriangle45 = map_new(cTileSize,cTileSize,8);
+	draw_triangle(mapTriangle45,45);
 	
 	//Bucle principal de control del engine
 	Loop 
@@ -472,10 +475,10 @@ private
 							1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
 							1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,1,
 							1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1,
-							1,0,0,1,1,1,0,0,0,1,14,0,0,0,0,0,0,0,0,0,1,
-							1,0,0,1,0,0,0,0,1,1,1,14,0,0,0,0,0,0,1,1,1,
-							1,0,0,1,0,0,0,1,1,1,1,1,14,0,0,9,9,0,0,0,1,
-							1,0,0,0,0,0,1,1,1,1,1,1,1,14,0,0,0,0,0,1,1,
+							1,0,0,1,1,1,0,0,15,1,14,0,0,0,0,0,0,0,0,0,1,
+							1,0,0,1,0,0,0,15,1,1,1,14,0,0,0,0,0,0,1,1,1,
+							1,0,0,1,0,0,15,1,1,1,1,1,14,0,0,9,9,0,0,0,1,
+							1,0,0,0,0,15,1,1,1,1,1,1,1,14,0,0,0,0,0,1,1,
 							1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1;
 Begin
 	
@@ -656,16 +659,19 @@ BEGIN
 			end;
 			
 			//dibujamos el tile
+			map_clear(0,graph,0);
 			drawing_map(0,graph);
 			drawing_color(tileColor);
 			
 			//provisional
 			if (tileExists(i,j))
-			if (tileMap[i][j].tileCode == SLOPE_135) 
-				draw_triangle(graph);
-			else
-				draw_box(0,0,alto,ancho);
-			end;
+				if (tileMap[i][j].tileCode == SLOPE_135) 
+					map_put(0,graph,mapTriangle135,cTileSize>>1,cTileSize>>1);
+				elseif (tileMap[i][j].tileCode == SLOPE_45)
+					map_put(0,graph,mapTriangle45,cTileSize>>1,cTileSize>>1);
+				else
+					draw_box(0,0,alto,ancho);
+				end;
 			end;
 			
 			//graph=tileMap[i-(cResY/cTileSize)-2][j];
@@ -685,14 +691,25 @@ BEGIN
 	end;
 end;
 
-function draw_triangle(int map)
+function draw_triangle(int map,int angle)
 private xx,yy,iniY;
 begin
-	for (xx=0;xx<cTileSize;xx++)
-		for (yy=iniY;yy<cTileSize;yy++)
-			map_put_pixel(0,map,xx,yy,250);
+	if (angle == 135)
+		iniY = 0;
+		for (xx=0;xx<cTileSize;xx++)
+			for (yy=iniY;yy<cTileSize;yy++)
+				map_put_pixel(0,map,xx,yy,250);
+			end;
+			iniY++;
 		end;
-		iniY++;
+	else
+		iniY = cTileSize;
+		for (xx=0;xx<cTileSize;xx++)
+			for (yy=iniY;yy<cTileSize;yy++)
+				map_put_pixel(0,map,xx,yy,250);
+			end;
+			iniY--;
+		end;
 	end;
 end;
 
@@ -930,11 +947,11 @@ begin
 		end;
 		//Colisiones lateral izquierdas
 		case COLIZQ:
-			return tileMap[posY][posX].tileCode <> SOLID_ON_FALL && tileMap[posY][posX].tileCode <> SLOPE_135;
+			return tileMap[posY][posX].tileCode <> SOLID_ON_FALL && tileMap[posY][posX].tileCode <> SLOPE_135 && tileMap[posY][posX].tileCode <> SLOPE_45;
 		end;
 		//Colisiones lateral derechas
 		case COLDER:
-			return tileMap[posY][posX].tileCode <> SOLID_ON_FALL && tileMap[posY][posX].tileCode <> SLOPE_135;
+			return tileMap[posY][posX].tileCode <> SOLID_ON_FALL && tileMap[posY][posX].tileCode <> SLOPE_135 && tileMap[posY][posX].tileCode <> SLOPE_45;
 		end;
 	end;
 end;
@@ -1014,8 +1031,8 @@ begin
 					
 					//deteccion de pendiente. Comprobamos si estamos enterrados
 					//Establecemos el vector a comparar (centro/inferior del objeto)
-					iniY = idObject.fy+(idObject.ancho>>1)-1;
-					finY = iniY-5; //altura maxima para considerar pendiente??
+					iniY = idObject.fy+(idObject.alto>>1)-1;
+					finY = iniY-HILLHEIGHT; //altura maxima para considerar pendiente
 					iniX = idObject.fx;
 					finX = iniX;
 					
@@ -1024,10 +1041,7 @@ begin
 					
 					//Subimos al objeto a la pendiente
 					if (distColY >0)
-						//log("Subimos a :"+distColY);
 						idObject.fy -= distColY-1;
-						//reposicionamos el punto de control lateral
-						//idObject.colPoint[3].y 		= -(idObject.alto/4);
 					end;
 					
 				End;                                 
@@ -1041,8 +1055,8 @@ begin
 			else //si no hay colision, comprobamos si pendiente por debajo
 				
 				//Establecemos el vector a comparar (centro/inferior del objeto)
-				iniY = idObject.fy+(idObject.ancho>>1)-1;
-				finY = iniY+idObject.vY+5; //altura maxima para considerar pendiente??
+				iniY = idObject.fy+(idObject.alto>>1)-1;
+				finY = iniY+idObject.vY+HILLHEIGHT; //altura maxima para considerar pendiente
 				iniX = idObject.fx;
 				finX = iniX;
 				
@@ -1051,10 +1065,7 @@ begin
 				
 				//Bajamos al objeto a la pendiente
 				if (distColY >0)
-					//log("Bajamos a :"+distColY);
 					idObject.fy += distColY;
-					//reposicionamos el punto de control lateral
-					//idObject.colPoint[3].y 		= -(idObject.alto/4);
 				end;	
 				
 			end; 
@@ -1132,7 +1143,9 @@ Begin
 					//comprobar el codigo del tile
 					if (checkTileCode(idPlayer,COLDOWN,y_org/cTileSize,x_org/cTileSize))
 						if (tileMap[y_org/cTileSize][x_org/cTileSize].tileCode == SLOPE_135)
-							num_dur_tile = map_get_pixel(fich,mapTriangle,(x_org%cTileSize),(y_org%cTileSize));
+							num_dur_tile = map_get_pixel(fich,mapTriangle135,(x_org%cTileSize),(y_org%cTileSize));
+						elseif (tileMap[y_org/cTileSize][x_org/cTileSize].tileCode == SLOPE_45)
+							num_dur_tile = map_get_pixel(fich,mapTriangle45,(x_org%cTileSize),(y_org%cTileSize));
 						else
 							num_dur_tile = map_get_pixel(fich,mapBox,(x_org%cTileSize),(y_org%cTileSize));
 						end;

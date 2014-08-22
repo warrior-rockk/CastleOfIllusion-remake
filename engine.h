@@ -12,6 +12,8 @@
 #define MAXOBJPARAMS   	9					//Numero de parametros objetos
 #define MAXCOLPOINTS    12
 
+#define HILLHEIGHT		5					//Altura maxima de una pendiente (para adaptar al terreno)
+
 //Numero de tiles fuera de la pantalla. 
 //Si la resolucion no es multiplo del tamaño del tile,es aconsejable usar 
 //al menos 2 tiles OffScreen. Si es multiplo, con 1 es suficiente
@@ -73,6 +75,7 @@
 #define SOLID         1
 #define SOLID_ON_FALL 9
 #define SLOPE_135     14
+#define SLOPE_45      15
 
 //Propiedades de tile
 //bit 7:Opacidad del tile.0:el tile es cuadrado 1:el tile tiene transparencia
@@ -171,7 +174,8 @@ Global
 	float friction 	= 0.9;		//Friccion
 	//Borrar
 	int mapBox; 
-	int mapTriangle;
+	int mapTriangle135;
+	int mapTriangle45;
 End;
 
 //Variables locales

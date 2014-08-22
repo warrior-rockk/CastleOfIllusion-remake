@@ -197,14 +197,8 @@ BEGIN
 			
 			
 			if (tileExists((y+17)/cTileSize,x/cTileSize))
-				
-				
-				if (tileMap[(y+17)/cTileSize][x/cTileSize].tileCode == SLOPE_135)
-					log("yeah");
-					colPoint[3].enabled = 0;
-				else
-					colPoint[3].enabled = 1;
-				end;
+				colPoint[3].enabled = NOT (tileMap[(y+17)/cTileSize][x/cTileSize].tileCode == SLOPE_135);
+				colPoint[1].enabled = NOT (tileMap[(y+17)/cTileSize][x/cTileSize].tileCode == SLOPE_45);
 			end;
 			
 			dir = colCheckTileTerrain(ID,i); 
