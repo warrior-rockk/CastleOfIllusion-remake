@@ -176,6 +176,7 @@ Global
 	int mapBox; 
 	int mapTriangle135;
 	int mapTriangle45;
+	int mapStairs;
 End;
 
 //Variables locales

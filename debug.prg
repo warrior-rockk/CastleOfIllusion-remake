@@ -55,7 +55,8 @@ begin
 					" TileShape: "+tileMap[posTileY][posTileX].tileShape +
 					" TileProf: " +tileMap[posTileY][posTileX].tileProf +
 					" TileAlpha: "+tileMap[posTileY][posTileX].tileAlpha +
-					" TileCode: " +tileMap[posTileY][posTileX].tileCode);
+					" TileCode: " +tileMap[posTileY][posTileX].tileCode + 
+					" ProcessID: "+collision(type pTile));
 			else
 				log("TilePosX: "+posTileX+" TilePosY: "+posTileY + 
 				    " fuera del mapeado");
@@ -97,6 +98,23 @@ begin
 	map_del(0,graph);
 end;
 
+//Funcion para pintar los puntos de colision
+//de un proceso
+process debugColPoint(float fx,float fy)
+begin
+	region = cGameRegion;
+	ctype = c_scroll;
+	z = -100;
+
+	graph = map_new(1,1,8);
+	drawing_map(0,graph);
+	drawing_color(100);
+	draw_box(0,0,1,1);
+	x = fx;
+	y = fy;
+	frame;
+end;
+
 //Funcion para dibujar un triangulo del tamaño de tile.
 //Solo funciona el angulo 135 y 45
 function draw_triangle(int map,int angle)
@@ -121,20 +139,20 @@ begin
 	end;
 end;
 
-//Funcion para pintar los puntos de colision
-//de un proceso
-process debugColPoint(float fx,float fy)
+//Funcion para dibujar unq escalera del tamaño de tile.
+function draw_stairs(int map)
+private xx,yy;
 begin
-	region = cGameRegion;
-	ctype = c_scroll;
-	z = -100;
-
-	graph = map_new(1,1,8);
-	drawing_map(0,graph);
-	drawing_color(100);
-	draw_box(0,0,1,1);
-	x = fx;
-	y = fy;
-	frame;
+	//barras laterales
+	for (yy=0;yy<cTileSize;yy++)
+		map_put_pixel(0,map,(cTileSize>>1)-(cTileSize/4),yy,250);
+		map_put_pixel(0,map,(cTileSize>>1)+(cTileSize/4),yy,250);
+	end;
+	//travesaños
+	for (xx=(cTileSize>>1)-(cTileSize/4)+1;xx<(cTileSize>>1)+(cTileSize/4);xx++)
+		map_put_pixel(0,map,xx,(cTileSize>>1)-(cTileSize/4),250);
+		map_put_pixel(0,map,xx,(cTileSize>>1),250);
+		map_put_pixel(0,map,xx,(cTileSize>>1)+(cTileSize/4),250);
+	end;
+	
 end;
-

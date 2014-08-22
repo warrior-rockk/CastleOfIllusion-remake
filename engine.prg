@@ -27,6 +27,9 @@ begin
 	mapTriangle45 = map_new(cTileSize,cTileSize,8);
 	draw_triangle(mapTriangle45,45);
 	
+	mapStairs = map_new(cTileSize,cTileSize,8);
+	draw_stairs(mapStairs);
+	
 	//Bucle principal de control del engine
 	Loop 
 		//Medicion fps
