@@ -155,10 +155,31 @@ BEGIN
 					fY -= 2;
 					//centramos el objeto en el tile escalera
 					fx = x+(cTileSize>>1)-(x%cTileSize);
-				//en caso contrario, si el pie derecho esta en escaleras, sales de ella?
+				//en caso contrario, si el pie derecho esta en escaleras, sales de ella
 				elseif (tileMap[(y+colPoint[4].y)/cTileSize][(x+colPoint[4].x)/cTileSize].tileCode == STAIRS)
-					fy = ((y/cTileSize)*cTileSize)+(cTileSize>>1)+(alto>>1);
+					//subimos a la plataforma
+					fy -= (alto>>1);
 					onStairs = false;
+				end;				
+			end;
+		end;
+		
+		if (key(CKDOWN))
+			if (tileExists(y/cTileSize,x/cTileSize))
+				//si el centro inferior del objeto esta en tile escaleras
+				if (tileMap[(y+(alto>>1))/cTileSize][x/cTileSize].tileCode == STAIRS)
+					//si el centro del objeto esta en tile escaleras
+					if (tileMap[y/cTileSize][x/cTileSize].tileCode == STAIRS)
+						//bajamos las escaleras
+						onStairs = true;
+						fY += 2;
+						//centramos el objeto en el tile escalera
+						fx = x+(cTileSize>>1)-(x%cTileSize);
+					//en caso contrario, estamos en la base de la escalera
+					else
+						//bajamos el objeto a la escalera
+						fy += (alto>>1);
+					end;
 				end;				
 			end;
 		end;
@@ -167,8 +188,7 @@ BEGIN
 		if (!key(CKLEFT) && !key(CKRIGHT))
 			vX *= friction;
 		end;
-		if (onStairs) vX = 0; end;
-		
+				
 		vY += gravity;
 		
 		//Colisiones
