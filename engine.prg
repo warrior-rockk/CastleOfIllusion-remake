@@ -837,8 +837,9 @@ begin
 		end;
 		//Colisiones inferiores
 		case COLDOWN:
-			return (tileMap[posY][posX].tileCode<> SOLID_ON_FALL) || 
-			       (tileMap[posY][posX].tileCode==SOLID_ON_FALL && idObject.vY>0);
+			return ((tileMap[posY][posX].tileCode <> SOLID_ON_FALL) && (tileMap[posY][posX].tileCode <> STAIRS) ) || 
+			        (tileMap[posY][posX].tileCode == SOLID_ON_FALL && idObject.vY>0);
+				   
 		end;
 		//Colisiones lateral izquierdas
 		case COLIZQ:
@@ -922,7 +923,6 @@ begin
 					//Situamos al objeto en el borde de la colision
 					idObject.fy += distColY;
 					colDir = COLDOWN;
-					
 					
 					//deteccion de pendiente. Comprobamos si estamos enterrados
 					//Establecemos el vector a comparar (centro/inferior del objeto)

@@ -127,10 +127,11 @@ BEGIN
 				
 		//Control movimiento
 		if (key(CKBT1)) 
-			if(!jumping && grounded) 
+			if(!jumping && (grounded || onStairs)) 
 				jumping = true;
 				grounded = false;
 				vY = -accelY;
+				onStairs = false;
 			end;
 		end;
 		
@@ -138,12 +139,14 @@ BEGIN
 			if (vX < velMaxX) 
 				vX+=accelx*(1-friction);
 			end;
+			onStairs = false;
 		end;
 		
 		if (key(CKLEFT)) 
 			if (vX > -velMaxX) 
 				vX-=accelx*(1-friction);
 			end;
+			onStairs = false;
 		end;
 		
 		if (key(CKUP))
@@ -179,6 +182,7 @@ BEGIN
 					else
 						//bajamos el objeto a la escalera
 						fy += (alto>>1);
+						onStairs = true;
 					end;
 				end;				
 			end;
@@ -188,8 +192,10 @@ BEGIN
 		if (!key(CKLEFT) && !key(CKRIGHT))
 			vX *= friction;
 		end;
-				
-		vY += gravity;
+		
+		if (not onStairs)
+			vY += gravity;
+		end;
 		
 		//Colisiones
 				 
