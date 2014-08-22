@@ -189,15 +189,15 @@ Local
 	int   ancho			= 0;   		//Ancho en pixeles del proceso
 	int   estado 		= 0;   		//Estado de la entidad
 	int	  numColPoints 	= 0;		//Numero de puntos de colision
-	struct colPoint[MAXCOLPOINTS] 		//Puntos deteccion colision
-		float x;
-		float y;
-		int colCode;
-		int enabled;
+	struct colPoint[MAXCOLPOINTS] 	//Puntos deteccion colision de un objeto
+		float x;					//Offset X a sumar a la posicion del objeto
+		float y;					//Offset Y a sumar a la posicion del objeto
+		int colCode;				//Codigo del punto de colision
+		int enabled;				//Habilitacion del punto de colision
 	end;
 End;
 
 
-
 //Includes del engine
-include "engine.prg";
+include "engine.prg";		//Core principal de engine
+include "debug.prg";		//Funciones de debug
