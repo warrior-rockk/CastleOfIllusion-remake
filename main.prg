@@ -80,7 +80,7 @@ private
 
 byte  jumping,		//Flag salto
 byte  grounded; 	//Flag en suelo
-byte  onStairs;		//Flag de en escaleras
+//byte  onStairs;		//Flag de en escaleras
 float velMaxX;		//Velocidad Maxima Horizontal
 float accelx;		//Aceleracion Maxima Horizontal
 float accelY;		//Aceleracion Maxima Vertical
@@ -152,14 +152,17 @@ BEGIN
 		if (key(CKUP))
 			if (tileExists(y/cTileSize,x/cTileSize))
 				//si el centro del objeto esta en tile escaleras
-				if (tileMap[y/cTileSize][x/cTileSize].tileCode == STAIRS)
+				if (tileMap[y/cTileSize][x/cTileSize].tileCode == STAIRS ||
+					tileMap[y/cTileSize][x/cTileSize].tileCode == TOP_STAIRS)
 					//subimos las escaleras
 					onStairs = true;
 					fY -= 2;
+					vY = 0;
 					//centramos el objeto en el tile escalera
 					fx = x+(cTileSize>>1)-(x%cTileSize);
 				//en caso contrario, si el pie derecho esta en escaleras, sales de ella
-				elseif (tileMap[(y+colPoint[4].y)/cTileSize][(x+colPoint[4].x)/cTileSize].tileCode == STAIRS)
+				elseif (tileMap[(y+colPoint[4].y)/cTileSize][(x+colPoint[4].x)/cTileSize].tileCode == STAIRS ||
+				       tileMap[(y+colPoint[4].y)/cTileSize][(x+colPoint[4].x)/cTileSize].tileCode == TOP_STAIRS)
 					//subimos a la plataforma
 					fy -= (alto>>1);
 					onStairs = false;
@@ -170,18 +173,22 @@ BEGIN
 		if (key(CKDOWN))
 			if (tileExists(y/cTileSize,x/cTileSize))
 				//si el centro inferior del objeto esta en tile escaleras
-				if (tileMap[(y+(alto>>1))/cTileSize][x/cTileSize].tileCode == STAIRS)
+				if (tileMap[(y+(alto>>1))/cTileSize][x/cTileSize].tileCode == TOP_STAIRS ||
+				    tileMap[(y+(alto>>1))/cTileSize][x/cTileSize].tileCode == STAIRS)
 					//si el centro del objeto esta en tile escaleras
-					if (tileMap[y/cTileSize][x/cTileSize].tileCode == STAIRS)
+					if (tileMap[y/cTileSize][x/cTileSize].tileCode == TOP_STAIRS ||
+					    tileMap[y/cTileSize][x/cTileSize].tileCode == STAIRS)
 						//bajamos las escaleras
 						onStairs = true;
 						fY += 2;
+						vY = 0;
 						//centramos el objeto en el tile escalera
 						fx = x+(cTileSize>>1)-(x%cTileSize);
 					//en caso contrario, estamos en la base de la escalera
 					else
 						//bajamos el objeto a la escalera
 						fy += (alto>>1);
+						vY = 0;
 						onStairs = true;
 					end;
 				end;				

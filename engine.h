@@ -74,6 +74,7 @@
 #define NO_SOLID      0
 #define SOLID         1
 #define STAIRS        5
+#define TOP_STAIRS    6
 #define SOLID_ON_FALL 9
 #define SLOPE_135     14
 #define SLOPE_45      15
@@ -178,6 +179,7 @@ Global
 	int mapTriangle135;
 	int mapTriangle45;
 	int mapStairs;
+	int mapSolidOnFall;
 End;
 
 //Variables locales
@@ -197,6 +199,7 @@ Local
 		int colCode;				//Codigo del punto de colision
 		int enabled;				//Habilitacion del punto de colision
 	end;
+	byte onStairs;
 End;
 
 

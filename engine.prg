@@ -30,6 +30,9 @@ begin
 	mapStairs = map_new(cTileSize,cTileSize,8);
 	draw_stairs(mapStairs);
 	
+	mapSolidOnFall = map_new(cTileSize,cTileSize,8);
+	draw_SolidOnFall(mapSolidOnFall);
+	
 	//Bucle principal de control del engine
 	Loop 
 		//Medicion fps
@@ -410,7 +413,7 @@ private
 							1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
 							1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,1,
 							1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1,
-							1,0,1,5,1,1,0,0,15,1,14,0,0,0,0,0,0,0,0,0,1,
+							1,0,1,6,1,1,0,0,15,1,14,0,0,0,0,0,0,0,0,0,1,
 							1,0,1,5,1,0,0,15,1,1,1,14,0,0,0,0,0,0,1,1,1,
 							1,0,0,5,0,0,15,1,1,1,1,1,14,0,0,9,9,0,0,0,1,
 							1,0,0,5,0,15,1,1,1,1,1,1,1,14,0,0,0,0,0,1,1,
@@ -606,7 +609,7 @@ BEGIN
 					map_put(0,graph,mapTriangle135,cTileSize>>1,cTileSize>>1);
 				elseif (tileMap[i][j].tileCode == SLOPE_45)
 					map_put(0,graph,mapTriangle45,cTileSize>>1,cTileSize>>1);
-				elseif (tileMap[i][j].tileCode == STAIRS)
+				elseif (tileMap[i][j].tileCode == STAIRS || tileMap[i][j].tileCode == TOP_STAIRS)
 					map_put(0,graph,mapStairs,cTileSize>>1,cTileSize>>1);
 				else
 					draw_box(0,0,alto,ancho);
@@ -837,8 +840,14 @@ begin
 		end;
 		//Colisiones inferiores
 		case COLDOWN:
-			return ((tileMap[posY][posX].tileCode <> SOLID_ON_FALL) && (tileMap[posY][posX].tileCode <> STAIRS) ) || 
-			        (tileMap[posY][posX].tileCode == SOLID_ON_FALL && idObject.vY>0);
+			return tileMap[posY][posX].tileCode == SOLID     ||
+				   tileMap[posY][posX].tileCode == SLOPE_135 ||
+				   tileMap[posY][posX].tileCode == SLOPE_45  ||
+			      (tileMap[posY][posX].tileCode == SOLID_ON_FALL && idObject.vY>0) ||
+				  (tileMap[posY][posX].tileCode == TOP_STAIRS && idObject.vY>0);
+			/*return ((tileMap[posY][posX].tileCode <> SOLID_ON_FALL) && (tileMap[posY][posX].tileCode <> STAIRS) ) || 
+			        (tileMap[posY][posX].tileCode == SOLID_ON_FALL && idObject.vY>0) ||
+					(tileMap[posY][posX].tileCode == STAIRS && idObject.onStairs);*/
 				   
 		end;
 		//Colisiones lateral izquierdas
@@ -948,21 +957,21 @@ begin
 				End;
 			
 			else //si no hay colision, comprobamos si pendiente por debajo
-				
-				//Establecemos el vector a comparar (centro/inferior del objeto)
-				iniY = idObject.fy+(idObject.alto>>1)-1;
-				finY = iniY+idObject.vY+HILLHEIGHT; //altura maxima para considerar pendiente
-				iniX = idObject.fx;
-				finX = iniX;
-				
-				//Lanzamos la comprobacion de colision en Y
-				distColY = colision_y(0,mapBox,idObject.alto,inix,iniy,finy,0,1);
-				
-				//Bajamos al objeto a la pendiente
-				if (distColY >0)
-					idObject.fy += distColY;
-				end;	
-				
+				if (!idObject.onStairs)
+					//Establecemos el vector a comparar (centro/inferior del objeto)
+					iniY = idObject.fy+(idObject.alto>>1)-1;
+					finY = iniY+idObject.vY+HILLHEIGHT; //altura maxima para considerar pendiente
+					iniX = idObject.fx;
+					finX = iniX;
+					
+					//Lanzamos la comprobacion de colision en Y
+					distColY = colision_y(0,mapBox,idObject.alto,inix,iniy,finy,0,1);
+					
+					//Bajamos al objeto a la pendiente
+					if (distColY >0)
+						idObject.fy += distColY;
+					end;	
+				end;
 			end; 
 			
 		end;
@@ -1041,6 +1050,8 @@ Begin
 							num_dur_tile = map_get_pixel(fich,mapTriangle135,(x_org%cTileSize),(y_org%cTileSize));
 						elseif (tileMap[y_org/cTileSize][x_org/cTileSize].tileCode == SLOPE_45)
 							num_dur_tile = map_get_pixel(fich,mapTriangle45,(x_org%cTileSize),(y_org%cTileSize));
+						elseif (tileMap[y_org/cTileSize][x_org/cTileSize].tileCode == TOP_STAIRS)
+							num_dur_tile = map_get_pixel(fich,mapSolidOnFall,(x_org%cTileSize),(y_org%cTileSize));
 						else
 							num_dur_tile = map_get_pixel(fich,mapBox,(x_org%cTileSize),(y_org%cTileSize));
 						end;

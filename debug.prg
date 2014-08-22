@@ -157,3 +157,13 @@ begin
 	end;
 	
 end;
+
+//Funcion para dibujar una plataforma traspasable SOLID_ON_FALL
+function draw_SolidOnFall(int map)
+private xx,yy;
+begin;	
+	map_clear(0,map,0);
+	drawing_map(0,map);
+	drawing_color(300);
+	draw_box(0,0,cTileSize,10);
+end;
