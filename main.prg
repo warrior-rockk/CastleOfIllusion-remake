@@ -45,7 +45,7 @@ Begin
 	//Creamos un mapa aleatorio
 	//WGE_GenRandomMapFile("test\random.bin",12,8);
 	//Creamos un mapa con matriz definida
-	//WGE_GenMatrixMapFile("test\random.bin");
+	WGE_GenMatrixMapFile("test\random.bin");
 	//Cargamos el mapeado del nivel
 	//debug;
 	WGE_LoadMapLevel("test\random.bin");
@@ -78,12 +78,13 @@ End; //Fin del main
 process player_gravity()
 private 
 
-byte jumping,		//Flag salto
-byte grounded; 		//Flag en suelo
+byte  jumping,		//Flag salto
+byte  grounded; 	//Flag en suelo
+byte  onStairs;		//Flag de en escaleras
 float velMaxX;		//Velocidad Maxima Horizontal
 float accelx;		//Aceleracion Maxima Horizontal
 float accelY;		//Aceleracion Maxima Vertical
-int dir;		//Direccion de la colision
+int	  dir;			//Direccion de la colision
 
 struct tiles_comprobar[8]
 	int posx;
@@ -125,7 +126,7 @@ BEGIN
 	loop
 				
 		//Control movimiento
-		if (key(CKUP)) 
+		if (key(CKBT1)) 
 			if(!jumping && grounded) 
 				jumping = true;
 				grounded = false;
@@ -141,6 +142,20 @@ BEGIN
 		if (key(CKLEFT)) 
 			if (vX > -velMaxX) 
 				vX-=accelx*(1-friction);
+			end;
+		end;
+		
+		if (key(CKUP))
+			if (tileExists(y/cTileSize,x/cTileSize))
+				//si el centro del objeto esta en tile escaleras
+				if (tileMap[y/cTileSize][x/cTileSize].tileCode == STAIRS)
+					//subimos las escaleras
+					onStairs = true;
+					fY -= 2;
+				//en caso contrario, si el pie derecho esta en escaleras, sales de ella?
+				elseif (tileMap[(y+colPoint[4].y)/cTileSize][(x+colPoint[4].x)/cTileSize].tileCode == STAIRS)
+					fy = ((y/cTileSize)*cTileSize)+(cTileSize>>1)+(alto>>1);
+				end;				
 			end;
 		end;
 		

@@ -143,6 +143,7 @@ end;
 function draw_stairs(int map)
 private xx,yy;
 begin
+	map_clear(0,map,200);
 	//barras laterales
 	for (yy=0;yy<cTileSize;yy++)
 		map_put_pixel(0,map,(cTileSize>>1)-(cTileSize/4),yy,250);

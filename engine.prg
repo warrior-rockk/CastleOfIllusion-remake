@@ -410,10 +410,10 @@ private
 							1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
 							1,0,0,0,0,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,1,
 							1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,1,
-							1,0,0,1,1,1,0,0,15,1,14,0,0,0,0,0,0,0,0,0,1,
-							1,0,0,1,0,0,0,15,1,1,1,14,0,0,0,0,0,0,1,1,1,
-							1,0,0,1,0,0,15,1,1,1,1,1,14,0,0,9,9,0,0,0,1,
-							1,0,0,0,0,15,1,1,1,1,1,1,1,14,0,0,0,0,0,1,1,
+							1,0,1,5,1,1,0,0,15,1,14,0,0,0,0,0,0,0,0,0,1,
+							1,0,1,5,1,0,0,15,1,1,1,14,0,0,0,0,0,0,1,1,1,
+							1,0,0,5,0,0,15,1,1,1,1,1,14,0,0,9,9,0,0,0,1,
+							1,0,0,5,0,15,1,1,1,1,1,1,1,14,0,0,0,0,0,1,1,
 							1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1;
 Begin
 	
@@ -497,8 +497,10 @@ Begin
 	
 End;
 
-//proceso tile
-//TODO: Quitar transparencia del tile (falgs= B_NOCOLORKEY) si no es necesario para ahorrar dibujado
+//Proceso tile
+//Se crea en la posicion inicial definida e ira comprobando si se sale por la pantalla
+//para redibujarse en el otro extremo de la pantalla con el grafico correspondiente.
+//y con las propiedades de tile correspondientes.
 process pTile(int i,int j)
 private	
 	byte tileColor;		//Color del tile (modo debug)
@@ -598,12 +600,14 @@ BEGIN
 			drawing_map(0,graph);
 			drawing_color(tileColor);
 			
-			//provisional
+			//provisional: esto ira leyendo su grafico de tile TileGraph
 			if (tileExists(i,j))
 				if (tileMap[i][j].tileCode == SLOPE_135) 
 					map_put(0,graph,mapTriangle135,cTileSize>>1,cTileSize>>1);
 				elseif (tileMap[i][j].tileCode == SLOPE_45)
 					map_put(0,graph,mapTriangle45,cTileSize>>1,cTileSize>>1);
+				elseif (tileMap[i][j].tileCode == STAIRS)
+					map_put(0,graph,mapStairs,cTileSize>>1,cTileSize>>1);
 				else
 					draw_box(0,0,alto,ancho);
 				end;
@@ -829,7 +833,7 @@ begin
 	switch(colDir)
 		//Colisiones superiores
 		case COLUP:
-			return tileMap[posY][posX].tileCode <> SOLID_ON_FALL;
+			return tileMap[posY][posX].tileCode == SOLID;
 		end;
 		//Colisiones inferiores
 		case COLDOWN:
@@ -838,11 +842,11 @@ begin
 		end;
 		//Colisiones lateral izquierdas
 		case COLIZQ:
-			return tileMap[posY][posX].tileCode <> SOLID_ON_FALL && tileMap[posY][posX].tileCode <> SLOPE_135 && tileMap[posY][posX].tileCode <> SLOPE_45;
+			return tileMap[posY][posX].tileCode == SOLID;
 		end;
 		//Colisiones lateral derechas
 		case COLDER:
-			return tileMap[posY][posX].tileCode <> SOLID_ON_FALL && tileMap[posY][posX].tileCode <> SLOPE_135 && tileMap[posY][posX].tileCode <> SLOPE_45;
+			return tileMap[posY][posX].tileCode == SOLID;;
 		end;
 	end;
 end;

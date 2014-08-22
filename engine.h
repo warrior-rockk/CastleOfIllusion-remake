@@ -31,7 +31,7 @@
 #define	CKDOWN	  _DOWN 
 #define	CKLEFT    _LEFT 
 #define	CKRIGHT	  _RIGHT 
-#define	CKBT1	  _ALT 
+#define	CKBT1	  _R_SHIFT
 #define	CKBT2	  _SPACE
 
 //Direccion colision
@@ -73,6 +73,7 @@
 //              ..31
 #define NO_SOLID      0
 #define SOLID         1
+#define STAIRS        5
 #define SOLID_ON_FALL 9
 #define SLOPE_135     14
 #define SLOPE_45      15
@@ -191,8 +192,8 @@ Local
 	int   estado 		= 0;   		//Estado de la entidad
 	int	  numColPoints 	= 0;		//Numero de puntos de colision
 	struct colPoint[MAXCOLPOINTS] 	//Puntos deteccion colision de un objeto
-		float x;					//Offset X a sumar a la posicion del objeto
-		float y;					//Offset Y a sumar a la posicion del objeto
+		int x;						//Offset X a sumar a la posicion del objeto
+		int y;						//Offset Y a sumar a la posicion del objeto
 		int colCode;				//Codigo del punto de colision
 		int enabled;				//Habilitacion del punto de colision
 	end;
