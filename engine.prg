@@ -146,7 +146,9 @@ begin
 			//Pintamos los puntos de deteccion del jugador
 			if (idPlayer<>0)
 				for (i=0;i<idPlayer.numColPoints;i++)
-					debugColPoint(idPlayer.fx+idPlayer.colPoint[i].x,idPlayer.fy+idPlayer.colPoint[i].y);
+					if (idPlayer.colPoint[i].enabled)
+						debugColPoint(idPlayer.fx+idPlayer.colPoint[i].x,idPlayer.fy+idPlayer.colPoint[i].y);
+					end;
 				end;
 			end;
 					
@@ -953,6 +955,8 @@ int colDir;		//Sentido de la colision
 begin
 		colDir = 0;
 		
+		if (!idObject.colPoint[i].enabled) return colDir; end;
+		
 		//COLISIONES EN X
 		
 		//si el punto de deteccion es uno de los laterales
@@ -1050,7 +1054,7 @@ begin
 					//log("Bajamos a :"+distColY);
 					idObject.fy += distColY;
 					//reposicionamos el punto de control lateral
-					idObject.colPoint[3].y 		= -(idObject.alto/4);
+					//idObject.colPoint[3].y 		= -(idObject.alto/4);
 				end;	
 				
 			end; 
@@ -1208,6 +1212,7 @@ begin
 	idObject.colPoint[i].x 		= (idObject.ancho>>1)-1;
 	idObject.colPoint[i].y 		= -(idObject.alto/4);
 	idObject.colPoint[i].colCode = COLDER;
+	idObject.colPoint[i].enabled = 1;
 	
 	if (numColPoints == 1) return 1; end;
 	i = 1;
@@ -1215,6 +1220,7 @@ begin
 	idObject.colPoint[i].x 		= (idObject.ancho>>1)-1;
 	idObject.colPoint[i].y 		= (idObject.alto/4);
 	idObject.colPoint[i].colCode = COLDER;
+	idObject.colPoint[i].enabled = 1;
 	
 	if (numColPoints == 2) return 1; end;
 	i = 2;
@@ -1222,6 +1228,7 @@ begin
 	idObject.colPoint[i].x 		= -(idObject.ancho>>1);
 	idObject.colPoint[i].y 		= -(idObject.alto/4);
 	idObject.colPoint[i].colCode = COLIZQ;
+	idObject.colPoint[i].enabled = 1;
 	
 	if (numColPoints == 3) return 1; end;
 	i = 3;
@@ -1229,6 +1236,7 @@ begin
 	idObject.colPoint[i].x 		= -(idObject.ancho>>1);
 	idObject.colPoint[i].y 		= (idObject.alto/4);
 	idObject.colPoint[i].colCode = COLIZQ;
+	idObject.colPoint[i].enabled = 1;
 	
 	if (numColPoints == 4) return 1; end;
 	i = 4;
@@ -1236,6 +1244,7 @@ begin
 	idObject.colPoint[i].x 		= (idObject.ancho/4);
 	idObject.colPoint[i].y 		= (idObject.alto>>1)-1;
 	idObject.colPoint[i].colCode = COLDOWN;
+	idObject.colPoint[i].enabled = 1;
 	
 	if (numColPoints == 5) return 1; end;
 	i = 5;
@@ -1243,6 +1252,7 @@ begin
 	idObject.colPoint[i].x 		= -(idObject.ancho/4);
 	idObject.colPoint[i].y 		= (idObject.alto>>1)-1;
 	idObject.colPoint[i].colCode = COLDOWN;
+	idObject.colPoint[i].enabled = 1;
 	
 	if (numColPoints == 6) return 1; end;
 	i = 6;
@@ -1250,6 +1260,7 @@ begin
 	idObject.colPoint[i].x 		= (idObject.ancho/4);
 	idObject.colPoint[i].y 		= -(idObject.alto>>1);
 	idObject.colPoint[i].colCode = COLUP;
+	idObject.colPoint[i].enabled = 1;
 	
 	if (numColPoints == 7) return 1; end;
 	i = 7;
@@ -1257,6 +1268,7 @@ begin
 	idObject.colPoint[i].x 		= -(idObject.ancho/4);;
 	idObject.colPoint[i].y 		= -(idObject.alto>>1);
 	idObject.colPoint[i].colCode = COLUP;
+	idObject.colPoint[i].enabled = 1;
 	
 	return 1;
 	

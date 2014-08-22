@@ -188,7 +188,8 @@ Local
 	struct colPoint[MAXCOLPOINTS] 		//Puntos deteccion colision
 		float x;
 		float y;
-		byte colCode;
+		int colCode;
+		int enabled;
 	end;
 End;
 
