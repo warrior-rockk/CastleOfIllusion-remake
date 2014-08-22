@@ -196,9 +196,9 @@ BEGIN
 		for (i=0;i<numColPoints;i++)
 			
 			
-			if (tileExists((y+17)/cTileSize,x/cTileSize))
-				colPoint[3].enabled = NOT (tileMap[(y+17)/cTileSize][x/cTileSize].tileCode == SLOPE_135);
-				colPoint[1].enabled = NOT (tileMap[(y+17)/cTileSize][x/cTileSize].tileCode == SLOPE_45);
+			if (tileExists((y+(alto>>1))/cTileSize,x/cTileSize))
+				colPoint[3].enabled = NOT (tileMap[(y+(alto>>1))/cTileSize][x/cTileSize].tileCode == SLOPE_135);
+				colPoint[1].enabled = NOT (tileMap[(y+(alto>>1))/cTileSize][x/cTileSize].tileCode == SLOPE_45);
 			end;
 			
 			dir = colCheckTileTerrain(ID,i); 
