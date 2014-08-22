@@ -149,20 +149,21 @@ BEGIN
 			onStairs = false;
 		end;
 		
+		
+		//OJO!! el tile exists lo estoy haciendo sobre una posicion, y las comprobaciones sobre otra. Esto puede provocar
+		//cuelgues si estoy en un extremo!!!!
 		if (key(CKUP))
 			if (tileExists(y/cTileSize,x/cTileSize))
 				//si el centro del objeto esta en tile escaleras
-				if (tileMap[y/cTileSize][x/cTileSize].tileCode == STAIRS ||
-					tileMap[y/cTileSize][x/cTileSize].tileCode == TOP_STAIRS)
+				if (tileMap[y/cTileSize][x/cTileSize].tileCode == STAIRS || tileMap[y/cTileSize][x/cTileSize].tileCode == TOP_STAIRS)
 					//subimos las escaleras
 					onStairs = true;
 					fY -= 2;
 					vY = 0;
 					//centramos el objeto en el tile escalera
 					fx = x+(cTileSize>>1)-(x%cTileSize);
-				//en caso contrario, si el pie derecho esta en escaleras, sales de ella
-				elseif (tileMap[(y+colPoint[4].y)/cTileSize][(x+colPoint[4].x)/cTileSize].tileCode == STAIRS ||
-				       tileMap[(y+colPoint[4].y)/cTileSize][(x+colPoint[4].x)/cTileSize].tileCode == TOP_STAIRS)
+				//en caso contrario, si el pie derecho esta en el TOP escalera, sales de ella
+				elseif (tileMap[(y+colPoint[4].y)/cTileSize][(x+colPoint[4].x)/cTileSize].tileCode == TOP_STAIRS)
 					//subimos a la plataforma
 					fy -= (alto>>1);
 					onStairs = false;
@@ -170,6 +171,8 @@ BEGIN
 			end;
 		end;
 		
+		//OJO!! el tile exists lo estoy haciendo sobre una posicion, y las comprobaciones sobre otra. Esto puede provocar
+		//cuelgues si estoy en un extremo!!!!
 		if (key(CKDOWN))
 			if (tileExists(y/cTileSize,x/cTileSize))
 				//si el centro inferior del objeto esta en tile escaleras
@@ -191,7 +194,7 @@ BEGIN
 						vY = 0;
 						onStairs = true;
 					end;
-				end;				
+				end;					
 			end;
 		end;
 		
@@ -200,7 +203,7 @@ BEGIN
 			vX *= friction;
 		end;
 		
-		if (not onStairs)
+		if (!onStairs)
 			vY += gravity;
 		end;
 		
