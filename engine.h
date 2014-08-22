@@ -40,6 +40,18 @@
 #define COLIZQ		3
 #define COLDER   	4
 
+//Puntos de colision/deteccion
+#define UP_L_POINT			0
+#define UP_R_POINT			1
+#define DOWN_L_POINT		2
+#define DOWN_R_POINT		3
+#define LEFT_UP_POINT		4
+#define LEFT_DOWN_POINT		5
+#define RIGHT_UP_POINT		6
+#define RIGHT_DOWN_POINT	7
+#define CENTER_POINT		8
+#define CENTER_DOWN_POINT	9
+
 //Prioridades (orden ejecucion)
 #define MAINPRIOR	 	2
 #define PLAYERPRIOR	 	1
@@ -192,7 +204,7 @@ Local
 	int   alto			= 0;   		//Altura en pixeles del proceso
 	int   ancho			= 0;   		//Ancho en pixeles del proceso
 	int   estado 		= 0;   		//Estado de la entidad
-	int	  numColPoints 	= 0;		//Numero de puntos de colision
+	int	  numColPoints 	= 10;		//Numero de puntos de colision
 	struct colPoint[MAXCOLPOINTS] 	//Puntos deteccion colision de un objeto
 		int x;						//Offset X a sumar a la posicion del objeto
 		int y;						//Offset Y a sumar a la posicion del objeto

@@ -1107,51 +1107,50 @@ Begin
 End;   
 
 //Funcion que crea puntos de colision predefinidos (esquinas naturales)
-function int WGE_CreateDefaultColPoints(int idObject,int numColPoints)
+function int WGE_CreateDefaultColPoints(int idObject)
 private
 i= 0; 	//Variables auxiliares
 
 begin
-	if (numColPoints == 0) return 1; end;
+		
+	idObject.colPoint[RIGHT_UP_POINT].x 			= (idObject.ancho>>1)-1;
+	idObject.colPoint[RIGHT_UP_POINT].y 			= -(idObject.alto/4);
+	idObject.colPoint[RIGHT_UP_POINT].colCode 	= COLDER;
+	idObject.colPoint[RIGHT_UP_POINT].enabled 	= 1;
 	
-	idObject.colPoint[i].x 		= (idObject.ancho>>1)-1;
-	idObject.colPoint[i].y 		= -(idObject.alto/4);
-	idObject.colPoint[i].colCode = COLDER;
-	idObject.colPoint[i].enabled = 1;
 	
-	if (numColPoints == 1) return 1; end;
 	i = 1;
 	
-	idObject.colPoint[i].x 		= (idObject.ancho>>1)-1;
-	idObject.colPoint[i].y 		= (idObject.alto/4);
-	idObject.colPoint[i].colCode = COLDER;
-	idObject.colPoint[i].enabled = 1;
+	idObject.colPoint[RIGHT_DOWN_POINT].x 		= (idObject.ancho>>1)-1;
+	idObject.colPoint[RIGHT_DOWN_POINT].y 		= (idObject.alto/4);
+	idObject.colPoint[RIGHT_DOWN_POINT].colCode = COLDER;
+	idObject.colPoint[RIGHT_DOWN_POINT].enabled = 1;
 	
-	if (numColPoints == 2) return 1; end;
+	
 	i = 2;
 	
-	idObject.colPoint[i].x 		= -(idObject.ancho>>1);
-	idObject.colPoint[i].y 		= -(idObject.alto/4);
-	idObject.colPoint[i].colCode = COLIZQ;
-	idObject.colPoint[i].enabled = 1;
+	idObject.colPoint[LEFT_UP_POINT].x 		= -(idObject.ancho>>1);
+	idObject.colPoint[LEFT_UP_POINT].y 		= -(idObject.alto/4);
+	idObject.colPoint[LEFT_UP_POINT].colCode = COLIZQ;
+	idObject.colPoint[LEFT_UP_POINT].enabled = 1;
 	
-	if (numColPoints == 3) return 1; end;
+	
 	i = 3;
 	
-	idObject.colPoint[i].x 		= -(idObject.ancho>>1);
-	idObject.colPoint[i].y 		= (idObject.alto/4);
-	idObject.colPoint[i].colCode = COLIZQ;
-	idObject.colPoint[i].enabled = 1;
+	idObject.colPoint[LEFT_DOWN_POINT].x 		= -(idObject.ancho>>1);
+	idObject.colPoint[LEFT_DOWN_POINT].y 		= (idObject.alto/4);
+	idObject.colPoint[LEFT_DOWN_POINT].colCode = COLIZQ;
+	idObject.colPoint[LEFT_DOWN_POINT].enabled = 1;
 	
-	if (numColPoints == 4) return 1; end;
+	
 	i = 4;
 	
-	idObject.colPoint[i].x 		= (idObject.ancho/4);
-	idObject.colPoint[i].y 		= (idObject.alto>>1)-1;
-	idObject.colPoint[i].colCode = COLDOWN;
-	idObject.colPoint[i].enabled = 1;
+	idObject.colPoint[DOWN_R_POINT].x 		= (idObject.ancho/4);
+	idObject.colPoint[DOWN_R_POINT].y 		= (idObject.alto>>1)-1;
+	idObject.colPoint[DOWN_R_POINT].colCode = COLDOWN;
+	idObject.colPoint[DOWN_R_POINT].enabled = 1;
 	
-	if (numColPoints == 5) return 1; end;
+	
 	i = 5;
 	
 	idObject.colPoint[i].x 		= -(idObject.ancho/4);
@@ -1159,7 +1158,7 @@ begin
 	idObject.colPoint[i].colCode = COLDOWN;
 	idObject.colPoint[i].enabled = 1;
 	
-	if (numColPoints == 6) return 1; end;
+	
 	i = 6;
 		
 	idObject.colPoint[i].x 		= (idObject.ancho/4);
@@ -1167,7 +1166,7 @@ begin
 	idObject.colPoint[i].colCode = COLUP;
 	idObject.colPoint[i].enabled = 1;
 	
-	if (numColPoints == 7) return 1; end;
+	
 	i = 7;
 	
 	idObject.colPoint[i].x 		= -(idObject.ancho/4);;

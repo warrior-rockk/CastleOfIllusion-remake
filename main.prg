@@ -114,8 +114,7 @@ BEGIN
 	
 	//definimos los puntos de colision
 	//respecto al centro del personaje
-	numColPoints = 8;
-	WGE_CreateDefaultColPoints(id,numColPoints);
+	WGE_CreateDefaultColPoints(id);
 		
 	x = level.playerx0;
 	y = level.playery0;
