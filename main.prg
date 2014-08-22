@@ -139,6 +139,7 @@ BEGIN
 				vX+=accelx*(1-friction);
 			end;
 		end;
+		
 		if (key(CKLEFT)) 
 			if (vX > -velMaxX) 
 				vX-=accelx*(1-friction);
@@ -152,9 +153,12 @@ BEGIN
 					//subimos las escaleras
 					onStairs = true;
 					fY -= 2;
+					//centramos el objeto en el tile escalera
+					fx = x+(cTileSize>>1)-(x%cTileSize);
 				//en caso contrario, si el pie derecho esta en escaleras, sales de ella?
 				elseif (tileMap[(y+colPoint[4].y)/cTileSize][(x+colPoint[4].x)/cTileSize].tileCode == STAIRS)
 					fy = ((y/cTileSize)*cTileSize)+(cTileSize>>1)+(alto>>1);
+					onStairs = false;
 				end;				
 			end;
 		end;
@@ -163,6 +167,8 @@ BEGIN
 		if (!key(CKLEFT) && !key(CKRIGHT))
 			vX *= friction;
 		end;
+		if (onStairs) vX = 0; end;
+		
 		vY += gravity;
 		
 		//Colisiones
