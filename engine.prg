@@ -957,6 +957,8 @@ begin
 				End;
 			
 			else //si no hay colision, comprobamos si pendiente por debajo
+				//lo comprobamos si no estamos en escalera para despegarnos del suelo
+				//sustituir esto por desactivar el punto de control de pendiente
 				if (!idObject.onStairs)
 					//Establecemos el vector a comparar (centro/inferior del objeto)
 					iniY = idObject.fy+(idObject.alto>>1)-1;
