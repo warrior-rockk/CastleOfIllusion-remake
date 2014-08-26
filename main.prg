@@ -47,7 +47,6 @@ Begin
 	//Creamos un mapa con matriz definida
 	WGE_GenMatrixMapFile("test\random.bin");
 	//Cargamos el mapeado del nivel
-	//debug;
 	WGE_LoadMapLevel("test\random.bin");
 	//Iniciamos Scroll
 	WGE_InitScroll();
@@ -148,9 +147,6 @@ BEGIN
 			onStairs = false;
 		end;
 		
-		
-		//OJO!! el tile exists lo estoy haciendo sobre una posicion, y las comprobaciones sobre otra. Esto puede provocar
-		//cuelgues si estoy en un extremo!!!!
 		if (key(CKUP))
 			
 			//si el centro del objeto esta en tile escaleras
@@ -163,17 +159,13 @@ BEGIN
 				fx = x+(cTileSize>>1)-(x%cTileSize);
 			//en caso contrario, si el pie derecho esta en el TOP escalera, sales de ella
 			elseif (getTileCode(id,CENTER_DOWN_POINT) == TOP_STAIRS)
-				//subimos a la plataforma
+				//subimos a la plataforma (tile superior a la escalera)
 				fy = (((y/cTileSize)*cTileSize)+cTileSize)-(alto>>1);
-				//fy = y-(y%cTileSize);
-				log(fy);
 				onStairs = false;
 			end;				
 			
 		end;
 		
-		//OJO!! el tile exists lo estoy haciendo sobre una posicion, y las comprobaciones sobre otra. Esto puede provocar
-		//cuelgues si estoy en un extremo!!!!
 		if (key(CKDOWN))
 			
 			//si el centro inferior del objeto esta en tile escaleras

@@ -116,7 +116,7 @@ function WGE_InitScreen()
 begin
 	//Complete restore para evitar "flickering" (no funciona)
 	restore_type = COMPLETE_RESTORE;
-	scale_mode=SCALE_NORMAL2X; 
+	//scale_mode=SCALE_NORMAL2X; 
 	set_mode(cResX,cResY,8);
 	//set_mode(992,600,8);
 	set_fps(cNumFPS,0);
@@ -300,10 +300,10 @@ Begin
 	
 	
 	//Creamos la matriz dinamica del tileMap
-	tileMap = calloc(level.numTilesY,sizeof(tile*));
+	/*tileMap = calloc(level.numTilesY,sizeof(tile*));
 	from i = 0 to level.numTilesX-1;
 		tileMap[i] = calloc(level.numTilesX ,sizeof(tile));
-	end;
+	end;*/
 
 	//Cargamos la informacion del grafico de los tiles del fichero de mapa
 	for (i=0;i<level.numTilesY;i++)
