@@ -152,49 +152,49 @@ BEGIN
 		//OJO!! el tile exists lo estoy haciendo sobre una posicion, y las comprobaciones sobre otra. Esto puede provocar
 		//cuelgues si estoy en un extremo!!!!
 		if (key(CKUP))
-			if (tileExists(y/cTileSize,x/cTileSize))
-				//si el centro del objeto esta en tile escaleras
-				if (tileMap[y/cTileSize][x/cTileSize].tileCode == STAIRS || tileMap[y/cTileSize][x/cTileSize].tileCode == TOP_STAIRS)
-					//subimos las escaleras
-					onStairs = true;
-					fY -= 2;
-					vY = 0;
-					//centramos el objeto en el tile escalera
-					fx = x+(cTileSize>>1)-(x%cTileSize);
-				//en caso contrario, si el pie derecho esta en el TOP escalera, sales de ella
-				elseif (tileMap[(y+colPoint[4].y)/cTileSize][(x+colPoint[4].x)/cTileSize].tileCode == TOP_STAIRS)
-					//subimos a la plataforma
-					fy -= (alto>>1);
-					onStairs = false;
-				end;				
-			end;
+			
+			//si el centro del objeto esta en tile escaleras
+			if (getTileCode(id,CENTER_POINT) == STAIRS || getTileCode(id,CENTER_POINT) == TOP_STAIRS)
+				//subimos las escaleras
+				onStairs = true;
+				fY -= 2;
+				vY = 0;
+				//centramos el objeto en el tile escalera
+				fx = x+(cTileSize>>1)-(x%cTileSize);
+			//en caso contrario, si el pie derecho esta en el TOP escalera, sales de ella
+			elseif (getTileCode(id,CENTER_DOWN_POINT) == TOP_STAIRS)
+				//subimos a la plataforma
+				fy = (((y/cTileSize)*cTileSize)+cTileSize)-(alto>>1);
+				//fy = y-(y%cTileSize);
+				log(fy);
+				onStairs = false;
+			end;				
+			
 		end;
 		
 		//OJO!! el tile exists lo estoy haciendo sobre una posicion, y las comprobaciones sobre otra. Esto puede provocar
 		//cuelgues si estoy en un extremo!!!!
 		if (key(CKDOWN))
-			if (tileExists(y/cTileSize,x/cTileSize))
-				//si el centro inferior del objeto esta en tile escaleras
-				if (tileMap[(y+(alto>>1))/cTileSize][x/cTileSize].tileCode == TOP_STAIRS ||
-				    tileMap[(y+(alto>>1))/cTileSize][x/cTileSize].tileCode == STAIRS)
-					//si el centro del objeto esta en tile escaleras
-					if (tileMap[y/cTileSize][x/cTileSize].tileCode == TOP_STAIRS ||
-					    tileMap[y/cTileSize][x/cTileSize].tileCode == STAIRS)
-						//bajamos las escaleras
-						onStairs = true;
-						fY += 2;
-						vY = 0;
-						//centramos el objeto en el tile escalera
-						fx = x+(cTileSize>>1)-(x%cTileSize);
-					//en caso contrario, estamos en la base de la escalera
-					else
-						//bajamos el objeto a la escalera
-						fy += (alto>>1);
-						vY = 0;
-						onStairs = true;
-					end;
-				end;					
-			end;
+			
+			//si el centro inferior del objeto esta en tile escaleras
+			if (getTileCode(id,CENTER_DOWN_POINT) == TOP_STAIRS || getTileCode(id,CENTER_DOWN_POINT) == STAIRS)
+				//si el centro del objeto esta en tile escaleras
+				if (getTileCode(id,CENTER_POINT) == TOP_STAIRS || getTileCode(id,CENTER_POINT) == STAIRS)	
+					//bajamos las escaleras
+					onStairs = true;
+					fY += 2;
+					vY = 0;
+					//centramos el objeto en el tile escalera
+					fx = x+(cTileSize>>1)-(x%cTileSize);
+				//en caso contrario, estamos en la base de la escalera
+				else
+					//bajamos el objeto a la escalera
+					fy += (alto>>1);
+					vY = 0;
+					onStairs = true;
+				end;
+			end;					
+			
 		end;
 		
 		//Fisicas

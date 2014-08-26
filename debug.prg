@@ -100,7 +100,7 @@ end;
 
 //Funcion para pintar los puntos de colision
 //de un proceso
-process debugColPoint(float fx,float fy)
+process debugColPoint(int idObject,int numPoint)
 begin
 	region = cGameRegion;
 	ctype = c_scroll;
@@ -108,10 +108,17 @@ begin
 
 	graph = map_new(1,1,8);
 	drawing_map(0,graph);
-	drawing_color(100);
+	if (idObject.colPoint[numPoint].enabled)
+		drawing_color(100);
+	else
+		drawing_color(30);
+	end;
+	
 	draw_box(0,0,1,1);
-	x = fx;
-	y = fy;
+	
+	x = idPlayer.fx+idPlayer.colPoint[numPoint].x;
+	y = idPlayer.fy+idPlayer.colPoint[numPoint].y;
+	
 	frame;
 end;
 

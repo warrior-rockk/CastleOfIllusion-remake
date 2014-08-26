@@ -86,10 +86,9 @@ begin
 
 			//Pintamos los puntos de deteccion del jugador
 			if (idPlayer<>0)
-				for (i=0;i<NUMCOLPOINTS;i++)
-					if (idPlayer.colPoint[i].enabled)
-						debugColPoint(idPlayer.fx+idPlayer.colPoint[i].x,idPlayer.fy+idPlayer.colPoint[i].y);
-					end;
+				for (i=0;i<NUMCOLPOINTS;i++)			
+					//debugColPoint(idPlayer.fx+idPlayer.colPoint[i].x,idPlayer.fy+idPlayer.colPoint[i].y);
+					debugColPoint(idPlayer,i);
 				end;
 			end;
 					
@@ -609,8 +608,10 @@ BEGIN
 					map_put(0,graph,mapTriangle135,cTileSize>>1,cTileSize>>1);
 				elseif (tileMap[i][j].tileCode == SLOPE_45)
 					map_put(0,graph,mapTriangle45,cTileSize>>1,cTileSize>>1);
-				elseif (tileMap[i][j].tileCode == STAIRS || tileMap[i][j].tileCode == TOP_STAIRS)
+				elseif (tileMap[i][j].tileCode == STAIRS) //|| tileMap[i][j].tileCode == TOP_STAIRS)
 					map_put(0,graph,mapStairs,cTileSize>>1,cTileSize>>1);
+				elseif (tileMap[i][j].tileCode == TOP_STAIRS) 
+					map_put(0,graph,mapSolidOnFall,cTileSize>>1,cTileSize>>1);
 				else
 					draw_box(0,0,alto,ancho);
 				end;
@@ -1163,4 +1164,17 @@ begin
 	
 	return 1;
 	
+end;
+
+//funcion que devuelve el codigo de Tile de una posicion
+function int getTileCode(int idObject,int pointType)
+begin
+	x = idObject.x + idObject.colPoint[pointType].x;
+	y = idObject.y + idObject.colPoint[pointType].y;
+	
+	if (!tileExists(y/cTileSize,x/cTileSize))
+		return 0;
+	else
+		return tileMap[y/cTileSize][x/cTileSize].tileCode;
+	end;
 end;
