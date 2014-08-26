@@ -104,12 +104,14 @@ BEGIN
 	z = ZPLAYER;
 	priority = PLAYERPRIOR;
 	
-	graph = map_new(ancho,ancho,8);
+	//dibujamos el personaje como una caja
+	graph = map_new(ancho,alto,8);
 	drawing_map(0,graph);
 	drawing_color(300);
 	draw_box(0,0,ancho,alto);
+	//dibujamos la nariz para diferenciar hacia donde mira
 	drawing_color(200);
-	draw_fcircle(ancho-8,alto-16,4);
+	draw_fcircle((ancho>>1)+(ancho>>2),(alto>>2),4);
 	
 	//definimos los puntos de colision
 	//respecto al centro del personaje
