@@ -249,7 +249,7 @@ BEGIN
 		//debug;
 		//Recorremos la lista de puntos a comprobar
 		//say("test:");
-		for (i=0;i<numColPoints;i++)
+		for (i=0;i<NUMCOLPOINTS;i++)
 			
 			
 			if (tileExists((y+(alto>>1))/cTileSize,x/cTileSize))
