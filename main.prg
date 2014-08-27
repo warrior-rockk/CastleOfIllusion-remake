@@ -58,7 +58,8 @@ Begin
 	
 	//Creamos el jugador
 	//idPlayer = player_no_gravity();
-	caja();
+	caja(672,160);
+	caja(672,160-64);
 	idPlayer = player_gravity();
 	
 		
@@ -89,6 +90,7 @@ float velMaxX;				//Velocidad Maxima Horizontal
 float accelX;				//Aceleracion Maxima Horizontal
 float accelY;				//Aceleracion Maxima Vertical
 int	  dir;					//Direccion de la colision
+int   colID;				//Proceso con el que se colisiona
 
 struct tiles_comprobar[8]
 	int posx;
@@ -292,8 +294,7 @@ BEGIN
 		*/
 		
 		grounded = false;
-		
-			
+				
 		//Recorremos la lista de tiles a comprobar
 		//for (i=0;i<9;i++)
 			
@@ -302,10 +303,10 @@ BEGIN
 		
 		//Recorremos la lista de puntos a comprobar
 		for (i=0;i<NUMCOLPOINTS;i++)
-					
+				
 			//lanzamos comprobacion de terreno con los puntos de colision
-			dir = colCheckTileTerrain(ID,i); 
-			
+			dir = colCheckTileTerrain(ID,i);
+		
 			//acciones segun colision
 			if (dir == COLIZQ || dir == COLDER) 
 				vX = 0;
@@ -321,22 +322,30 @@ BEGIN
 			
 		end;
 		
-		dir = colCheckProcess(id,get_id(type caja));
+		//lanzamos comprobacion con procesos caja
+		repeat
+			//obtenemos siguiente colision
+			colID = get_id(TYPE caja);
+			
+			dir = colCheckProcess(id,colID);
 		
-		//colisiones con procesos
-		if (dir == COLIZQ || dir == COLDER) 
-			vX = 0;
-			jumping = false;
-		elseif (dir == COLDOWN) 
-			grounded = true;
-			jumping = false;
-		elseif (dir == COLUP) 
-			vY = 0;			//Flota por el techo	
-			//vY *= -1;		//Rebota hacia abajo con la velocida que subia
-			//vY = 2;		//Rebota hacia abajo con valor fijo
-		end;
+			//acciones segun colision
+			if (dir == COLIZQ || dir == COLDER) 
+				vX = 0;
+				jumping = false;
+			elseif (dir == COLDOWN) 
+				grounded = true;
+				jumping = false;
+			elseif (dir == COLUP) 
+				vY = 0;			//Flota por el techo	
+				//vY *= -1;		//Rebota hacia abajo con la velocida que subia
+				//vY = 2;		//Rebota hacia abajo con valor fijo
+			end;
 		
+		until (colID == 0);
 		
+
+			
 		//Actualizar velocidades
 		if (grounded)
 			vY = 0;
@@ -357,7 +366,7 @@ BEGIN
 	end;
 end;
 
-process caja();
+process caja(int x,int y);
 begin
 	ancho = 64;
 	alto = 64;
@@ -366,9 +375,6 @@ begin
 	region = cGameRegion;
 	ctype = c_scroll;
 	z = ZMAP1;
-	
-	x = 672;
-	y = 160;
 	
 	fx = x;
 	fy = y;

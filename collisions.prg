@@ -321,7 +321,10 @@ float vcX,vcY,hW,hH,oX,oY;
 int ColDir;
 
 begin
-    //Obtiene los vectores de los centros para comparar
+    //comprobamos los id de los procesos
+	if (idObject == 0 || idObjectB == 0) return 0; end;
+	
+	//Obtiene los vectores de los centros para comparar
 	vcX = (idObject.fx) - (idObjectB.fx );
 	vcY = (idObject.fy) - (idObjectB.fy );
 	// suma las mitades de los anchos y los altos
