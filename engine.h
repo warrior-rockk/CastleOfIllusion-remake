@@ -163,6 +163,12 @@ Type tile
 	byte tileCode; 				//Codigo del tile
 end;
 
+//Vector
+Type vector						//Tipo dato vector
+	point vStart;				//Punto inicio
+	point vEnd;					//Punto fin
+end;
+	
 //Variables Globales
 Global
 	//engine

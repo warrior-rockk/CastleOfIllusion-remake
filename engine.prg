@@ -116,7 +116,7 @@ function WGE_InitScreen()
 begin
 	//Complete restore para evitar "flickering" (no funciona)
 	restore_type = COMPLETE_RESTORE;
-	//scale_mode=SCALE_NORMAL2X; 
+	scale_mode=SCALE_NORMAL2X; 
 	set_mode(cResX,cResY,8);
 	//set_mode(992,600,8);
 	set_fps(cNumFPS,0);
@@ -863,36 +863,55 @@ begin
 end;
 
 
-//Funcion de colision con tile segun mapa de durezas
+//Funcion de colision con tile segun mapa de durezas segun su punto de colision
 //Posiciona el objeto en el borde del tile y devuelve un int con el sentido de la colision o 0 si no lo hay
 function int colCheckTileTerrain(int idObject,int i)
 private 
-int distColX;	//Distancia con la colision en X
-int distColY;	//Distancia con la colision en Y
-int iniX;		//Inicio X
-int finX;		//FIn X
-int iniY;		//Inicio Y
-int finY;		//Fin Y
-int colDir;		//Sentido de la colision
+int distColX;		//Distancia con la colision en X
+int distColY;		//Distancia con la colision en Y
+int iniX;			//Inicio X
+int finX;			//FIn X
+int iniY;			//Inicio Y
+int finY;			//Fin Y
+int colDir;			//Sentido de la colision
+vector colVector;	//Vector de comprobacion colision
 
 begin
 		colDir = 0;
 		
+		
+		//comprobamos si el punto de control esta activo
 		if (!idObject.colPoint[i].enabled) return colDir; end;
 		
+		//===============
 		//COLISIONES EN X
+		//===============
 		
-		//si el punto de deteccion es uno de los laterales
+		//desactivamos puntos de control inferiores si estamos en rampa
+		idObject.colPoint[LEFT_DOWN_POINT].enabled  = getTileCode(idObject,CENTER_DOWN_POINT) <> SLOPE_135;
+		idObject.colPoint[RIGHT_DOWN_POINT].enabled = getTileCode(idObject,CENTER_DOWN_POINT) <> SLOPE_45;
+			
+		//si el punto de deteccion es lateral (X)
 		if (idObject.colPoint[i].colCode == COLDER || idObject.colPoint[i].colCode == COLIZQ )
 			
 			//Establecemos el vector a chequear
+			colVector.vStart.x = idObject.fx+idObject.colPoint[i].x;
+			colVector.vEnd.x   = colVector.vStart.x+idObject.vX;
+			colVector.vStart.y = idObject.fy+idObject.colPoint[i].y;
+			colVector.vEnd.y = colVector.vStart.y;
+			/*
 			iniX = idObject.fx+idObject.colPoint[i].x;
 			finX = iniX+idObject.vX;
 			iniY = idObject.fy+idObject.colPoint[i].y;
 			finY = iniY;
+			*/
+			
+			//log (iniX + " " + finX + " " + iniY + " " + finY + " " );
+			log (colVector.vStart.x + " " + colVector.vEnd.x + " " + colVector.vStart.y + " " + colVector.vEnd.y + " " );
 			
 			//lanzamos la comprobacion de colision en X
-			distColX = colCheckVectorX(0,mapBox,idObject.alto,inix,iniy,finx,0);
+			//distColX = colCheckVectorX(0,mapBox,inix,iniy,finx);
+			distColX = colCheckVectorX(0,mapBox,&colVector);
 			
 			//Si hay colision
 			If (distColX>=0)
@@ -912,7 +931,9 @@ begin
 			end;  
 		end;
 		
+		//===============
 		//COLISIONES EN Y
+		//===============
 		
 		//Si el punto de deteccion es uno de los superiores/inferiores
 		if (idObject.colPoint[i].colCode == COLUP || idObject.colPoint[i].colCode == COLDOWN)
@@ -985,43 +1006,40 @@ end;
 
 
 //Funcion que devuelve el numero de pixeles en x hasta la dureza, o -1 si no hay
-function int colCheckVectorX(Int fich,Int graf,int alto,int x_org,Int y_org,int x_dest,Int color)
+function int colCheckVectorX(Int fich,Int graf,vector *colVector)
 Private 
 int dist=0;		//distancia de colision
 int inc;		//Incremento
 
 Begin
- 
+	log (colVector.vStart.x + " " + colVector.vEnd.x + " " + colVector.vStart.y + " " + colVector.vEnd.y + " " );
+	
 	//seteamos el sentido del incremento
-	(x_dest>=x_org) ? inc = 1 : inc = -1;
+	(colVector.vEnd.x>=colVector.vStart.x) ? inc = 1 : inc = -1;
 	
     //Recorremos el vector buscando colision con pixel 
 	Repeat
 		
-		if (color == 0 )		   	    
-			//si el tile en esta posicion existe
-			if (tileExists(y_org/cTileSize,x_org/cTileSize))
-				//si el tile es solido
-				if (tileMap[y_org/cTileSize][x_org/cTileSize].tileCode <> NO_SOLID)
-					//comprobar el codigo del tile
-					if (checkTileCode(idPlayer,COLDER,y_org/cTileSize,x_org/cTileSize))
-						if(map_get_pixel(fich,mapBox,(x_org%cTileSize),(y_org%cTileSize)) <> 0)
-							return dist;
-						end;
+		
+		//si el tile en esta posicion existe
+		if (tileExists(colVector.vStart.y/cTileSize,colVector.vStart.x/cTileSize))
+			//si el tile es solido
+			if (tileMap[colVector.vStart.y/cTileSize][colVector.vStart.x/cTileSize].tileCode <> NO_SOLID)
+				//comprobar el codigo del tile
+				if (checkTileCode(idPlayer,COLDER,colVector.vStart.y/cTileSize,colVector.vStart.x/cTileSize))
+					if(map_get_pixel(fich,mapBox,(colVector.vStart.x%cTileSize),(colVector.vStart.y%cTileSize)) <> 0)
+						return dist;
 					end;
 				end;
 			end;
-			
-		else
-			;
 		end;
-		
+				
 		//Incrementamos distancia
 		dist++;
 		//Incrementamos vector
-		x_org+=inc;
+		colVector.vStart.x+=inc;
 		
-	Until(x_org==(x_dest+inc))
+	Until(colVector.vStart.x==(colVector.vEnd.x+inc))
 	
 	//No ha habido colision
 	Return -1; 
@@ -1166,15 +1184,18 @@ begin
 	
 end;
 
-//funcion que devuelve el codigo de Tile de una posicion
+//funcion que devuelve el codigo de Tile de un punto de colision
 function int getTileCode(int idObject,int pointType)
 begin
+	//sumamos la posicion del objeto al punto de colision
 	x = idObject.x + idObject.colPoint[pointType].x;
 	y = idObject.y + idObject.colPoint[pointType].y;
 	
+	//comprobamos si existe en el mapeado
 	if (!tileExists(y/cTileSize,x/cTileSize))
 		return 0;
 	else
+		//devolvemos el tileCode
 		return tileMap[y/cTileSize][x/cTileSize].tileCode;
 	end;
 end;

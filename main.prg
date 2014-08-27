@@ -47,6 +47,7 @@ Begin
 	//Creamos un mapa con matriz definida
 	WGE_GenMatrixMapFile("test\random.bin");
 	//Cargamos el mapeado del nivel
+	//TODO: carga dinamica comentada. Ver porque falla a veces
 	WGE_LoadMapLevel("test\random.bin");
 	//Iniciamos Scroll
 	WGE_InitScroll();
@@ -129,14 +130,6 @@ BEGIN
 	loop
 				
 		//Control movimiento
-		if (key(CKBT1)) 
-			if(!jumping && (grounded || onStairs)) 
-				jumping = true;
-				grounded = false;
-				vY = -accelY;
-				onStairs = false;
-			end;
-		end;
 		
 		if (key(CKRIGHT)) 
 			if (vX < velMaxX) 
@@ -150,6 +143,15 @@ BEGIN
 				vX-=accelx*(1-friction);
 			end;
 			onStairs = false;
+		end;
+		
+		if (key(CKBT1)) 
+			if(!jumping && (grounded || onStairs)) 
+				jumping = true;
+				grounded = false;
+				vY = -accelY;
+				onStairs = false;
+			end;
 		end;
 		
 		if (key(CKUP))			
@@ -201,6 +203,7 @@ BEGIN
 		end;
 		
 		//Fisicas
+		
 		if (!key(CKLEFT) && !key(CKRIGHT))
 			vX *= friction;
 		end;
@@ -249,21 +252,14 @@ BEGIN
 			
 			//Lanzamos comprobacion de colision con el tile actual
 			//dir = colCheckTile(ID,tiles_comprobar[i].posX,tiles_comprobar[i].posY);
-		//debug;
+		
 		//Recorremos la lista de puntos a comprobar
-		//say("test:");
 		for (i=0;i<NUMCOLPOINTS;i++)
-			
-			
-			if (tileExists((y+(alto>>1))/cTileSize,x/cTileSize))
-				colPoint[3].enabled = NOT (tileMap[(y+(alto>>1))/cTileSize][x/cTileSize].tileCode == SLOPE_135);
-				colPoint[1].enabled = NOT (tileMap[(y+(alto>>1))/cTileSize][x/cTileSize].tileCode == SLOPE_45);
-			end;
-			
+						
+			//lanzamos comprobacion de terreno con los puntos de colision
 			dir = colCheckTileTerrain(ID,i); 
 			
-			//dir = colCheckTileTerrainY(ID);
-			
+			//acciones segun colision
 			if (dir == COLIZQ || dir == COLDER) 
 				vX = 0;
 				jumping = false;
@@ -275,7 +271,7 @@ BEGIN
 				//vY *= -1;		//Rebota hacia abajo con la velocida que subia
 				//vY = 2;		//Rebota hacia abajo con valor fijo
 			end;
-			//say(dir +" " + i);
+			
 		end;
 		
 		
@@ -288,15 +284,15 @@ BEGIN
 		fy += vY;
 		
 		//Escalamos la posicion de floats en enteros
-		if (abs(fx-x)>=1 ) //si la diferencia entre el float y el entero es una unidad
-			//log("movemos de "+x+" a");
+		//si la diferencia entre el float y el entero es una unidad
+		if (abs(fx-x) >= 1 ) 
 			x = fx;
-			//log(x+" con vel: "+vX+" desde "+fx);
 		end;
 		y = fy;
 		
 		frame;
-end;
+	
+	end;
 end;
 
 
