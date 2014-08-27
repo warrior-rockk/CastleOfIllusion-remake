@@ -948,9 +948,9 @@ begin
 					if (SLOPESENABLED)
 												
 						//Establecemos el vector a comparar (centro/inferior del objeto)
-						colVector.vStart.x = idObject.fx;
-						colVector.vEnd.x   = colVector.vEnd.x;
-						colVector.vStart.y = idObject.fy+(idObject.alto>>1)-1;
+						colVector.vStart.x = idObject.fx+idObject.colPoint[CENTER_DOWN_POINT].x;
+						colVector.vEnd.x   = colVector.vStart.x;
+						colVector.vStart.y = idObject.fy+idObject.colPoint[CENTER_DOWN_POINT].y;
 						colVector.vEnd.y   = colVector.vStart.y-HILLHEIGHT; //altura maxima para considerar pendiente
 						
 						//Lanzamos la comprobacion de colision en Y
@@ -977,9 +977,9 @@ begin
 					//sustituir esto por desactivar el punto de control de pendiente
 					if (!idObject.onStairs)
 						//Establecemos el vector a comparar (centro/inferior del objeto)
-						colVector.vStart.x = idObject.fx;
+						colVector.vStart.x = idObject.fx+idObject.colPoint[CENTER_DOWN_POINT].x;
 						colVector.vEnd.x   = colVector.vStart.x;
-						colVector.vStart.y = idObject.fy+(idObject.alto>>1)-1;
+						colVector.vStart.y = idObject.fy+idObject.colPoint[CENTER_DOWN_POINT].y-1;
 						colVector.vEnd.y   = colVector.vStart.y+idObject.vY+HILLHEIGHT; //altura maxima para considerar pendiente
 						
 						//Lanzamos la comprobacion de colision en Y
