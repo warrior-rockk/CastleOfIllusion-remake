@@ -885,9 +885,11 @@ begin
 		//===============
 		
 		//desactivamos puntos de control inferiores si estamos en rampa
-		idObject.colPoint[LEFT_DOWN_POINT].enabled  = getTileCode(idObject,CENTER_DOWN_POINT) <> SLOPE_135;
-		idObject.colPoint[RIGHT_DOWN_POINT].enabled = getTileCode(idObject,CENTER_DOWN_POINT) <> SLOPE_45;
-			
+		if (SLOPESENABLED)
+			idObject.colPoint[LEFT_DOWN_POINT].enabled  = getTileCode(idObject,CENTER_DOWN_POINT) <> SLOPE_135;
+			idObject.colPoint[RIGHT_DOWN_POINT].enabled = getTileCode(idObject,CENTER_DOWN_POINT) <> SLOPE_45;
+		end;
+		
 		//si el punto de deteccion es lateral (X)
 		if (idObject.colPoint[i].colCode == COLDER || idObject.colPoint[i].colCode == COLIZQ )
 			
@@ -942,22 +944,25 @@ begin
 					idObject.fy += distColY;
 					colDir = COLDOWN;
 					
-					//deteccion de pendiente. Comprobamos si estamos enterrados
-					//Establecemos el vector a comparar (centro/inferior del objeto)
-					colVector.vStart.x = idObject.fx;
-					colVector.vEnd.x   = colVector.vEnd.x;
-					colVector.vStart.y = idObject.fy+(idObject.alto>>1)-1;
-					colVector.vEnd.y   = colVector.vStart.y-HILLHEIGHT; //altura maxima para considerar pendiente
-					
-					//Lanzamos la comprobacion de colision en Y
-					distColY = colCheckVectorY(0,mapBox,&colVector,COLCENTER,FROMCOLLISION);
-					
-					//Subimos al objeto a la pendiente
-					if (distColY >0)
-						idObject.fy -= distColY-1;
+					//Deteccion de pendiente,comprobamos si estamos enterrados
+					if (SLOPESENABLED)
+												
+						//Establecemos el vector a comparar (centro/inferior del objeto)
+						colVector.vStart.x = idObject.fx;
+						colVector.vEnd.x   = colVector.vEnd.x;
+						colVector.vStart.y = idObject.fy+(idObject.alto>>1)-1;
+						colVector.vEnd.y   = colVector.vStart.y-HILLHEIGHT; //altura maxima para considerar pendiente
+						
+						//Lanzamos la comprobacion de colision en Y
+						distColY = colCheckVectorY(0,mapBox,&colVector,COLCENTER,FROMCOLLISION);
+						
+						//Subimos al objeto a la pendiente
+						if (distColY >0)
+							idObject.fy -= distColY-1;
+						end;
 					end;
-					
 				End;                                 
+				
 				//Colision superior
 				if (idObject.colPoint[i].colCode == COLUP && idObject.vY<0)
 					//Situamos al objeto en el borde de la colision
@@ -965,23 +970,26 @@ begin
 					colDir = COLUP;
 				End;
 			
-			else //si no hay colision, comprobamos si pendiente por debajo
-				//lo comprobamos si no estamos en escalera para despegarnos del suelo
-				//sustituir esto por desactivar el punto de control de pendiente
-				if (!idObject.onStairs)
-					//Establecemos el vector a comparar (centro/inferior del objeto)
-					colVector.vStart.x = idObject.fx;
-					colVector.vEnd.x   = colVector.vStart.x;
-					colVector.vStart.y = idObject.fy+(idObject.alto>>1)-1;
-					colVector.vEnd.y   = colVector.vStart.y+idObject.vY+HILLHEIGHT; //altura maxima para considerar pendiente
-					
-					//Lanzamos la comprobacion de colision en Y
-					distColY = colCheckVectorY(0,mapBox,&colVector,COLCENTER,TOCOLLISION);
-					
-					//Bajamos al objeto a la pendiente
-					if (distColY >0)
-						idObject.fy += distColY;
-					end;	
+			else 
+				//si no hay colision, comprobamos si pendiente hacia abajo
+				if (SLOPESENABLED)
+					//lo comprobamos si no estamos en escalera para despegarnos del suelo
+					//sustituir esto por desactivar el punto de control de pendiente
+					if (!idObject.onStairs)
+						//Establecemos el vector a comparar (centro/inferior del objeto)
+						colVector.vStart.x = idObject.fx;
+						colVector.vEnd.x   = colVector.vStart.x;
+						colVector.vStart.y = idObject.fy+(idObject.alto>>1)-1;
+						colVector.vEnd.y   = colVector.vStart.y+idObject.vY+HILLHEIGHT; //altura maxima para considerar pendiente
+						
+						//Lanzamos la comprobacion de colision en Y
+						distColY = colCheckVectorY(0,mapBox,&colVector,COLCENTER,TOCOLLISION);
+						
+						//Bajamos al objeto a la pendiente
+						if (distColY >0)
+							idObject.fy += distColY;
+						end;	
+					end;
 				end;
 			end; 
 			
@@ -1023,7 +1031,8 @@ Begin
 		dist++;
 		//Incrementamos vector
 		colVector.vStart.x+=inc;
-		
+	
+	//hasta recorrer todo el vector	
 	Until(colVector.vStart.x==(colVector.vEnd.x+inc))
 	
 	//No ha habido colision
@@ -1096,6 +1105,7 @@ Begin
 			//incrementamos vector
 			colVector.vStart.y+=inc;
 			
+	//hasta recorrer todo el vector
 	Until( (colVector.vStart.y>colVector.vEnd.y && inc==1) || (colVector.vStart.y<colVector.vEnd.y && inc==-1) )
 	
 	//No ha habido colision

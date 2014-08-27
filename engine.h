@@ -12,6 +12,7 @@
 #define MAXOBJPARAMS   	9					//Numero de parametros objetos
 #define MAXCOLPOINTS    12
 
+#define SLOPESENABLED   1                   //Flag que determina si se usan rampas en el engine
 #define HILLHEIGHT		5					//Altura maxima de una pendiente (para adaptar al terreno)
 
 //Modos funcion colCheckVectorY
