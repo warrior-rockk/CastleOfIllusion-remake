@@ -240,6 +240,6 @@ End;
 
 
 //Includes del engine
-//include "..\a\Warcom_Game_Engine\engine.prg";		//Core principal de engine
 include "engine.prg";		//Core principal de engine
+include "collisions.prg";	//Funciones de colision
 include "debug.prg";		//Funciones de debug
