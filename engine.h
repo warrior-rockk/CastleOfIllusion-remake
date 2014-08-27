@@ -10,10 +10,6 @@
 #define WGE_ENGINE							//Utilizando WGE engine
 #define bit_cmp(a,b) 	( (a & b) == b )	//Funcion comparar bit
 
-//Modos funcion colCheckVectorY
-#define FROMCOLLISION    0					//Comprobar pixeles para salir de la colision
-#define TOCOLLISION      1					//Comprobar pixeles hasta llegar a la colision
-
 //Teclas 
 #define	CKUP 	  _UP 
 #define	CKDOWN	  _DOWN 
@@ -21,6 +17,10 @@
 #define	CKRIGHT	  _RIGHT 
 #define	CKBT1	  _R_SHIFT
 #define	CKBT2	  _SPACE
+
+//Modos funcion colCheckVectorY
+#define FROMCOLLISION    0					//Comprobar pixeles para salir de la colision
+#define TOCOLLISION      1					//Comprobar pixeles hasta llegar a la colision
 
 //Direccion colision
 #define COLUP		1
@@ -82,17 +82,6 @@
 //Constantes del motor
 const
 	//Engine
-	cMaxObjParams   = 9;					//Numero de parametros objetos
-    cSlopesEnabled  = 1;                    //Flag que determina si se usan rampas en el engine
-    cHillHeight		= 8;					//Altura maxima de una pendiente (para adaptar al terreno)
-	
-	cNumColPoints 	= 10	;				//Puntos de colision/deteccion
-	//Numero de tiles fuera de la pantalla. 
-	//Si la resolucion no es multiplo del tamaño del tile,es aconsejable usar 
-	//al menos 2 tiles OffScreen. Si es multiplo, con 1 es suficiente
-	cTilesXOffScreen = 1;					//Tiles fuera de la pantalla en X
-	cTilesYOffScreen = 2;					//Tiles fuera de la pantalla en Y
-	
 	//Prioridades (orden ejecucion)
 	cMainPrior	 	 = 2;
 	cPlayerPrior	 = 1;
@@ -100,19 +89,22 @@ const
 	cTilePrior		 =-2;
 
 	//Profundidades
-	cZCursor    	 =-3; 		     //Profundidad del cursor de Debug
-	cZMap2	    	 =-2;     		//Profundidad del mapeado encima del personaje
-	cZPlayer		 =-1;			//Profundidad del player
-	cZMap1 	    	 = 1;			//Profundidad del mapeado tras player
-
+	cZCursor    	 =-3; 		     		//Profundidad del cursor de Debug
+	cZMap2	    	 =-2;     				//Profundidad del mapeado encima del personaje
+	cZPlayer		 =-1;					//Profundidad del player
+	cZMap1 	    	 = 1;					//Profundidad del mapeado tras player
 	
-	cTransLevel      = 128;			//Nivel transparencia Alpha
-
-	//modo debug
-	cCursorColor 	= 100;			//Color del cursor de debugMode
-	cDebugInfoX  	= 10;			//Posicion X de la informacion de debug
-	cDebugInfoY  	= 176;			//Posicion Y de la informacion de debug
-	cMaxDebugInfo	= 10;			//Maximo lineas informacion de debug
+	cMaxObjParams   = 9;					//Numero de parametros objetos
+    cSlopesEnabled  = 1;                    //Flag que determina si se usan rampas en el engine
+    cHillHeight		= 8;					//Altura maxima de una pendiente (para adaptar al terreno)
+	cNumColPoints 	= 10;					//Puntos de colision/deteccion
+	cTransLevel      = 128;					//Nivel transparencia Alpha
+		
+	//Debug		
+	cCursorColor 	= 100;					//Color del cursor de debugMode
+	cDebugInfoX  	= 10;					//Posicion X de la informacion de debug
+	cDebugInfoY  	= 176;					//Posicion Y de la informacion de debug
+	cMaxDebugInfo	= 10;					//Maximo lineas informacion de debug
 
 	//Pantalla
 	cNumFPS    	 	= 60;  					//Frames por segundo
@@ -125,6 +117,12 @@ const
 	cRegionY 		= 0;					//Region Vertical Pantalla de juego (Representacion Mapeado)
 	cRegionW 		= cResX;				//Region Horizontal Pantalla de juego (Representacion Mapeado) 
 	cRegionH 		= cResY;				//Region Vertical Pantalla de juego (Representacion Mapeado)	
+	
+	//Numero de tiles fuera de la pantalla. 
+	//Si la resolucion no es multiplo del tamaño del tile,es aconsejable usar 
+	//al menos 2 tiles OffScreen. Si es multiplo, con 1 es suficiente
+	cTilesXOffScreen = 1;					//Tiles fuera de la pantalla en X
+	cTilesYOffScreen = 2;					//Tiles fuera de la pantalla en Y
 	
 	//Mapeado
 	cTileSize   = 64;   					//Tamaño tiles (Ancho y alto iguales)
@@ -186,7 +184,7 @@ Global
 	int FrameCount;				//Contador de Frames Global
 	int maxFPS;					//FPS Maximo
 	int minFPS; 				//FPS Mínimo
-	int gTileSize = cTileSize; 
+
 	//debug
 	byte debugMode;				//Modo debug del engine
 	//nivel y mapeado
