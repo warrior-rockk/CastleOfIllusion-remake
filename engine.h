@@ -9,28 +9,10 @@
 //Defines del engine
 #define WGE_ENGINE							//Utilizando WGE engine
 #define bit_cmp(a,b) 	( (a & b) == b )	//Funcion comparar bit
-#define MAXOBJPARAMS   	9					//Numero de parametros objetos
-#define MAXCOLPOINTS    12
-
-#define SLOPESENABLED   1                   //Flag que determina si se usan rampas en el engine
-#define HILLHEIGHT		8					//Altura maxima de una pendiente (para adaptar al terreno)
 
 //Modos funcion colCheckVectorY
 #define FROMCOLLISION    0					//Comprobar pixeles para salir de la colision
 #define TOCOLLISION      1					//Comprobar pixeles hasta llegar a la colision
-
-
-//Numero de tiles fuera de la pantalla. 
-//Si la resolucion no es multiplo del tamaño del tile,es aconsejable usar 
-//al menos 2 tiles OffScreen. Si es multiplo, con 1 es suficiente
-#define TILESXOFFSCREEN 1					//Tiles fuera de la pantalla en X
-#define TILESYOFFSCREEN 2					//Tiles fuera de la pantalla en Y
-
-//Defines del modo debug
-#define CURSORCOLOR 	100			//Color del cursor de debugMode
-#define DEBUGINFOX  	10			//Posicion X de la informacion de debug
-#define DEBUGINFOY  	176			//Posicion Y de la informacion de debug
-#define MAXDEBUGINFO	10			//Maximo lineas informacion de debug
 
 //Teclas 
 #define	CKUP 	  _UP 
@@ -47,9 +29,7 @@
 #define COLDER   	4
 #define COLCENTER   5
 
-//Puntos de colision/deteccion
-#define	NUMCOLPOINTS 	    10
-		
+//Puntos de colision
 //los puntos laterales deben estar primero de los inferiores/superiores
 //para el buen funcionamiento de la deteccion de obstaculos
 #define RIGHT_UP_POINT		0
@@ -62,18 +42,6 @@
 #define UP_R_POINT			7
 #define CENTER_POINT		8
 #define CENTER_DOWN_POINT	9
-
-//Prioridades (orden ejecucion)
-#define MAINPRIOR	 	2
-#define PLAYERPRIOR	 	1
-#define SCROLLPRIOR 	-1
-#define TILEPRIOR		-2
-
-//Profundidades
-#define ZCURSOR     -3      //Profundidad del cursor de Debug
-#define ZMAP2	    -2      //Profundidad del mapeado encima del personaje
-#define ZPLAYER		-1		//Profundidad del player
-#define ZMAP1 	     1 		//Profundidad del mapeado tras player
 
 //Codigo del tile
 //bits del 0 al 4 del mapa de tiles
@@ -110,13 +78,42 @@
 #define BIT_TILE_DELANTE 	64
 #define BIT_TILE_ALPHA      32
 
-//Nivel transparencia Alpha
-#define TRANSLEVEL	128
-
-
 
 //Constantes del motor
 const
+	//Engine
+	cMaxObjParams   = 9;					//Numero de parametros objetos
+    cSlopesEnabled  = 1;                    //Flag que determina si se usan rampas en el engine
+    cHillHeight		= 8;					//Altura maxima de una pendiente (para adaptar al terreno)
+	
+	cNumColPoints 	= 10	;				//Puntos de colision/deteccion
+	//Numero de tiles fuera de la pantalla. 
+	//Si la resolucion no es multiplo del tamaño del tile,es aconsejable usar 
+	//al menos 2 tiles OffScreen. Si es multiplo, con 1 es suficiente
+	cTilesXOffScreen = 1;					//Tiles fuera de la pantalla en X
+	cTilesYOffScreen = 2;					//Tiles fuera de la pantalla en Y
+	
+	//Prioridades (orden ejecucion)
+	cMainPrior	 	 = 2;
+	cPlayerPrior	 = 1;
+	cScrollPrior 	 =-1;
+	cTilePrior		 =-2;
+
+	//Profundidades
+	cZCursor    	 =-3; 		     //Profundidad del cursor de Debug
+	cZMap2	    	 =-2;     		//Profundidad del mapeado encima del personaje
+	cZPlayer		 =-1;			//Profundidad del player
+	cZMap1 	    	 = 1;			//Profundidad del mapeado tras player
+
+	
+	cTransLevel      = 128;			//Nivel transparencia Alpha
+
+	//modo debug
+	cCursorColor 	= 100;			//Color del cursor de debugMode
+	cDebugInfoX  	= 10;			//Posicion X de la informacion de debug
+	cDebugInfoY  	= 176;			//Posicion Y de la informacion de debug
+	cMaxDebugInfo	= 10;			//Maximo lineas informacion de debug
+
 	//Pantalla
 	cNumFPS    	 	= 60;  					//Frames por segundo
 	cNumFPSDebug 	= 0;					//Frames por segundo en debug (CTRL+F)
@@ -230,7 +227,7 @@ Local
 	int   alto			= 0;   		//Altura en pixeles del proceso
 	int   ancho			= 0;   		//Ancho en pixeles del proceso
 	int   estado 		= 0;   		//Estado de la entidad
-	struct colPoint[MAXCOLPOINTS] 	//Puntos deteccion colision de un objeto
+	struct colPoint[NUMCOLPOINTS] 	//Puntos deteccion colision de un objeto
 		int x;						//Offset X a sumar a la posicion del objeto
 		int y;						//Offset Y a sumar a la posicion del objeto
 		int colCode;				//Codigo del punto de colision

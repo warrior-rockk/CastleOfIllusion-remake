@@ -322,6 +322,8 @@ BEGIN
 			
 		end;
 		
+		//TODO: no tengo que repetir las acciones segun colision por ser las
+		//mismas que arriba. Pensar algo
 		//lanzamos comprobacion con procesos caja
 		repeat
 			//obtenemos siguiente colision
