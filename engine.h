@@ -146,7 +146,7 @@ End;
 //Data Types
 
 //Objeto
-Type objeto         			//Tipo de Dato de objeto
+Type _objeto         			//Tipo de Dato de objeto
 	byte tipo;      			//Tipo del objeto
 	int grafico;    			//Grafico
 	int x0;         			//Posicion X
@@ -157,19 +157,19 @@ Type objeto         			//Tipo de Dato de objeto
 End;
 
 //Punto
-Type point						//Tipo de dato punto
+Type _point						//Tipo de dato punto
 	int x;						//Posicion X
 	int y;						//Posicion Y
 End;
 
 //Path
-Type path						//Tipo de dato path
+Type _path						//Tipo de dato path
 	int numPuntos;				//Numero de puntos
-	point* punto;	     		//Array Dinamico de puntos
+	_point* punto;	     		//Array Dinamico de puntos
 end;
 
 //Tile
-Type tile
+Type _tile
 	byte tileGraph; 			//Imagen del tile
 	byte tileShape;      		//Propiedad del tile: Forma
 	byte tileProf;				//Propiedad del tile: Profundidad
@@ -178,9 +178,9 @@ Type tile
 end;
 
 //Vector
-Type vector						//Tipo dato vector
-	point vStart;				//Punto inicio
-	point vEnd;					//Punto fin
+Type _vector						//Tipo dato vector
+	_point vStart;				//Punto inicio
+	_point vEnd;					//Punto fin
 end;
 	
 //Variables Globales
@@ -202,10 +202,10 @@ Global
 		int numTilesX;      	//Tamaño horizontal en tiles del mapa 
 		int numTilesY;			//Tamaño vertical en tiles del mapa
 	End;	
-	objeto* objetos;			//Array Dinamico de objetos
-	path* paths;				//Array Dinamico de paths
-	//tile** tileMap;  	        //Matriz Dinamica del mapa de tiles del nivel
-	tile tileMap[8][20];
+	_objeto* objetos;			//Array Dinamico de objetos
+	_path* paths;				//Array Dinamico de paths
+	//_tile** tileMap;  	        //Matriz Dinamica del mapa de tiles del nivel
+	_tile tileMap[8][20];
 	byte mapUsesAlpha;				//Bit que indica que el mapa usa propiedad alpha (relentiza la carga)
 	//jugador
 	int idPlayer;				//Identificador del proceso del jugador

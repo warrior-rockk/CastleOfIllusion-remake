@@ -301,7 +301,7 @@ BEGIN
 		
 		//Recorremos la lista de puntos a comprobar
 		for (i=0;i<NUMCOLPOINTS;i++)
-						
+					
 			//lanzamos comprobacion de terreno con los puntos de colision
 			dir = colCheckTileTerrain(ID,i); 
 			

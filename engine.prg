@@ -196,7 +196,7 @@ begin
 	fread(levelFile,level.numObjects);
 	
 	//Asignamos tamaño dinamico al array de objetos
-	objetos = calloc(level.numObjects ,sizeof(objeto));
+	objetos = calloc(level.numObjects ,sizeof(_objeto));
 	//Leemos los datos de los objetos
 	for (i=0;i<level.numObjects;i++)
 			fread(levelFile,objetos[i].tipo);
@@ -213,13 +213,13 @@ begin
 	log("Leyendo Paths Nivel");
 	fread(levelFile,level.numPaths);
 	//Asignamos tamaño dinamico al array de paths
-	objetos = calloc(level.numPaths , sizeof(path));
+	objetos = calloc(level.numPaths , sizeof(_path));
 	//Leemos los datos de los trackings	
 	for (i=0;i<level.numPaths;i++)
 			//Leemos numero de puntos
 			fread(levelFile,paths[i].numPuntos);
 			//Asignamos tamaño dinamico al array de puntos
-			paths[i].punto = alloc(paths[i].numPuntos * sizeof(point));
+			paths[i].punto = alloc(paths[i].numPuntos * sizeof(_point));
 			for (j=0;j<paths[i].numPuntos;j++)
 				//Leemos los puntos
 				fread(levelFile,paths[i].punto[j].x); 
@@ -870,7 +870,7 @@ end;
 function int colCheckTileTerrain(int idObject,int i)
 private 
 
-vector colVector;	//Vector de comprobacion colision
+_vector colVector;	//Vector de comprobacion colision
 int distColX;		//Distancia con la colision en X
 int distColY;		//Distancia con la colision en Y
 int colDir;			//Sentido de la colision
@@ -1001,7 +1001,7 @@ end;
 
 
 //Funcion que devuelve,dado un vector, el numero de pixeles en x hasta la colision, o -1 si no hay
-function int colCheckVectorX(Int fich,Int graf,vector *colVector, int colCode)
+function int colCheckVectorX(Int fich,Int graf,_vector *colVector, int colCode)
 Private 
 int dist=0;		//distancia de colision
 int inc;		//Incremento
@@ -1043,7 +1043,7 @@ End
 ////Funcion que devuelve,dado un vector, el numero de pixeles en y hasta la colision, o -1 si no hay
 //El byte "mode", determina si la comprobacion es el numero de pixeles hasta llegar a la colision (TOCOLLISION 1)
 //o numero de pixeles para salir de la colision (FROMCOLLISION 0)
-Function int colCheckVectorY(int fich,int graf,vector *colVector,int colCode,byte mode)
+Function int colCheckVectorY(int fich,int graf,_vector *colVector,int colCode,byte mode)
 Private 
 int dist=0;				//distancia de colision
 int inc;				//Incremento
