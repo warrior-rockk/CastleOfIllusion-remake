@@ -85,7 +85,7 @@ byte  jumping,				//Flag salto
 byte  grounded; 			//Flag en suelo
 byte  onStairs;				//Flag de en escaleras
 float velMaxX;				//Velocidad Maxima Horizontal
-float accelx;				//Aceleracion Maxima Horizontal
+float accelX;				//Aceleracion Maxima Horizontal
 float accelY;				//Aceleracion Maxima Vertical
 int	  dir;					//Direccion de la colision
 
@@ -222,41 +222,43 @@ BEGIN
 		end;
 		
 		//aceleracion rampas
-		
-		//si estoy en una rampa de 45 grados
-		if (getTileCode(id,CENTER_DOWN_POINT) == SLOPE_45)
-			//Subiendola, cambio consignas velocidades
-			if (key(CKRIGHT))	
-				velMaxX = cPlayerVelMaxXSlopeUp;
-				accelx 	= cPlayerAccelXSlopeUp;
-				if (vX > velMaxX)
-					vX -= cPlayerDecelXSlopeUp;
+		if (SLOPESENABLED)
+			//si estoy en una rampa de 45 grados
+			if (getTileCode(id,CENTER_DOWN_POINT) == SLOPE_45)
+				//Subiendola, cambio consignas velocidades
+				if (key(CKRIGHT))	
+					velMaxX = cPlayerVelMaxXSlopeUp;
+					accelx 	= cPlayerAccelXSlopeUp;
+					if (vX > velMaxX)
+						vX -= cPlayerDecelXSlopeUp;
+					end;
+				//Bajandola, cambio consignas velocidades
+				elseif (key(CKLEFT))
+					velMaxX = cPlayerVelMaxXSlopeDown;
+					accelx 	= cPlayerAccelXSlopeDown;
 				end;
-			//Bajandola, cambio consignas velocidades
-			elseif (key(CKLEFT))
-				velMaxX = cPlayerVelMaxXSlopeDown;
-				accelx 	= cPlayerAccelXSlopeDown;
-			end;
-		//si estoy en una rampa de 135 grados
-		elseif (getTileCode(id,CENTER_DOWN_POINT) == SLOPE_135)
-			//Subiendola, cambio consignas velocidades
-			if (key(CKLEFT))	
-				velMaxX = cPlayerVelMaxXSlopeUp;
-				accelx 	= cPlayerAccelXSlopeUp;
-				if (vX < -velMaxX)
-					vX += cPlayerDecelXSlopeUp;
+			//si estoy en una rampa de 135 grados
+			elseif (getTileCode(id,CENTER_DOWN_POINT) == SLOPE_135)
+				//Subiendola, cambio consignas velocidades
+				if (key(CKLEFT))	
+					velMaxX = cPlayerVelMaxXSlopeUp;
+					accelx 	= cPlayerAccelXSlopeUp;
+					if (vX < -velMaxX)
+						vX += cPlayerDecelXSlopeUp;
+					end;
+				//Bajandola, cambio consignas velocidades
+				elseif (key(CKRIGHT))
+					velMaxX = cPlayerVelMaxXSlopeDown;
+					accelx  = cPlayerAccelXSlopeDown;
 				end;
-			//Bajandola, cambio consignas velocidades
-			elseif (key(CKRIGHT))
-				velMaxX = cPlayerVelMaxXSlopeDown;
-				accelx  = cPlayerAccelXSlopeDown;
+			//si no, restauro consignas velocidades
+			else
+				velMaxX = cPlayerVelMaxX;
+				accelX 	= cPlayerAccelX;
 			end;
-		//si no, restauro consignas velocidades
-		else
-			velMaxX = cPlayerVelMaxX;
-			accelX 	= cPlayerAccelX;
 		end;
 		
+
 		//COLISIONES
 				 
 		//comprobamos 9 tiles alrededor del player
