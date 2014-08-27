@@ -58,8 +58,9 @@ Begin
 	
 	//Creamos el jugador
 	//idPlayer = player_no_gravity();
-	idPlayer = player_gravity();
 	caja();
+	idPlayer = player_gravity();
+	
 		
 	//Bucle principal
 	Loop
@@ -320,6 +321,21 @@ BEGIN
 			
 		end;
 		
+		dir = colCheckProcess(id,get_id(type caja));
+		
+		//colisiones con procesos
+		if (dir == COLIZQ || dir == COLDER) 
+			vX = 0;
+			jumping = false;
+		elseif (dir == COLDOWN) 
+			grounded = true;
+			jumping = false;
+		elseif (dir == COLUP) 
+			vY = 0;			//Flota por el techo	
+			//vY *= -1;		//Rebota hacia abajo con la velocida que subia
+			//vY = 2;		//Rebota hacia abajo con valor fijo
+		end;
+		
 		
 		//Actualizar velocidades
 		if (grounded)
@@ -353,7 +369,16 @@ begin
 	
 	x = 672;
 	y = 160;
+	
+	fx = x;
+	fy = y;
+	
 	loop
+		fx+=key(_p)*2;
+		fx-=key(_o)*2;
+		
+		x = fx;
+		y = fy;
 		frame;
 	end;
 	

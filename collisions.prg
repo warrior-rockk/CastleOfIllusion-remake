@@ -313,6 +313,54 @@ Begin
 	
 End;
 
+//Funcion de chequeo de colision entre procesos
+//Posiciona el objeto al borde del tile y devuelve un int con el sentido de la colision o 0 si no hay
+function int colCheckProcess(int idObject, int idObjectB)
+private
+float vcX,vcY,hW,hH,oX,oY;
+int ColDir;
+
+begin
+    //Obtiene los vectores de los centros para comparar
+	vcX = (idObject.fx) - (idObjectB.fx );
+	vcY = (idObject.fy) - (idObjectB.fy );
+	// suma las mitades de los anchos y los altos
+	hW =  (idObject.ancho / 2) + (idObjectB.ancho / 2);
+	hH = (idObject.alto / 2) + (idObjectB.alto / 2);
+	
+	colDir = 0;
+
+    //si los vectores e x y son menores que las mitades de anchos y altos, ESTAN colisionando
+	if (abs(vcX) < hW && abs(vcY) < hH) 
+        
+		//calculamos el sentido de la colision (top, bottom, left, or right)
+        oX = hW - abs(vcX);
+        oY = hH - abs(vcY);
+        
+		if (oX >= oY) 
+            if (vcY > 0) 			//Arriba
+				colDir = COLUP;
+                idObject.fy += oY;
+             else 
+                colDir = COLDOWN;	//Abajo
+                idObject.fy -= oY;
+             end;
+        else 
+            if (vcX > 0) 
+                colDir = COLIZQ;	//Izquierda
+                idObject.fx += oX;
+             else 
+                colDir = COLDER;	//Derecha
+                idObject.fx -= oX;
+             end;
+	     end;
+	end;
+        
+    //Devolvemos el sentido de la colision o 0 si no hay
+    return colDir;
+
+end;
+
 //Funcion de chequeo de colision entre proceso y AABB
 //Posiciona el objeto al borde del tile y devuelve un int con el sentido de la colision o 0 si no hay
 function int colCheckAABB(int idObject, int shapeBx,int shapeBy,int shapeBW,int shapeBH)
