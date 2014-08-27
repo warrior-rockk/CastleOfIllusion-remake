@@ -163,6 +163,8 @@ BEGIN
 			elseif (getTileCode(id,CENTER_DOWN_POINT) == TOP_STAIRS)
 				//subimos a la plataforma (tile superior a la escalera)
 				fy = (((y/cTileSize)*cTileSize)+cTileSize)-(alto>>1);
+				//fy = y+(cTileSize>>1)-(y%cTileSize);
+				log(fy);
 				onStairs = false;
 			end;				
 			
