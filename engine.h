@@ -228,7 +228,6 @@ Local
 		int colCode;				//Codigo del punto de colision
 		int enabled;				//Habilitacion del punto de colision
 	end;
-	byte onStairs;
 End;
 
 

@@ -82,7 +82,7 @@ private
 
 byte  jumping,		//Flag salto
 byte  grounded; 	//Flag en suelo
-//byte  onStairs;		//Flag de en escaleras
+byte  onStairs;		//Flag de en escaleras
 float velMaxX;		//Velocidad Maxima Horizontal
 float accelx;		//Aceleracion Maxima Horizontal
 float accelY;		//Aceleracion Maxima Vertical
