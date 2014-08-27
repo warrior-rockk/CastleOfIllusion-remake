@@ -146,7 +146,6 @@ BEGIN
 			onStairs = false;
 		end;
 		
-		//TODO: bug. a veces no salta en las escaleras. Probar
 		if (key(CKBT1)) 
 			if(!jumping && (grounded || onStairs)) 
 				jumping = true;
@@ -168,6 +167,8 @@ BEGIN
 				fY -= 2;
 				//Establecemos el flag de escalera
 				onStairs = true;
+				//desactivamos flag salto
+				jumping = false;
 			//en caso contrario, si el pie derecho esta en el TOP escalera, sales de ella
 			elseif (getTileCode(id,CENTER_DOWN_POINT) == TOP_STAIRS)
 				//subimos a la plataforma (tile superior a la escalera)
@@ -191,6 +192,8 @@ BEGIN
 					fY += 2;
 					//Establecemos el flag de escalera
 					onStairs = true;
+					//desactivamos flag salto
+					jumping = false;
 				//en caso contrario, estamos en la base de la escalera
 				else
 					//quitamos velocidades
@@ -200,6 +203,8 @@ BEGIN
 					fy += (alto>>1);
 					//establecemos el flag escaleras
 					onStairs = true;
+					//desactivamos flag salto
+					jumping = false;
 				end;
 			end;					
 		end;
