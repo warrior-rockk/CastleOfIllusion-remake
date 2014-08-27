@@ -867,14 +867,11 @@ end;
 //Posiciona el objeto en el borde del tile y devuelve un int con el sentido de la colision o 0 si no lo hay
 function int colCheckTileTerrain(int idObject,int i)
 private 
+
+vector colVector;	//Vector de comprobacion colision
 int distColX;		//Distancia con la colision en X
 int distColY;		//Distancia con la colision en Y
-int iniX;			//Inicio X
-int finX;			//FIn X
-int iniY;			//Inicio Y
-int finY;			//Fin Y
 int colDir;			//Sentido de la colision
-vector colVector;	//Vector de comprobacion colision
 
 begin
 		colDir = 0;
@@ -898,19 +895,9 @@ begin
 			colVector.vStart.x = idObject.fx+idObject.colPoint[i].x;
 			colVector.vEnd.x   = colVector.vStart.x+idObject.vX;
 			colVector.vStart.y = idObject.fy+idObject.colPoint[i].y;
-			colVector.vEnd.y = colVector.vStart.y;
-			/*
-			iniX = idObject.fx+idObject.colPoint[i].x;
-			finX = iniX+idObject.vX;
-			iniY = idObject.fy+idObject.colPoint[i].y;
-			finY = iniY;
-			*/
-			
-			//log (iniX + " " + finX + " " + iniY + " " + finY + " " );
-			log (colVector.vStart.x + " " + colVector.vEnd.x + " " + colVector.vStart.y + " " + colVector.vEnd.y + " " );
-			
+			colVector.vEnd.y   = colVector.vStart.y;
+				
 			//lanzamos la comprobacion de colision en X
-			//distColX = colCheckVectorX(0,mapBox,inix,iniy,finx);
 			distColX = colCheckVectorX(0,mapBox,&colVector);
 			
 			//Si hay colision
@@ -939,13 +926,13 @@ begin
 		if (idObject.colPoint[i].colCode == COLUP || idObject.colPoint[i].colCode == COLDOWN)
 			
 			//Establecemos el vector a comparar
-			iniY = idObject.fy+idObject.colPoint[i].y;
-			finY = iniY+idObject.vY;
-			iniX = idObject.fx+idObject.colPoint[i].x;
-			finX = iniX;
+			colVector.vStart.x = idObject.fx+idObject.colPoint[i].x;
+			colVector.vEnd.x   = colVector.vStart.x;
+			colVector.vStart.y = idObject.fy+idObject.colPoint[i].y;
+			colVector.vEnd.y   = colVector.vStart.y+idObject.vY;
 			
 			//Lanzamos la comprobacion de colision en Y
-			distColY = colision_y(0,mapBox,idObject.alto,inix,iniy,finy,0,1);
+			distColY = colCheckVectorY(0,mapBox,&colVector,0,1);
 			
 			//Si hay colision
 			If (distColY>=0) 
@@ -957,13 +944,13 @@ begin
 					
 					//deteccion de pendiente. Comprobamos si estamos enterrados
 					//Establecemos el vector a comparar (centro/inferior del objeto)
-					iniY = idObject.fy+(idObject.alto>>1)-1;
-					finY = iniY-HILLHEIGHT; //altura maxima para considerar pendiente
-					iniX = idObject.fx;
-					finX = iniX;
+					colVector.vStart.x = idObject.fx;
+					colVector.vEnd.x   = colVector.vEnd.x;
+					colVector.vStart.y = idObject.fy+(idObject.alto>>1)-1;
+					colVector.vEnd.y   = colVector.vStart.y-HILLHEIGHT; //altura maxima para considerar pendiente
 					
 					//Lanzamos la comprobacion de colision en Y
-					distColY = colision_y(0,mapBox,idObject.alto,inix,iniy,finy,0,0);
+					distColY = colCheckVectorY(0,mapBox,&colVector,0,0);
 					
 					//Subimos al objeto a la pendiente
 					if (distColY >0)
@@ -983,13 +970,13 @@ begin
 				//sustituir esto por desactivar el punto de control de pendiente
 				if (!idObject.onStairs)
 					//Establecemos el vector a comparar (centro/inferior del objeto)
-					iniY = idObject.fy+(idObject.alto>>1)-1;
-					finY = iniY+idObject.vY+HILLHEIGHT; //altura maxima para considerar pendiente
-					iniX = idObject.fx;
-					finX = iniX;
+					colVector.vStart.x = idObject.fx;
+					colVector.vEnd.x   = colVector.vStart.x;
+					colVector.vStart.y = idObject.fy+(idObject.alto>>1)-1;
+					colVector.vEnd.y   = colVector.vStart.y+idObject.vY+HILLHEIGHT; //altura maxima para considerar pendiente
 					
 					//Lanzamos la comprobacion de colision en Y
-					distColY = colision_y(0,mapBox,idObject.alto,inix,iniy,finy,0,1);
+					distColY = colCheckVectorY(0,mapBox,&colVector,0,1);
 					
 					//Bajamos al objeto a la pendiente
 					if (distColY >0)
@@ -1005,15 +992,14 @@ begin
 end; 
 
 
-//Funcion que devuelve el numero de pixeles en x hasta la dureza, o -1 si no hay
+//Funcion que devuelve,dado un vector, el numero de pixeles en x hasta la colision, o -1 si no hay
 function int colCheckVectorX(Int fich,Int graf,vector *colVector)
 Private 
 int dist=0;		//distancia de colision
 int inc;		//Incremento
 
 Begin
-	log (colVector.vStart.x + " " + colVector.vEnd.x + " " + colVector.vStart.y + " " + colVector.vEnd.y + " " );
-	
+		
 	//seteamos el sentido del incremento
 	(colVector.vEnd.x>=colVector.vStart.x) ? inc = 1 : inc = -1;
 	
@@ -1045,36 +1031,35 @@ Begin
 	Return -1; 
 End
 
-//funcion que devuelve el numero de pixeles en y hasta la dureza, o -1 si no hay
+////Funcion que devuelve,dado un vector, el numero de pixeles en y hasta la colision, o -1 si no hay
 //El byte "modo", determina si la comprobacion es el numero de pixeles hasta llegar
 //al color (modo 1) o a salir del color (modo 0)
-Function int colision_y(int fich,int graf,int alto,int x_org,int y_org,int y_dest,int color,byte modo)
+Function int colCheckVectorY(int fich,int graf,vector *colVector,int color,byte modo)
 Private 
 byte i=0;
 Int inc_y;
 byte num_dur_tile=0;
 Begin
-	If (y_dest>=y_org || !modo )inc_y=1;Else inc_y=-1;End
-	//y_org += (alto/2)*inc_y;
-	//y_dest += (alto/2)*inc_y;
-	y_org += 1*inc_y;  //linea que delimita cuantos px estara el personaje sobre el suelo (con 1, estara justo 1 pix por encima de la linea de suelo)
+	If (colVector.vEnd.y>=colVector.vStart.y || !modo )inc_y=1;Else inc_y=-1;End
+	
+	colVector.vStart.y += 1*inc_y;  //linea que delimita cuantos px estara el personaje sobre el suelo (con 1, estara justo 1 pix por encima de la linea de suelo)
 	if (!modo) inc_y=-1;end;
 	Repeat
 					
-			if (tileExists(y_org/cTileSize,x_org/cTileSize))
-				if (tileMap[y_org/cTileSize][x_org/cTileSize].tileCode == NO_SOLID)
+			if (tileExists(colVector.vStart.y/cTileSize,colVector.vStart.x/cTileSize))
+				if (tileMap[colVector.vStart.y/cTileSize][colVector.vStart.x/cTileSize].tileCode == NO_SOLID)
 					num_dur_tile = 0;
 				else
 					//comprobar el codigo del tile
-					if (checkTileCode(idPlayer,COLDOWN,y_org/cTileSize,x_org/cTileSize))
-						if (tileMap[y_org/cTileSize][x_org/cTileSize].tileCode == SLOPE_135)
-							num_dur_tile = map_get_pixel(fich,mapTriangle135,(x_org%cTileSize),(y_org%cTileSize));
-						elseif (tileMap[y_org/cTileSize][x_org/cTileSize].tileCode == SLOPE_45)
-							num_dur_tile = map_get_pixel(fich,mapTriangle45,(x_org%cTileSize),(y_org%cTileSize));
-						elseif (tileMap[y_org/cTileSize][x_org/cTileSize].tileCode == TOP_STAIRS)
-							num_dur_tile = map_get_pixel(fich,mapSolidOnFall,(x_org%cTileSize),(y_org%cTileSize));
+					if (checkTileCode(idPlayer,COLDOWN,colVector.vStart.y/cTileSize,colVector.vStart.x/cTileSize))
+						if (tileMap[colVector.vStart.y/cTileSize][colVector.vStart.x/cTileSize].tileCode == SLOPE_135)
+							num_dur_tile = map_get_pixel(fich,mapTriangle135,(colVector.vStart.x%cTileSize),(colVector.vStart.y%cTileSize));
+						elseif (tileMap[colVector.vStart.y/cTileSize][colVector.vStart.x/cTileSize].tileCode == SLOPE_45)
+							num_dur_tile = map_get_pixel(fich,mapTriangle45,(colVector.vStart.x%cTileSize),(colVector.vStart.y%cTileSize));
+						elseif (tileMap[colVector.vStart.y/cTileSize][colVector.vStart.x/cTileSize].tileCode == TOP_STAIRS)
+							num_dur_tile = map_get_pixel(fich,mapSolidOnFall,(colVector.vStart.x%cTileSize),(colVector.vStart.y%cTileSize));
 						else
-							num_dur_tile = map_get_pixel(fich,mapBox,(x_org%cTileSize),(y_org%cTileSize));
+							num_dur_tile = map_get_pixel(fich,mapBox,(colVector.vStart.x%cTileSize),(colVector.vStart.y%cTileSize));
 						end;
 					end;
 				end;	
@@ -1119,9 +1104,9 @@ Begin
 				//If (num_dur_tile !=color )Return (((color+10)*100)+i);End;
 			End;
 					 
-			y_org+=inc_y;
+			colVector.vStart.y+=inc_y;
 			i++;
-	Until( (y_org>y_dest && inc_y==1) || (y_org<y_dest && inc_y==-1) )
+	Until( (colVector.vStart.y>colVector.vEnd.y && inc_y==1) || (colVector.vStart.y<colVector.vEnd.y && inc_y==-1) )
 	return -1;
 End;   
 
