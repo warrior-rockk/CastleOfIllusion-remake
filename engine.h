@@ -13,7 +13,7 @@
 #define MAXCOLPOINTS    12
 
 #define SLOPESENABLED   1                   //Flag que determina si se usan rampas en el engine
-#define HILLHEIGHT		5					//Altura maxima de una pendiente (para adaptar al terreno)
+#define HILLHEIGHT		8					//Altura maxima de una pendiente (para adaptar al terreno)
 
 //Modos funcion colCheckVectorY
 #define FROMCOLLISION    0					//Comprobar pixeles para salir de la colision
@@ -130,9 +130,17 @@ const
 	cRegionH 		= cResY;				//Region Vertical Pantalla de juego (Representacion Mapeado)	
 	
 	//Mapeado
-	cTileSize   = 64;   				//Tamaño tiles (Ancho y alto iguales)
-	cHalfTSize = cTileSize >> 1; 		//Mitad del tamaño tile (util para todo el proyecto)
-
+	cTileSize   = 64;   					//Tamaño tiles (Ancho y alto iguales)
+	cHalfTSize = cTileSize >> 1; 			//Mitad del tamaño tile (util para todo el proyecto)
+	
+	//Fisicas
+	cPlayerVelMaxX			= 3.4;			//Velocidad Maxima Player
+	cPlayerVelMaxXSlopeUp	= 2;            //Velocidad Maxima Player subiendo rampa
+	cPlayerVelMaxXSlopeDown = 5;            //Velocidad Maxima Player bajando rampa
+	cPlayerAccelX           = 1.2;          //Aceleracion maxima Player
+	cPlayerAccelXSlopeUp    = 0.2;          //Aceleracion maxima Player subiendo rampa
+	cPlayerAccelXSlopeDown  = 1.4;          //Aceleracion maxima Player bajando rampa
+	cPlayerDecelXSlopeUp    = 0.1;			//Factor deceleracion al subir rampa
 End;
 
 //Data Types

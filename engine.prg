@@ -75,6 +75,8 @@ begin
 			idDebugText[0] = write_int(0,DEBUGINFOX,DEBUGINFOY,0,&fps);
 			idDebugText[1] = write_int(0,DEBUGINFOX,DEBUGINFOY+10,0,&idCursor.x);
 			idDebugText[2] = write_int(0,DEBUGINFOX,DEBUGINFOY+20,0,&idCursor.y);
+			idDebugText[3] = write_float(0,DEBUGINFOX,DEBUGINFOY+30,0,&idPlayer.vX);
+			idDebugText[4] = write_float(0,DEBUGINFOX,DEBUGINFOY+40,0,&friction);
 			//Hacemos al player un blend aditivo para ver las colisiones
 			if (idPlayer<>0) idPlayer.flags |= B_ABLEND; end;
 			//activamos el modo debug
@@ -875,8 +877,7 @@ int colDir;			//Sentido de la colision
 
 begin
 		colDir = 0;
-		
-		
+				
 		//comprobamos si el punto de control esta activo
 		if (!idObject.colPoint[i].enabled) return colDir; end;
 		

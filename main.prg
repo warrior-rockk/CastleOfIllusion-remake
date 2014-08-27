@@ -76,18 +76,18 @@ End; //Fin del main
 
 
 //TODO: Calcular nivel inferior al que seria muerte segun tamaño mapeado
-//		Factor deslizamiento en rampas
 //		Salto distinto desde escalera
+//		Fuera salto segun pulsacion tecla
 process player_gravity()
 private 
 
-byte  jumping,		//Flag salto
-byte  grounded; 	//Flag en suelo
-byte  onStairs;		//Flag de en escaleras
-float velMaxX;		//Velocidad Maxima Horizontal
-float accelx;		//Aceleracion Maxima Horizontal
-float accelY;		//Aceleracion Maxima Vertical
-int	  dir;			//Direccion de la colision
+byte  jumping,				//Flag salto
+byte  grounded; 			//Flag en suelo
+byte  onStairs;				//Flag de en escaleras
+float velMaxX;				//Velocidad Maxima Horizontal
+float accelx;				//Aceleracion Maxima Horizontal
+float accelY;				//Aceleracion Maxima Vertical
+int	  dir;					//Direccion de la colision
 
 struct tiles_comprobar[8]
 	int posx;
@@ -99,9 +99,9 @@ int i,j;		//Variables auxiliares
 BEGIN
 	ancho = 32;
 	alto = 32;
-	velMaxX = 3.4;
-	accelx = 1.2;
-	accelY = 12;
+	velMaxX = cPlayerVelMaxX;
+	accelx 	= cPlayerAccelX;
+	accelY 	= 12;
 	
 	region = cGameRegion;
 	ctype = c_scroll;
@@ -129,8 +129,8 @@ BEGIN
 	fy = y;
 	
 	loop
-				
-		//Control movimiento
+		
+		//CONTROL MOVIMIENTO		
 		
 		if (key(CKRIGHT)) 
 			if (vX < velMaxX) 
@@ -209,17 +209,55 @@ BEGIN
 			end;					
 		end;
 		
-		//Fisicas
+		//FISICAS
 		
+		//friccion
 		if (!key(CKLEFT) && !key(CKRIGHT))
 			vX *= friction;
 		end;
 		
+		//gravedad
 		if (!onStairs)
 			vY += gravity;
 		end;
 		
-		//Colisiones
+		//aceleracion rampas
+		
+		//si estoy en una rampa de 45 grados
+		if (getTileCode(id,CENTER_DOWN_POINT) == SLOPE_45)
+			//Subiendola, cambio consignas velocidades
+			if (key(CKRIGHT))	
+				velMaxX = cPlayerVelMaxXSlopeUp;
+				accelx 	= cPlayerAccelXSlopeUp;
+				if (vX > velMaxX)
+					vX -= cPlayerDecelXSlopeUp;
+				end;
+			//Bajandola, cambio consignas velocidades
+			elseif (key(CKLEFT))
+				velMaxX = cPlayerVelMaxXSlopeDown;
+				accelx 	= cPlayerAccelXSlopeDown;
+			end;
+		//si estoy en una rampa de 135 grados
+		elseif (getTileCode(id,CENTER_DOWN_POINT) == SLOPE_135)
+			//Subiendola, cambio consignas velocidades
+			if (key(CKLEFT))	
+				velMaxX = cPlayerVelMaxXSlopeUp;
+				accelx 	= cPlayerAccelXSlopeUp;
+				if (vX < -velMaxX)
+					vX += cPlayerDecelXSlopeUp;
+				end;
+			//Bajandola, cambio consignas velocidades
+			elseif (key(CKRIGHT))
+				velMaxX = cPlayerVelMaxXSlopeDown;
+				accelx  = cPlayerAccelXSlopeDown;
+			end;
+		//si no, restauro consignas velocidades
+		else
+			velMaxX = cPlayerVelMaxX;
+			accelX 	= cPlayerAccelX;
+		end;
+		
+		//COLISIONES
 				 
 		//comprobamos 9 tiles alrededor del player
 		/*tiles_comprobar[0].posx = x/cTileSize;
@@ -252,8 +290,7 @@ BEGIN
 		
 		grounded = false;
 		
-		
-
+			
 		//Recorremos la lista de tiles a comprobar
 		//for (i=0;i<9;i++)
 			
