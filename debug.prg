@@ -21,7 +21,7 @@ begin
 	//creamos el cursor de debug
 	cursorMap = map_new(cTileSize,cTileSize,8);
 	drawing_map(0,cursorMap);
-	drawing_color(CURSORCOLOR);
+	drawing_color(cCursorColor);
 	draw_line(1,chalfTSize,cTileSize,chalfTSize);
 	draw_line(chalfTSize,1,chalfTSize,cTileSize);
 	
@@ -30,7 +30,7 @@ begin
 	region = cGameRegion;
 	mouse.region  = region;
 	ctype = c_scroll;
-	z = ZCURSOR;
+	z = cZCursor;
 		
 	//posicionamos el cursor a mitad de pantalla
 	mouse.x = (cRegionW>>1);

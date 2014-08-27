@@ -32,7 +32,7 @@ Begin
 		
 	level.playerx0 = 120;
 	level.playery0 = 0;
-	priority = MAINPRIOR;	
+	priority = cMainPrior;	
 		
 	//Iniciamos el engine
 	WGE_Init();
@@ -108,8 +108,8 @@ BEGIN
 	
 	region = cGameRegion;
 	ctype = c_scroll;
-	z = ZPLAYER;
-	priority = PLAYERPRIOR;
+	z = cZPlayer;
+	priority = cPlayerPrior;
 	
 	//dibujamos el personaje como una caja
 	graph = map_new(ancho,alto,8);
@@ -225,7 +225,7 @@ BEGIN
 		end;
 		
 		//aceleracion rampas
-		if (SLOPESENABLED)
+		if (cSlopesEnabled)
 			//si estoy en una rampa de 45 grados
 			if (getTileCode(id,CENTER_DOWN_POINT) == SLOPE_45)
 				//Subiendola, cambio consignas velocidades
@@ -302,7 +302,7 @@ BEGIN
 			//dir = colCheckTile(ID,tiles_comprobar[i].posX,tiles_comprobar[i].posY);
 		
 		//Recorremos la lista de puntos a comprobar
-		for (i=0;i<NUMCOLPOINTS;i++)
+		for (i=0;i<cNumColPoints;i++)
 				
 			//lanzamos comprobacion de terreno con los puntos de colision
 			dir = colCheckTileTerrain(ID,i);
@@ -376,7 +376,7 @@ begin
 	graph = mapBox;
 	region = cGameRegion;
 	ctype = c_scroll;
-	z = ZMAP1;
+	z = cZMap1;
 	
 	fx = x;
 	fy = y;
@@ -399,7 +399,7 @@ begin
 	
 	region = cGameRegion;
 	ctype = c_scroll;
-	z = ZPLAYER;
+	z = cZPlayer;
 	
 	graph = map_new(ancho,ancho,8);
 	drawing_map(0,graph);

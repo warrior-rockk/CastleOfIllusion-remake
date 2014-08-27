@@ -86,7 +86,7 @@ begin
 		//===============
 		
 		//desactivamos puntos de control inferiores si estamos en rampa
-		if (SLOPESENABLED)
+		if (cSlopesEnabled)
 			idObject.colPoint[LEFT_DOWN_POINT].enabled  = getTileCode(idObject,CENTER_DOWN_POINT) <> SLOPE_135;
 			idObject.colPoint[RIGHT_DOWN_POINT].enabled = getTileCode(idObject,CENTER_DOWN_POINT) <> SLOPE_45;
 		end;
@@ -146,13 +146,13 @@ begin
 					colDir = COLDOWN;
 					
 					//Deteccion de pendiente,comprobamos si estamos enterrados
-					if (SLOPESENABLED)
+					if (cSlopesEnabled)
 												
 						//Establecemos el vector a comparar (centro/inferior del objeto)
 						colVector.vStart.x = idObject.fx+idObject.colPoint[CENTER_DOWN_POINT].x;
 						colVector.vEnd.x   = colVector.vStart.x;
 						colVector.vStart.y = idObject.fy+idObject.colPoint[CENTER_DOWN_POINT].y;
-						colVector.vEnd.y   = colVector.vStart.y-HILLHEIGHT; //altura maxima para considerar pendiente
+						colVector.vEnd.y   = colVector.vStart.y-cHillHeight; //altura maxima para considerar pendiente
 						
 						//Lanzamos la comprobacion de colision en Y
 						distColY = colCheckVectorY(0,mapBox,&colVector,COLCENTER,FROMCOLLISION);
@@ -173,14 +173,14 @@ begin
 			
 			else 
 				//si no hay colision, comprobamos si pendiente hacia abajo
-				if (SLOPESENABLED)
+				if (cSlopesEnabled)
 					//lo comprobamos si no estamos en escalera para despegarnos del suelo
 					if (idObject.vY > 0)
 						//Establecemos el vector a comparar (centro/inferior del objeto)
 						colVector.vStart.x = idObject.fx+idObject.colPoint[CENTER_DOWN_POINT].x;
 						colVector.vEnd.x   = colVector.vStart.x;
 						colVector.vStart.y = idObject.fy+idObject.colPoint[CENTER_DOWN_POINT].y-1;
-						colVector.vEnd.y   = colVector.vStart.y+idObject.vY+HILLHEIGHT; //altura maxima para considerar pendiente
+						colVector.vEnd.y   = colVector.vStart.y+idObject.vY+cHillHeight; //altura maxima para considerar pendiente
 						
 						//Lanzamos la comprobacion de colision en Y
 						distColY = colCheckVectorY(0,mapBox,&colVector,COLCENTER,TOCOLLISION);

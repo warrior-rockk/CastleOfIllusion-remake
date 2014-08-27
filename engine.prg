@@ -10,7 +10,7 @@
 process WGE_Init()
 private
 	byte actDebugMode = 0;					//Modo debug activado
-	int idDebugText[MAXDEBUGINFO-1];	//Textos debug
+	int idDebugText[cMaxDebugInfo-1];	//Textos debug
 	int idCursor;						//Id proceso cursor
 		
 	int i; 								//Variables auxiliares
@@ -72,11 +72,11 @@ begin
 			//creamos frame de la region
 			WGE_RegionFrame();
 			//mostramos informacion de debug
-			idDebugText[0] = write_int(0,DEBUGINFOX,DEBUGINFOY,0,&fps);
-			idDebugText[1] = write_int(0,DEBUGINFOX,DEBUGINFOY+10,0,&idCursor.x);
-			idDebugText[2] = write_int(0,DEBUGINFOX,DEBUGINFOY+20,0,&idCursor.y);
-			idDebugText[3] = write_float(0,DEBUGINFOX,DEBUGINFOY+30,0,&idPlayer.vX);
-			idDebugText[4] = write_float(0,DEBUGINFOX,DEBUGINFOY+40,0,&friction);
+			idDebugText[0] = write_int(0,cDebugInfoX,cDebugInfoY,0,&fps);
+			idDebugText[1] = write_int(0,cDebugInfoX,cDebugInfoY+10,0,&idCursor.x);
+			idDebugText[2] = write_int(0,cDebugInfoX,cDebugInfoY+20,0,&idCursor.y);
+			idDebugText[3] = write_float(0,cDebugInfoX,cDebugInfoY+30,0,&idPlayer.vX);
+			idDebugText[4] = write_float(0,cDebugInfoX,cDebugInfoY+40,0,&friction);
 			//Hacemos al player un blend aditivo para ver las colisiones
 			if (idPlayer<>0) idPlayer.flags |= B_ABLEND; end;
 			//activamos el modo debug
@@ -88,7 +88,7 @@ begin
 
 			//Pintamos los puntos de deteccion del jugador
 			if (idPlayer<>0)
-				for (i=0;i<NUMCOLPOINTS;i++)			
+				for (i=0;i<cNumColPoints;i++)			
 					//debugColPoint(idPlayer.fx+idPlayer.colPoint[i].x,idPlayer.fy+idPlayer.colPoint[i].y);
 					debugColPoint(idPlayer,i);
 				end;
@@ -99,7 +99,7 @@ begin
 		//Tareas salida del modo debug
 		if (not debugMode && actDebugMode)
 			//limpiamos los textos
-			for (i=0;i<MAXDEBUGINFO;i++)
+			for (i=0;i<cMaxDebugInfo;i++)
 				delete_text(idDebugText[i]);
 			end;
 			//Quitamos al player el blend aditivo para ver las colisiones
@@ -161,7 +161,7 @@ process WGE_InitAlpha()
 begin
 	log("Activando modo alpha");
 		
-	drawing_alpha(TRANSLEVEL);
+	drawing_alpha(cTransLevel);
 	drawing_alpha(255);
 	
 	log("Modo alpha activado"); 
@@ -204,7 +204,7 @@ begin
 			fread(levelFile,objetos[i].x0);
 			fread(levelFile,objetos[i].y0); 
 			fread(levelFile,objetos[i].angulo);
-			for (j=0;j<MaxObjParams;j++)
+			for (j=0;j<cMaxObjParams;j++)
 				fread(levelFile,objetos[i].param[j]);
 			end;
 	end; 
@@ -482,8 +482,8 @@ Begin
 	
 	//creamos los procesos tiles segun la posicion x e y iniciales y la longitud de resolucion de pantalla
 	//En los extremos de la pantalla se crean el numero definido de tiles (TILESOFFSCREEN) extras para asegurar la fluidez
-	for (i=((y_inicial/cTileSize)-TILESYOFFSCREEN);i<(((cRegionH+y_inicial)/cTileSize)+TILESYOFFSCREEN);i++)
-		for (j=((x_inicial/cTileSize)-TILESXOFFSCREEN);j<(((cRegionW+x_inicial)/cTileSize)+TILESXOFFSCREEN);j++)
+	for (i=((y_inicial/cTileSize)-cTilesYOffScreen);i<(((cRegionH+y_inicial)/cTileSize)+cTilesYOffScreen);i++)
+		for (j=((x_inicial/cTileSize)-cTilesXOffScreen);j<(((cRegionW+x_inicial)/cTileSize)+cTilesXOffScreen);j++)
 			/*repeat
 				frame; 
 			until(not key(_space));
@@ -516,7 +516,7 @@ BEGIN
 	ancho = cTileSize;
 	ctype = c_scroll;
 	region = cGameRegion;
-	priority = TILEPRIOR;
+	priority = cTilePrior;
 	graph = map_new(alto,ancho,8);
 	
 	//establecemos su posicion inicial
@@ -526,11 +526,11 @@ BEGIN
 	loop
 				
 		//Si el tile desaparece por la izquierda
-		if (scroll[0].x0 > (x+(cTileSize*TILESXOFFSCREEN)) )	
+		if (scroll[0].x0 > (x+(cTileSize*cTilesXOffScreen)) )	
 			//nueva posicion:a la derecha del tile de offscreen (que pasa a ser onscreen)
 			//Se multiplica por 2 porque tenemos tiles offscreen a ambos lados
 			i=i;
-			j=j+(cRegionW/cTileSize)+(TILESXOFFSCREEN*2);
+			j=j+(cRegionW/cTileSize)+(cTilesXOffScreen*2);
 			  
 			log("Paso de izq a der "+i+","+j);
 			redraw = 1;
@@ -538,11 +538,11 @@ BEGIN
 		
 		
 		//Si sale el tile por la derecha
-		if ((scroll[0].x0+cRegionW)< (x-(cTileSize*TILESXOFFSCREEN)))
+		if ((scroll[0].x0+cRegionW)< (x-(cTileSize*cTilesXOffScreen)))
 			//nueva posicion:a la derecha del tile de offscreen (que pasa a ser onscreen)
 			//Se multiplica por 2 porque tenemos tiles offscreen a ambos lados
 			i=i;
-			j=j-(cRegionW/cTileSize)-(TILESXOFFSCREEN*2);
+			j=j-(cRegionW/cTileSize)-(cTilesXOffScreen*2);
 			
 			log("Paso de der a izq "+i+","+j);
 			redraw = 1;
@@ -550,9 +550,9 @@ BEGIN
 		
 		
 		//Si sale por arriba
-		if (scroll[0].y0 > (y+(cTileSize*TILESYOFFSCREEN)) )
+		if (scroll[0].y0 > (y+(cTileSize*cTilesYOffScreen)) )
 			//nueva posicion
-			i=i+(cRegionH/cTileSize)+(TILESYOFFSCREEN*2);
+			i=i+(cRegionH/cTileSize)+(cTilesYOffScreen*2);
 			j=j;       
 			
 			log("Paso de arrib a abaj "+i+","+j);
@@ -560,9 +560,9 @@ BEGIN
 		end;
 		
 		//Si sale por abajo
-		if ((scroll[0].y0+cRegionH) < (y-(cTileSize*TILESYOFFSCREEN))) 
+		if ((scroll[0].y0+cRegionH) < (y-(cTileSize*cTilesYOffScreen))) 
 			//nueva posicion
-			i=i-(cRegionH/cTileSize)-(TILESYOFFSCREEN*2);
+			i=i-(cRegionH/cTileSize)-(cTilesYOffScreen*2);
 			j=j;       
 					
 			log("Paso de abajo a arriba "+i+","+j);
@@ -586,14 +586,14 @@ BEGIN
 					flags |= B_NOCOLORKEY;
 				end;
 				if (tileMap[i][j].tileAlpha)
-					alpha = TRANSLEVEL;		
+					alpha = cTransLevel;		
 				else
 					alpha = 255;
 				end;
 				if (tileMap[i][j].tileProf)
-					z = ZMAP2;
+					z = cZMap2;
 				else
-					z = ZMAP1;
+					z = cZMap1;
 				end;
 			else
 				tileColor = 255;
@@ -664,7 +664,7 @@ End;
 process WGE_ControlScroll()
 	
 begin
-	priority = SCROLLPRIOR;
+	priority = cScrollPrior;
 	
 	//Centramos el scroll en la posicion inicial
 	scroll[cGameScroll].x0 = level.playerX0 - (cRegionW>>1);
