@@ -974,8 +974,7 @@ begin
 				//si no hay colision, comprobamos si pendiente hacia abajo
 				if (SLOPESENABLED)
 					//lo comprobamos si no estamos en escalera para despegarnos del suelo
-					//sustituir esto por desactivar el punto de control de pendiente
-					if (!idObject.onStairs)
+					if (idObject.vY > 0)
 						//Establecemos el vector a comparar (centro/inferior del objeto)
 						colVector.vStart.x = idObject.fx+idObject.colPoint[CENTER_DOWN_POINT].x;
 						colVector.vEnd.x   = colVector.vStart.x;
