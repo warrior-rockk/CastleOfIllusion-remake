@@ -56,7 +56,7 @@ Begin
 	//WGE_CreateLevel();
 	
 	//Creamos el jugador
-	//idPlayer = player();
+	//idPlayer = player_no_gravity();
 	idPlayer = player_gravity();
 	
 	//Bucle principal
@@ -74,6 +74,8 @@ End; //Fin del main
 
 
 //TODO: Calcular nivel inferior al que seria muerte segun tamaño mapeado
+//		Factor deslizamiento en rampas
+//		Salto distinto desde escalera
 process player_gravity()
 private 
 
@@ -116,7 +118,8 @@ BEGIN
 	//definimos los puntos de colision
 	//respecto al centro del personaje
 	WGE_CreateDefaultColPoints(id);
-		
+	
+	//Posicion actual del nivel actual
 	x = level.playerx0;
 	y = level.playery0;
 	
@@ -149,48 +152,52 @@ BEGIN
 			onStairs = false;
 		end;
 		
-		if (key(CKUP))
-			
+		if (key(CKUP))			
 			//si el centro del objeto esta en tile escaleras
 			if (getTileCode(id,CENTER_POINT) == STAIRS || getTileCode(id,CENTER_POINT) == TOP_STAIRS)
-				//subimos las escaleras
-				onStairs = true;
-				fY -= 2;
+				//quitamos velocidades
 				vY = 0;
+				vX = 0;
 				//centramos el objeto en el tile escalera
 				fx = x+(cTileSize>>1)-(x%cTileSize);
+				//subimos las escaleras
+				fY -= 2;
+				//Establecemos el flag de escalera
+				onStairs = true;
 			//en caso contrario, si el pie derecho esta en el TOP escalera, sales de ella
 			elseif (getTileCode(id,CENTER_DOWN_POINT) == TOP_STAIRS)
 				//subimos a la plataforma (tile superior a la escalera)
 				fy = (((y/cTileSize)*cTileSize)+cTileSize)-(alto>>1);
-				//fy = y+(cTileSize>>1)-(y%cTileSize);
-				log(fy);
+				//Quitamos el flag de escalera				
 				onStairs = false;
 			end;				
-			
 		end;
 		
 		if (key(CKDOWN))
-			
 			//si el centro inferior del objeto esta en tile escaleras
 			if (getTileCode(id,CENTER_DOWN_POINT) == TOP_STAIRS || getTileCode(id,CENTER_DOWN_POINT) == STAIRS)
 				//si el centro del objeto esta en tile escaleras
 				if (getTileCode(id,CENTER_POINT) == TOP_STAIRS || getTileCode(id,CENTER_POINT) == STAIRS)	
-					//bajamos las escaleras
-					onStairs = true;
-					fY += 2;
+					//quitamos velocidades
 					vY = 0;
+					vX = 0;
 					//centramos el objeto en el tile escalera
 					fx = x+(cTileSize>>1)-(x%cTileSize);
+					//bajamos las escaleras
+					fY += 2;
+					//Establecemos el flag de escalera
+					onStairs = true;
 				//en caso contrario, estamos en la base de la escalera
 				else
+					//quitamos velocidades
+					vY = 0;
+					vX = 0;
 					//bajamos el objeto a la escalera
 					fy += (alto>>1);
-					vY = 0;
+					//establecemos el flag escaleras
 					onStairs = true;
 				end;
 			end;					
-			
 		end;
 		
 		//Fisicas
