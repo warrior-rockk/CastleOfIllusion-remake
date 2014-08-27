@@ -14,6 +14,11 @@
 
 #define HILLHEIGHT		5					//Altura maxima de una pendiente (para adaptar al terreno)
 
+//Modos funcion colCheckVectorY
+#define FROMCOLLISION    0					//Comprobar pixeles para salir de la colision
+#define TOCOLLISION      1					//Comprobar pixeles hasta llegar a la colision
+
+
 //Numero de tiles fuera de la pantalla. 
 //Si la resolucion no es multiplo del tamaño del tile,es aconsejable usar 
 //al menos 2 tiles OffScreen. Si es multiplo, con 1 es suficiente
@@ -227,5 +232,6 @@ End;
 
 
 //Includes del engine
+//include "..\a\Warcom_Game_Engine\engine.prg";		//Core principal de engine
 include "engine.prg";		//Core principal de engine
 include "debug.prg";		//Funciones de debug

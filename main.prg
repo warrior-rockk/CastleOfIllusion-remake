@@ -145,6 +145,7 @@ BEGIN
 			onStairs = false;
 		end;
 		
+		//TODO: bug. a veces no salta en las escaleras. Probar
 		if (key(CKBT1)) 
 			if(!jumping && (grounded || onStairs)) 
 				jumping = true;

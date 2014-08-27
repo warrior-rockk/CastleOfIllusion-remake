@@ -840,7 +840,7 @@ begin
 			return tileMap[posY][posX].tileCode == SOLID;
 		end;
 		//Colisiones inferiores
-		case COLDOWN:
+		case COLDOWN,COLCENTER:
 			return tileMap[posY][posX].tileCode == SOLID     ||
 				   tileMap[posY][posX].tileCode == SLOPE_135 ||
 				   tileMap[posY][posX].tileCode == SLOPE_45  ||
@@ -898,7 +898,7 @@ begin
 			colVector.vEnd.y   = colVector.vStart.y;
 				
 			//lanzamos la comprobacion de colision en X
-			distColX = colCheckVectorX(0,mapBox,&colVector);
+			distColX = colCheckVectorX(0,mapBox,&colVector,idObject.colPoint[i].colCode);
 			
 			//Si hay colision
 			If (distColX>=0)
@@ -932,7 +932,7 @@ begin
 			colVector.vEnd.y   = colVector.vStart.y+idObject.vY;
 			
 			//Lanzamos la comprobacion de colision en Y
-			distColY = colCheckVectorY(0,mapBox,&colVector,0,1);
+			distColY = colCheckVectorY(0,mapBox,&colVector,idObject.colPoint[i].colCode,TOCOLLISION);
 			
 			//Si hay colision
 			If (distColY>=0) 
@@ -950,7 +950,7 @@ begin
 					colVector.vEnd.y   = colVector.vStart.y-HILLHEIGHT; //altura maxima para considerar pendiente
 					
 					//Lanzamos la comprobacion de colision en Y
-					distColY = colCheckVectorY(0,mapBox,&colVector,0,0);
+					distColY = colCheckVectorY(0,mapBox,&colVector,COLCENTER,FROMCOLLISION);
 					
 					//Subimos al objeto a la pendiente
 					if (distColY >0)
@@ -976,7 +976,7 @@ begin
 					colVector.vEnd.y   = colVector.vStart.y+idObject.vY+HILLHEIGHT; //altura maxima para considerar pendiente
 					
 					//Lanzamos la comprobacion de colision en Y
-					distColY = colCheckVectorY(0,mapBox,&colVector,0,1);
+					distColY = colCheckVectorY(0,mapBox,&colVector,COLCENTER,TOCOLLISION);
 					
 					//Bajamos al objeto a la pendiente
 					if (distColY >0)
@@ -993,7 +993,7 @@ end;
 
 
 //Funcion que devuelve,dado un vector, el numero de pixeles en x hasta la colision, o -1 si no hay
-function int colCheckVectorX(Int fich,Int graf,vector *colVector)
+function int colCheckVectorX(Int fich,Int graf,vector *colVector, int colCode)
 Private 
 int dist=0;		//distancia de colision
 int inc;		//Incremento
@@ -1005,14 +1005,13 @@ Begin
 	
     //Recorremos el vector buscando colision con pixel 
 	Repeat
-		
-		
+			
 		//si el tile en esta posicion existe
 		if (tileExists(colVector.vStart.y/cTileSize,colVector.vStart.x/cTileSize))
 			//si el tile es solido
 			if (tileMap[colVector.vStart.y/cTileSize][colVector.vStart.x/cTileSize].tileCode <> NO_SOLID)
-				//comprobar el codigo del tile
-				if (checkTileCode(idPlayer,COLDER,colVector.vStart.y/cTileSize,colVector.vStart.x/cTileSize))
+				//comprobar el codigo del tile para contarlo como colision o no
+				if (checkTileCode(idPlayer,colCode,colVector.vStart.y/cTileSize,colVector.vStart.x/cTileSize))
 					if(map_get_pixel(fich,mapBox,(colVector.vStart.x%cTileSize),(colVector.vStart.y%cTileSize)) <> 0)
 						return dist;
 					end;
@@ -1029,85 +1028,79 @@ Begin
 	
 	//No ha habido colision
 	Return -1; 
+	
 End
 
 ////Funcion que devuelve,dado un vector, el numero de pixeles en y hasta la colision, o -1 si no hay
-//El byte "modo", determina si la comprobacion es el numero de pixeles hasta llegar
-//al color (modo 1) o a salir del color (modo 0)
-Function int colCheckVectorY(int fich,int graf,vector *colVector,int color,byte modo)
+//El byte "mode", determina si la comprobacion es el numero de pixeles hasta llegar a la colision (TOCOLLISION 1)
+//o numero de pixeles para salir de la colision (FROMCOLLISION 0)
+Function int colCheckVectorY(int fich,int graf,vector *colVector,int colCode,byte mode)
 Private 
-byte i=0;
-Int inc_y;
-byte num_dur_tile=0;
+int dist=0;				//distancia de colision
+int inc;				//Incremento
+byte colPixel=0;		//pixel de la colision
+
 Begin
-	If (colVector.vEnd.y>=colVector.vStart.y || !modo )inc_y=1;Else inc_y=-1;End
 	
-	colVector.vStart.y += 1*inc_y;  //linea que delimita cuantos px estara el personaje sobre el suelo (con 1, estara justo 1 pix por encima de la linea de suelo)
-	if (!modo) inc_y=-1;end;
+	//seteamos el sentido del incremento
+	(colVector.vEnd.y>=colVector.vStart.y ) ? inc=1 : inc=-1;
+	
+	//linea que delimita cuantos px estara el personaje sobre el suelo (con 1, estara justo 1 pix por encima de la linea de suelo)
+	colVector.vStart.y += 1;
+
+	//Recorremos el vector buscando colision con pixel
 	Repeat
-					
+			
+			//si el tile de esa posicion existe		
 			if (tileExists(colVector.vStart.y/cTileSize,colVector.vStart.x/cTileSize))
+				//si el tile no es solido
 				if (tileMap[colVector.vStart.y/cTileSize][colVector.vStart.x/cTileSize].tileCode == NO_SOLID)
-					num_dur_tile = 0;
+					colPixel = 0;
 				else
-					//comprobar el codigo del tile
-					if (checkTileCode(idPlayer,COLDOWN,colVector.vStart.y/cTileSize,colVector.vStart.x/cTileSize))
-						if (tileMap[colVector.vStart.y/cTileSize][colVector.vStart.x/cTileSize].tileCode == SLOPE_135)
-							num_dur_tile = map_get_pixel(fich,mapTriangle135,(colVector.vStart.x%cTileSize),(colVector.vStart.y%cTileSize));
-						elseif (tileMap[colVector.vStart.y/cTileSize][colVector.vStart.x/cTileSize].tileCode == SLOPE_45)
-							num_dur_tile = map_get_pixel(fich,mapTriangle45,(colVector.vStart.x%cTileSize),(colVector.vStart.y%cTileSize));
-						elseif (tileMap[colVector.vStart.y/cTileSize][colVector.vStart.x/cTileSize].tileCode == TOP_STAIRS)
-							num_dur_tile = map_get_pixel(fich,mapSolidOnFall,(colVector.vStart.x%cTileSize),(colVector.vStart.y%cTileSize));
-						else
-							num_dur_tile = map_get_pixel(fich,mapBox,(colVector.vStart.x%cTileSize),(colVector.vStart.y%cTileSize));
+					//comprobar el codigo del tile para contarlo como colision o no
+					if (checkTileCode(idPlayer,colCode,colVector.vStart.y/cTileSize,colVector.vStart.x/cTileSize))
+						//Obtenemos el pixel de colision segun el tipo de tile
+						switch (tileMap[colVector.vStart.y/cTileSize][colVector.vStart.x/cTileSize].tileCode)
+							case SLOPE_135:
+								colPixel = map_get_pixel(0,mapTriangle135,(colVector.vStart.x%cTileSize),(colVector.vStart.y%cTileSize));
+							end;
+							case SLOPE_45:
+								colPixel = map_get_pixel(0,mapTriangle45,(colVector.vStart.x%cTileSize),(colVector.vStart.y%cTileSize));
+							end;
+							case TOP_STAIRS,SOLID_ON_FALL:
+								colPixel = map_get_pixel(0,mapSolidOnFall,(colVector.vStart.x%cTileSize),(colVector.vStart.y%cTileSize));
+							end;
+							default:
+								colPixel = map_get_pixel(0,mapBox,(colVector.vStart.x%cTileSize),(colVector.vStart.y%cTileSize));
+							end;
 						end;
 					end;
 				end;	
 			end;
 			
-			If (modo)	
-				
-				if (num_dur_tile <> 0 )
-					return i;
-				/*
-				switch (num_dur_tile)
-					case (C_DUR_SUELO):
-						Return(((C_DUR_SUELO+10)*100)+i);
-					end;
-					case (C_DUR_UP_STAIR):
-						Return(((C_DUR_UP_STAIR+10)*100)+i);
-					end;
-					case (C_DUR_AVANCE_X_DER):
-						Return(((C_DUR_AVANCE_X_DER+10)*100)+i);
-					end;
-					case (C_DUR_AVANCE_X_IZQ):
-						Return(((C_DUR_AVANCE_X_IZQ+10)*100)+i);
-					end;
-					case (C_DUR_SUELO_NOTECHO):
-						Return(((C_DUR_SUELO_NOTECHO+10)*100)+i);
-					end;
-					case (C_DUR_PENDIENTE):
-						Return(((C_DUR_PENDIENTE+10)*100)+i);
-					end;
-					case (C_DUR_PENDIENTE_45):
-						Return(((C_DUR_PENDIENTE_45+10)*100)+i);
-					end;
-				*/
+			//comprobamos modo
+			If (mode == TOCOLLISION)	
+				//si ha detectado terreno, devolvemos distancia
+				if (colPixel <> 0 )
+					return dist;
 				end;
-				
 			Else
-				if (num_dur_tile == 0 )
-					return i;
+				//si ha salido del terreno, devolvemos distancia
+				if (colPixel == 0 )
+					return dist;
 				end;
-				//buscamos salirnos del suelo y la pendiente, en teoria este modo solo se usa para las pendientes
-				//&& num_dur_tile !=C_DUR_PENDIENTE && num_dur_tile !=C_DUR_PENDIENTE_45
-				//If (num_dur_tile !=color )Return (((color+10)*100)+i);End;
 			End;
-					 
-			colVector.vStart.y+=inc_y;
-			i++;
-	Until( (colVector.vStart.y>colVector.vEnd.y && inc_y==1) || (colVector.vStart.y<colVector.vEnd.y && inc_y==-1) )
+			
+			//incrementamos distancia
+			dist++;
+			//incrementamos vector
+			colVector.vStart.y+=inc;
+			
+	Until( (colVector.vStart.y>colVector.vEnd.y && inc==1) || (colVector.vStart.y<colVector.vEnd.y && inc==-1) )
+	
+	//No ha habido colision
 	return -1;
+	
 End;   
 
 //Funcion que crea puntos de colision predefinidos (esquinas naturales)
