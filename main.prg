@@ -59,6 +59,7 @@ Begin
 	//Creamos el jugador
 	//idPlayer = player_no_gravity();
 	idPlayer = player_gravity();
+	caja();
 	
 	//Bucle principal
 	Loop
@@ -296,6 +297,23 @@ BEGIN
 	end;
 end;
 
+process caja();
+begin
+	ancho = 64;
+	alto = 64;
+	
+	graph = mapBox;
+	region = cGameRegion;
+	ctype = c_scroll;
+	z = ZMAP1;
+	
+	x = 672;
+	y = 160;
+	loop
+		frame;
+	end;
+	
+end;
 
 process player_no_gravity()
 begin
