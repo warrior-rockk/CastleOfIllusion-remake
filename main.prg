@@ -355,10 +355,12 @@ byte grounded;
 int i;
 int colID;
 begin
-	ancho = 64;
-	alto = 64;
+	ancho = 16;
+	alto = 16;
 	
-	graph = mapBox;
+	graph = map_new(ancho,alto,8,0);
+	map_clear(0,graph,300);
+	
 	region = cGameRegion;
 	ctype = c_scroll;
 	z = cZMap1;
@@ -384,16 +386,16 @@ begin
 		end;
 		
 		//lanzamos comprobacion con procesos caja
-		if (not grounded)
-			repeat
-				//obtenemos siguiente colision
-				colID = get_id(TYPE caja);
-				if (colID <> ID) 
-					//aplicamos la direccion de la colision
-					applyDirCollision(ID,colCheckProcess(id,colID),&grounded);
-				end;
-			until (colID == 0 );
-		end;
+		
+		repeat
+			//obtenemos siguiente colision
+			colID = get_id(TYPE caja);
+			if (colID <> ID) 
+				//aplicamos la direccion de la colision
+				applyDirCollision(ID,colCheckProcess(id,colID),&grounded);
+			end;
+		until (colID == 0 );
+		
 		
 		//Actualizar velocidades
 		if (grounded)
