@@ -65,7 +65,14 @@ begin
 			WGE_Wait(20);
 			
 		end;
-				
+		
+		//al hacer click secundario, creamos una caja
+		if (mouse.right)
+			
+			caja(x,y);
+			WGE_Wait(20);
+		end;
+		
 		frame;
 	
 	until(not debugMode)

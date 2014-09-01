@@ -6,8 +6,67 @@
 //  Funciones de colision
 // ========================================================================
 
-//Funcion que crea puntos de colision predefinidos (esquinas naturales)
-function int WGE_CreateDefaultColPoints(int idObject)
+//Funcion que crea puntos de colision del jugador
+function int WGE_CreatePlayerColPoints(int idObject)
+
+begin
+		
+	idObject.colPoint[RIGHT_UP_POINT].x 			= (idObject.ancho>>1)-1;
+	idObject.colPoint[RIGHT_UP_POINT].y 			= -(idObject.alto/4);
+	idObject.colPoint[RIGHT_UP_POINT].colCode 	= COLDER;
+	idObject.colPoint[RIGHT_UP_POINT].enabled 	= 1;
+	
+	idObject.colPoint[RIGHT_DOWN_POINT].x 		= (idObject.ancho>>1)-1;
+	idObject.colPoint[RIGHT_DOWN_POINT].y 		= (idObject.alto/4);
+	idObject.colPoint[RIGHT_DOWN_POINT].colCode = COLDER;
+	idObject.colPoint[RIGHT_DOWN_POINT].enabled = 1;
+	
+	idObject.colPoint[LEFT_UP_POINT].x 		= -(idObject.ancho>>1);
+	idObject.colPoint[LEFT_UP_POINT].y 		= -(idObject.alto/4);
+	idObject.colPoint[LEFT_UP_POINT].colCode = COLIZQ;
+	idObject.colPoint[LEFT_UP_POINT].enabled = 1;
+	
+	idObject.colPoint[LEFT_DOWN_POINT].x 		= -(idObject.ancho>>1);
+	idObject.colPoint[LEFT_DOWN_POINT].y 		= (idObject.alto/4);
+	idObject.colPoint[LEFT_DOWN_POINT].colCode = COLIZQ;
+	idObject.colPoint[LEFT_DOWN_POINT].enabled = 1;
+	
+	idObject.colPoint[DOWN_R_POINT].x 		= (idObject.ancho/4);
+	idObject.colPoint[DOWN_R_POINT].y 		= (idObject.alto>>1)-1;
+	idObject.colPoint[DOWN_R_POINT].colCode = COLDOWN;
+	idObject.colPoint[DOWN_R_POINT].enabled = 1;
+	
+	idObject.colPoint[DOWN_L_POINT].x 		= -(idObject.ancho/4);
+	idObject.colPoint[DOWN_L_POINT].y 		= (idObject.alto>>1)-1;
+	idObject.colPoint[DOWN_L_POINT].colCode = COLDOWN;
+	idObject.colPoint[DOWN_L_POINT].enabled = 1;
+	
+	idObject.colPoint[UP_R_POINT].x 		= (idObject.ancho/4);
+	idObject.colPoint[UP_R_POINT].y 		= -(idObject.alto>>1);
+	idObject.colPoint[UP_R_POINT].colCode = COLUP;
+	idObject.colPoint[UP_R_POINT].enabled = 1;
+	
+	idObject.colPoint[UP_L_POINT].x 		= -(idObject.ancho/4);
+	idObject.colPoint[UP_L_POINT].y 		= -(idObject.alto>>1);
+	idObject.colPoint[UP_L_POINT].colCode = COLUP;
+	idObject.colPoint[UP_L_POINT].enabled = 1;
+	
+	idObject.colPoint[CENTER_POINT].x 		= 0;
+	idObject.colPoint[CENTER_POINT].y 		= 0;
+	idObject.colPoint[CENTER_POINT].colCode = COLCENTER;
+	idObject.colPoint[CENTER_POINT].enabled = 0;
+	
+	idObject.colPoint[CENTER_DOWN_POINT].x 		= 0;
+	idObject.colPoint[CENTER_DOWN_POINT].y 		= (idObject.alto>>1);
+	idObject.colPoint[CENTER_DOWN_POINT].colCode = COLCENTER;
+	idObject.colPoint[CENTER_DOWN_POINT].enabled = 0;
+	
+	return 1;
+	
+end;
+
+//Funcion que crea puntos de colision de un objeto
+function int WGE_CreateObjectColPoints(int idObject)
 
 begin
 		
@@ -476,7 +535,7 @@ begin
 end;
 
 //funcion que aplica la direccion de la colision en el objeto
-function checkDirCollision(int idObject,int colDir,byte *objGrounded)
+function applyDirCollision(int idObject,int colDir,byte *objGrounded)
 begin
 	//acciones segun colision
 	if (colDir == COLIZQ || colDir == COLDER) 

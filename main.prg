@@ -58,8 +58,8 @@ Begin
 	
 	//Creamos el jugador
 	//idPlayer = player_no_gravity();
-	caja(672,160);
-	caja(672,160-64);
+	//caja(672,160);
+	//caja(672,160-64);
 	idPlayer = player_gravity();
 	
 		
@@ -122,7 +122,7 @@ BEGIN
 	
 	//definimos los puntos de colision
 	//respecto al centro del personaje
-	WGE_CreateDefaultColPoints(id);
+	WGE_CreatePlayerColPoints(id);
 	
 	//Posicion actual del nivel actual
 	x = level.playerx0;
@@ -306,8 +306,9 @@ BEGIN
 				
 			//lanzamos comprobacion de terreno con los puntos de colision
 			dir = colCheckTileTerrain(ID,i);
-		
-			checkDirCollision(ID,dir,&grounded);
+			
+			//aplicamos la direccion de la colision
+			applyDirCollision(ID,dir,&grounded);
 			
 		end;
 		
@@ -319,8 +320,9 @@ BEGIN
 			colID = get_id(TYPE caja);
 			
 			dir = colCheckProcess(id,colID);
-		
-			checkDirCollision(ID,dir,&grounded);
+			
+			//aplicamos la direccion de la colision
+			applyDirCollision(ID,dir,&grounded);
 		
 		until (colID == 0);
 		
@@ -348,6 +350,10 @@ BEGIN
 end;
 
 process caja(int x,int y);
+private
+byte grounded;
+int i;
+int colID;
 begin
 	ancho = 64;
 	alto = 64;
@@ -360,12 +366,50 @@ begin
 	fx = x;
 	fy = y;
 	
+	WGE_CreateObjectColPoints(id);
+	
 	loop
-		fx+=key(_p)*2;
-		fx-=key(_o)*2;
+				
+		//FISICAS	
+		vX *= friction;
+		vY += gravity;
 		
-		x = fx;
+		grounded = false;
+		
+				
+		//Recorremos la lista de puntos a comprobar
+		for (i=0;i<cNumColPoints;i++)					
+			//aplicamos la direccion de la colision
+			applyDirCollision(ID,colCheckTileTerrain(ID,i),&grounded);			
+		end;
+		
+		//lanzamos comprobacion con procesos caja
+		if (not grounded)
+			repeat
+				//obtenemos siguiente colision
+				colID = get_id(TYPE caja);
+				if (colID <> ID) 
+					//aplicamos la direccion de la colision
+					applyDirCollision(ID,colCheckProcess(id,colID),&grounded);
+				end;
+			until (colID == 0 );
+		end;
+		
+		//Actualizar velocidades
+		if (grounded)
+			vY = 0;
+		end;
+		
+		fx += vX;
+		fy += vY;
+		
+		//Escalamos la posicion de floats en enteros
+		//si la diferencia entre el float y el entero es una unidad
+		if (abs(fx-x) >= 1 ) 
+			x = fx;
+		end;
 		y = fy;
+		
 		frame;
 	end;
 	
