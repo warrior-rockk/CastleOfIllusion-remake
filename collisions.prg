@@ -474,3 +474,18 @@ begin
     return colDir;
 
 end;
+
+//funcion que aplica la direccion de la colision en el objeto
+function checkDirCollision(int idObject,int colDir,byte *objGrounded)
+begin
+	//acciones segun colision
+	if (colDir == COLIZQ || colDir == COLDER) 
+		idObject.vX = 0;
+	elseif (colDir == COLDOWN) 
+		*objGrounded = true;
+	elseif (colDir == COLUP) 
+		idObject.vY = 0;			//Flota por el techo	
+		//idObject.vY *= -1;		//Rebota hacia abajo con la velocida que subia
+		//idObject.vY = 2;		//Rebota hacia abajo con valor fijo
+	end;
+end;

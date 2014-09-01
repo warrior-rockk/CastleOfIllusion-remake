@@ -79,7 +79,7 @@ End; //Fin del main
 
 //TODO: Calcular nivel inferior al que seria muerte segun tamaño mapeado
 //		Salto distinto desde escalera
-//		Fuera salto segun pulsacion tecla
+//		Fuerza salto segun pulsacion tecla
 process player_gravity()
 private 
 
@@ -307,18 +307,7 @@ BEGIN
 			//lanzamos comprobacion de terreno con los puntos de colision
 			dir = colCheckTileTerrain(ID,i);
 		
-			//acciones segun colision
-			if (dir == COLIZQ || dir == COLDER) 
-				vX = 0;
-				jumping = false;
-			elseif (dir == COLDOWN) 
-				grounded = true;
-				jumping = false;
-			elseif (dir == COLUP) 
-				vY = 0;			//Flota por el techo	
-				//vY *= -1;		//Rebota hacia abajo con la velocida que subia
-				//vY = 2;		//Rebota hacia abajo con valor fijo
-			end;
+			checkDirCollision(ID,dir,&grounded);
 			
 		end;
 		
@@ -331,18 +320,7 @@ BEGIN
 			
 			dir = colCheckProcess(id,colID);
 		
-			//acciones segun colision
-			if (dir == COLIZQ || dir == COLDER) 
-				vX = 0;
-				jumping = false;
-			elseif (dir == COLDOWN) 
-				grounded = true;
-				jumping = false;
-			elseif (dir == COLUP) 
-				vY = 0;			//Flota por el techo	
-				//vY *= -1;		//Rebota hacia abajo con la velocida que subia
-				//vY = 2;		//Rebota hacia abajo con valor fijo
-			end;
+			checkDirCollision(ID,dir,&grounded);
 		
 		until (colID == 0);
 		
@@ -351,6 +329,7 @@ BEGIN
 		//Actualizar velocidades
 		if (grounded)
 			vY = 0;
+			jumping = false;
 		end;
 		
 		fx += vX;

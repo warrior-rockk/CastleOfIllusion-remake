@@ -216,7 +216,6 @@ Global
 End;
 
 //Variables locales
-//TODO: alto y ancho no deberian ser float!!
 Local
 	float vX			= 0;     	//Velocidad X
 	float vY			= 0;     	//Velocidad Y
