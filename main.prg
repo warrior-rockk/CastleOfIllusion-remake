@@ -312,8 +312,6 @@ BEGIN
 			
 		end;
 		
-		//TODO: no tengo que repetir las acciones segun colision por ser las
-		//mismas que arriba. Pensar algo
 		//lanzamos comprobacion con procesos caja
 		repeat
 			//obtenemos siguiente colision
@@ -349,7 +347,7 @@ BEGIN
 	end;
 end;
 
-process caja(int x,int y);
+process caja(int x,int y,float vX,float vY);
 private
 byte grounded;
 int i;
@@ -373,7 +371,10 @@ begin
 	loop
 				
 		//FISICAS	
-		vX *= friction;
+		if (grounded)
+			vX *= friction;
+		end;
+		
 		vY += gravity;
 		
 		grounded = false;

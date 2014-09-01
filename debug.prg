@@ -69,7 +69,7 @@ begin
 		//al hacer click secundario, creamos una caja
 		if (mouse.right)
 			
-			caja(x,y);
+			caja(x,y,4.0,-4.0);
 			WGE_Wait(20);
 		end;
 		

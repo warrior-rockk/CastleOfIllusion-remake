@@ -374,7 +374,6 @@ End;
 
 //Funcion de chequeo de colision entre procesos
 //Posiciona el objeto al borde del tile y devuelve un int con el sentido de la colision o 0 si no hay
-//La colision superior solo la hace el jugador
 function int colCheckProcess(int idObject, int idObjectB)
 private
 float vcX,vcY,hW,hH,oX,oY;
@@ -403,7 +402,9 @@ begin
 		if (oX >= oY) 
             if (vcY > 0) 			//Arriba
 				colDir = COLUP;
-                if (idObject == idPlayer)
+                //la colision superior solo la hace al jugador
+				//para permitir apilar objetos
+				if (idObject == idPlayer)
 					idObject.fy += oY;
 				end;
              else 
