@@ -78,6 +78,9 @@
 #define BIT_TILE_DELANTE 	64
 #define BIT_TILE_ALPHA      32
 
+//estados objeto
+#define IDLE_STATE			0
+#define MOVE_STATE          1
 
 //Constantes del motor
 const

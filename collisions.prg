@@ -404,9 +404,9 @@ begin
 				colDir = COLUP;
                 //la colision superior solo la hace al jugador
 				//para permitir apilar objetos
-				if (idObject == idPlayer)
+				//if (idObject == idPlayer)
 					idObject.fy += oY;
-				end;
+				//end;
              else 
                 colDir = COLDOWN;	//Abajo
                 idObject.fy -= oY;

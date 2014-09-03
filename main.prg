@@ -327,7 +327,7 @@ BEGIN
 			applyDirCollision(ID,dir,&grounded);
 		
 		until (colID == 0);
-		
+	
 
 			
 		//Actualizar velocidades
@@ -376,8 +376,10 @@ begin
 	
 	friction = floorFriction;
 	
+	estado = MOVE_STATE;
+	
 	loop
-				
+		
 		//FISICAS	
 		if (grounded)
 			vX *= friction;
@@ -385,27 +387,38 @@ begin
 		
 		vY += gravity;
 		
-		grounded = false;
-		
-				
-		//Recorremos la lista de puntos a comprobar
-		for (i=0;i<cNumColPoints;i++)					
-			//aplicamos la direccion de la colision
-			applyDirCollision(ID,colCheckTileTerrain(ID,i),&grounded);			
-		end;
-		
-		//lanzamos comprobacion con procesos caja
-		
-		repeat
-			//obtenemos siguiente colision
-			colID = get_id(TYPE caja);
-			//si no soy yo mismo
-			if (colID <> ID) 
-				//aplicamos la direccion de la colision
-				applyDirCollision(ID,colCheckProcess(id,colID),&grounded);
+		//comportamiento caja
+		switch (estado)
+			case IDLE_STATE:
+				;
 			end;
-		until (colID == 0 );
-		
+			case MOVE_STATE:
+				grounded = false;
+				
+				//Recorremos la lista de puntos a comprobar
+				for (i=0;i<cNumColPoints;i++)					
+					//aplicamos la direccion de la colision
+					applyDirCollision(ID,colCheckTileTerrain(ID,i),&grounded);			
+				end;
+				
+				//lanzamos comprobacion con procesos caja
+				repeat
+					//obtenemos siguiente colision
+					colID = get_id(TYPE caja);
+					//si no soy yo mismo
+					if (colID <> ID) 
+						//aplicamos la direccion de la colision
+						applyDirCollision(ID,colCheckProcess(id,colID),&grounded);
+					end;
+				until (colID == 0);
+				
+				//cambio de estado
+				if (grounded && vX == 0) 
+					estado = IDLE_STATE; 
+				end;
+				
+			end;
+		end;
 		
 		//Actualizar velocidades
 		if (grounded)
