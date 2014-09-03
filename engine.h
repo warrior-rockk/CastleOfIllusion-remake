@@ -93,9 +93,10 @@ const
 
 	//Profundidades
 	cZCursor    	 =-3; 		     		//Profundidad del cursor de Debug
-	cZMap2	    	 =-2;     				//Profundidad del mapeado encima del personaje
+	cZMap2	    	 =-2;     				//Profundidad del mapeado encima del player
 	cZPlayer		 =-1;					//Profundidad del player
-	cZMap1 	    	 = 1;					//Profundidad del mapeado tras player
+	cZObject         = 1;					//Profundidad de los objetos
+	cZMap1 	    	 = 2;					//Profundidad del mapeado tras el player
 	
 	cMaxObjParams   = 9;					//Numero de parametros objetos
     cSlopesEnabled  = 1;                    //Flag que determina si se usan rampas en el engine
@@ -241,3 +242,4 @@ End;
 include "engine.prg";		//Core principal de engine
 include "collisions.prg";	//Funciones de colision
 include "debug.prg";		//Funciones de debug
+include "objetos.prg"		//Procesos objetos

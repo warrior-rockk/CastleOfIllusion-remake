@@ -6,6 +6,7 @@
 //  Procesos Objetos
 // ========================================================================
 
+//Proceso caja con gravedad
 process caja(int x,int y,float vX,float vY);
 private
 byte grounded;
@@ -22,7 +23,7 @@ begin
 	
 	region = cGameRegion;
 	ctype = c_scroll;
-	z = cZMap1;
+	z = cZObject;
 	
 	fx = x;
 	fy = y;
@@ -31,7 +32,7 @@ begin
 	
 	friction = floorFriction;
 	
-	estado = MOVE_STATE;
+	state = MOVE_STATE;
 	
 	loop
 		
@@ -96,6 +97,60 @@ begin
 	
 end;
 
-process plataforma
+//Proceso plataforma movil
+process plataforma(int x,int y,int rango)
+#define MOVE_RIGHT_STATE 1
+#define MOVE_LEFT_STATE  2
+private
+	int startX;
+	int startY;
 begin
+	ancho = 64;
+	alto = 16;
+	
+	region = cGameRegion;
+	ctype = c_scroll;
+	z = cZObject;
+	
+	graph = map_new(ancho,alto,8,0);
+	map_clear(0,graph,310);
+	
+	fx = x;
+	fy = y;
+	
+	state = IDLE_STATE;
+	
+	startX = x;
+	startY = y;
+	
+	//bucle principal
+	loop
+		switch (state)
+			case IDLE_STATE:
+				state = rand(1,2); //inicio aleatorio
+			end;
+			case MOVE_RIGHT_STATE: //movimiento a derecha
+				fx+=2; //movimiento lineal
+				if (fx > startX + rango)
+					state = MOVE_LEFT_STATE;
+				end;
+			end;
+			case MOVE_LEFT_STATE: //movimiento a izquierda
+				fx-=2; //movimiento lineal
+				if (fx < startX - rango)
+					state = MOVE_RIGHT_STATE;
+				end;
+			end;
+		end;
+		
+		//Escalamos la posicion de floats en enteros
+		//si la diferencia entre el float y el entero es una unidad
+		if (abs(fx-x) >= 1 ) 
+			x = fx;
+		end;
+		y = fy;
+		
+		frame;
+	end;
+	
 end;
