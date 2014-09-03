@@ -124,28 +124,37 @@ begin
 	startX = x;
 	startY = y;
 	
-	vX = 0.3;
+	vX = 1;
 	
 	//bucle principal
 	loop
 		switch (state)
 			case IDLE_STATE:
-				state = rand(1,2); //inicio aleatorio
+				//sentido aleatorio
+				state = rand(1,2); 
 			end;
 			case MOVE_RIGHT_STATE: //movimiento a derecha
-				fx+=vX; //movimiento lineal
+				//movimiento lineal
+				fx+=vX; 
+				//si el player esta en plataforma
 				if (idPlatform == ID)
+					//movemos el player
 					idPlayer.fx +=vX;
 				end;
+				//cambio de estado
 				if (fx > startX + rango)
 					state = MOVE_LEFT_STATE;
 				end;
 			end;
 			case MOVE_LEFT_STATE: //movimiento a izquierda
-				fx-=vX; //movimiento lineal
+				//movimiento lineal
+				fx-=vX; 
+				//movimiento lineal
 				if (idPlatform == ID)
+					//movemos el player
 					idPlayer.fx -=vX;
 				end;
+				//cambio de estado
 				if (fx < startX - rango)
 					state = MOVE_RIGHT_STATE;
 				end;

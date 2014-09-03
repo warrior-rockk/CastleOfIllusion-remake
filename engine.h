@@ -23,6 +23,7 @@
 #define TOCOLLISION      1					//Comprobar pixeles hasta llegar a la colision
 
 //Direccion colision
+#define NOCOL		0
 #define COLUP		1
 #define COLDOWN		2
 #define COLIZQ		3

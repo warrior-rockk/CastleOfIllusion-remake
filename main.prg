@@ -61,7 +61,7 @@ Begin
 	//caja(672,160);
 	//caja(672,160-64);
 	idPlayer = player_gravity();
-	plataforma(190,190,50);
+	plataforma(190,190,100);
 		
 	//Bucle principal
 	Loop
@@ -338,11 +338,16 @@ BEGIN
 			//aplicamos la direccion de la colision
 			applyDirCollision(ID,dir,&grounded);
 			
+			//si existe plataforma
 			if (colID <> 0)
-				if (dir == COLDOWN)
+				//y estoy encima de ella
+				if (dir<>NOCOL && grounded)
+					//seteamos idPlatform
 					idPlatform = colID;
+					//enterramos para seguir colisionando
 					fY += 1;
 				else
+					//liberamos idPlatform
 					idPlatform = 0;
 				end;
 			end;
