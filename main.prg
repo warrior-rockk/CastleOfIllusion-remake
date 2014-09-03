@@ -359,8 +359,8 @@ int colID;
 float friction;
 
 begin
-	ancho = 16;
-	alto = 16;
+	ancho = 32;
+	alto = 32;
 	
 	graph = map_new(ancho,alto,8,0);
 	map_clear(0,graph,300);
@@ -396,15 +396,16 @@ begin
 		
 		//lanzamos comprobacion con procesos caja
 		
-		/*repeat
+		repeat
 			//obtenemos siguiente colision
 			colID = get_id(TYPE caja);
+			//si no soy yo mismo
 			if (colID <> ID) 
 				//aplicamos la direccion de la colision
 				applyDirCollision(ID,colCheckProcess(id,colID),&grounded);
 			end;
 		until (colID == 0 );
-		*/
+		
 		
 		//Actualizar velocidades
 		if (grounded)

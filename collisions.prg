@@ -545,7 +545,15 @@ begin
 	if (colDir == COLIZQ || colDir == COLDER) 
 		idObject.vX = 0;
 	elseif (colDir == COLDOWN) 
-		*objGrounded = true;
+		if (idObject == idPlayer)
+			*objGrounded = true;
+		else
+			//rebote en el suelo
+			idObject.vY *= -0.4;
+			if (idObject.vY < 0.6 && idObject.vY > -0.6)
+				*objGrounded = true;		
+			end;
+		end;
 	elseif (colDir == COLUP) 
 		idObject.vY = 0;			//Flota por el techo	
 		//idObject.vY *= -1;		//Rebota hacia abajo con la velocida que subia

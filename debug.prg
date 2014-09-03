@@ -70,6 +70,7 @@ begin
 		if (mouse.right)
 			
 			caja(x,y,4.0,-4.0);
+			//caja(x,y,0.0,0.0);
 			WGE_Wait(20);
 		end;
 		
