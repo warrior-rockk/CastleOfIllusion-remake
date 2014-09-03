@@ -104,7 +104,7 @@ process plataforma(int x,int y,int rango)
 #define MOVE_LEFT_STATE  2
 #define MOVE_UP_STATE	 3
 #define MOVE_DOWN_STATE  4
-
+#define MOVE_FREE_STATE  5
 private
 	int startX;
 	int startY;
@@ -128,14 +128,14 @@ begin
 	startX = x;
 	startY = y;
 	
-	vX = 0;
+	vX = 1;
 	vY = 1;
 	
 	//bucle principal
 	loop
 		switch (state)
 			case IDLE_STATE:
-				state = MOVE_DOWN_STATE; 
+				state = MOVE_FREE_STATE; 
 			end;
 			case MOVE_RIGHT_STATE: //movimiento a derecha
 				//movimiento lineal
@@ -187,6 +187,17 @@ begin
 				//cambio de estado
 				if (fY < startY - rango)
 					state = MOVE_DOWN_STATE;
+				end;
+			end;
+			case MOVE_FREE_STATE: //movimiento dos ejes
+				//movimiento lineal
+				fX+=vX;
+				fY-=vY;
+				//si el player esta en plataforma
+				if (idPlatform == ID)
+					//movemos el player
+					idPlayer.fX +=vX;
+					idPlayer.fY -=vY;
 				end;
 			end;
 		end;
