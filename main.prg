@@ -89,6 +89,7 @@ byte  onStairs;				//Flag de en escaleras
 float velMaxX;				//Velocidad Maxima Horizontal
 float accelX;				//Aceleracion Maxima Horizontal
 float accelY;				//Aceleracion Maxima Vertical
+float friction;				//Friccion local
 int	  dir;					//Direccion de la colision
 int   colID;				//Proceso con el que se colisiona
 
@@ -134,6 +135,9 @@ BEGIN
 	loop
 		
 		//CONTROL MOVIMIENTO		
+		
+		//friccion local
+		grounded ? friction = floorFriction : friction = airFriction;
 		
 		if (key(CKRIGHT)) 
 			if (vX < velMaxX) 
@@ -352,6 +356,8 @@ private
 byte grounded;
 int i;
 int colID;
+float friction;
+
 begin
 	ancho = 16;
 	alto = 16;
@@ -367,6 +373,8 @@ begin
 	fy = y;
 	
 	WGE_CreateObjectColPoints(id);
+	
+	friction = floorFriction;
 	
 	loop
 				
@@ -388,7 +396,7 @@ begin
 		
 		//lanzamos comprobacion con procesos caja
 		
-		repeat
+		/*repeat
 			//obtenemos siguiente colision
 			colID = get_id(TYPE caja);
 			if (colID <> ID) 
@@ -396,7 +404,7 @@ begin
 				applyDirCollision(ID,colCheckProcess(id,colID),&grounded);
 			end;
 		until (colID == 0 );
-		
+		*/
 		
 		//Actualizar velocidades
 		if (grounded)

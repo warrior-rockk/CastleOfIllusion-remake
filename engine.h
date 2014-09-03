@@ -205,8 +205,9 @@ Global
 	//jugador
 	int idPlayer;				//Identificador del proceso del jugador
 	//Fisicas
-	float gravity 	= 0.3;		//Aceleracion gravedad
-	float friction 	= 0.9;		//Friccion
+	float gravity 			= 0.3;		//Aceleracion gravedad
+	float floorFriction 	= 0.9;		//Friccion suelo
+	float airFriction 		= 0.95;		//Friccion aire
 	//Borrar
 	int mapBox; 
 	int mapTriangle135;
