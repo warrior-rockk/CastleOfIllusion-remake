@@ -388,11 +388,12 @@ begin
 		vY += gravity;
 		
 		//comportamiento caja
-		switch (estado)
+		switch (state)
 			case IDLE_STATE:
 				;
 			end;
 			case MOVE_STATE:
+								
 				grounded = false;
 				
 				//Recorremos la lista de puntos a comprobar
@@ -414,7 +415,7 @@ begin
 				
 				//cambio de estado
 				if (grounded && vX == 0) 
-					estado = IDLE_STATE; 
+					state = IDLE_STATE; 
 				end;
 				
 			end;
@@ -439,6 +440,7 @@ begin
 	end;
 	
 end;
+
 
 process player_no_gravity()
 begin

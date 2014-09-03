@@ -227,7 +227,7 @@ Local
 	float fY			= 0;		//Posicion y coma flotante
 	int   alto			= 0;   		//Altura en pixeles del proceso
 	int   ancho			= 0;   		//Ancho en pixeles del proceso
-	int   estado 		= 0;   		//Estado de la entidad
+	int   state 		= 0;   		//Estado de la entidad
 	struct colPoint[cNumColPoints] 	//Puntos deteccion colision de un objeto
 		int x;						//Offset X a sumar a la posicion del objeto
 		int y;						//Offset Y a sumar a la posicion del objeto
