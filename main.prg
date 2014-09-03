@@ -328,23 +328,43 @@ BEGIN
 		
 		until (colID == 0);
 	
-
+		//lanzamos comprobacion con procesos plataforma
+		repeat
+			//obtenemos siguiente colision
+			colID = get_id(TYPE plataforma);
 			
+			dir = colCheckProcess(id,colID);
+			
+			//aplicamos la direccion de la colision
+			applyDirCollision(ID,dir,&grounded);
+			
+			if (colID <> 0)
+				if (dir == COLDOWN)
+					idPlatform = colID;
+					fY += 1;
+				else
+					idPlatform = 0;
+				end;
+			end;
+			
+		until (colID == 0);
+		
 		//Actualizar velocidades
 		if (grounded)
 			vY = 0;
 			jumping = false;
 		end;
 		
-		fx += vX;
-		fy += vY;
+		fX += vX;
+		fY += vY;
 		
 		//Escalamos la posicion de floats en enteros
 		//si la diferencia entre el float y el entero es una unidad
-		if (abs(fx-x) >= 1 ) 
-			x = fx;
+		if (abs(fX-x) >= 1 ) 
+			//redondeamos el valor a entero
+			x = round(fX);
 		end;
-		y = fy;
+		y = fY;
 		
 		frame;
 	

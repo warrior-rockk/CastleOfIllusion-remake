@@ -384,8 +384,9 @@ begin
 	if (idObject == 0 || idObjectB == 0) return 0; end;
 	
 	//Obtiene los vectores de los centros para comparar
-	vcX = (idObject.fx) - (idObjectB.fx );
-	vcY = (idObject.fy) - (idObjectB.fy );
+	//teniendo en cuenta la velocidad del objeto principal
+	vcX = (idObject.fx+idObject.vX) - (idObjectB.fx );
+	vcY = (idObject.fy+idObject.vY) - (idObjectB.fy );
 	// suma las mitades de los anchos y los altos
 	hW =  (idObject.ancho / 2) + (idObjectB.ancho / 2);
 	hH = (idObject.alto / 2) + (idObjectB.alto / 2);
@@ -405,19 +406,19 @@ begin
                 //la colision superior solo la hace al jugador
 				//para permitir apilar objetos
 				//if (idObject == idPlayer)
-					idObject.fy += oY;
+					idObject.fy += oY+idObject.vY;
 				//end;
              else 
                 colDir = COLDOWN;	//Abajo
-                idObject.fy -= oY;
+                idObject.fy -= oY-idObject.vY;
              end;
         else 
             if (vcX > 0) 
                 colDir = COLIZQ;	//Izquierda
-                idObject.fx += oX;
+                idObject.fx += oX+idObject.vX;
              else 
                 colDir = COLDER;	//Derecha
-                idObject.fx -= oX;
+                idObject.fx -= oX-idObject.vX;
              end;
 	     end;
 	end;

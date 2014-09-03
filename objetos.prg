@@ -88,7 +88,7 @@ begin
 		//Escalamos la posicion de floats en enteros
 		//si la diferencia entre el float y el entero es una unidad
 		if (abs(fx-x) >= 1 ) 
-			x = fx;
+			x = round(fx);
 		end;
 		y = fy;
 		
@@ -104,6 +104,7 @@ process plataforma(int x,int y,int rango)
 private
 	int startX;
 	int startY;
+	
 begin
 	ancho = 64;
 	alto = 16;
@@ -123,6 +124,8 @@ begin
 	startX = x;
 	startY = y;
 	
+	vX = 0.3;
+	
 	//bucle principal
 	loop
 		switch (state)
@@ -130,13 +133,19 @@ begin
 				state = rand(1,2); //inicio aleatorio
 			end;
 			case MOVE_RIGHT_STATE: //movimiento a derecha
-				fx+=2; //movimiento lineal
+				fx+=vX; //movimiento lineal
+				if (idPlatform == ID)
+					idPlayer.fx +=vX;
+				end;
 				if (fx > startX + rango)
 					state = MOVE_LEFT_STATE;
 				end;
 			end;
 			case MOVE_LEFT_STATE: //movimiento a izquierda
-				fx-=2; //movimiento lineal
+				fx-=vX; //movimiento lineal
+				if (idPlatform == ID)
+					idPlayer.fx -=vX;
+				end;
 				if (fx < startX - rango)
 					state = MOVE_RIGHT_STATE;
 				end;
@@ -146,7 +155,7 @@ begin
 		//Escalamos la posicion de floats en enteros
 		//si la diferencia entre el float y el entero es una unidad
 		if (abs(fx-x) >= 1 ) 
-			x = fx;
+			x = round(fx);
 		end;
 		y = fy;
 		

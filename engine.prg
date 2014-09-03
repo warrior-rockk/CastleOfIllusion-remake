@@ -768,3 +768,15 @@ begin
 		return tileMap[y/cTileSize][x/cTileSize].tileCode;
 	end;
 end;
+
+function int round(float number)
+private
+	int trunc;
+begin
+	trunc = number;
+	if ((number - trunc) > 0.5)
+		return trunc+1;
+	else
+		return trunc;
+	end;
+end;
