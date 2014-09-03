@@ -87,8 +87,9 @@
 const
 	//Engine
 	//Prioridades (orden ejecucion)
-	cMainPrior	 	 = 2;
-	cPlayerPrior	 = 1;
+	cMainPrior	 	 = 3;
+	cPlayerPrior	 = 2;
+	cPlatformPrior   = 1;
 	cScrollPrior 	 =-1;
 	cTilePrior		 =-2;
 

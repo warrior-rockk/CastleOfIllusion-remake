@@ -61,7 +61,7 @@ Begin
 	//caja(672,160);
 	//caja(672,160-64);
 	idPlayer = player_gravity();
-	plataforma(190,190,100);
+	plataforma(190,190,80);
 		
 	//Bucle principal
 	Loop
@@ -344,11 +344,15 @@ BEGIN
 				if (dir<>NOCOL && grounded)
 					//seteamos idPlatform
 					idPlatform = colID;
-					//enterramos para seguir colisionando
-					fY += 1;
+					//cambiamos prioridades
+					priority = cPlatformPrior;
+					colID.priority = cPlayerPrior;
 				else
 					//liberamos idPlatform
 					idPlatform = 0;
+					//cambiamos prioridades
+					priority = cPlayerPrior;
+					colID.priority = cPlatformPrior;
 				end;
 			end;
 			

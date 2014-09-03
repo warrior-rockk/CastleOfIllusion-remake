@@ -99,8 +99,12 @@ end;
 
 //Proceso plataforma movil
 process plataforma(int x,int y,int rango)
+//defines locales
 #define MOVE_RIGHT_STATE 1
 #define MOVE_LEFT_STATE  2
+#define MOVE_UP_STATE	 3
+#define MOVE_DOWN_STATE  4
+
 private
 	int startX;
 	int startY;
@@ -124,14 +128,14 @@ begin
 	startX = x;
 	startY = y;
 	
-	vX = 1;
+	vX = 0;
+	vY = 1;
 	
 	//bucle principal
 	loop
 		switch (state)
 			case IDLE_STATE:
-				//sentido aleatorio
-				state = rand(1,2); 
+				state = MOVE_DOWN_STATE; 
 			end;
 			case MOVE_RIGHT_STATE: //movimiento a derecha
 				//movimiento lineal
@@ -157,6 +161,32 @@ begin
 				//cambio de estado
 				if (fx < startX - rango)
 					state = MOVE_RIGHT_STATE;
+				end;
+			end;
+			case MOVE_DOWN_STATE: //movimiento a abajo
+				//movimiento lineal
+				fY+=vY; 
+				//si el player esta en plataforma
+				if (idPlatform == ID)
+					//movemos el player
+					idPlayer.fY +=vY;
+				end;
+				//cambio de estado
+				if (fY > startY + rango)
+					state = MOVE_UP_STATE;
+				end;
+			end;
+			case MOVE_UP_STATE: //movimiento a arriba
+				//movimiento lineal
+				fY-=vY; 
+				//si el player esta en plataforma
+				if (idPlatform == ID)
+					//movemos el player
+					idPlayer.fY -=vY;
+				end;
+				//cambio de estado
+				if (fY < startY - rango)
+					state = MOVE_DOWN_STATE;
 				end;
 			end;
 		end;
