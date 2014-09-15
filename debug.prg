@@ -182,3 +182,28 @@ begin;
 	drawing_color(300);
 	draw_box(0,0,cTileSize,10);
 end;
+
+//Funcion que dibuja un tile como un cuadrado de color variable
+//y dibujando su tipo correspondiente a modo de debug 
+function debugDrawTile(int idTile,byte tileColor,int i,int j)
+begin
+	//dibujamos el tile
+	map_clear(0,idTile.graph,0);
+	drawing_map(0,idTile.graph);
+	drawing_color(tileColor);
+	
+	//tipo de Tile
+	if (tileExists(i,j))
+		if (tileMap[i][j].tileCode == SLOPE_135) 
+			map_put(0,idTile.graph,mapTriangle135,cTileSize>>1,cTileSize>>1);
+		elseif (tileMap[i][j].tileCode == SLOPE_45)
+			map_put(0,idTile.graph,mapTriangle45,cTileSize>>1,cTileSize>>1);
+		elseif (tileMap[i][j].tileCode == STAIRS) //|| tileMap[i][j].tileCode == TOP_STAIRS)
+			map_put(0,idTile.graph,mapStairs,cTileSize>>1,cTileSize>>1);
+		elseif (tileMap[i][j].tileCode == TOP_STAIRS) 
+			map_put(0,idTile.graph,mapStairs,cTileSize>>1,cTileSize>>1);
+		else
+			draw_box(0,0,idTile.alto,idTile.ancho);
+		end;
+	end;
+end;

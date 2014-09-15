@@ -149,6 +149,9 @@ begin
 	free(paths);
 	//free(tileMap);
 	
+	//liberamos archivos cargados
+	unload_fpg(level.fpgTiles);
+	
 	log("Se finaliza la ejecución");
 	log("FPS Max: "+maxFPS);
 	log("FPS Min: "+minFPS);
@@ -273,7 +276,7 @@ begin
 end;
 
 //Cargamos archivo del tileMap
-Function WGE_LoadMapLevel(string file_)
+Function WGE_LoadMapLevel(string file_,string fpgFile)
 private 
 	int levelMapFile;		//Archivo del nivel
 	int i,j;				//Indices auxiliares
@@ -342,12 +345,19 @@ Begin
 	//Si algun tile usa alpha, lo inicializamos
 	if (mapUsesAlpha) WGE_InitAlpha(); end;
 	
-	level.fpgTiles = load_fpg("test/tiles.fpg");
-	
 	//cerramos el archivo
 	fclose(levelMapFile);
 	log("Fichero mapa leído con " + level.numTiles + " Tiles. " + level.numTilesX + " Tiles en X y " + level.numTilesY + " Tiles en Y");   
 
+	//Comprobamos si existe el archivo grafico de tiles
+	if (fexists(fpgFile))
+		level.fpgTiles = fpg_load(fpgFile);
+		log("Archivo fpg de tiles leído correctamente");
+	else
+		log("No existe el fichero fpg de tiles: " + fpgFile);
+		log("Activamos graficos Debug");
+		level.fpgTiles = -1;
+	end;
 End;
 
 //funcion para generar un archivo de mapa especificando numero de tiles o aleatorio (numero tiles=0)
@@ -530,14 +540,16 @@ BEGIN
 	ctype = c_scroll;
 	region = cGameRegion;
 	priority = cTilePrior;
-	//graph = map_new(alto,ancho,8);
 	file = level.fpgTiles;
+	
+	//modo sin graficos
+	if (file<0)
+		graph = map_new(alto,ancho,8);
+	end;
 	
 	//establecemos su posicion inicial
 	x = (j*cTileSize)+cHalfTSize;
 	y = (i*cTileSize)+cHalfTSize;
-	
-	
 	
 	loop
 				
@@ -593,9 +605,14 @@ BEGIN
 			
 			//grafico
 			if (tileExists(i,j))
-				//Dibujamos su grafico
-				//tileColor = tileMap[i][j].tileGraph;
-				graph = tileMap[i][j].tileGraph;
+				
+				//Dibujamos su grafico (o una caja si no hay archivo)
+				if (file>=0)
+					graph = tileMap[i][j].tileGraph;
+				else
+					tileColor = tileMap[i][j].tileGraph;
+				end;
+				
 				//Establecemos sus propiedades segun TileCode
 				if (tileMap[i][j].tileShape)
 					flags &= B_NOCOLORKEY;	
@@ -614,32 +631,14 @@ BEGIN
 				end;
 			else
 				//tile no existente
-				//tileColor = 255; 
 				graph = 0;
+				tileColor = 255; 
 			end;
 			
-			/*
-			//provisional: esto ira leyendo su grafico de tile TileGraph
-			//dibujamos el tile
-			map_clear(0,graph,0);
-			drawing_map(0,graph);
-			drawing_color(tileColor);
-			
-			//tipo tile custom
-			if (tileExists(i,j))
-				if (tileMap[i][j].tileCode == SLOPE_135) 
-					map_put(0,graph,mapTriangle135,cTileSize>>1,cTileSize>>1);
-				elseif (tileMap[i][j].tileCode == SLOPE_45)
-					map_put(0,graph,mapTriangle45,cTileSize>>1,cTileSize>>1);
-				elseif (tileMap[i][j].tileCode == STAIRS) //|| tileMap[i][j].tileCode == TOP_STAIRS)
-					map_put(0,graph,mapStairs,cTileSize>>1,cTileSize>>1);
-				elseif (tileMap[i][j].tileCode == TOP_STAIRS) 
-					map_put(0,graph,mapStairs,cTileSize>>1,cTileSize>>1);
-				else
-					draw_box(0,0,alto,ancho);
-				end;
+			//si no tiene archivo de tiles,dibujamos un grafico
+			if (file<0)
+				debugDrawTile(id,tileColor,i,j);
 			end;
-			*/
 			
 			//en modo debug, escribimos su posicion
 			if (debugMode)
