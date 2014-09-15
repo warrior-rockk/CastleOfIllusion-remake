@@ -27,7 +27,7 @@ include "engine.h";      //archivo de definiciones y variables globales
 
 //Proceso principal
 Process main()
-
+private int  colID;
 Begin
 		
 	level.playerx0 = 120;
@@ -62,7 +62,7 @@ Begin
 	//caja(672,160-64);
 	idPlayer = player_gravity();
 	plataforma(190,190,80);
-		
+
 	//Bucle principal
 	Loop
 		   
@@ -318,22 +318,37 @@ BEGIN
 		
 		//lanzamos comprobacion con procesos caja
 		repeat
+			
 			//obtenemos siguiente colision
 			colID = get_id(TYPE caja);
 			
-			dir = colCheckProcess(id,colID);
+			//tratamos las colisiones separadas por ejes
+			//para poder andar sobre varios procesos corrigiendo la y
 			
+			//colisiones verticales con procesos
+			dir = colCheckProcess(id,colID,VERTICALAXIS);
 			//aplicamos la direccion de la colision
 			applyDirCollision(ID,dir,&grounded);
-		
+			//corregimos la Y truncamos fY
+			if (dir == COLDOWN )
+				y = fY;
+				fY = y;
+			end;
+			
+			//colisiones horizontales con procesos
+			dir = colCheckProcess(id,colID,HORIZONTALAXIS);
+			//aplicamos la direccion de la colision
+			applyDirCollision(ID,dir,&grounded);
+			
 		until (colID == 0);
-	
+		
+		
 		//lanzamos comprobacion con procesos plataforma
 		repeat
 			//obtenemos siguiente colision
 			colID = get_id(TYPE plataforma);
 			
-			dir = colCheckProcess(id,colID);
+			dir = colCheckProcess(id,colID,BOTHAXIS);
 			
 			//aplicamos la direccion de la colision
 			applyDirCollision(ID,dir,&grounded);
@@ -367,13 +382,7 @@ BEGIN
 		fX += vX;
 		fY += vY;
 		
-		//Escalamos la posicion de floats en enteros
-		//si la diferencia entre el float y el entero es una unidad
-		if (abs(fX-x) >= 1 ) 
-			//redondeamos el valor a entero
-			x = round(fX);
-		end;
-		y = fY;
+		positionToInt(id);
 		
 		frame;
 	

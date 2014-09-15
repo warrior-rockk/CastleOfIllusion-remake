@@ -419,6 +419,17 @@ private
 							1,0,0,5,0,0,15,1,1,1,1,1,14,0,0,9,9,0,0,0,1,
 							1,0,0,5,0,15,1,1,1,1,1,1,1,14,0,0,0,0,0,1,1,
 							1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1;
+	/*
+	int matrixMap[8][20] = 	1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+							1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+							1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+							1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+							1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+							1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+							1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+							1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+							1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1;
+	*/
 Begin
 	
 	//Borramos el anterior si existe
@@ -779,4 +790,16 @@ begin
 	else
 		return trunc;
 	end;
+end;
+
+//Escalamos la posicion de floats en enteros
+//si la diferencia entre el float y el entero es una unidad
+function positionToInt(int idObject)
+begin
+	if (abs(idObject.fX-idObject.x) >= 1 ) 
+		//redondeamos el valor a entero
+		idObject.x = round(idObject.fX);
+	end;
+	//en vertical,la asignacion es directa	
+	idObject.y = idObject.fY;
 end;

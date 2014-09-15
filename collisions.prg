@@ -116,7 +116,7 @@ begin
 	idObject.colPoint[CENTER_POINT].enabled = 0;
 	
 	idObject.colPoint[CENTER_DOWN_POINT].x 		= 0;
-	idObject.colPoint[CENTER_DOWN_POINT].y 		= (idObject.alto>>1);
+	idObject.colPoint[CENTER_DOWN_POINT].y 		= (idObject.alto>>1)-1;
 	idObject.colPoint[CENTER_DOWN_POINT].colCode = COLCENTER;
 	idObject.colPoint[CENTER_DOWN_POINT].enabled = 0;
 	
@@ -372,9 +372,9 @@ Begin
 	
 End;
 
-//Funcion de chequeo de colision entre procesos
+//Funcion de chequeo de colision entre procesos elegiendo el eje
 //Posiciona el objeto al borde del tile y devuelve un int con el sentido de la colision o 0 si no hay
-function int colCheckProcess(int idObject, int idObjectB)
+function int colCheckProcess(int idObject, int idObjectB, int axis)
 private
 float vcX,vcY,hW,hH,oX,oY;
 int ColDir;
@@ -385,11 +385,21 @@ begin
 	
 	//Obtiene los vectores de los centros para comparar
 	//teniendo en cuenta la velocidad del objeto principal
-	vcX = (idObject.fx+idObject.vX) - (idObjectB.fx );
-	vcY = (idObject.fy+idObject.vY) - (idObjectB.fy );
+	//y el eje seleccionado en parametro axis
+	if (axis==BOTHAXIS || axis==HORIZONTALAXIS)
+		vcX = (idObject.fx+idObject.vX) - (idObjectB.fx );
+	else
+		vcX = (idObject.fx) - (idObjectB.fx );
+	end;
+	if (axis==BOTHAXIS || axis==VERTICALAXIS)
+		vcY = (idObject.fy+idObject.vY) - (idObjectB.fy );
+	else
+		vcY = (idObject.fy) - (idObjectB.fy );
+	end;
+	
 	// suma las mitades de los anchos y los altos
-	hW =  (idObject.ancho / 2) + (idObjectB.ancho / 2);
-	hH = (idObject.alto / 2) + (idObjectB.alto / 2);
+	hW =  (idObject.ancho>>1) + (idObjectB.ancho>>1);
+	hH = (idObject.alto>>1) + (idObjectB.alto>>1);
 	
 	colDir = 0;
 
@@ -401,25 +411,25 @@ begin
         oY = hH - abs(vcY);
         
 		if (oX >= oY) 
-            if (vcY > 0) 			//Arriba
-				colDir = COLUP;
-                //la colision superior solo la hace al jugador
-				//para permitir apilar objetos
-				//if (idObject == idPlayer)
+            if (axis==BOTHAXIS || axis==VERTICALAXIS)
+				if (vcY > 0) 			//Arriba
+					colDir = COLUP;
 					idObject.fy += oY+idObject.vY;
-				//end;
-             else 
-                colDir = COLDOWN;	//Abajo
-                idObject.fy -= oY-idObject.vY;
-             end;
-        else 
-            if (vcX > 0) 
-                colDir = COLIZQ;	//Izquierda
-                idObject.fx += oX+idObject.vX;
-             else 
-                colDir = COLDER;	//Derecha
-                idObject.fx -= oX-idObject.vX;
-             end;
+				else 
+					colDir = COLDOWN;	//Abajo
+					idObject.fy -= oY-idObject.vY;
+				end;
+			end;
+        else
+			if (axis==BOTHAXIS || axis==HORIZONTALAXIS)
+				if (vcX > 0) 
+					colDir = COLIZQ;	//Izquierda
+					idObject.fx += oX+idObject.vX;
+				else 
+					colDir = COLDER;	//Derecha
+					idObject.fx -= oX-idObject.vX;
+				end;
+			end;
 	     end;
 	end;
         

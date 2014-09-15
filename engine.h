@@ -22,6 +22,11 @@
 #define FROMCOLLISION    0					//Comprobar pixeles para salir de la colision
 #define TOCOLLISION      1					//Comprobar pixeles hasta llegar a la colision
 
+//Modos funcion colCheckProcess
+#define BOTHAXIS			0					//Ambos ejes
+#define HORIZONTALAXIS		1					//Eje Horizontal
+#define VERTICALAXIS		2					//Eje Vertical
+
 //Direccion colision
 #define NOCOL		0
 #define COLUP		1

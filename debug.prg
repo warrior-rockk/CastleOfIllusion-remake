@@ -124,8 +124,8 @@ begin
 	
 	draw_box(0,0,1,1);
 	
-	x = idPlayer.fx+idPlayer.colPoint[numPoint].x;
-	y = idPlayer.fy+idPlayer.colPoint[numPoint].y;
+	x = idObject.fx+idObject.colPoint[numPoint].x;
+	y = idObject.fy+idObject.colPoint[numPoint].y;
 	
 	frame;
 end;

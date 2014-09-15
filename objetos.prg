@@ -19,7 +19,7 @@ begin
 	alto = 32;
 	
 	graph = map_new(ancho,alto,8,0);
-	map_clear(0,graph,300);
+	map_clear(0,graph,rand(200,300));
 	
 	region = cGameRegion;
 	ctype = c_scroll;
@@ -65,12 +65,12 @@ begin
 					//si no soy yo mismo
 					if (colID <> ID) 
 						//aplicamos la direccion de la colision
-						applyDirCollision(ID,colCheckProcess(id,colID),&grounded);
+						applyDirCollision(ID,colCheckProcess(id,colID,BOTHAXIS),&grounded);
 					end;
 				until (colID == 0);
 				
 				//cambio de estado
-				if (grounded && vX == 0) 
+				if (grounded && abs(vX) < 0.1) 
 					state = IDLE_STATE; 
 				end;
 				
@@ -85,13 +85,8 @@ begin
 		fx += vX;
 		fy += vY;
 		
-		//Escalamos la posicion de floats en enteros
-		//si la diferencia entre el float y el entero es una unidad
-		if (abs(fx-x) >= 1 ) 
-			x = round(fx);
-		end;
-		y = fy;
-		
+		positionToInt(id);
+			
 		frame;
 	end;
 	
@@ -135,7 +130,7 @@ begin
 	loop
 		switch (state)
 			case IDLE_STATE:
-				state = MOVE_FREE_STATE; 
+				state = MOVE_RIGHT_STATE; 
 			end;
 			case MOVE_RIGHT_STATE: //movimiento a derecha
 				//movimiento lineal
@@ -202,12 +197,7 @@ begin
 			end;
 		end;
 		
-		//Escalamos la posicion de floats en enteros
-		//si la diferencia entre el float y el entero es una unidad
-		if (abs(fx-x) >= 1 ) 
-			x = round(fx);
-		end;
-		y = fy;
+		positionToInt(id);
 		
 		frame;
 	end;
