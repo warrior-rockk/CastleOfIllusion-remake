@@ -653,13 +653,6 @@ private
 	int i;			//Indices auxiliares
 end
 Begin
-	
-	//Cargamos el archivo del tileMap
-	//carga_tiles(Niveles[num_nivel]+"toyland.bin",Niveles[num_nivel]+"tiles.fpg",Niveles[num_nivel]+"durezas.fpg"); //funcion importada de "tileador.inc"
-	
-	//Dibujamos el tileMap
-	//dibuja_tiles(player_x0,player_y0,C_cResX,C_cResY,0); //funcion importada de "tileador.inc"
-	
 	//creamos los objetos del nivel
 	for (i=0;i<level.numObjects;i++) 
 		//crea_objeto(i,1);

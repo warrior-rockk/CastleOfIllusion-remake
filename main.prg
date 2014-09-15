@@ -30,8 +30,8 @@ Process main()
 private int  colID;
 Begin
 		
-	level.playerx0 = 120;
-	level.playery0 = 0;
+	level.playerx0 = 896;
+	level.playery0 = 672;
 	priority = cMainPrior;	
 		
 	//Iniciamos el engine
@@ -45,10 +45,10 @@ Begin
 	//Creamos un mapa aleatorio
 	//WGE_GenRandomMapFile("test\random.bin",12,8);
 	//Creamos un mapa con matriz definida
-	WGE_GenMatrixMapFile("test\random.bin");
+	//WGE_GenMatrixMapFile("test\random.bin");
 	//Cargamos el mapeado del nivel
 	//TODO: carga dinamica comentada. Ver porque falla a veces
-	WGE_LoadMapLevel("test\random.bin");
+	WGE_LoadMapLevel("test\ToyLand.bin");
 	//Iniciamos Scroll
 	WGE_InitScroll();
 	//Dibujamos el mapeado
@@ -266,45 +266,9 @@ BEGIN
 		end;
 		
 
-		//COLISIONES
-				 
-		//comprobamos 9 tiles alrededor del player
-		/*tiles_comprobar[0].posx = x/cTileSize;
-		tiles_comprobar[0].posy = y/cTileSize;
-		
-		tiles_comprobar[1].posx = x/cTileSize;
-		tiles_comprobar[1].posy = (y/cTileSize)+1;
-		
-		tiles_comprobar[2].posx = x/cTileSize;
-		tiles_comprobar[2].posy = (y/cTileSize)-1;
-		
-		tiles_comprobar[3].posx = (x/cTileSize)+1;
-		tiles_comprobar[3].posy = y/cTileSize;
-		
-		tiles_comprobar[4].posx = (x/cTileSize)-1;
-		tiles_comprobar[4].posy = y/cTileSize;
-		
-		tiles_comprobar[5].posx = (x/cTileSize)+1;
-		tiles_comprobar[5].posy = (y/cTileSize)+1;
-		
-		tiles_comprobar[6].posx = (x/cTileSize)-1;
-		tiles_comprobar[6].posy = (y/cTileSize)+1;
-		
-		tiles_comprobar[7].posx = (x/cTileSize)+1;
-		tiles_comprobar[7].posy = (y/cTileSize)-1;
-		
-		tiles_comprobar[8].posx = (x/cTileSize)-1;
-		tiles_comprobar[8].posy = (y/cTileSize)-1;
-		*/
-		
+		//COLISIONES	
 		grounded = false;
 				
-		//Recorremos la lista de tiles a comprobar
-		//for (i=0;i<9;i++)
-			
-			//Lanzamos comprobacion de colision con el tile actual
-			//dir = colCheckTile(ID,tiles_comprobar[i].posX,tiles_comprobar[i].posY);
-		
 		//Recorremos la lista de puntos a comprobar
 		for (i=0;i<cNumColPoints;i++)
 				

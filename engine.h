@@ -136,7 +136,7 @@ const
 	cTilesYOffScreen = 2;					//Tiles fuera de la pantalla en Y
 	
 	//Mapeado
-	cTileSize   = 64;   					//Tamaño tiles (Ancho y alto iguales)
+	cTileSize   = 16;   					//Tamaño tiles (Ancho y alto iguales)
 	cHalfTSize = cTileSize >> 1; 			//Mitad del tamaño tile (util para todo el proyecto)
 	
 	//Fisicas
@@ -204,14 +204,14 @@ Global
 		int playerY0;			//Posicion inicial Y
 		int numObjects; 		//Numero objetos
 		int numPaths;			//Numero de trackings (paths de objetos)
-		int numTiles;       	//Numero de tiles que componen el mapa del nivel
-		int numTilesX;      	//Tamaño horizontal en tiles del mapa 
-		int numTilesY;			//Tamaño vertical en tiles del mapa
+		byte numTiles;       	//Numero de tiles que componen el mapa del nivel
+		byte numTilesX;      	//Tamaño horizontal en tiles del mapa 
+		byte numTilesY;			//Tamaño vertical en tiles del mapa
 	End;	
 	_objeto* objetos;			//Array Dinamico de objetos
 	_path* paths;				//Array Dinamico de paths
 	//_tile** tileMap;  	        //Matriz Dinamica del mapa de tiles del nivel
-	_tile tileMap[8][20];
+	_tile tileMap[130][130];
 	byte mapUsesAlpha;				//Bit que indica que el mapa usa propiedad alpha (relentiza la carga)
 	//jugador
 	int idPlayer;				//Identificador del proceso del jugador

@@ -6,6 +6,7 @@
 //  Procesos Objetos
 // ========================================================================
 
+
 //Proceso caja con gravedad
 process caja(int x,int y,float vX,float vY);
 private
@@ -123,7 +124,7 @@ begin
 	startX = x;
 	startY = y;
 	
-	vX = 1;
+	vX = 0.5;
 	vY = 1;
 	
 	//bucle principal
