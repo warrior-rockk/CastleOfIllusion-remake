@@ -342,6 +342,8 @@ Begin
 	//Si algun tile usa alpha, lo inicializamos
 	if (mapUsesAlpha) WGE_InitAlpha(); end;
 	
+	level.fpgTiles = load_fpg("test/tiles.fpg");
+	
 	//cerramos el archivo
 	fclose(levelMapFile);
 	log("Fichero mapa leído con " + level.numTiles + " Tiles. " + level.numTilesX + " Tiles en X y " + level.numTilesY + " Tiles en Y");   
@@ -528,11 +530,14 @@ BEGIN
 	ctype = c_scroll;
 	region = cGameRegion;
 	priority = cTilePrior;
-	graph = map_new(alto,ancho,8);
+	//graph = map_new(alto,ancho,8);
+	file = level.fpgTiles;
 	
 	//establecemos su posicion inicial
 	x = (j*cTileSize)+cHalfTSize;
 	y = (i*cTileSize)+cHalfTSize;
+	
+	
 	
 	loop
 				
@@ -589,7 +594,8 @@ BEGIN
 			//grafico
 			if (tileExists(i,j))
 				//Dibujamos su grafico
-				tileColor = tileMap[i][j].tileGraph;
+				//tileColor = tileMap[i][j].tileGraph;
+				graph = tileMap[i][j].tileGraph;
 				//Establecemos sus propiedades segun TileCode
 				if (tileMap[i][j].tileShape)
 					flags &= B_NOCOLORKEY;	
@@ -607,15 +613,19 @@ BEGIN
 					z = cZMap1;
 				end;
 			else
-				tileColor = 255;
+				//tile no existente
+				//tileColor = 255; 
+				graph = 0;
 			end;
 			
+			/*
+			//provisional: esto ira leyendo su grafico de tile TileGraph
 			//dibujamos el tile
 			map_clear(0,graph,0);
 			drawing_map(0,graph);
 			drawing_color(tileColor);
 			
-			//provisional: esto ira leyendo su grafico de tile TileGraph
+			//tipo tile custom
 			if (tileExists(i,j))
 				if (tileMap[i][j].tileCode == SLOPE_135) 
 					map_put(0,graph,mapTriangle135,cTileSize>>1,cTileSize>>1);
@@ -629,8 +639,7 @@ BEGIN
 					draw_box(0,0,alto,ancho);
 				end;
 			end;
-			
-			//graph=tileMap[i-(cResY/cTileSize)-2][j];
+			*/
 			
 			//en modo debug, escribimos su posicion
 			if (debugMode)

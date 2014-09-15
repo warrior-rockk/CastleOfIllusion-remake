@@ -207,6 +207,7 @@ Global
 		byte numTiles;       	//Numero de tiles que componen el mapa del nivel
 		byte numTilesX;      	//Tamaño horizontal en tiles del mapa 
 		byte numTilesY;			//Tamaño vertical en tiles del mapa
+		int fpgTiles;			//Identificador del archivo de graficos del tile
 	End;	
 	_objeto* objetos;			//Array Dinamico de objetos
 	_path* paths;				//Array Dinamico de paths
