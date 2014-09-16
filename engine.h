@@ -147,6 +147,11 @@ const
 	cPlayerAccelXSlopeUp    = 0.2;          //Aceleracion maxima Player subiendo rampa
 	cPlayerAccelXSlopeDown  = 1.4;          //Aceleracion maxima Player bajando rampa
 	cPlayerDecelXSlopeUp    = 0.1;			//Factor deceleracion al subir rampa
+	
+	//Personaje
+	cPlayerAncho			= 20;			//Ancho del jugador
+	cPlayerAlto				= 32;			//Alto del jugador
+	cPlayerAltoCrouch		= 16;			//Alto del jugador agachado
 End;
 
 //Data Types

@@ -15,6 +15,7 @@ private
 byte  jumping,				//Flag salto
 byte  grounded; 			//Flag en suelo
 byte  onStairs;				//Flag de en escaleras
+byte  crouched;				//Flag de agachado
 float velMaxX;				//Velocidad Maxima Horizontal
 float accelX;				//Aceleracion Maxima Horizontal
 float accelY;				//Aceleracion Maxima Vertical
@@ -30,8 +31,8 @@ end;
 int i,j;		//Variables auxiliares
 
 BEGIN
-	ancho = 20;
-	alto = 32;
+	ancho = cPlayerAncho;
+	alto = cPlayerAlto;
 	velMaxX = cPlayerVelMaxX;
 	accelx 	= cPlayerAccelX;
 	accelY 	= 12;
@@ -41,14 +42,11 @@ BEGIN
 	z = cZPlayer;
 	priority = cPlayerPrior;
 	
-	//dibujamos el personaje como una caja
-	graph = map_new(ancho,alto,8);
-	drawing_map(0,graph);
-	drawing_color(300);
-	draw_box(0,0,ancho,alto);
-	//dibujamos la nariz para diferenciar hacia donde mira
-	drawing_color(200);
-	draw_fcircle((ancho>>1)+(ancho>>2),(alto>>2),4);
+	//establecemos el id de player
+	idPlayer = id;
+	
+	//dibujamos el personaje con sus dimensiones
+	debugDrawPlayer();
 	
 	//definimos los puntos de colision
 	//respecto al centro del personaje
@@ -142,7 +140,11 @@ BEGIN
 					//desactivamos flag salto
 					jumping = false;
 				end;
-			end;					
+			else //si no escalera, agacharse
+				crouched = true;
+			end;
+		else
+			crouched = false;
 		end;
 		
 		//FISICAS
@@ -194,7 +196,29 @@ BEGIN
 			end;
 		end;
 		
-
+		//CONTROL DIMENSIONES
+		
+		//cambio a agachado
+		if (crouched && alto == cPlayerAlto)
+			//establecemos altura agachado
+			alto = cPlayerAltoCrouch;
+			//redibujamos el player (provisional)
+			debugDrawPlayer();
+			//actualizamos sus puntos de colision
+			WGE_CreatePlayerColPoints(id);
+			//corregimos la coordenada Y
+			fy = fy+((cPlayerAlto-cPlayerAltoCrouch)>>1);
+		elseif (not crouched && alto == cPlayerAltoCrouch)
+			//establecemos altura normal
+			alto = cPlayerAlto;
+			//redibujamos el player (provisional)
+			debugDrawPlayer();
+			//actualizamos sus puntos de colision
+			WGE_CreatePlayerColPoints(id);
+			//corregimos la coordenada Y
+			fy = fy-((cPlayerAlto-cPlayerAltoCrouch)>>1);
+		end;
+		
 		//COLISIONES	
 		grounded = false;
 				

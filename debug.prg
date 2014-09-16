@@ -207,3 +207,16 @@ begin
 		end;
 	end;
 end;
+
+//funcion que dibuja un player sin graficos
+function DebugDrawPlayer()
+begin
+	map_del(0,idPlayer.graph);
+	idPlayer.graph = map_new(idPlayer.ancho,idPlayer.alto,8);
+	drawing_map(0,idPlayer.graph);
+	drawing_color(300);
+	draw_box(0,0,idPlayer.ancho,idPlayer.alto);
+	//dibujamos la nariz para diferenciar hacia donde mira
+	drawing_color(200);
+	draw_fcircle((idPlayer.ancho>>1)+(idPlayer.ancho>>2),(idPlayer.alto>>2),4);
+end;
