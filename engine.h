@@ -84,9 +84,14 @@
 #define BIT_TILE_DELANTE 	64
 #define BIT_TILE_ALPHA      32
 
-//estados objeto
+//estados
 #define IDLE_STATE			0
 #define MOVE_STATE          1
+#define MOVE_RIGHT_STATE 	2
+#define MOVE_LEFT_STATE  	3
+#define MOVE_UP_STATE	 	4
+#define MOVE_DOWN_STATE  	5
+#define MOVE_FREE_STATE  	6
 
 //Constantes del motor
 const

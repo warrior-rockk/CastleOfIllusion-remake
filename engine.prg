@@ -112,7 +112,7 @@ begin
 				delete_text(idDebugText[i]);
 			end;
 			//Quitamos al player el blend aditivo para ver las colisiones
-			if (idPlayer<>0) idPlayer.flags &= B_ABLEND; end;
+			if (idPlayer<>0) idPlayer.flags &= ~ B_ABLEND; end;
 			//desactivamos el modo debug
 			actDebugMode = 0;
 		end;
@@ -624,7 +624,7 @@ BEGIN
 				
 				//Establecemos sus propiedades segun TileCode
 				if (tileMap[i][j].tileShape)
-					flags &= B_NOCOLORKEY;	
+					flags &= ~ B_NOCOLORKEY;	
 				else
 					flags |= B_NOCOLORKEY;
 				end;

@@ -64,7 +64,7 @@ Begin
 	//caja(672,160);
 	//caja(672,160-64);
 	player_gravity();
-
+	
 	//Bucle principal
 	Loop
 		   

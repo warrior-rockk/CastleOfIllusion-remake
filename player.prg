@@ -299,6 +299,33 @@ BEGIN
 		
 		positionToInt(id);
 		
+		
+				
+		//CONTROL ESTADO GRAFICO
+		
+		//estado por defecto
+		state = IDLE_STATE;
+		
+		if (key(CKLEFT))
+			state = MOVE_LEFT_STATE;
+		end;
+		if (key(CKRIGHT))
+			state = MOVE_RIGHT_STATE;
+		end;
+				
+		//gestion del estado
+		switch (state)
+			case IDLE_STATE:
+				;
+			end;
+			case MOVE_LEFT_STATE:
+				flags |= B_HMIRROR;
+			end;
+			case MOVE_RIGHT_STATE:
+				flags &=~ B_HMIRROR;
+			end;
+		end;
+		
 		frame;
 	
 	end;

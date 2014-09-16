@@ -98,12 +98,6 @@ end;
 //y inicial
 //rango de movimiento
 process plataforma(int x,int y,int ancho,int alto,int graph,int rango)
-//defines locales
-#define MOVE_RIGHT_STATE 1
-#define MOVE_LEFT_STATE  2
-#define MOVE_UP_STATE	 3
-#define MOVE_DOWN_STATE  4
-#define MOVE_FREE_STATE  5
 private
 	int startX;
 	int startY;
