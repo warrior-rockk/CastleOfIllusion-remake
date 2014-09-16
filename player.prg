@@ -235,11 +235,11 @@ BEGIN
 			
 		end;
 		
-		//lanzamos comprobacion con procesos caja
+		//lanzamos comprobacion con procesos objeto
 		repeat
 			
 			//obtenemos siguiente colision
-			colID = get_id(TYPE caja);
+			colID = get_id(TYPE objeto);
 			
 			//tratamos las colisiones separadas por ejes
 			//para poder andar sobre varios procesos corrigiendo la y

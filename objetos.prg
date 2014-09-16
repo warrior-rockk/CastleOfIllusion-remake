@@ -220,3 +220,90 @@ begin
 	end;
 	
 end;
+
+//Proceso objeto
+process objeto(int x,int y,int ancho,int alto,int graph);
+private
+byte grounded;
+int i;
+int colID;
+float friction;
+
+begin
+	region = cGameRegion;
+	ctype = c_scroll;
+	z = cZObject;
+	file = level.fpgObjects;
+	
+	//modo debug sin graficos
+	if (file<0)
+		graph = map_new(ancho,alto,8,0);
+		map_clear(0,graph,rand(200,300));
+	end;
+	
+	fx = x;
+	fy = y;
+	
+	WGE_CreateObjectColPoints(id);
+	
+	friction = floorFriction;
+	
+	state = MOVE_STATE;
+	
+	loop
+		
+		//FISICAS	
+		if (grounded)
+			vX *= friction;
+		end;
+		
+		vY += gravity;
+		
+		//comportamiento caja
+		switch (state)
+			case IDLE_STATE:
+				;
+			end;
+			case MOVE_STATE:
+								
+				grounded = false;
+				
+				//Recorremos la lista de puntos a comprobar
+				for (i=0;i<cNumColPoints;i++)					
+					//aplicamos la direccion de la colision
+					applyDirCollision(ID,colCheckTileTerrain(ID,i),&grounded);			
+				end;
+				
+				//lanzamos comprobacion con procesos caja
+				repeat
+					//obtenemos siguiente colision
+					colID = get_id(TYPE caja);
+					//si no soy yo mismo
+					if (colID <> ID) 
+						//aplicamos la direccion de la colision
+						applyDirCollision(ID,colCheckProcess(id,colID,BOTHAXIS),&grounded);
+					end;
+				until (colID == 0);
+				
+				//cambio de estado
+				if (grounded && abs(vX) < 0.1) 
+					state = IDLE_STATE; 
+				end;
+				
+			end;
+		end;
+		
+		//Actualizar velocidades
+		if (grounded)
+			vY = 0;
+		end;
+		
+		fx += vX;
+		fy += vY;
+		
+		positionToInt(id);
+			
+		frame;
+	end;
+	
+end;

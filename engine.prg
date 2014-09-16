@@ -667,6 +667,7 @@ Begin
 	plataforma(620,729,32,16,8,25);
 	plataforma(458,729,32,16,8,25);
 	
+	objeto(218,712,16,16,5);
 	//creamos los objetos del nivel
 	//for (i=0;i<level.numObjects;i++) 
 		//crea_objeto(i,1);
