@@ -91,6 +91,8 @@
 //Constantes del motor
 const
 	//Engine
+	cTimeInterval    = 50; 					//Intervalo reloj: 500ms
+	
 	//Prioridades (orden ejecucion)
 	cMainPrior	 	 = 3;
 	cPlayerPrior	 = 2;
@@ -200,7 +202,8 @@ Global
 	int FrameCount;				//Contador de Frames Global
 	int maxFPS;					//FPS Maximo
 	int minFPS; 				//FPS Mínimo
-
+	byte ClockTick;				//Flanco Tiempo
+	
 	//debug
 	byte debugMode;				//Modo debug del engine
 	//nivel y mapeado

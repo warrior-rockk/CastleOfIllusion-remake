@@ -10,10 +10,11 @@
 process WGE_Init()
 private
 	byte actDebugMode = 0;					//Modo debug activado
-	int idDebugText[cMaxDebugInfo-1];	//Textos debug
-	int idCursor;						//Id proceso cursor
+	int idDebugText[cMaxDebugInfo-1];		//Textos debug
+	int idCursor;							//Id proceso cursor
 		
-	int i; 								//Variables auxiliares
+	int i; 									//Variables auxiliares
+	int counterTime;						//Contador para el flanco reloj						
 begin
 	//Dibujamos mapas para testeo (esto ira eliminado)
 	mapBox = map_new(cTileSize,cTileSize,8);
@@ -42,6 +43,14 @@ begin
 		end;
 		if (fps < minFPS && fps<>0)
 			minFPS = fps;
+		end;
+		
+		//Gestion Flanco Tiempo Reloj	
+		if ( counterTime < timer[0] )
+			clockTick = true;
+			counterTime = timer[0] + cTimeInterval;
+		else
+			clockTick = false;
 		end;
 		
 		//activacion/desactivacion del modo debug
