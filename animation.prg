@@ -15,7 +15,6 @@ begin
 //si toca animar en el frame correspondiente
 if (clockCounter <> 0)
 	if (clockCounter % animationSpeed == 0  && clockTick)	
-		log(clockCounter);
 		//incrementamos frame si estamos en el rango
 		if (father.graph < endFrame && father.graph >= startFrame)
 			father.graph++;

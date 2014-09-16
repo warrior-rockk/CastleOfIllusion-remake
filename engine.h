@@ -85,16 +85,20 @@
 #define BIT_TILE_ALPHA      32
 
 //estados
-#define IDLE_STATE			0
-#define MOVE_STATE          1
-#define MOVE_RIGHT_STATE 	2
-#define MOVE_LEFT_STATE  	3
-#define MOVE_UP_STATE	 	4
-#define MOVE_DOWN_STATE  	5
-#define MOVE_FREE_STATE  	6
-#define JUMP_STATE		  	7
-#define CROUCH_STATE		8
-#define BREAK_STATE			9
+#define IDLE_STATE				0
+#define MOVE_STATE          	1
+#define MOVE_RIGHT_STATE 		2
+#define MOVE_LEFT_STATE  		3
+#define MOVE_UP_STATE	 		4
+#define MOVE_DOWN_STATE  		5
+#define MOVE_FREE_STATE  		6
+#define JUMP_STATE		  		7
+#define CROUCH_STATE			8
+#define BREAK_STATE				9
+#define FALL_STATE				10
+#define ON_STAIRS_STATE			11
+#define MOVE_ON_STAIRS_STATE 	12
+#define BREAK_FALL_STATE		13
 
 //Constantes del motor
 const

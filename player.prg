@@ -304,9 +304,10 @@ BEGIN
 				
 		//CONTROL ESTADO GRAFICO
 		
-		//estado por defecto
-		state = IDLE_STATE;
 		
+		if (abs(vX) < 0.1 && abs(vY) < 0.1)
+			state = IDLE_STATE;
+		end;
 		if (key(CKLEFT))
 			state = MOVE_STATE;
 			//miramos hacia la izquierda
@@ -318,15 +319,26 @@ BEGIN
 			flags &=~ B_HMIRROR;
 		end;
 		if ( abs(vX) > 0.1 && not key(CKRIGHT) && not key(CKLEFT))
-			 
-			state = BREAK_STATE;
+			if (state == FALL_STATE || state == BREAK_FALL_STATE || state == JUMP_STATE)
+				state = BREAK_FALL_STATE;
+			else
+				state = BREAK_STATE;
+			end;
 		end;
-		
+		if (!grounded && !jumping)
+			state = FALL_STATE;
+		end;
 		if (jumping)
 			state = JUMP_STATE;
 		end;
 		if (crouched)
 			state = CROUCH_STATE;
+		end;
+		if (onStairs)
+			state = ON_STAIRS_STATE;
+		end;
+		if (onStairs && (key(CKUP) || key(CKDOWN)) )
+			state = MOVE_ON_STAIRS_STATE;
 		end;
 		
 		//gestion del estado
@@ -336,6 +348,9 @@ BEGIN
 			end;
 			case MOVE_STATE:
 				WGE_Animate(3,8,4);
+			end;
+			case FALL_STATE:
+				WGE_Animate(11,11,1);
 			end;
 			case JUMP_STATE:
 				if (vY < 0)
@@ -349,6 +364,18 @@ BEGIN
 			end;
 			case BREAK_STATE:
 				WGE_Animate(9,9,1);
+			end;
+			case BREAK_FALL_STATE:
+				WGE_Animate(12,12,1);
+			end;
+			case ON_STAIRS_STATE:
+				WGE_Animate(18,18,1);
+			end
+			case MOVE_ON_STAIRS_STATE:
+				WGE_Animate(19,20,8);
+			end
+			default:
+				WGE_Animate(1,2,40);
 			end;
 		end;
 		
