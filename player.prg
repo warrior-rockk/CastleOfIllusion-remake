@@ -118,31 +118,26 @@ BEGIN
 			if (getTileCode(id,CENTER_DOWN_POINT) == TOP_STAIRS || getTileCode(id,CENTER_DOWN_POINT) == STAIRS)
 				//si el centro del objeto esta en tile escaleras
 				if (getTileCode(id,CENTER_POINT) == TOP_STAIRS || getTileCode(id,CENTER_POINT) == STAIRS)	
-					//quitamos velocidades
-					vY = 0;
-					vX = 0;
 					//centramos el objeto en el tile escalera
 					fx = x+(cTileSize>>1)-(x%cTileSize);
 					//bajamos las escaleras
 					fY += 2;
-					//Establecemos el flag de escalera
-					onStairs = true;
-					//desactivamos flag salto
-					jumping = false;
 				//en caso contrario, estamos en la base de la escalera
 				else
-					//quitamos velocidades
-					vY = 0;
-					vX = 0;
 					//bajamos el objeto a la escalera
 					fy += (alto>>1);
-					//establecemos el flag escaleras
-					onStairs = true;
-					//desactivamos flag salto
-					jumping = false;
 				end;
+				//quitamos velocidades
+				vY = 0;
+				vX = 0;
+				//Establecemos el flag de escalera
+				onStairs = true;
+				//desactivamos flag salto
+				jumping = false;
+				//desactivamos flag agachado
 				crouched = false;
-			else //si no escalera, agacharse
+			else 
+				//si no escalera, agacharse si esta en suelo
 				crouched = grounded;
 				onStairs = false;
 			end;
