@@ -127,7 +127,7 @@ const
 	cRegionX 		= 0;					//Region Horizontal Pantalla de juego (Representacion Mapeado) 
 	cRegionY 		= 0;					//Region Vertical Pantalla de juego (Representacion Mapeado)
 	cRegionW 		= cResX;				//Region Horizontal Pantalla de juego (Representacion Mapeado) 
-	cRegionH 		= 200;				//Region Vertical Pantalla de juego (Representacion Mapeado)	
+	cRegionH 		= 200;					//Region Vertical Pantalla de juego (Representacion Mapeado)	
 	
 	//Numero de tiles fuera de la pantalla. 
 	//Si la resolucion no es multiplo del tamaño del tile,es aconsejable usar 
@@ -149,7 +149,7 @@ const
 	cPlayerDecelXSlopeUp    = 0.1;			//Factor deceleracion al subir rampa
 	
 	//Personaje
-	cPlayerAncho			= 20;			//Ancho del jugador
+	cPlayerAncho			= 16;			//Ancho del jugador
 	cPlayerAlto				= 32;			//Alto del jugador
 	cPlayerAltoCrouch		= 16;			//Alto del jugador agachado
 End;

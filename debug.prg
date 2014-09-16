@@ -74,6 +74,13 @@ begin
 			WGE_Wait(20);
 		end;
 		
+		//posicionar personaje en cursor
+		if (key(_p))
+			idPlayer.fx = x;
+			idPlayer.fy = y;
+			WGE_Wait(20);
+		end;
+		
 		frame;
 	
 	until(not debugMode)
