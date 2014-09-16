@@ -93,6 +93,8 @@
 #define MOVE_DOWN_STATE  	5
 #define MOVE_FREE_STATE  	6
 #define JUMP_STATE		  	7
+#define CROUCH_STATE		8
+#define BREAK_STATE			9
 
 //Constantes del motor
 const
@@ -155,6 +157,7 @@ const
 	cPlayerAccelXSlopeUp    = 0.2;          //Aceleracion maxima Player subiendo rampa
 	cPlayerAccelXSlopeDown  = 1.4;          //Aceleracion maxima Player bajando rampa
 	cPlayerDecelXSlopeUp    = 0.1;			//Factor deceleracion al subir rampa
+	cPlayerAccelY			= 6;			//Aceleracion Player saltando
 	
 	//Personaje
 	cPlayerAncho			= 16;			//Ancho del jugador

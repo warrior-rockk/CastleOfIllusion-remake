@@ -9,11 +9,10 @@
 //Funciona que anima el proceso que lo llama cambiando
 //su grafico en cada llamada a la velocidad especificada
 //Devuelve true cuando vuelve a empezar la animacion
-//animationSpeed en centesimas de segundo
+//animationSpeed en decimas de segundo
 function int WGE_Animate(int startFrame, int endFrame, int animationSpeed)
 begin
 //si toca animar en el frame correspondiente
-//if (sync(vel))
 if (clockCounter <> 0)
 	if (clockCounter % animationSpeed == 0  && clockTick)	
 		log(clockCounter);
