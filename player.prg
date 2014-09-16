@@ -141,6 +141,7 @@ BEGIN
 					//desactivamos flag salto
 					jumping = false;
 				end;
+				crouched = false;
 			else //si no escalera, agacharse
 				crouched = grounded;
 				onStairs = false;
