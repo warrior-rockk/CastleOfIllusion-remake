@@ -664,6 +664,8 @@ Begin
 	level.fpgObjects = fpg_load("test\objetos.fpg");
 	
 	plataforma(800,696,32,16,8,25);
+	plataforma(620,729,32,16,8,25);
+	plataforma(458,729,32,16,8,25);
 	
 	//creamos los objetos del nivel
 	//for (i=0;i<level.numObjects;i++) 

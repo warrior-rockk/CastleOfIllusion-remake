@@ -9,6 +9,7 @@
 //TODO: Calcular nivel inferior al que seria muerte segun tamaño mapeado
 //		Salto distinto desde escalera
 //		Fuerza salto segun pulsacion tecla
+//		bloqueo del agacharse si muro en cabeza
 process player_gravity()
 private 
 
@@ -220,8 +221,12 @@ BEGIN
 		end;
 		
 		//COLISIONES	
+		
+		//condiciones iniciales pre-colision
 		grounded = false;
-				
+		idPlatform = 0;
+		priority = cPlayerPrior;		
+		
 		//Recorremos la lista de puntos a comprobar
 		for (i=0;i<cNumColPoints;i++)
 				
@@ -264,7 +269,7 @@ BEGIN
 		repeat
 			//obtenemos siguiente colision
 			colID = get_id(TYPE plataforma);
-			
+			//comprobamos colision en ambos ejes
 			dir = colCheckProcess(id,colID,BOTHAXIS);
 			
 			//aplicamos la direccion de la colision
@@ -280,10 +285,6 @@ BEGIN
 					priority = cPlatformPrior;
 					colID.priority = cPlayerPrior;
 				else
-					//liberamos idPlatform
-					idPlatform = 0;
-					//cambiamos prioridades
-					priority = cPlayerPrior;
 					colID.priority = cPlatformPrior;
 				end;
 			end;
