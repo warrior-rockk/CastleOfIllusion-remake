@@ -32,6 +32,8 @@ Begin
 		
 	level.playerx0 = 896;
 	level.playery0 = 672;
+	level.playerx0 =23*cTileSize;
+	level.playery0 =4*cTileSize;
 	
 	priority = cMainPrior;	
 		

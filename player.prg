@@ -142,7 +142,8 @@ BEGIN
 					jumping = false;
 				end;
 			else //si no escalera, agacharse
-				crouched = true;
+				crouched = grounded;
+				onStairs = false;
 			end;
 		else
 			crouched = false;
