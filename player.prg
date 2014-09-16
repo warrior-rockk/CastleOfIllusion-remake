@@ -42,12 +42,13 @@ BEGIN
 	ctype = c_scroll;
 	z = cZPlayer;
 	priority = cPlayerPrior;
+	file = fpg_load("test\player.fpg");
 	
 	//establecemos el id de player
 	idPlayer = id;
 	
 	//dibujamos el personaje con sus dimensiones
-	debugDrawPlayer();
+	//debugDrawPlayer();
 	
 	//definimos los puntos de colision
 	//respecto al centro del personaje
@@ -201,7 +202,7 @@ BEGIN
 			//establecemos altura agachado
 			alto = cPlayerAltoCrouch;
 			//redibujamos el player (provisional)
-			debugDrawPlayer();
+			//debugDrawPlayer();
 			//actualizamos sus puntos de colision
 			WGE_CreatePlayerColPoints(id);
 			//corregimos la coordenada Y
@@ -210,7 +211,7 @@ BEGIN
 			//establecemos altura normal
 			alto = cPlayerAlto;
 			//redibujamos el player (provisional)
-			debugDrawPlayer();
+			//debugDrawPlayer();
 			//actualizamos sus puntos de colision
 			WGE_CreatePlayerColPoints(id);
 			//corregimos la coordenada Y
@@ -312,17 +313,28 @@ BEGIN
 		if (key(CKRIGHT))
 			state = MOVE_RIGHT_STATE;
 		end;
+		if (jumping)
+			state = JUMP_STATE;
+		end;
 				
 		//gestion del estado
 		switch (state)
 			case IDLE_STATE:
-				;
+				//estado reposo
+				WGE_Animate(1,2,40);
 			end;
 			case MOVE_LEFT_STATE:
+				//miramos hacia la izquierda
 				flags |= B_HMIRROR;
+				WGE_Animate(3,8,4);
 			end;
 			case MOVE_RIGHT_STATE:
+				//miramos hacia la derecha
 				flags &=~ B_HMIRROR;
+				WGE_Animate(3,8,4);
+			end;
+			case JUMP_STATE:
+				
 			end;
 		end;
 		

@@ -52,6 +52,8 @@ begin
 		else
 			clockTick = false;
 		end;
+		//contador reloj general
+		clockCounter += clockTick;
 		
 		//activacion/desactivacion del modo debug
 		if (key(_control) && key(_d))

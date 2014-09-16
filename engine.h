@@ -92,11 +92,12 @@
 #define MOVE_UP_STATE	 	4
 #define MOVE_DOWN_STATE  	5
 #define MOVE_FREE_STATE  	6
+#define JUMP_STATE		  	7
 
 //Constantes del motor
 const
 	//Engine
-	cTimeInterval    = 50; 					//Intervalo reloj: 500ms
+	cTimeInterval    = 1; 					//Intervalo reloj: 10ms
 	
 	//Prioridades (orden ejecucion)
 	cMainPrior	 	 = 3;
@@ -208,6 +209,7 @@ Global
 	int maxFPS;					//FPS Maximo
 	int minFPS; 				//FPS Mínimo
 	byte ClockTick;				//Flanco Tiempo
+	int clockCounter;			//Contador Reloj
 	
 	//debug
 	byte debugMode;				//Modo debug del engine
@@ -267,3 +269,4 @@ include "player.prg";       //Proceso jugador
 include "collisions.prg";	//Funciones de colision
 include "debug.prg";		//Funciones de debug
 include "objetos.prg"		//Procesos objetos
+include "animation.prg"		//Funciones de animacion
