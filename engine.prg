@@ -643,8 +643,8 @@ BEGIN
 			//en modo debug, escribimos su posicion
 			if (debugMode)
 				set_text_color((255-TileColor)+1);
-				map_put(0,graph,write_in_map(0,i,3),16,10);
-				map_put(0,graph,write_in_map(0,j,3),16,18);
+				map_put(file,graph,write_in_map(0,i,3),ancho>>1,0);
+				map_put(file,graph,write_in_map(0,j,3),ancho>>1,8);
 			end;
 			
 			redraw = 0;

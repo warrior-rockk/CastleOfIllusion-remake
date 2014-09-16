@@ -120,8 +120,8 @@ const
 	//Pantalla
 	cNumFPS    	 	= 60;  					//Frames por segundo
 	cNumFPSDebug 	= 0;					//Frames por segundo en debug (CTRL+F)
-	cResX 			= 640;					//Resolucion Horizontal Pantalla
-	cResY 			= 480;  				//Resolucion Vertical Pantalla
+	cResX 			= 320;					//Resolucion Horizontal Pantalla
+	cResY 			= 200;  				//Resolucion Vertical Pantalla
 	cGameScroll 	= 0;    				//Numero Scroll
 	cGameRegion 	= 1;    				//Numero Region Pantalla Juego
 	cRegionX 		= 0;					//Region Horizontal Pantalla de juego (Representacion Mapeado) 
@@ -249,6 +249,7 @@ End;
 
 //Includes del engine
 include "engine.prg";		//Core principal de engine
+include "player.prg";       //Proceso jugador
 include "collisions.prg";	//Funciones de colision
 include "debug.prg";		//Funciones de debug
 include "objetos.prg"		//Procesos objetos

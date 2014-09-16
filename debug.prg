@@ -188,22 +188,22 @@ end;
 function debugDrawTile(int idTile,byte tileColor,int i,int j)
 begin
 	//dibujamos el tile
-	map_clear(0,idTile.graph,0);
-	drawing_map(0,idTile.graph);
+	map_clear(idTile.file,idTile.graph,0);
+	drawing_map(idTile.file,idTile.graph);
 	drawing_color(tileColor);
 	
 	//tipo de Tile
 	if (tileExists(i,j))
 		if (tileMap[i][j].tileCode == SLOPE_135) 
-			map_put(0,idTile.graph,mapTriangle135,cTileSize>>1,cTileSize>>1);
+			map_put(idTile.file,idTile.graph,mapTriangle135,cTileSize>>1,cTileSize>>1);
 		elseif (tileMap[i][j].tileCode == SLOPE_45)
-			map_put(0,idTile.graph,mapTriangle45,cTileSize>>1,cTileSize>>1);
+			map_put(idTile.file,idTile.graph,mapTriangle45,cTileSize>>1,cTileSize>>1);
 		elseif (tileMap[i][j].tileCode == STAIRS) //|| tileMap[i][j].tileCode == TOP_STAIRS)
-			map_put(0,idTile.graph,mapStairs,cTileSize>>1,cTileSize>>1);
+			map_put(idTile.file,idTile.graph,mapStairs,cTileSize>>1,cTileSize>>1);
 		elseif (tileMap[i][j].tileCode == TOP_STAIRS) 
-			map_put(0,idTile.graph,mapStairs,cTileSize>>1,cTileSize>>1);
+			map_put(idTile.file,idTile.graph,mapStairs,cTileSize>>1,cTileSize>>1);
 		else
-			draw_box(0,0,idTile.alto,idTile.ancho);
+			draw_box(idTile.file,0,idTile.alto,idTile.ancho);
 		end;
 	end;
 end;
