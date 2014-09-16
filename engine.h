@@ -114,20 +114,20 @@ const
 	//Debug		
 	cCursorColor 	= 100;					//Color del cursor de debugMode
 	cDebugInfoX  	= 10;					//Posicion X de la informacion de debug
-	cDebugInfoY  	= 176;					//Posicion Y de la informacion de debug
+	cDebugInfoY  	= 210;					//Posicion Y de la informacion de debug
 	cMaxDebugInfo	= 10;					//Maximo lineas informacion de debug
 
 	//Pantalla
 	cNumFPS    	 	= 60;  					//Frames por segundo
 	cNumFPSDebug 	= 0;					//Frames por segundo en debug (CTRL+F)
 	cResX 			= 320;					//Resolucion Horizontal Pantalla
-	cResY 			= 200;  				//Resolucion Vertical Pantalla
+	cResY 			= 300;  				//Resolucion Vertical Pantalla
 	cGameScroll 	= 0;    				//Numero Scroll
 	cGameRegion 	= 1;    				//Numero Region Pantalla Juego
 	cRegionX 		= 0;					//Region Horizontal Pantalla de juego (Representacion Mapeado) 
 	cRegionY 		= 0;					//Region Vertical Pantalla de juego (Representacion Mapeado)
 	cRegionW 		= cResX;				//Region Horizontal Pantalla de juego (Representacion Mapeado) 
-	cRegionH 		= cResY;				//Region Vertical Pantalla de juego (Representacion Mapeado)	
+	cRegionH 		= 200;				//Region Vertical Pantalla de juego (Representacion Mapeado)	
 	
 	//Numero de tiles fuera de la pantalla. 
 	//Si la resolucion no es multiplo del tamaño del tile,es aconsejable usar 
@@ -208,6 +208,7 @@ Global
 		byte numTilesX;      	//Tamaño horizontal en tiles del mapa 
 		byte numTilesY;			//Tamaño vertical en tiles del mapa
 		int fpgTiles;			//Identificador del archivo de graficos del tile
+		int fpgObjects;			//Identificador del archivo de graficos de los objetos del nivel
 	End;	
 	_objeto* objetos;			//Array Dinamico de objetos
 	_path* paths;				//Array Dinamico de paths

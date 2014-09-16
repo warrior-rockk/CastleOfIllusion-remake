@@ -94,7 +94,10 @@ begin
 end;
 
 //Proceso plataforma movil
-process plataforma(int x,int y,int rango)
+//x inicial
+//y inicial
+//rango de movimiento
+process plataforma(int x,int y,int ancho,int alto,int graph,int rango)
 //defines locales
 #define MOVE_RIGHT_STATE 1
 #define MOVE_LEFT_STATE  2
@@ -106,15 +109,27 @@ private
 	int startY;
 	
 begin
-	ancho = 64;
-	alto = 16;
-	
 	region = cGameRegion;
 	ctype = c_scroll;
 	z = cZObject;
+	file = level.fpgObjects;
 	
-	graph = map_new(ancho,alto,8,0);
-	map_clear(0,graph,310);
+	//modo debug sin graficos
+	if (file<0)
+		graph = map_new(ancho,alto,8,0);
+		map_clear(0,graph,310);
+	end;
+	
+	//puntos de colision del objeto
+	id.colPoint[LEFT_UP_POINT].x 		= -(ancho>>1);
+	id.colPoint[LEFT_UP_POINT].y 		= 0;
+	id.colPoint[LEFT_UP_POINT].colCode = COLIZQ;
+	id.colPoint[LEFT_UP_POINT].enabled = 1;
+	
+	id.colPoint[RIGHT_UP_POINT].x 		= (ancho>>1);
+	id.colPoint[RIGHT_UP_POINT].y 		= 0;
+	id.colPoint[RIGHT_UP_POINT].colCode = COLDER;
+	id.colPoint[RIGHT_UP_POINT].enabled = 1;
 	
 	fx = x;
 	fy = y;
@@ -131,6 +146,7 @@ begin
 	loop
 		switch (state)
 			case IDLE_STATE:
+				//estado por defecto
 				state = MOVE_RIGHT_STATE; 
 			end;
 			case MOVE_RIGHT_STATE: //movimiento a derecha
@@ -141,8 +157,8 @@ begin
 					//movemos el player
 					idPlayer.fx +=vX;
 				end;
-				//cambio de estado
-				if (fx > startX + rango)
+				//cambio de estado al colisionar
+				if (getTileCode(id,RIGHT_UP_POINT) <> NO_SOLID)
 					state = MOVE_LEFT_STATE;
 				end;
 			end;
@@ -154,8 +170,8 @@ begin
 					//movemos el player
 					idPlayer.fx -=vX;
 				end;
-				//cambio de estado
-				if (fx < startX - rango)
+				//cambio de estado al colisionar
+				if (getTileCode(id,LEFT_UP_POINT) <> NO_SOLID)
 					state = MOVE_RIGHT_STATE;
 				end;
 			end;

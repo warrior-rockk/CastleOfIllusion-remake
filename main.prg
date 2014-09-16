@@ -55,14 +55,13 @@ Begin
 	//Dibujamos el mapeado
 	WGE_DrawMap();
 	//Creamos el nivel cargado
-	//WGE_CreateLevel();
+	WGE_CreateLevel();
 	
 	//Creamos el jugador
 	//idPlayer = player_no_gravity();
 	//caja(672,160);
 	//caja(672,160-64);
 	idPlayer = player_gravity();
-	plataforma(190,190,80);
 
 	//Bucle principal
 	Loop
