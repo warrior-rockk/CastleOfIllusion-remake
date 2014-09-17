@@ -99,6 +99,8 @@
 #define ON_STAIRS_STATE			11
 #define MOVE_ON_STAIRS_STATE 	12
 #define BREAK_FALL_STATE		13
+#define ATACK_STATE				14
+#define BREAK_ATACK_STATE		15
 
 //Constantes del motor
 const

@@ -30,4 +30,7 @@ if (clockCounter <> 0)
 		end;
 	end;
 end;
+
+return false;
+
 end;

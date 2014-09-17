@@ -19,6 +19,7 @@ byte  onStairs;				//Flag de en escaleras
 byte  crouched;				//Flag de agachado
 byte  on45Slope;			//Flag en pendiente 45 grados
 byte  on135Slope;			//Flag en pendiente 135 grados
+byte  atacking;             //Flag de atacando
 float velMaxX;				//Velocidad Maxima Horizontal
 float accelX;				//Aceleracion Maxima Horizontal
 float accelY;				//Aceleracion Maxima Vertical
@@ -90,6 +91,12 @@ BEGIN
 				grounded = false;
 				vY = -accelY;
 				onStairs = false;
+			end;
+		end;
+		
+		if (key(CKBT2)) 
+			if (jumping)
+				atacking = true;
 			end;
 		end;
 		
@@ -300,6 +307,7 @@ BEGIN
 		if (grounded)
 			vY = 0;
 			jumping = false;
+			atacking = false;
 		end;
 		
 		fX += vX;
@@ -310,9 +318,24 @@ BEGIN
 		
 				
 		//CONTROL ESTADO GRAFICO		
-		if (abs(vX) < 0.1 && abs(vY) < 0.1)
-			state = IDLE_STATE;
+		
+		if (!atacking && state == ATACK_STATE)
+			state = BREAK_ATACK_STATE;
 		end;
+		if (state <> BREAK_ATACK_STATE)
+			if (abs(vX) < 0.1 && abs(vY) < 0.1)
+				state = IDLE_STATE;
+			end;
+			if ( abs(vX) > 0.1 && !key(CKRIGHT) && !key(CKLEFT) &&
+		    !on135Slope && !on45Slope)
+				if (state == FALL_STATE || state == BREAK_FALL_STATE || state == JUMP_STATE)
+					state = BREAK_FALL_STATE;
+				else
+					state = BREAK_STATE;
+				end;
+			end;
+		end;
+		
 		if (key(CKLEFT))
 			state = MOVE_STATE;
 			//miramos hacia la izquierda
@@ -323,14 +346,7 @@ BEGIN
 			//miramos hacia la derecha
 			flags &=~ B_HMIRROR;
 		end;
-		if ( abs(vX) > 0.1 && !key(CKRIGHT) && !key(CKLEFT) &&
-		    !on135Slope && !on45Slope)
-			if (state == FALL_STATE || state == BREAK_FALL_STATE || state == JUMP_STATE)
-				state = BREAK_FALL_STATE;
-			else
-				state = BREAK_STATE;
-			end;
-		end;
+		
 		if (!grounded && !jumping)
 			state = FALL_STATE;
 		end;
@@ -345,6 +361,9 @@ BEGIN
 		end;
 		if (onStairs && (key(CKUP) || key(CKDOWN)) )
 			state = MOVE_ON_STAIRS_STATE;
+		end;
+		if (atacking)
+			state = ATACK_STATE;
 		end;
 		
 		//gestion del estado
@@ -399,18 +418,26 @@ BEGIN
 			case BREAK_FALL_STATE:
 				WGE_Animate(12,12,1);
 			end;
+			case BREAK_ATACK_STATE:
+				if (WGE_Animate(14,15,10))
+					state = IDLE_STATE;
+				end;
+			end;
 			case ON_STAIRS_STATE:
 				WGE_Animate(18,18,1);
 			end
 			case MOVE_ON_STAIRS_STATE:
 				WGE_Animate(19,20,8);
 			end
+			case ATACK_STATE:
+				WGE_Animate(13,13,1);
+			end
 			default:
 				WGE_Animate(1,2,40);
 			end;
 		end;
 		
-		
+		log(state);
 		frame;
 	
 	end;
