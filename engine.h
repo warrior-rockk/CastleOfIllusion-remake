@@ -8,7 +8,7 @@
 
 //Defines del engine
 #define WGE_ENGINE							//Utilizando WGE engine
-#define bit_cmp(a,b) 	( (a & b) == b )	//Funcion comparar bit
+#define isBitSet(a,b) 	( (a & b) == b )	//Funcion comparar bit
 
 //Teclas 
 #define	CKUP 	  _UP 
@@ -166,7 +166,7 @@ const
 	//Personaje
 	cPlayerAncho			= 16;			//Ancho del jugador
 	cPlayerAlto				= 32;			//Alto del jugador
-	cPlayerAltoCrouch		= 16;			//Alto del jugador agachado
+	cPlayerAltoCrouch		= 22;			//Alto del jugador agachado
 End;
 
 //Data Types

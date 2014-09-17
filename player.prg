@@ -17,6 +17,8 @@ byte  jumping,				//Flag salto
 byte  grounded; 			//Flag en suelo
 byte  onStairs;				//Flag de en escaleras
 byte  crouched;				//Flag de agachado
+byte  on45Slope;			//Flag en pendiente 45 grados
+byte  on135Slope;			//Flag en pendiente 135 grados
 float velMaxX;				//Velocidad Maxima Horizontal
 float accelX;				//Aceleracion Maxima Horizontal
 float accelY;				//Aceleracion Maxima Vertical
@@ -158,33 +160,38 @@ BEGIN
 			vY += gravity;
 		end;
 		
-		//aceleracion rampas
+		//Cambio velocidades y aceleracion en rampas
 		if (cSlopesEnabled)
+			
+			//Control Rampas
+			on135Slope = getTileCode(id,DOWN_L_POINT) == SLOPE_135 || getTileCode(id,CENTER_DOWN_POINT) == SLOPE_135;
+			on45Slope  = getTileCode(id,DOWN_R_POINT) == SLOPE_45  || getTileCode(id,CENTER_DOWN_POINT) == SLOPE_45;
+			
 			//si estoy en una rampa de 45 grados
-			if (getTileCode(id,CENTER_DOWN_POINT) == SLOPE_45)
+			if (on45Slope)
 				//Subiendola, cambio consignas velocidades
-				if (key(CKRIGHT))	
+				if (!isBitSet(flags,B_HMIRROR))	
 					velMaxX = cPlayerVelMaxXSlopeUp;
 					accelx 	= cPlayerAccelXSlopeUp;
 					if (vX > velMaxX)
 						vX -= cPlayerDecelXSlopeUp;
 					end;
 				//Bajandola, cambio consignas velocidades
-				elseif (key(CKLEFT))
+				elseif (isBitSet(flags,B_HMIRROR))
 					velMaxX = cPlayerVelMaxXSlopeDown;
 					accelx 	= cPlayerAccelXSlopeDown;
 				end;
 			//si estoy en una rampa de 135 grados
-			elseif (getTileCode(id,CENTER_DOWN_POINT) == SLOPE_135)
+			elseif (on135Slope)
 				//Subiendola, cambio consignas velocidades
-				if (key(CKLEFT))	
+				if (isBitSet(flags,B_HMIRROR))	
 					velMaxX = cPlayerVelMaxXSlopeUp;
 					accelx 	= cPlayerAccelXSlopeUp;
 					if (vX < -velMaxX)
 						vX += cPlayerDecelXSlopeUp;
 					end;
 				//Bajandola, cambio consignas velocidades
-				elseif (key(CKRIGHT))
+				elseif (!isBitSet(flags,B_HMIRROR))
 					velMaxX = cPlayerVelMaxXSlopeDown;
 					accelx  = cPlayerAccelXSlopeDown;
 				end;
@@ -302,9 +309,7 @@ BEGIN
 		
 		
 				
-		//CONTROL ESTADO GRAFICO
-		
-		
+		//CONTROL ESTADO GRAFICO		
 		if (abs(vX) < 0.1 && abs(vY) < 0.1)
 			state = IDLE_STATE;
 		end;
@@ -344,7 +349,15 @@ BEGIN
 		//gestion del estado
 		switch (state)
 			case IDLE_STATE:
-				WGE_Animate(1,2,40);
+				if ((on45Slope && !isBitSet(flags,B_HMIRROR)) ||
+				    (on135Slope && isBitSet(flags,B_HMIRROR)) )
+					WGE_Animate(45,46,40);
+				elseif ( (on45Slope && isBitSet(flags,B_HMIRROR)) ||
+						(on135Slope && !isBitSet(flags,B_HMIRROR)) )
+					WGE_Animate(37,38,40);
+				else
+					WGE_Animate(1,2,40);
+				end;
 			end;
 			case MOVE_STATE:
 				WGE_Animate(3,8,4);
@@ -378,6 +391,7 @@ BEGIN
 				WGE_Animate(1,2,40);
 			end;
 		end;
+		
 		
 		frame;
 	

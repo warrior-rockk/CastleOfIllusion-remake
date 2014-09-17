@@ -7,6 +7,8 @@
 // ========================================================================
 
 //Tareas de inicializacion del engine
+//TODO: el mapa que esta en la posicion de mapStairs, se borra¿¿¿
+//¿es por culpa de tener id 0 el sistema y el primer fpg?
 process WGE_Init()
 private
 	byte actDebugMode = 0;					//Modo debug activado
@@ -22,14 +24,14 @@ begin
 	drawing_color(300);
 	draw_box(0,0,cTileSize,cTileSize);
 	
+	mapStairs = map_new(cTileSize,cTileSize,8);
+	draw_stairs(mapStairs);
+	
 	mapTriangle135 = map_new(cTileSize,cTileSize,8);
 	draw_triangle(mapTriangle135,135);
 	
 	mapTriangle45 = map_new(cTileSize,cTileSize,8);
 	draw_triangle(mapTriangle45,45);
-	
-	mapStairs = map_new(cTileSize,cTileSize,8);
-	draw_stairs(mapStairs);
 	
 	mapSolidOnFall = map_new(cTileSize,cTileSize,8);
 	draw_SolidOnFall(mapSolidOnFall);
@@ -341,9 +343,9 @@ Begin
 				WGE_Quit();
 			else
 				//decodificamos los datos del codigo de tile a propiedades
-				tileMap[i][j].tileShape = bit_cmp(mapTileCode,BIT_TILE_SHAPE);
-				tileMap[i][j].tileProf 	= bit_cmp(mapTileCode,BIT_TILE_DELANTE);
-				tileMap[i][j].tileAlpha = bit_cmp(mapTileCode,BIT_TILE_ALPHA);
+				tileMap[i][j].tileShape = isBitSet(mapTileCode,BIT_TILE_SHAPE);
+				tileMap[i][j].tileProf 	= isBitSet(mapTileCode,BIT_TILE_DELANTE);
+				tileMap[i][j].tileAlpha = isBitSet(mapTileCode,BIT_TILE_ALPHA);
 				tileMap[i][j].tileCode 	= mapTileCode & 31;	
 
 				//Comprobamos si algun tile usa alpha
