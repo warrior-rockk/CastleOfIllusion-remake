@@ -323,7 +323,8 @@ BEGIN
 			//miramos hacia la derecha
 			flags &=~ B_HMIRROR;
 		end;
-		if ( abs(vX) > 0.1 && not key(CKRIGHT) && not key(CKLEFT))
+		if ( abs(vX) > 0.1 && !key(CKRIGHT) && !key(CKLEFT) &&
+		    !on135Slope && !on45Slope)
 			if (state == FALL_STATE || state == BREAK_FALL_STATE || state == JUMP_STATE)
 				state = BREAK_FALL_STATE;
 			else
@@ -360,7 +361,16 @@ BEGIN
 				end;
 			end;
 			case MOVE_STATE:
-				WGE_Animate(3,8,4);
+				if ((on45Slope && !isBitSet(flags,B_HMIRROR)) ||
+				    (on135Slope && isBitSet(flags,B_HMIRROR)) )
+					WGE_Animate(39,44,4);
+				elseif ( (on45Slope && isBitSet(flags,B_HMIRROR)) ||
+						(on135Slope && !isBitSet(flags,B_HMIRROR)) )
+					WGE_Animate(47,52,4);
+				else
+					WGE_Animate(3,8,4);
+				end;
+				
 			end;
 			case FALL_STATE:
 				WGE_Animate(11,11,1);
@@ -373,7 +383,15 @@ BEGIN
 				end;
 			end;
 			case CROUCH_STATE:
-				WGE_Animate(16,17,40);
+				if ((on45Slope && !isBitSet(flags,B_HMIRROR)) ||
+				    (on135Slope && isBitSet(flags,B_HMIRROR)) )
+					WGE_Animate(53,54,20);
+				elseif ( (on45Slope && isBitSet(flags,B_HMIRROR)) ||
+						(on135Slope && !isBitSet(flags,B_HMIRROR)) )
+					WGE_Animate(55,56,40);
+				else
+					WGE_Animate(16,17,40);
+				end;
 			end;
 			case BREAK_STATE:
 				WGE_Animate(9,9,1);
