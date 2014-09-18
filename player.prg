@@ -171,8 +171,12 @@ BEGIN
 		if (cSlopesEnabled)
 			
 			//Control Rampas
-			on135Slope = getTileCode(id,DOWN_L_POINT) == SLOPE_135 || getTileCode(id,CENTER_DOWN_POINT) == SLOPE_135;
-			on45Slope  = getTileCode(id,DOWN_R_POINT) == SLOPE_45  || getTileCode(id,CENTER_DOWN_POINT) == SLOPE_45;
+			on135Slope = getTileCode(id,LEFT_DOWN_POINT) == SLOPE_135 || 
+						 getTileCode(id,DOWN_L_POINT) == SLOPE_135    || 
+						 getTileCode(id,CENTER_DOWN_POINT) == SLOPE_135;
+			on45Slope  = getTileCode(id,RIGHT_DOWN_POINT) == SLOPE_45 || 
+						 getTileCode(id,DOWN_R_POINT) == SLOPE_45     || 
+						 getTileCode(id,CENTER_DOWN_POINT) == SLOPE_45;
 			
 			//si estoy en una rampa de 45 grados
 			if (on45Slope)
@@ -437,7 +441,6 @@ BEGIN
 			end;
 		end;
 		
-		log(state);
 		frame;
 	
 	end;

@@ -77,6 +77,19 @@ begin
 			maxFPS = 0;
 			minFPS = 0;
 		end;
+
+		//Subida/Bajada de fps
+		If (key(_C_MINUS))
+			log("no");
+			set_fps(fps-10,0);
+			log("Pasamos a "+fps+" FPS");
+			WGE_Wait(20);
+		end;
+		If (key(_C_PLUS))
+			set_fps(fps+10,0);
+			log("Pasamos a "+fps+" FPS");
+			WGE_Wait(20);
+		end;
 		
 		//Tareas de entrada al modo debug
 		if (debugMode && not actDebugMode)
