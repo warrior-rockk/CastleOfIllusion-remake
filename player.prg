@@ -19,7 +19,9 @@ byte  onStairs;				//Flag de en escaleras
 byte  crouched;				//Flag de agachado
 byte  on45Slope;			//Flag en pendiente 45 grados
 byte  on135Slope;			//Flag en pendiente 135 grados
+byte  sloping;              //Resbalando por una pendiente
 byte  atacking;             //Flag de atacando
+byte  canmove;				//Flag de movimiento permitido
 float velMaxX;				//Velocidad Maxima Horizontal
 float accelX;				//Aceleracion Maxima Horizontal
 float accelY;				//Aceleracion Maxima Vertical
@@ -64,104 +66,117 @@ BEGIN
 	fx = x;
 	fy = y;
 	
+	canmove = true;
+	
 	loop
 		
+		
+		
 		//CONTROL MOVIMIENTO		
-		
-		//friccion local
-		grounded ? friction = floorFriction : friction = airFriction;
-		
-		if (key(CKRIGHT)) 
-			if (vX < velMaxX) 
-				vX+=accelx*(1-friction);
-			end;
-			onStairs = false;
-		end;
-		
-		if (key(CKLEFT)) 
-			if (vX > -velMaxX) 
-				vX-=accelx*(1-friction);
-			end;
-			onStairs = false;
-		end;
-		
-		if (key(CKBT1)) 
-			if(!jumping && (grounded || onStairs)) 
-				jumping = true;
-				grounded = false;
-				vY = -accelY;
+		if (canmove)
+			
+			if (key(CKRIGHT)) 
+				if (vX < velMaxX) 
+					vX+=accelx*(1-friction);
+				end;
 				onStairs = false;
 			end;
-		end;
-		
-		if (key(CKBT2)) 
-			if (jumping)
-				atacking = true;
-			end;
-		end;
-		
-		if (key(CKUP))			
-			//si el centro del objeto esta en tile escaleras
-			if (getTileCode(id,CENTER_POINT) == STAIRS || getTileCode(id,CENTER_POINT) == TOP_STAIRS)
-				//quitamos velocidades
-				vY = 0;
-				vX = 0;
-				//centramos el objeto en el tile escalera
-				fx = x+(cTileSize>>1)-(x%cTileSize);
-				//subimos las escaleras
-				fY -= 2;
-				//Establecemos el flag de escalera
-				onStairs = true;
-				//desactivamos flag salto
-				jumping = false;
-			//en caso contrario, si el pie derecho esta en el TOP escalera, sales de ella
-			elseif (getTileCode(id,CENTER_DOWN_POINT) == TOP_STAIRS)
-				//subimos a la plataforma (tile superior a la escalera)
-				fy = (((y/cTileSize)*cTileSize)+cTileSize)-(alto>>1);
-				//Quitamos el flag de escalera				
+			
+			if (key(CKLEFT)) 
+				if (vX > -velMaxX) 
+					vX-=accelx*(1-friction);
+				end;
 				onStairs = false;
-			end;				
-		end;
-		
-		if (key(CKDOWN))
-			//si el centro inferior del objeto esta en tile escaleras
-			if (getTileCode(id,CENTER_DOWN_POINT) == TOP_STAIRS || getTileCode(id,CENTER_DOWN_POINT) == STAIRS)
+			end;
+			
+			if (key(CKBT1)) 
+				if(!jumping && (grounded || onStairs)) 
+					jumping = true;
+					grounded = false;
+					vY = -accelY;
+					onStairs = false;
+				end;
+			end;
+			
+			if (key(CKBT2)) 
+				if (jumping)
+					atacking = true;
+				end;
+			end;
+			
+			if (key(CKUP))			
 				//si el centro del objeto esta en tile escaleras
-				if (getTileCode(id,CENTER_POINT) == TOP_STAIRS || getTileCode(id,CENTER_POINT) == STAIRS)	
+				if (getTileCode(id,CENTER_POINT) == STAIRS || getTileCode(id,CENTER_POINT) == TOP_STAIRS)
+					//quitamos velocidades
+					vY = 0;
+					vX = 0;
 					//centramos el objeto en el tile escalera
 					fx = x+(cTileSize>>1)-(x%cTileSize);
-					//bajamos las escaleras
-					fY += 2;
-				//en caso contrario, estamos en la base de la escalera
-				else
-					//bajamos el objeto a la escalera
-					fy += (alto>>1);
-				end;
-				//quitamos velocidades
-				vY = 0;
-				vX = 0;
-				//Establecemos el flag de escalera
-				onStairs = true;
-				//desactivamos flag salto
-				jumping = false;
-				//desactivamos flag agachado
-				crouched = false;
-			else 
-				//si no escalera, agacharse si esta en suelo
-				crouched = grounded;
-				onStairs = false;
+					//subimos las escaleras
+					fY -= 2;
+					//Establecemos el flag de escalera
+					onStairs = true;
+					//desactivamos flag salto
+					jumping = false;
+				//en caso contrario, si el pie derecho esta en el TOP escalera, sales de ella
+				elseif (getTileCode(id,CENTER_DOWN_POINT) == TOP_STAIRS)
+					//subimos a la plataforma (tile superior a la escalera)
+					fy = (((y/cTileSize)*cTileSize)+cTileSize)-(alto>>1);
+					//Quitamos el flag de escalera				
+					onStairs = false;
+				end;				
 			end;
-		else
-			crouched = false;
-		end;
+			
+			if (key(CKDOWN))
+				//si el centro inferior del objeto esta en tile escaleras
+				if (getTileCode(id,CENTER_DOWN_POINT) == TOP_STAIRS || getTileCode(id,CENTER_DOWN_POINT) == STAIRS)
+					//si el centro del objeto esta en tile escaleras
+					if (getTileCode(id,CENTER_POINT) == TOP_STAIRS || getTileCode(id,CENTER_POINT) == STAIRS)	
+						//centramos el objeto en el tile escalera
+						fx = x+(cTileSize>>1)-(x%cTileSize);
+						//bajamos las escaleras
+						fY += 2;
+					//en caso contrario, estamos en la base de la escalera
+					else
+						//bajamos el objeto a la escalera
+						fy += (alto>>1);
+					end;
+					//quitamos velocidades
+					vY = 0;
+					vX = 0;
+					//Establecemos el flag de escalera
+					onStairs = true;
+					//desactivamos flag salto
+					jumping = false;
+					//desactivamos flag agachado
+					crouched = false;
+				else 
+					//si no escalera, agacharse si esta en suelo
+					crouched = grounded;
+					onStairs = false;
+				end;
+			else
+				crouched = false;
+			end;
+		
+		end; //end del canmove
 		
 		//FISICAS
+		
+		//valor friccion local
+		if (sloping)
+			friction = 1;
+		elseif (grounded)
+			friction = floorFriction;
+		else
+			friction = airFriction;
+		end;
 		
 		//friccion
 		if (!key(CKLEFT) && !key(CKRIGHT))
 			vX *= friction;
 		end;
-		
+						
 		//gravedad
 		if (!onStairs)
 			vY += gravity;
@@ -193,7 +208,7 @@ BEGIN
 					accelx 	= cPlayerAccelXSlopeDown;
 				end;
 			//si estoy en una rampa de 135 grados
-			elseif (on135Slope)
+			elseif (on135Slope) 
 				//Subiendola, cambio consignas velocidades
 				if (isBitSet(flags,B_HMIRROR))	
 					velMaxX = cPlayerVelMaxXSlopeUp;
@@ -203,13 +218,24 @@ BEGIN
 					end;
 				//Bajandola, cambio consignas velocidades
 				elseif (!isBitSet(flags,B_HMIRROR))
-					velMaxX = cPlayerVelMaxXSlopeDown;
-					accelx  = cPlayerAccelXSlopeDown;
+					if ((atacking && key(CKRIGHT)) || sloping)
+						sloping = true;
+						canmove = false;
+						friction = 1;
+						velMaxX = cPlayerVelMaxXSloping;
+						accelx  = cPlayerAccelXSloping;
+						vX+=accelx;
+					else
+						velMaxX = cPlayerVelMaxXSlopeDown;
+						accelx  = cPlayerAccelXSlopeDown;
+					end;
 				end;
 			//si no, restauro consignas velocidades
 			else
 				velMaxX = cPlayerVelMaxX;
 				accelX 	= cPlayerAccelX;
+				sloping = false;
+				canmove = true;
 			end;
 		end;
 		
@@ -319,23 +345,26 @@ BEGIN
 		
 		positionToInt(id);
 		
-		
-				
 		//CONTROL ESTADO GRAFICO		
 		
 		if (!atacking && state == ATACK_STATE)
 			state = BREAK_ATACK_STATE;
 		end;
-		if (state <> BREAK_ATACK_STATE)
+		if (state <> BREAK_ATACK_STATE && state <> BREAK_SLOPING_STATE)
 			if (abs(vX) < 0.1 && abs(vY) < 0.1)
 				state = IDLE_STATE;
 			end;
-			if ( abs(vX) > 0.1 && !key(CKRIGHT) && !key(CKLEFT) &&
-		    !on135Slope && !on45Slope)
-				if (state == FALL_STATE || state == BREAK_FALL_STATE || state == JUMP_STATE)
-					state = BREAK_FALL_STATE;
+			if ( abs(vX) > 0.1 && !key(CKRIGHT) && !key(CKLEFT)) 
+				if (!on135Slope && !on45Slope)
+					if (state == FALL_STATE || state == BREAK_FALL_STATE || state == JUMP_STATE)
+						state = BREAK_FALL_STATE;
+					elseif (state == SLOPING_STATE)
+						state = BREAK_SLOPING_STATE;
+					else
+						state = BREAK_STATE;
+					end;
 				else
-					state = BREAK_STATE;
+					state = MOVE_STATE;
 				end;
 			end;
 		end;
@@ -369,6 +398,9 @@ BEGIN
 		if (atacking)
 			state = ATACK_STATE;
 		end;
+		if (sloping)
+			state = SLOPING_STATE;
+		end;
 		
 		//gestion del estado
 		switch (state)
@@ -392,8 +424,7 @@ BEGIN
 					WGE_Animate(47,52,4);
 				else
 					WGE_Animate(3,8,4);
-				end;
-				
+				end;			
 			end;
 			case FALL_STATE:
 				WGE_Animate(11,11,1);
@@ -427,6 +458,15 @@ BEGIN
 					state = IDLE_STATE;
 				end;
 			end;
+			case BREAK_SLOPING_STATE:
+				if (abs(vX) < 0.5)
+					if (WGE_Animate(14,15,10))
+						state = IDLE_STATE;
+					end;
+				else
+					WGE_Animate(13,13,1);
+				end;
+			end;
 			case ON_STAIRS_STATE:
 				WGE_Animate(18,18,1);
 			end
@@ -434,6 +474,9 @@ BEGIN
 				WGE_Animate(19,20,8);
 			end
 			case ATACK_STATE:
+				WGE_Animate(13,13,1);
+			end
+			case SLOPING_STATE:
 				WGE_Animate(13,13,1);
 			end
 			default:

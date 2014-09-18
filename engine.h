@@ -101,6 +101,8 @@
 #define BREAK_FALL_STATE		13
 #define ATACK_STATE				14
 #define BREAK_ATACK_STATE		15
+#define SLOPING_STATE			16
+#define BREAK_SLOPING_STATE		17
 
 //Constantes del motor
 const
@@ -158,12 +160,14 @@ const
 	//Fisicas
 	cPlayerVelMaxX			= 3.4;			//Velocidad Maxima Player
 	cPlayerVelMaxXSlopeUp	= 2;            //Velocidad Maxima Player subiendo rampa
-	cPlayerVelMaxXSlopeDown = 5;            //Velocidad Maxima Player bajando rampa
+	cPlayerVelMaxXSlopeDown = 4;            //Velocidad Maxima Player bajando rampa
+	cPlayerVelMaxXSloping	= 6;            //Velocidad Maxima Player resbalando por rampa
 	cPlayerAccelX           = 1.2;          //Aceleracion maxima Player
 	cPlayerAccelXSlopeUp    = 0.2;          //Aceleracion maxima Player subiendo rampa
-	cPlayerAccelXSlopeDown  = 1.4;          //Aceleracion maxima Player bajando rampa
+	cPlayerAccelXSlopeDown  = 1.2;          //Aceleracion maxima Player bajando rampa
+	cPlayerAccelXSloping	= 0.15;          //Aceleracion maxima Player resbalando por rampa
 	cPlayerDecelXSlopeUp    = 0.1;			//Factor deceleracion al subir rampa
-	cPlayerAccelY			= 6;			//Aceleracion Player saltando
+	cPlayerAccelY			= 6;			//Aceleracion Player salto
 	
 	//Personaje
 	cPlayerAncho			= 16;			//Ancho del jugador
