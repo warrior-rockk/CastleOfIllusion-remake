@@ -204,8 +204,18 @@ BEGIN
 					end;
 				//Bajandola, cambio consignas velocidades
 				elseif (isBitSet(flags,B_HMIRROR))
-					velMaxX = cPlayerVelMaxXSlopeDown;
-					accelx 	= cPlayerAccelXSlopeDown;
+					//si esta atacando,resbala por la rampa
+					if ((atacking && key(CKLEFT)) || sloping)
+						sloping = true;
+						canmove = false;
+						friction = 1;
+						velMaxX = cPlayerVelMaxXSloping;
+						accelx  = cPlayerAccelXSloping;
+						vX-=accelx;
+					else
+						velMaxX = cPlayerVelMaxXSlopeDown;
+						accelx 	= cPlayerAccelXSlopeDown;
+					end;
 				end;
 			//si estoy en una rampa de 135 grados
 			elseif (on135Slope) 
@@ -218,6 +228,7 @@ BEGIN
 					end;
 				//Bajandola, cambio consignas velocidades
 				elseif (!isBitSet(flags,B_HMIRROR))
+					//si esta atacando,resbala por la rampa
 					if ((atacking && key(CKRIGHT)) || sloping)
 						sloping = true;
 						canmove = false;
