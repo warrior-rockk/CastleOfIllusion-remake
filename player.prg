@@ -160,11 +160,11 @@ BEGIN
 			end;
 		
 		end; //end del canmove
-		
+			
 		//FISICAS
 		
 		//valor friccion local
-		if (sloping)
+		if (sloping && (on45Slope || on135Slope))
 			friction = 1;
 		elseif (grounded)
 			friction = floorFriction;
@@ -235,7 +235,6 @@ BEGIN
 				velMaxX = cPlayerVelMaxX;
 				accelX 	= cPlayerAccelX;
 				sloping = false;
-				canmove = true;
 			end;
 		end;
 		
@@ -266,6 +265,7 @@ BEGIN
 		
 		//condiciones iniciales pre-colision
 		grounded = false;
+		canmove = true;
 		idPlatform = 0;
 		priority = cPlayerPrior;		
 		
@@ -346,7 +346,6 @@ BEGIN
 		positionToInt(id);
 		
 		//CONTROL ESTADO GRAFICO		
-		
 		if (!atacking && state == ATACK_STATE)
 			state = BREAK_ATACK_STATE;
 		end;
@@ -477,7 +476,13 @@ BEGIN
 				WGE_Animate(13,13,1);
 			end
 			case SLOPING_STATE:
-				WGE_Animate(13,13,1);
+				if (abs(vX) < 0.5)
+					if (WGE_Animate(14,15,10))
+						state = IDLE_STATE;
+					end;
+				else
+					WGE_Animate(13,13,1);
+				end;
 			end
 			default:
 				WGE_Animate(1,2,40);
