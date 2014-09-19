@@ -484,112 +484,111 @@ BEGIN
 			case IDLE_STATE:
 				if ((on45Slope && !isBitSet(flags,B_HMIRROR)) ||
 				    (on135Slope && isBitSet(flags,B_HMIRROR)) )
-					WGE_Animate(45,46,40);
+					WGE_Animate(45,46,40,ANIM_LOOP);
 				elseif ( (on45Slope && isBitSet(flags,B_HMIRROR)) ||
 						(on135Slope && !isBitSet(flags,B_HMIRROR)) )
-					WGE_Animate(37,38,40);
+					WGE_Animate(37,38,40,ANIM_LOOP);
 				elseif (picked)
-					WGE_Animate(22,22,40);
+					WGE_Animate(22,22,40,ANIM_LOOP);
 				else
-					WGE_Animate(1,2,40);
+					WGE_Animate(1,2,40,ANIM_LOOP);
 				end;
 			end;
 			case MOVE_STATE:
 				if ((on45Slope && !isBitSet(flags,B_HMIRROR)) ||
 				    (on135Slope && isBitSet(flags,B_HMIRROR)) )
-					WGE_Animate(39,44,4);
+					WGE_Animate(39,44,4,ANIM_LOOP);
 				elseif ( (on45Slope && isBitSet(flags,B_HMIRROR)) ||
 						(on135Slope && !isBitSet(flags,B_HMIRROR)) )
-					WGE_Animate(47,52,4);
+					WGE_Animate(47,52,4,ANIM_LOOP);
 				elseif (picked)
-					WGE_Animate(27,29,4);
+					WGE_Animate(27,29,4,ANIM_LOOP);
 				else
-					WGE_Animate(3,8,4);
+					WGE_Animate(3,8,4,ANIM_LOOP);
 				end;			
 			end;
 			case FALL_STATE:
 				if (picked)
-						WGE_Animate(31,31,1);
+						WGE_Animate(31,31,1,ANIM_LOOP);
 				else
-					WGE_Animate(11,11,1);
+					WGE_Animate(11,11,1,ANIM_LOOP);
 				end;
 			end;
 			case JUMP_STATE:
 				if (vY < 0)
 					if (picked)
-						WGE_Animate(30,30,1);
+						WGE_Animate(30,30,1,ANIM_LOOP);
 					else
-						WGE_Animate(10,10,1);	
+						WGE_Animate(10,10,1,ANIM_LOOP);	
 					end;
 				else
 					if (picked)
-						WGE_Animate(31,31,1);
+						WGE_Animate(31,31,1,ANIM_LOOP);
 					else
-						WGE_Animate(11,11,1);
+						WGE_Animate(11,11,1,ANIM_LOOP);
 					end;
 				end;
 			end;
 			case CROUCH_STATE:
 				if ((on45Slope && !isBitSet(flags,B_HMIRROR)) ||
 				    (on135Slope && isBitSet(flags,B_HMIRROR)) )
-					WGE_Animate(53,54,20);
+					WGE_Animate(53,54,20,ANIM_LOOP);
 				elseif ( (on45Slope && isBitSet(flags,B_HMIRROR)) ||
 						(on135Slope && !isBitSet(flags,B_HMIRROR)) )
-					WGE_Animate(55,56,40);
+					WGE_Animate(55,56,40,ANIM_LOOP);
 				else
-					WGE_Animate(16,17,40);
+					WGE_Animate(16,17,40,ANIM_LOOP);
 				end;
 			end;
 			case BREAK_STATE:
-				WGE_Animate(9,9,1);
+				WGE_Animate(9,9,1,ANIM_LOOP);
 			end;
 			case BREAK_FALL_STATE:
-				WGE_Animate(12,12,1);
+				WGE_Animate(12,12,1,ANIM_LOOP);
 			end;
 			case BREAK_ATACK_STATE:
-				if (WGE_Animate(14,15,10))
+				if (WGE_Animate(14,15,10,ANIM_LOOP))
 					state = IDLE_STATE;
 				end;
 			end;
 			case BREAK_SLOPING_STATE:
 				if (abs(vX) < 0.5)
-					if (WGE_Animate(14,15,10))
+					if (WGE_Animate(14,15,10,ANIM_LOOP))
 						state = IDLE_STATE;
 					end;
 				else
-					WGE_Animate(13,13,1);
+					WGE_Animate(13,13,1,ANIM_LOOP);
 				end;
 			end;
 			case ON_STAIRS_STATE:
-				WGE_Animate(18,18,1);
+				WGE_Animate(18,18,1,ANIM_LOOP);
 			end
 			case MOVE_ON_STAIRS_STATE:
-				WGE_Animate(19,20,8);
+				WGE_Animate(19,20,8,ANIM_LOOP);
 			end
 			case ATACK_STATE:
-				WGE_Animate(13,13,1);
+				WGE_Animate(13,13,1,ANIM_LOOP);
 			end
 			case SLOPING_STATE:
 				if (abs(vX) < 0.5)
-					if (WGE_Animate(14,15,10))
+					if (WGE_Animate(14,15,10,ANIM_LOOP))
 						state = IDLE_STATE;
 					end;
 				else
-					WGE_Animate(13,13,1);
+					WGE_Animate(13,13,1,ANIM_LOOP);
 				end;
 			end
 			case PICKING_STATE:
-				WGE_Animate(25,26,40);
+				WGE_Animate(25,26,40,ANIM_LOOP);
 			end;
 			case PICKED_STATE:
-				if (WGE_Animate(21,22,10))
-					graph = 22; //para que no repita el primer frame
+				if (WGE_Animate(21,22,10,ANIM_ONCE))
 					state = IDLE_STATE;
 					picking = false;
 				end;
 			end;
 			default:
-				WGE_Animate(1,2,40);
+				WGE_Animate(1,2,40,ANIM_LOOP);
 			end;
 		end;
 		

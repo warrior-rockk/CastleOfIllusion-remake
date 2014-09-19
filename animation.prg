@@ -10,7 +10,7 @@
 //su grafico en cada llamada a la velocidad especificada
 //Devuelve true cuando vuelve a empezar la animacion
 //animationSpeed en decimas de segundo
-function int WGE_Animate(int startFrame, int endFrame, int animationSpeed)
+function int WGE_Animate(int startFrame, int endFrame, int animationSpeed,int mode)
 begin
 //si toca animar en el frame correspondiente
 if (clockCounter <> 0)
@@ -20,7 +20,9 @@ if (clockCounter <> 0)
 			father.graph++;
 		else 
 			//si hemos llegado al final, pasamos al inicio
-			father.graph = startFrame; 
+			if (mode == ANIM_LOOP)
+				father.graph = startFrame; 
+			end;
 			return true;
 		end;
 	else

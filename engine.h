@@ -27,6 +27,10 @@
 #define HORIZONTALAXIS		1					//Eje Horizontal
 #define VERTICALAXIS		2					//Eje Vertical
 
+//Modos de la funcion animacion
+#define ANIM_LOOP	0
+#define ANIM_ONCE   1
+
 //Direccion colision
 #define NOCOL		0
 #define COLUP		1
