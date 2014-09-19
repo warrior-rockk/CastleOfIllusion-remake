@@ -109,6 +109,7 @@ BEGIN
 				if (picking && !picked)
 					picked = true;
 					idObjectPicked = memObjectforPickID;
+					pickedObject(idObjectPicked.file,idObjectPicked.graph,idObjectPicked.ancho,idObjectPicked.alto);
 					memObjectforPickID = 0;
 				end;
 			end;
@@ -582,7 +583,7 @@ BEGIN
 				WGE_Animate(25,26,40,ANIM_LOOP);
 			end;
 			case PICKED_STATE:
-				if (WGE_Animate(21,22,10,ANIM_ONCE))
+				if (WGE_Animate(21,22,20,ANIM_ONCE))
 					state = IDLE_STATE;
 					picking = false;
 				end;

@@ -305,3 +305,32 @@ begin
 	end;
 	
 end;
+
+//Objeto que ha cogido el personaje y lleva encima (objeto pasivo)
+process pickedObject(int file,int graph,int ancho,int alto);
+private
+
+begin
+	region = cGameRegion;
+	ctype = c_scroll;
+	z = cZObject;
+	
+	//modo debug sin graficos
+	if (file<0)
+		graph = map_new(ancho,alto,8,0);
+		map_clear(0,graph,rand(200,300));
+	end;
+	
+	loop
+		if (father.state == PICKED_STATE)
+			x = father.x+16;
+			y = father.y;
+		else
+			x = father.x+16;
+			y = father.y-16;
+		end;
+		
+		frame;
+	end;
+
+end;
