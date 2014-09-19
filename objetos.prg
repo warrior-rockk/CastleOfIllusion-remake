@@ -258,7 +258,9 @@ begin
 		//comportamiento caja
 		switch (state)
 			case IDLE_STATE:
-				;
+				if (isBitSet(props,PICKABLE) && idObjectPicked == id)
+					signal(id,s_kill);
+				end;
 			end;
 			case MOVE_STATE:
 								

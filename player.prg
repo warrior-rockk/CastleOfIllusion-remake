@@ -31,6 +31,7 @@ float friction;				//Friccion local
 int	  dir;					//Direccion de la colision
 int   colID;				//Proceso con el que se colisiona
 int   objectforPickID;		//Proceso de tipo objeto que se colisiona lateralmente
+int   memObjectforPickID;   //Memoria de objeto que se colisiona
 int   pickingCounter; 		//Contador para recojer objeto
 struct tiles_comprobar[8]
 	int posx;
@@ -105,8 +106,10 @@ BEGIN
 				if (jumping && !picked)
 					atacking = true;
 				end;
-				if (picking)
+				if (picking && !picked)
 					picked = true;
+					idObjectPicked = memObjectforPickID;
+					memObjectforPickID = 0;
 				end;
 			end;
 			
@@ -387,6 +390,7 @@ BEGIN
 			if (pickingCounter >= cPickingTime)
 				//activamos el picking
 				picking = true;
+				memObjectforPickID = objectForPickID;
 			else
 				//cronometro
 				if (clockTick)
@@ -400,6 +404,7 @@ BEGIN
 		if (picking && (vX <> 0 || jumping || crouched))
 			//si me muevo o salto o me agacho,salgo del picking
 			picking = false;
+			memObjectforPickID = 0;
 		end;
 		
 		//CONTROL ESTADO GRAFICO		

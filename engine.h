@@ -253,6 +253,7 @@ Global
 	//jugador
 	int idPlayer;				//Identificador del proceso del jugador
 	int idPlatform;				//Identificador de plataforma sobre la que esta el player
+	int idObjectPicked;			//Identificador del objeto cogido
 	//Fisicas
 	float gravity 			= 0.3;		//Aceleracion gravedad
 	float floorFriction 	= 0.9;		//Friccion suelo
