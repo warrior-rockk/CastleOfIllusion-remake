@@ -583,6 +583,7 @@ BEGIN
 			end;
 			case PICKED_STATE:
 				if (WGE_Animate(21,22,10))
+					graph = 22; //para que no repita el primer frame
 					state = IDLE_STATE;
 					picking = false;
 				end;
