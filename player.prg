@@ -553,7 +553,7 @@ BEGIN
 			end;
 			case BREAK_SLOPING_STATE:
 				if (abs(vX) < 0.5)
-					if (WGE_Animate(14,15,10,ANIM_LOOP))
+					if (WGE_Animate(14,15,10,ANIM_ONCE))
 						state = IDLE_STATE;
 					end;
 				else
@@ -571,7 +571,7 @@ BEGIN
 			end
 			case SLOPING_STATE:
 				if (abs(vX) < 0.5)
-					if (WGE_Animate(14,15,10,ANIM_LOOP))
+					if (WGE_Animate(14,15,10,ANIM_ONCE))
 						state = IDLE_STATE;
 					end;
 				else
