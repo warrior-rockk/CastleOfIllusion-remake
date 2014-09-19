@@ -21,6 +21,8 @@ byte  on45Slope;			//Flag en pendiente 45 grados
 byte  on135Slope;			//Flag en pendiente 135 grados
 byte  sloping;              //Resbalando por una pendiente
 byte  atacking;             //Flag de atacando
+byte  picking;				//Flag de recogiendo
+byte  picked;				//Flag de recogido
 byte  canmove;				//Flag de movimiento permitido
 float velMaxX;				//Velocidad Maxima Horizontal
 float accelX;				//Aceleracion Maxima Horizontal
@@ -28,7 +30,8 @@ float accelY;				//Aceleracion Maxima Vertical
 float friction;				//Friccion local
 int	  dir;					//Direccion de la colision
 int   colID;				//Proceso con el que se colisiona
-
+int   objectforPickID;		//Proceso de tipo objeto que se colisiona lateralmente
+int   pickingCounter; 		//Contador para recojer objeto
 struct tiles_comprobar[8]
 	int posx;
 	int posy;
@@ -99,61 +102,70 @@ BEGIN
 			end;
 			
 			if (key(CKBT2)) 
-				if (jumping)
+				if (jumping && !picked)
 					atacking = true;
+				end;
+				if (picking)
+					picked = true;
 				end;
 			end;
 			
 			if (key(CKUP))			
-				//si el centro del objeto esta en tile escaleras
-				if (getTileCode(id,CENTER_POINT) == STAIRS || getTileCode(id,CENTER_POINT) == TOP_STAIRS)
-					//quitamos velocidades
-					vY = 0;
-					vX = 0;
-					//centramos el objeto en el tile escalera
-					fx = x+(cTileSize>>1)-(x%cTileSize);
-					//subimos las escaleras
-					fY -= 2;
-					//Establecemos el flag de escalera
-					onStairs = true;
-					//desactivamos flag salto
-					jumping = false;
-				//en caso contrario, si el pie derecho esta en el TOP escalera, sales de ella
-				elseif (getTileCode(id,CENTER_DOWN_POINT) == TOP_STAIRS)
-					//subimos a la plataforma (tile superior a la escalera)
-					fy = (((y/cTileSize)*cTileSize)+cTileSize)-(alto>>1);
-					//Quitamos el flag de escalera				
-					onStairs = false;
-				end;				
+				//si objeto cogido, no podemos ni agacharnos y bajar escaleras
+				if (!picked)
+					//si el centro del objeto esta en tile escaleras
+					if (getTileCode(id,CENTER_POINT) == STAIRS || getTileCode(id,CENTER_POINT) == TOP_STAIRS)
+						//quitamos velocidades
+						vY = 0;
+						vX = 0;
+						//centramos el objeto en el tile escalera
+						fx = x+(cTileSize>>1)-(x%cTileSize);
+						//subimos las escaleras
+						fY -= 2;
+						//Establecemos el flag de escalera
+						onStairs = true;
+						//desactivamos flag salto
+						jumping = false;
+					//en caso contrario, si el pie derecho esta en el TOP escalera, sales de ella
+					elseif (getTileCode(id,CENTER_DOWN_POINT) == TOP_STAIRS)
+						//subimos a la plataforma (tile superior a la escalera)
+						fy = (((y/cTileSize)*cTileSize)+cTileSize)-(alto>>1);
+						//Quitamos el flag de escalera				
+						onStairs = false;
+					end;				
+				end;
 			end;
 			
 			if (key(CKDOWN))
-				//si el centro inferior del objeto esta en tile escaleras
-				if (getTileCode(id,CENTER_DOWN_POINT) == TOP_STAIRS || getTileCode(id,CENTER_DOWN_POINT) == STAIRS)
-					//si el centro del objeto esta en tile escaleras
-					if (getTileCode(id,CENTER_POINT) == TOP_STAIRS || getTileCode(id,CENTER_POINT) == STAIRS)	
-						//centramos el objeto en el tile escalera
-						fx = x+(cTileSize>>1)-(x%cTileSize);
-						//bajamos las escaleras
-						fY += 2;
-					//en caso contrario, estamos en la base de la escalera
-					else
-						//bajamos el objeto a la escalera
-						fy += (alto>>1);
+				//si objeto cogido, no podemos ni agacharnos y bajar escaleras
+				if (!picked)
+					//si el centro inferior del objeto esta en tile escaleras
+					if (getTileCode(id,CENTER_DOWN_POINT) == TOP_STAIRS || getTileCode(id,CENTER_DOWN_POINT) == STAIRS)
+						//si el centro del objeto esta en tile escaleras
+						if (getTileCode(id,CENTER_POINT) == TOP_STAIRS || getTileCode(id,CENTER_POINT) == STAIRS)	
+							//centramos el objeto en el tile escalera
+							fx = x+(cTileSize>>1)-(x%cTileSize);
+							//bajamos las escaleras
+							fY += 2;
+						//en caso contrario, estamos en la base de la escalera
+						else
+							//bajamos el objeto a la escalera
+							fy += (alto>>1);
+						end;
+						//quitamos velocidades
+						vY = 0;
+						vX = 0;
+						//Establecemos el flag de escalera
+						onStairs = true;
+						//desactivamos flag salto
+						jumping = false;
+						//desactivamos flag agachado
+						crouched = false;
+					else 
+						//si no escalera, agacharse si esta en suelo
+						crouched = grounded;
+						onStairs = false;
 					end;
-					//quitamos velocidades
-					vY = 0;
-					vX = 0;
-					//Establecemos el flag de escalera
-					onStairs = true;
-					//desactivamos flag salto
-					jumping = false;
-					//desactivamos flag agachado
-					crouched = false;
-				else 
-					//si no escalera, agacharse si esta en suelo
-					crouched = grounded;
-					onStairs = false;
 				end;
 			else
 				crouched = false;
@@ -278,6 +290,7 @@ BEGIN
 		grounded = false;
 		canmove = true;
 		idPlatform = 0;
+		objectforPickID = 0;
 		priority = cPlayerPrior;		
 		
 		//Recorremos la lista de puntos a comprobar
@@ -290,6 +303,8 @@ BEGIN
 			applyDirCollision(ID,dir,&grounded);
 			
 		end;
+		
+		
 		
 		//lanzamos comprobacion con procesos objeto
 		repeat
@@ -312,6 +327,14 @@ BEGIN
 			
 			//colisiones horizontales con procesos
 			dir = colCheckProcess(id,colID,HORIZONTALAXIS);
+			
+			//comprobamos si colisionamos con un objeto recogible
+			if (!picked && (dir == COLDER || dir == COLIZQ)) 
+				if (isBitSet(colID.props,PICKABLE))
+					objectforPickID = colID; 
+				end;
+			end;
+			
 			//aplicamos la direccion de la colision
 			applyDirCollision(ID,dir,&grounded);
 			
@@ -356,24 +379,57 @@ BEGIN
 		
 		positionToInt(id);
 		
+		
+		//recogiendo objetos
+		//activacion picking
+		if (objectForPickID <> 0)
+			//si se cumple el tiempo definido
+			if (pickingCounter >= cPickingTime)
+				//activamos el picking
+				picking = true;
+			else
+				//cronometro
+				if (clockTick)
+					pickingCounter++;
+				end;
+			end;
+		else
+			pickingCounter = 0;
+		end;
+		//desactivacion picking
+		if (picking && (vX <> 0 || jumping || crouched))
+			//si me muevo o salto o me agacho,salgo del picking
+			picking = false;
+		end;
+		
 		//CONTROL ESTADO GRAFICO		
+		
+		//frenada en ataque
 		if (!atacking && state == ATACK_STATE)
 			state = BREAK_ATACK_STATE;
 		end;
+		//resto de frenadas
 		if (state <> BREAK_ATACK_STATE && state <> BREAK_SLOPING_STATE)
+			//estado parado
 			if (abs(vX) < 0.1 && abs(vY) < 0.1)
 				state = IDLE_STATE;
 			end;
+			//estados de frenadas al no pulsar movimiento
 			if ( abs(vX) > 0.1 && !key(CKRIGHT) && !key(CKLEFT)) 
-				if (!on135Slope && !on45Slope)
+				//si no esta en rampas o con objeto cogido
+				if (!on135Slope && !on45Slope && !picked)
+					//frenada cayendo
 					if (state == FALL_STATE || state == BREAK_FALL_STATE || state == JUMP_STATE)
 						state = BREAK_FALL_STATE;
 					elseif (state == SLOPING_STATE)
+					//frenada resbalando
 						state = BREAK_SLOPING_STATE;
 					else
+					//frenada normal
 						state = BREAK_STATE;
 					end;
 				else
+					//sin estado de frenada
 					state = MOVE_STATE;
 				end;
 			end;
@@ -411,6 +467,12 @@ BEGIN
 		if (sloping)
 			state = SLOPING_STATE;
 		end;
+		if (picking && !picked)
+			state = PICKING_STATE;
+		end;
+		if (picked && picking)
+			state = PICKED_STATE;
+		end;
 		
 		//gestion del estado
 		switch (state)
@@ -421,6 +483,8 @@ BEGIN
 				elseif ( (on45Slope && isBitSet(flags,B_HMIRROR)) ||
 						(on135Slope && !isBitSet(flags,B_HMIRROR)) )
 					WGE_Animate(37,38,40);
+				elseif (picked)
+					WGE_Animate(22,22,40);
 				else
 					WGE_Animate(1,2,40);
 				end;
@@ -432,18 +496,32 @@ BEGIN
 				elseif ( (on45Slope && isBitSet(flags,B_HMIRROR)) ||
 						(on135Slope && !isBitSet(flags,B_HMIRROR)) )
 					WGE_Animate(47,52,4);
+				elseif (picked)
+					WGE_Animate(27,29,4);
 				else
 					WGE_Animate(3,8,4);
 				end;			
 			end;
 			case FALL_STATE:
-				WGE_Animate(11,11,1);
+				if (picked)
+						WGE_Animate(31,31,1);
+				else
+					WGE_Animate(11,11,1);
+				end;
 			end;
 			case JUMP_STATE:
 				if (vY < 0)
-					WGE_Animate(10,10,1);	
+					if (picked)
+						WGE_Animate(30,30,1);
+					else
+						WGE_Animate(10,10,1);	
+					end;
 				else
-					WGE_Animate(11,11,1);
+					if (picked)
+						WGE_Animate(31,31,1);
+					else
+						WGE_Animate(11,11,1);
+					end;
 				end;
 			end;
 			case CROUCH_STATE:
@@ -495,6 +573,15 @@ BEGIN
 					WGE_Animate(13,13,1);
 				end;
 			end
+			case PICKING_STATE:
+				WGE_Animate(25,26,40);
+			end;
+			case PICKED_STATE:
+				if (WGE_Animate(21,22,10))
+					state = IDLE_STATE;
+					picking = false;
+				end;
+			end;
 			default:
 				WGE_Animate(1,2,40);
 			end;

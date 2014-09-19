@@ -84,6 +84,9 @@
 #define BIT_TILE_DELANTE 	64
 #define BIT_TILE_ALPHA      32
 
+//propiedades de los objetos
+#define PICKABLE				1
+
 //estados
 #define IDLE_STATE				0
 #define MOVE_STATE          	1
@@ -103,6 +106,8 @@
 #define BREAK_ATACK_STATE		15
 #define SLOPING_STATE			16
 #define BREAK_SLOPING_STATE		17
+#define PICKING_STATE			18
+#define PICKED_STATE			19
 
 //Constantes del motor
 const
@@ -173,6 +178,8 @@ const
 	cPlayerAncho			= 16;			//Ancho del jugador
 	cPlayerAlto				= 32;			//Alto del jugador
 	cPlayerAltoCrouch		= 22;			//Alto del jugador agachado
+	
+	cPickingTime			= 20;			//Tiempo retraso para recojer objeto
 End;
 
 //Data Types
@@ -267,6 +274,7 @@ Local
 	int   alto			= 0;   		//Altura en pixeles del proceso
 	int   ancho			= 0;   		//Ancho en pixeles del proceso
 	int   state 		= 0;   		//Estado de la entidad
+	int   props			= 0;		//Propiedades de la entidad
 	struct colPoint[cNumColPoints] 	//Puntos deteccion colision de un objeto
 		int x;						//Offset X a sumar a la posicion del objeto
 		int y;						//Offset Y a sumar a la posicion del objeto

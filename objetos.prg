@@ -229,6 +229,8 @@ begin
 	z = cZObject;
 	file = level.fpgObjects;
 	
+	props |= PICKABLE;
+	
 	//modo debug sin graficos
 	if (file<0)
 		graph = map_new(ancho,alto,8,0);
