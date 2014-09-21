@@ -258,9 +258,8 @@ begin
 		//comportamiento caja
 		switch (state)
 			case IDLE_STATE:
-				if (isBitSet(props,PICKABLE) && idObjectPicked == id)
-					signal(id,s_kill);
-				end;
+				//normalizamos la posicion Y para evitar problemas de colision 
+				fY = y;
 			end;
 			case MOVE_STATE:
 								
@@ -285,7 +284,7 @@ begin
 				
 				//cambio de estado
 				if (grounded && abs(vX) < 0.1) 
-					state = IDLE_STATE; 
+					state = IDLE_STATE;
 				end;
 				
 			end;
@@ -321,16 +320,31 @@ begin
 		map_clear(0,graph,rand(200,300));
 	end;
 	
+	//estado inicial
+	state = MOVE_STATE;
+	x = father.x+(father.ancho>>1);
+	y = father.y;
+				
 	loop
-		if (father.state == PICKED_STATE)
-			x = father.x+16;
-			y = father.y;
-		else
-			x = father.x+16;
-			y = father.y-16;
+		//estados
+		switch (state)
+			//animacion de recogiendolo
+			case MOVE_STATE:
+				if (WGE_Animate(graph,graph,20,ANIM_ONCE))
+					state = IDLE_STATE;
+				end;
+			end;
+			//actualizamos posicion segun la del player
+			case IDLE_STATE:
+				if (isBitSet(father.flags,B_HMIRROR))
+					x = father.x-cObjectPickedPosX;
+				else
+					x = father.x+cObjectPickedPosX;
+				end;
+				y = father.y+cObjectPickedPosY;
+			end;
 		end;
 		
 		frame;
 	end;
-
 end;

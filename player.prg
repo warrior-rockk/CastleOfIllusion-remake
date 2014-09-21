@@ -23,6 +23,7 @@ byte  sloping;              //Resbalando por una pendiente
 byte  atacking;             //Flag de atacando
 byte  picking;				//Flag de recogiendo
 byte  picked;				//Flag de recogido
+byte  throwing;				//Flag de lanzando
 byte  canmove;				//Flag de movimiento permitido
 float velMaxX;				//Velocidad Maxima Horizontal
 float accelX;				//Aceleracion Maxima Horizontal
@@ -103,14 +104,25 @@ BEGIN
 			end;
 			
 			if (key(CKBT2)) 
+				//activar atacando
 				if (jumping && !picked)
 					atacking = true;
 				end;
+				//recojer objeto
 				if (picking && !picked)
 					picked = true;
-					idObjectPicked = memObjectforPickID;
-					pickedObject(idObjectPicked.file,idObjectPicked.graph,idObjectPicked.ancho,idObjectPicked.alto);
+					idObjectPicked = pickedObject(memObjectforPickID.file,memObjectforPickID.graph,memObjectforPickID.ancho,memObjectforPickID.alto);
+					signal(memObjectforPickID,s_kill);
 					memObjectforPickID = 0;
+				end;
+				//lanzar objeto
+				if (!picking & picked)
+					signal(idObjectPicked,s_kill);
+					idObjectPicked = objeto(x+3,y-16,16,16,5);
+					idObjectPicked.vX = cThrowObjectVelX;
+					idObjectPicked.vY = cThrowObjectVelY;
+					picked = false;
+					throwing = true;
 				end;
 			end;
 			

@@ -184,6 +184,12 @@ const
 	cPlayerAltoCrouch		= 22;			//Alto del jugador agachado
 	
 	cPickingTime			= 20;			//Tiempo retraso para recojer objeto
+	
+	//Offset Posicion objeto cogido
+	cObjectPickedPosX       = 3;						//Offset X posicion player para el objeto cogido
+	cObjectPickedPosY       = -(cPlayerAlto>>1);		//Offset Y posicion player para el objeto cogido
+	cThrowObjectVelX       = 2;							//Velocidad X lanzamiento objeto
+	cThrowObjectVelY        = -4;						//Velocidad Y lanzamiento objeto
 End;
 
 //Data Types
