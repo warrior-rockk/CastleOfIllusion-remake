@@ -90,6 +90,7 @@
 
 //propiedades de los objetos
 #define PICKABLE				1
+#define NO_COLLISION            2
 
 //estados
 #define IDLE_STATE				0

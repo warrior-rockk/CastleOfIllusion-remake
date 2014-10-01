@@ -383,6 +383,9 @@ begin
     //comprobamos los id de los procesos
 	if (idObject == 0 || idObjectB == 0) return 0; end;
 	
+	//comprobamos si el objeto es solido
+	if (isBitSet(idObjectB.props,NO_COLLISION)) return 0; end;
+	
 	//Obtiene los vectores de los centros para comparar
 	//teniendo en cuenta la velocidad del objeto principal
 	//y el eje seleccionado en parametro axis

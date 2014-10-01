@@ -260,9 +260,13 @@ begin
 			case IDLE_STATE:
 				//normalizamos la posicion Y para evitar problemas de colision 
 				fY = y;
+				props &= ~ NO_COLLISION;
 			end;
 			case MOVE_STATE:
 								
+				//mientras se mueve, no es solido
+				props |= NO_COLLISION;
+				
 				grounded = false;
 				
 				//Recorremos la lista de puntos a comprobar
