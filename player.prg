@@ -75,8 +75,6 @@ BEGIN
 	
 	loop
 		
-		
-		
 		//CONTROL MOVIMIENTO		
 		if (canmove)
 			
@@ -94,7 +92,7 @@ BEGIN
 				onStairs = false;
 			end;
 			
-			if (key(CKBT1)) 
+			if (WGE_Key(CKBT1,KEY_DOWN)) 
 				if(!jumping && (grounded || onStairs)) 
 					jumping = true;
 					grounded = false;
@@ -103,7 +101,7 @@ BEGIN
 				end;
 			end;
 			
-			if (key(CKBT2)) 
+			if (WGE_Key(CKBT2,KEY_DOWN)) 
 				//activar atacando
 				if (jumping && !picked)
 					atacking = true;

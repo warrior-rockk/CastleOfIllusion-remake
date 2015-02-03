@@ -18,6 +18,11 @@
 #define	CKBT1	  _R_SHIFT
 #define	CKBT2	  _SPACE
 
+//Estados de tecla
+#define KEY_PRESSED    0
+#define KEY_DOWN       1
+#define KEY_UP         2
+
 //Modos funcion colCheckVectorY
 #define FROMCOLLISION    0					//Comprobar pixeles para salir de la colision
 #define TOCOLLISION      1					//Comprobar pixeles hasta llegar a la colision
@@ -275,6 +280,9 @@ Global
 	int mapTriangle45;
 	int mapStairs;
 	int mapSolidOnFall;
+	//teclas
+	byte keyUse = 0;             //Seleccion Flanco
+    byte keyState[127][1];       //Mapa estados en flanco anterior y actual
 End;
 
 //Variables locales

@@ -18,6 +18,8 @@ private
 	int i; 									//Variables auxiliares
 	int counterTime;						//Contador para el flanco reloj						
 begin
+	priority = 1000;         
+	
 	//Dibujamos mapas para testeo (esto ira eliminado)
 	mapBox = map_new(cTileSize,cTileSize,8);
 	drawing_map(0,mapBox);
@@ -133,6 +135,12 @@ begin
 			//desactivamos el modo debug
 			actDebugMode = 0;
 		end;
+		
+		//Control estado de teclas
+		keyUse ^= 1;
+        for ( i = 0; i < 127; i++ )
+            keyState[ i ][ keyUse ] = key( i );
+        end;
 		
 		frame;
 	end;
@@ -837,4 +845,12 @@ begin
 	end;
 	//en vertical,la asignacion es directa	
 	idObject.y = idObject.fY;
+end;
+
+//Funcion que devuelve el estado de la tecla solicitado
+function WGE_Key(int k,int event)
+begin
+return ((event==KEY_DOWN)?(  keyState[ k ][ keyUse ] && !keyState[ k ][ keyUse ^ 1 ] ): \
+		(event==KEY_UP  )?( !keyState[ k ][ keyUse ] &&  keyState[ k ][ keyUse ^ 1 ] ): \
+		( keyState[ k ][ keyUse ]));
 end;
