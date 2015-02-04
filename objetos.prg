@@ -326,7 +326,7 @@ begin
 	
 	//estado inicial
 	state = MOVE_STATE;
-	x = father.x+(father.ancho>>1);
+	isBitSet(father.flags,B_HMIRROR)? x = father.x-(father.ancho>>1) : x = father.x+(father.ancho>>1);
 	y = father.y;
 				
 	loop
@@ -340,11 +340,7 @@ begin
 			end;
 			//actualizamos posicion segun la del player
 			case IDLE_STATE:
-				if (isBitSet(father.flags,B_HMIRROR))
-					x = father.x-cObjectPickedPosX;
-				else
-					x = father.x+cObjectPickedPosX;
-				end;
+				isBitSet(father.flags,B_HMIRROR) ? x = father.x-cObjectPickedPosX : x = father.x+cObjectPickedPosX;
 				y = father.y+cObjectPickedPosY;
 			end;
 		end;
