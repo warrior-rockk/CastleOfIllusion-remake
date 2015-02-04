@@ -439,7 +439,7 @@ BEGIN
 		//mientras lanza, no puede mover
 		if (throwing)
 			canMove = false;
-			//vX = 0;
+			vX = 0;
 		end;
 		
 		//CONTROL ESTADO GRAFICO		
