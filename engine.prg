@@ -706,7 +706,8 @@ Begin
 	plataforma(458,729,32,16,8,25);
 	
 	objeto(5,218,712,16,16);
-	objeto(5,1210,136,16,16);
+	objeto(5,1210,136,16,16).props |= BREAKABLE;
+	
 	//creamos los objetos del nivel
 	//for (i=0;i<level.numObjects;i++) 
 		//crea_objeto(i,1);

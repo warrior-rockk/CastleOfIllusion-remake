@@ -562,11 +562,17 @@ begin
 		if (idObject == idPlayer)
 			*objGrounded = true;
 		else
-			//rebote en el suelo
-			idObject.vY *= -0.4;
-			if (idObject.vY < 0.6 && idObject.vY > -0.6)
-				*objGrounded = true;		
+			//comprobacion si no es rompible
+			if (!isBitSet(idObject.props,BREAKABLE))
+				//rebote en suelo
+				idObject.vY *= -0.4;
+				if (idObject.vY < 0.6 && idObject.vY > -0.6)
+					*objGrounded = true;		
+				end;
+			else
+				*objGrounded = true;
 			end;
+			
 		end;
 	elseif (colDir == COLUP) 
 		idObject.vY = 0;			//Flota por el techo	

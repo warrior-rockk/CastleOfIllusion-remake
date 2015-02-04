@@ -128,6 +128,7 @@ BEGIN
 					//asignamos velocidades al objeto para lanzarlo
 					isBitSet(flags,B_HMIRROR) ? idObjectThrowed.vX = cThrowObjectVelX * -1 : idObjectThrowed.vX = cThrowObjectVelX;
 					idObjectThrowed.vY = cThrowObjectVelY;
+					idObjectThrowed.state = THROWING_STATE;
 					idObjectThrowed = 0;
 					//reseteamos flags
 					picked = false;

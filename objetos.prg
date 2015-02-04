@@ -286,7 +286,50 @@ begin
 					end;
 				until (colID == 0);
 				
+				//cambio de estado		
+				if (grounded && abs(vX) < 0.1) 
+					state = IDLE_STATE;
+				end;
+				
+			end;
+			case THROWING_STATE:
+								
+				//mientras se mueve, no es solido
+				props |= NO_COLLISION;
+				
+				grounded = false;
+				
+				//Recorremos la lista de puntos a comprobar
+				for (i=0;i<cNumColPoints;i++)					
+					//aplicamos la direccion de la colision
+					applyDirCollision(ID,colCheckTileTerrain(ID,i),&grounded);			
+				end;
+				
+				//lanzamos comprobacion con procesos caja
+				repeat
+					//obtenemos siguiente colision
+					colID = get_id(TYPE caja);
+					//si no soy yo mismo
+					if (colID <> ID) 
+						//aplicamos la direccion de la colision
+						applyDirCollision(ID,colCheckProcess(id,colID,BOTHAXIS),&grounded);
+					end;
+				until (colID == 0);
+				
 				//cambio de estado
+				
+				//si es rompible, lo destruimos
+				if (grounded && isBitSet(props,BREAKABLE))
+					//actualizamos la posicion para ver la explosion en el sitio
+					vY = 0;
+					fx += vX;
+					fy += vY;
+					positionToInt(id);
+
+					WGE_Animation(file,2,3,x,y,10,ANIM_ONCE);
+					signal(id,s_kill);
+				end;
+				
 				if (grounded && abs(vX) < 0.1) 
 					state = IDLE_STATE;
 				end;
