@@ -115,10 +115,16 @@ BEGIN
 				end;
 				//lanzar objeto
 				if (!picking & picked)
+					//creamos objeto con las propiedades del recogido
+					idObjectThrowed = objeto(idObjectPicked.graph,idObjectPicked.x,idObjectPicked.y,idObjectPicked.ancho,idObjectPicked.alto);
+					//matamos el objeto cogido
 					signal(idObjectPicked,s_kill);
-					idObjectPicked = objeto(x+3,y-16,16,16,5);
-					idObjectPicked.vX = cThrowObjectVelX;
-					idObjectPicked.vY = cThrowObjectVelY;
+					idObjectPicked = 0;
+					//asignamos velocidades al objeto para lanzarlo
+					isBitSet(flags,B_HMIRROR) ? idObjectThrowed.vX = cThrowObjectVelX * -1 : idObjectThrowed.vX = cThrowObjectVelX;
+					idObjectThrowed.vY = cThrowObjectVelY;
+					idObjectThrowed = 0;
+					//reseteamos flags
 					picked = false;
 					throwing = true;
 				end;

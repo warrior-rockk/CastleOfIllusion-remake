@@ -216,7 +216,7 @@ begin
 end;
 
 //Proceso objeto
-process objeto(int x,int y,int ancho,int alto,int graph);
+process objeto(int graph,int x,int y,int ancho,int alto);
 private
 byte grounded;
 int i;
