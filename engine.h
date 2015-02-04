@@ -122,7 +122,7 @@
 //Constantes del motor
 const
 	//Engine
-	cTimeInterval    = 1; 					//Intervalo reloj: 10ms
+	cTimeInterval    = 1; 					//Intervalo reloj: cTimeInterval*16ms
 	
 	//Prioridades (orden ejecucion)
 	cMainPrior	 	 = 3;

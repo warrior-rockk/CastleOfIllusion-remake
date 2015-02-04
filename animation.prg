@@ -13,8 +13,8 @@
 function int WGE_Animate(int startFrame, int endFrame, int animationSpeed,int mode)
 begin
 	//si toca animar en el frame correspondiente
-	if (clockCounter <> 0)
-		if (clockCounter % animationSpeed == 0  && clockTick)	
+	//if (clockCounter <> 0)
+		if ( (clockCounter % animationSpeed ) == 0  && clockTick )	
 			//incrementamos frame si estamos en el rango
 			if (father.graph < endFrame && father.graph >= startFrame)
 				father.graph++;
@@ -31,7 +31,7 @@ begin
 				father.graph = startFrame; 
 			end;
 		end;
-	end;
+	//end;
 
 	return false;
 

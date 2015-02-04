@@ -16,7 +16,7 @@ private
 	int idCursor;							//Id proceso cursor
 		
 	int i; 									//Variables auxiliares
-	int counterTime;						//Contador para el flanco reloj						
+	byte clockTickMem;						//Memoria Flanco Reloj
 begin
 	priority = 1000;         
 	
@@ -49,15 +49,19 @@ begin
 			minFPS = fps;
 		end;
 		
-		//Gestion Flanco Tiempo Reloj	
-		if ( counterTime < timer[0] )
-			clockTick = true;
-			counterTime = timer[0] + cTimeInterval;
+		//contador de reloj por frames.A 60 fps = 16ms 
+		clockCounter ++;
+		
+		//Flanco de reloj segun intervalo escogido
+		if (clockCounter % cTimeInterval == 0) 
+			if (!clockTickMem)
+				clockTick = true;
+				clockTickMem = true;
+			end;
 		else
 			clockTick = false;
+			clockTickMem = false;
 		end;
-		//contador reloj general
-		clockCounter += clockTick;
 		
 		//activacion/desactivacion del modo debug
 		if (key(_control) && key(_d))

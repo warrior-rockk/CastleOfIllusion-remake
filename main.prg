@@ -21,6 +21,7 @@ import "mod_say";
 import "mod_debug";
 import "mod_string";
 import "mod_timers";
+import "mod_time";
 import "mod_mem";
 
 include "engine.h";      //archivo de definiciones,constantes y variables globales
