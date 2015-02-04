@@ -439,6 +439,9 @@ BEGIN
 		
 		//CONTROL ESTADO GRAFICO		
 		
+		//guardamos estado actual
+		prevState = state;
+		
 		//frenada en ataque
 		if (!atacking && state == ATACK_STATE)
 			state = BREAK_ATACK_STATE;
@@ -507,6 +510,12 @@ BEGIN
 		end;
 		if (picked && picking)
 			state = PICKED_STATE;
+		end;
+		
+		//si hay cambio de estado, resetamos contador animacion
+		if (prevState <> state)
+			frameCount = 0;
+			log("Proceso: " + id + " pasa de estado " + prevState + " a " + state);
 		end;
 		
 		//gestion del estado
@@ -612,7 +621,7 @@ BEGIN
 				WGE_Animate(25,26,40,ANIM_LOOP);
 			end;
 			case PICKED_STATE:
-				if (WGE_Animate(21,22,10,ANIM_ONCE))
+				if (WGE_Animate(21,21,10,ANIM_ONCE))
 					state = IDLE_STATE;
 					picking = false;
 				end;

@@ -50,7 +50,7 @@ begin
 		end;
 		
 		//contador de reloj por frames.A 60 fps = 16ms 
-		clockCounter ++;
+		clockCounter++;
 		
 		//Flanco de reloj segun intervalo escogido
 		if (clockCounter % cTimeInterval == 0) 

@@ -9,12 +9,17 @@
 //Funciona que anima el proceso que lo llama cambiando
 //su grafico en cada llamada a la velocidad especificada
 //Devuelve true cuando vuelve a empezar la animacion
-//animationSpeed en decimas de segundo
 function int WGE_Animate(int startFrame, int endFrame, int animationSpeed,int mode)
+private
+byte animFinished;	//flag de animacion terminada
+
 begin
-	//si toca animar en el frame correspondiente
-	//if (clockCounter <> 0)
-		if ( (clockCounter % animationSpeed ) == 0  && clockTick )	
+	animFinished = false;
+	
+	//evitamos el primer frame
+	if (father.frameCount <> 0)
+	    //si toca animar en el frame correspondiente
+		if ( (father.frameCount % animationSpeed ) == 0  && clockTick)	
 			//incrementamos frame si estamos en el rango
 			if (father.graph < endFrame && father.graph >= startFrame)
 				father.graph++;
@@ -23,7 +28,7 @@ begin
 				if (mode == ANIM_LOOP)
 					father.graph = startFrame; 
 				end;
-				return true;
+				animFinished =  true;
 			end;
 		else
 		//si no nos toca animar, reseteamos a inicio en caso de que estemos fuera de rango
@@ -31,9 +36,13 @@ begin
 				father.graph = startFrame; 
 			end;
 		end;
-	//end;
-
-	return false;
+	end;
+	
+	//incrementamos contador local 
+	father.frameCount+=clockTick;
+	
+	//devolvemos finalizado
+	return animFinished;
 
 end;
 
