@@ -436,6 +436,11 @@ BEGIN
 			canMove = false;
 			vX = 0;
 		end;
+		//mientras lanza, no puede mover
+		if (throwing)
+			canMove = false;
+			//vX = 0;
+		end;
 		
 		//CONTROL ESTADO GRAFICO		
 		
@@ -510,6 +515,9 @@ BEGIN
 		end;
 		if (picked && picking)
 			state = PICKED_STATE;
+		end;
+		if (throwing)
+			state = THROWING_STATE;
 		end;
 		
 		//si hay cambio de estado, resetamos contador animacion
@@ -624,6 +632,19 @@ BEGIN
 				if (WGE_Animate(21,21,10,ANIM_ONCE))
 					state = IDLE_STATE;
 					picking = false;
+				end;
+			end;
+			case THROWING_STATE:
+				if (jumping)
+					if (WGE_Animate(24,24,10,ANIM_ONCE))
+						state = IDLE_STATE;
+						throwing = false;
+					end;
+				else
+					if (WGE_Animate(23,23,10,ANIM_ONCE))
+						state = IDLE_STATE;
+						throwing = false;
+					end;
 				end;
 			end;
 			default:

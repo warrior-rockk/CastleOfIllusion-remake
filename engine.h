@@ -118,6 +118,7 @@
 #define BREAK_SLOPING_STATE		17
 #define PICKING_STATE			18
 #define PICKED_STATE			19
+#define THROWING_STATE			20
 
 //Constantes del motor
 const
