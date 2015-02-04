@@ -334,7 +334,7 @@ begin
 		switch (state)
 			//animacion de recogiendolo
 			case MOVE_STATE:
-				if (WGE_Animate(graph,graph,20,ANIM_ONCE))
+				if (WGE_Animate(graph,graph,10,ANIM_ONCE))
 					state = IDLE_STATE;
 				end;
 			end;

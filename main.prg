@@ -63,7 +63,7 @@ Begin
 	//idPlayer = player_no_gravity();
 	//caja(672,160);
 	//caja(672,160-64);
-	player_gravity();
+	player();
 	
 	//Bucle principal
 	Loop

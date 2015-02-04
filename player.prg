@@ -10,7 +10,7 @@
 //		Salto distinto desde escalera
 //		Fuerza salto segun pulsacion tecla
 //		bloqueo del agacharse si muro en cabeza
-process player_gravity()
+process player()
 private 
 
 byte  jumping,				//Flag salto
@@ -24,7 +24,7 @@ byte  atacking;             //Flag de atacando
 byte  picking;				//Flag de recogiendo
 byte  picked;				//Flag de recogido
 byte  throwing;				//Flag de lanzando
-byte  canmove;				//Flag de movimiento permitido
+byte  canMove;				//Flag de movimiento permitido
 float velMaxX;				//Velocidad Maxima Horizontal
 float accelX;				//Aceleracion Maxima Horizontal
 float accelY;				//Aceleracion Maxima Vertical
@@ -40,6 +40,7 @@ struct tiles_comprobar[8]
 end;
 
 int i,j;		//Variables auxiliares
+byte trace;     //Variable debug
 
 BEGIN
 	ancho = cPlayerAncho;
@@ -71,13 +72,14 @@ BEGIN
 	fx = x;
 	fy = y;
 	
-	canmove = true;
+	canMove = true;
 	
 	loop
 		
 		//CONTROL MOVIMIENTO		
-		if (canmove)
+		if (canMove)
 			
+			//direccion derecha
 			if (key(CKRIGHT)) 
 				if (vX < velMaxX) 
 					vX+=accelx*(1-friction);
@@ -85,6 +87,7 @@ BEGIN
 				onStairs = false;
 			end;
 			
+			//direccion izquierda
 			if (key(CKLEFT)) 
 				if (vX > -velMaxX) 
 					vX-=accelx*(1-friction);
@@ -92,6 +95,7 @@ BEGIN
 				onStairs = false;
 			end;
 			
+			//boton salto
 			if (WGE_Key(CKBT1,KEY_DOWN)) 
 				if(!jumping && (grounded || onStairs)) 
 					jumping = true;
@@ -101,6 +105,7 @@ BEGIN
 				end;
 			end;
 			
+			//boton ataque/accion
 			if (WGE_Key(CKBT2,KEY_DOWN)) 
 				//activar atacando
 				if (jumping && !picked)
@@ -130,6 +135,7 @@ BEGIN
 				end;
 			end;
 			
+			//direccion arriba/subir escaleras
 			if (key(CKUP))			
 				//si objeto cogido, no podemos ni agacharnos y bajar escaleras
 				if (!picked)
@@ -156,6 +162,7 @@ BEGIN
 				end;
 			end;
 			
+			//direccion abajo/agacharse/bajar escalera
 			if (key(CKDOWN))
 				//si objeto cogido, no podemos ni agacharnos y bajar escaleras
 				if (!picked)
@@ -190,9 +197,12 @@ BEGIN
 			else
 				crouched = false;
 			end;
+
+		end; //end del canMove
 		
-		end; //end del canmove
-			
+		//restauramos bit de mover
+		canMove = true;
+				
 		//FISICAS
 		
 		//valor friccion local
@@ -239,7 +249,7 @@ BEGIN
 					//si esta atacando,resbala por la rampa
 					if ((atacking && key(CKLEFT)) || sloping)
 						sloping = true;
-						canmove = false;
+						canMove = false;
 						friction = 1;
 						velMaxX = cPlayerVelMaxXSloping;
 						accelx  = cPlayerAccelXSloping;
@@ -263,7 +273,7 @@ BEGIN
 					//si esta atacando,resbala por la rampa
 					if ((atacking && key(CKRIGHT)) || sloping)
 						sloping = true;
-						canmove = false;
+						canMove = false;
 						friction = 1;
 						velMaxX = cPlayerVelMaxXSloping;
 						accelx  = cPlayerAccelXSloping;
@@ -308,7 +318,6 @@ BEGIN
 		
 		//condiciones iniciales pre-colision
 		grounded = false;
-		canmove = true;
 		idPlatform = 0;
 		objectforPickID = 0;
 		priority = cPlayerPrior;		
@@ -399,7 +408,6 @@ BEGIN
 		
 		positionToInt(id);
 		
-		
 		//recogiendo objetos
 		//activacion picking
 		if (objectForPickID <> 0)
@@ -418,10 +426,15 @@ BEGIN
 			pickingCounter = 0;
 		end;
 		//desactivacion picking
-		if (picking && (vX <> 0 || jumping || crouched))
+		if (picking && (vX <> 0 || jumping || crouched) && !picked)
 			//si me muevo o salto o me agacho,salgo del picking
 			picking = false;
 			memObjectforPickID = 0;
+		end;
+		//Mientras recoje, no puede mover
+		if (picking && picked)
+			canMove = false;
+			vX = 0;
 		end;
 		
 		//CONTROL ESTADO GRAFICO		
@@ -599,7 +612,7 @@ BEGIN
 				WGE_Animate(25,26,40,ANIM_LOOP);
 			end;
 			case PICKED_STATE:
-				if (WGE_Animate(21,22,20,ANIM_ONCE))
+				if (WGE_Animate(21,22,10,ANIM_ONCE))
 					state = IDLE_STATE;
 					picking = false;
 				end;
