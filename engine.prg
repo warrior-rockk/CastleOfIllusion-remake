@@ -343,11 +343,11 @@ Begin
 	
 	
 	//Creamos la matriz dinamica del tileMap
-	/*tileMap = calloc(level.numTilesY,sizeof(_tile*));
-	from i = 0 to level.numTilesX-1;
+	tileMap = calloc(level.numTilesY,sizeof(_tile*));
+	from i = 0 to level.numTilesY-1;
 		tileMap[i] = calloc(level.numTilesX ,sizeof(_tile));
 	end;
-	*/
+	
 	//Cargamos la informacion del grafico de los tiles del fichero de mapa
 	for (i=0;i<level.numTilesY;i++)
 		for (j=0;j<level.numTilesX;j++)

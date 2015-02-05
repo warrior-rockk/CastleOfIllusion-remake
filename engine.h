@@ -264,8 +264,7 @@ Global
 	End;	
 	_objeto* objetos;			//Array Dinamico de objetos
 	_path* paths;				//Array Dinamico de paths
-	//_tile** tileMap;  	        //Matriz Dinamica del mapa de tiles del nivel
-	_tile tileMap[130][130];
+	_tile** tileMap;  	        //Matriz Dinamica del mapa de tiles del nivel
 	byte mapUsesAlpha;				//Bit que indica que el mapa usa propiedad alpha (relentiza la carga)
 	//jugador
 	int idPlayer;				//Identificador del proceso del jugador

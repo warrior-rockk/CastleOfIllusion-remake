@@ -51,7 +51,6 @@ Begin
 	//Creamos un mapa con matriz definida
 	WGE_GenMatrixMapFile("test\random.bin");
 	//Cargamos el mapeado del nivel
-	//TODO: carga dinamica comentada. Ver porque falla a veces
 	WGE_LoadMapLevel("test\ToyLand.bin","test\tiles.fpg");
 	//Iniciamos Scroll
 	WGE_InitScroll();
