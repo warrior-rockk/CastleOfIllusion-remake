@@ -122,6 +122,7 @@ BEGIN
 				if (!picking & picked)
 					//creamos objeto con las propiedades del recogido
 					idObjectThrowed = objeto(idObjectPicked.graph,idObjectPicked.x,idObjectPicked.y,idObjectPicked.ancho,idObjectPicked.alto);
+					idObjectThrowed.props |= BREAKABLE;
 					//matamos el objeto cogido
 					signal(idObjectPicked,s_kill);
 					idObjectPicked = 0;
@@ -349,10 +350,21 @@ BEGIN
 			dir = colCheckProcess(id,colID,VERTICALAXIS);
 			//aplicamos la direccion de la colision
 			applyDirCollision(ID,dir,&grounded);
-			//corregimos la Y truncamos fY
+			
+			//si la colision es inferior
 			if (dir == COLDOWN )
-				y = fY;
-				fY = y;
+				//si estamos atacando y el objeto es rompible
+				if ( state == ATACK_STATE && isBitSet(colID.props,BREAKABLE))
+					//rebote al atacar
+					vY = -cPlayerAtackBounce;
+					grounded = false;
+					//matamos al objeto
+					colID.state = DEAD_STATE;
+				else
+					//corregimos la Y truncamos fY
+					y = fY;
+					fY = y;
+				end;
 			end;
 			
 			//colisiones horizontales con procesos

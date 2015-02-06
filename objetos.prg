@@ -293,10 +293,10 @@ begin
 				
 			end;
 			case THROWING_STATE:
-								
+				log(props);				
 				//mientras se mueve, no es solido
 				props |= NO_COLLISION;
-				
+				log(props);
 				grounded = false;
 				
 				//Recorremos la lista de puntos a comprobar
@@ -325,15 +325,19 @@ begin
 					fx += vX;
 					fy += vY;
 					positionToInt(id);
-
-					WGE_Animation(file,2,3,x,y,10,ANIM_ONCE);
-					signal(id,s_kill);
+					
+					//cambiamos de estado
+					state = DEAD_STATE;
 				end;
 				
 				if (grounded && abs(vX) < 0.1) 
 					state = IDLE_STATE;
 				end;
 				
+			end;
+			case DEAD_STATE:
+				WGE_Animation(file,2,3,x,y,10,ANIM_ONCE);
+				signal(id,s_kill);
 			end;
 		end;
 		

@@ -710,7 +710,7 @@ Begin
 	plataforma(620,729,32,16,8,25);
 	plataforma(458,729,32,16,8,25);
 	
-	objeto(5,218,712,16,16);
+	objeto(5,218,712,16,16).props |= BREAKABLE;
 	objeto(5,1210,136,16,16).props |= BREAKABLE;
 	
 	

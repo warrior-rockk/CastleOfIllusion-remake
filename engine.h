@@ -96,7 +96,7 @@
 //propiedades de los objetos
 #define PICKABLE				1
 #define NO_COLLISION            2
-#define BREAKABLE               3
+#define BREAKABLE               4
 
 //estados
 #define IDLE_STATE				0
@@ -120,6 +120,7 @@
 #define PICKING_STATE			18
 #define PICKED_STATE			19
 #define THROWING_STATE			20
+#define DEAD_STATE              21
 
 //Constantes del motor
 const
@@ -185,6 +186,7 @@ const
 	cPlayerAccelXSloping	= 0.15;          //Aceleracion maxima Player resbalando por rampa
 	cPlayerDecelXSlopeUp    = 0.1;			//Factor deceleracion al subir rampa
 	cPlayerAccelY			= 6;			//Aceleracion Player salto
+	cPlayerAtackBounce      = 4;            //Rebote al romper objet/atacar
 	
 	//Personaje
 	cPlayerAncho			= 16;			//Ancho del jugador
@@ -296,7 +298,7 @@ Local
 	int   ancho			= 0;   		//Ancho en pixeles del proceso
 	int   state 		= 0;   		//Estado de la entidad
 	int   prevState     = 0;		//Estado anterior
-	int   props			= 0;		//Propiedades de la entidad
+	byte  props			= 0;		//Propiedades de la entidad
 	struct colPoint[cNumColPoints] 	//Puntos deteccion colision de un objeto
 		int x;						//Offset X a sumar a la posicion del objeto
 		int y;						//Offset Y a sumar a la posicion del objeto
