@@ -96,6 +96,11 @@ begin
 			log("Pasamos a "+fps+" FPS");
 			WGE_Wait(20);
 		end;
+
+		//reiniciar nivel
+		if (WGE_Key(_r,KEY_DOWN))
+			WGE_RestartLevel();
+		end;
 		
 		//Tareas de entrada al modo debug
 		if (debugMode && not actDebugMode)
@@ -859,4 +864,39 @@ begin
 return ((event==KEY_DOWN)?(  keyState[ k ][ keyUse ] && !keyState[ k ][ keyUse ^ 1 ] ): \
 		(event==KEY_UP  )?( !keyState[ k ][ keyUse ] &&  keyState[ k ][ keyUse ^ 1 ] ): \
 		( keyState[ k ][ keyUse ]));
+end;
+
+//Funcion para reiniciar el nivel actual
+function WGE_RestartLevel()
+begin
+	log("Reiniciando nivel");
+	
+	//apagamos pantalla
+	fade_off();
+	repeat
+		frame;
+	until (not fading);
+	
+	//eliminamos los tiles de la pantalla
+	signal(TYPE pTile,s_kill);
+	//eliminamos los objetos de la pantalla
+	signal(TYPE objeto,s_kill);
+	//eliminamos plataformas
+	signal(TYPE plataforma,s_kill);
+	//eliminamos al jugador
+	signal(idPlayer,s_kill);
+	//dibujamos el mapa
+	WGE_DrawMap();
+	//creamos el nivel
+	WGE_CreateLevel();
+	//creamos al player
+	player();
+	//esperamos un tiempo
+	WGE_Wait(50);
+	
+	//encendemos pantalla
+	fade_on();
+	repeat
+		frame;
+	until (not fading);
 end;

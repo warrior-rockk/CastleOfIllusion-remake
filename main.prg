@@ -49,7 +49,7 @@ Begin
 	//Creamos un mapa aleatorio
 	//WGE_GenRandomMapFile("test\random.bin",12,8);
 	//Creamos un mapa con matriz definida
-	WGE_GenMatrixMapFile("test\random.bin");
+	//WGE_GenMatrixMapFile("test\random.bin");
 	//Cargamos el mapeado del nivel
 	WGE_LoadMapLevel("test\ToyLand.bin","test\tiles.fpg");
 	//Iniciamos Scroll
