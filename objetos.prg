@@ -292,8 +292,7 @@ begin
 				end;
 				
 			end;
-			case THROWING_STATE:
-				log(props);				
+			case THROWING_STATE:	
 				//mientras se mueve, no es solido
 				props |= NO_COLLISION;
 				log(props);
@@ -364,6 +363,8 @@ begin
 	region = cGameRegion;
 	ctype = c_scroll;
 	z = cZObject;
+	
+	props |= NO_COLLISION;
 	
 	//modo debug sin graficos
 	if (file<0)

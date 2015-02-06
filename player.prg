@@ -114,7 +114,11 @@ BEGIN
 				//recojer objeto
 				if (picking && !picked)
 					picked = true;
+					//creamos un objeto picked con sus propiedades
 					idObjectPicked = pickedObject(memObjectforPickID.file,memObjectforPickID.graph,memObjectforPickID.ancho,memObjectforPickID.alto);
+					idObjectPicked.props = memObjectforPickID.props;
+					//le quitamos la propiedad de solido
+					idObjectPicked.props |= NO_COLLISION; 
 					signal(memObjectforPickID,s_kill);
 					memObjectforPickID = 0;
 				end;
@@ -122,7 +126,7 @@ BEGIN
 				if (!picking & picked)
 					//creamos objeto con las propiedades del recogido
 					idObjectThrowed = objeto(idObjectPicked.graph,idObjectPicked.x,idObjectPicked.y,idObjectPicked.ancho,idObjectPicked.alto);
-					idObjectThrowed.props |= BREAKABLE;
+					idObjectThrowed.props = idObjectPicked.props;
 					//matamos el objeto cogido
 					signal(idObjectPicked,s_kill);
 					idObjectPicked = 0;
