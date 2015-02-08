@@ -222,6 +222,8 @@ byte grounded;
 int i;
 int colID;
 float friction;
+int colDir;
+byte collided;
 
 begin
 	region = cGameRegion;
@@ -268,6 +270,7 @@ begin
 				props |= NO_COLLISION;
 				
 				grounded = false;
+				collided = false;
 				
 				//Recorremos la lista de puntos a comprobar
 				for (i=0;i<cNumColPoints;i++)					
@@ -295,13 +298,20 @@ begin
 			case THROWING_STATE:	
 				//mientras se mueve, no es solido
 				props |= NO_COLLISION;
-				log(props);
+				
 				grounded = false;
+				collided = false;
 				
 				//Recorremos la lista de puntos a comprobar
 				for (i=0;i<cNumColPoints;i++)					
+					//obtenemos la direccion de la colision
+					colDir = colCheckTileTerrain(ID,i);
 					//aplicamos la direccion de la colision
-					applyDirCollision(ID,colCheckTileTerrain(ID,i),&grounded);			
+					applyDirCollision(ID,colDir,&grounded);
+					//seteamos flag de colisionado
+					if (colDir <> NOCOL)
+						collided = true;
+					end;
 				end;
 				
 				//lanzamos comprobacion con procesos caja
@@ -310,15 +320,21 @@ begin
 					colID = get_id(TYPE caja);
 					//si no soy yo mismo
 					if (colID <> ID) 
+						//obtenemos la direccion de la colision
+						colDir = colCheckProcess(id,colID,BOTHAXIS);
 						//aplicamos la direccion de la colision
-						applyDirCollision(ID,colCheckProcess(id,colID,BOTHAXIS),&grounded);
+						applyDirCollision(ID,colDir,&grounded);
+						//seteamos flag de colisionado
+						if (colDir <> NOCOL)
+							collided = true;
+						end;
 					end;
 				until (colID == 0);
 				
 				//cambio de estado
 				
-				//si es rompible, lo destruimos
-				if (grounded && isBitSet(props,BREAKABLE))
+				//si es rompible y ha colisionado, lo destruimos
+				if (collided && isBitSet(props,BREAKABLE))
 					//actualizamos la posicion para ver la explosion en el sitio
 					vY = 0;
 					fx += vX;
