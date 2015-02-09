@@ -176,16 +176,17 @@ const
 	cHalfTSize = cTileSize >> 1; 			//Mitad del tamaño tile (util para todo el proyecto)
 	
 	//Fisicas
-	cPlayerVelMaxX			= 3.4;			//Velocidad Maxima Player
-	cPlayerVelMaxXSlopeUp	= 2;            //Velocidad Maxima Player subiendo rampa
-	cPlayerVelMaxXSlopeDown = 4;            //Velocidad Maxima Player bajando rampa
-	cPlayerVelMaxXSloping	= 6;            //Velocidad Maxima Player resbalando por rampa
-	cPlayerAccelX           = 1.2;          //Aceleracion maxima Player
-	cPlayerAccelXSlopeUp    = 0.2;          //Aceleracion maxima Player subiendo rampa
-	cPlayerAccelXSlopeDown  = 1.2;          //Aceleracion maxima Player bajando rampa
-	cPlayerAccelXSloping	= 0.15;          //Aceleracion maxima Player resbalando por rampa
-	cPlayerDecelXSlopeUp    = 0.1;			//Factor deceleracion al subir rampa
-	cPlayerAccelY			= 4;			//Aceleracion Player salto
+	cPlayerVelMaxX			= 3.4;			//Velocidad Maxima X Player
+	cPlayerVelMaxXSlopeUp	= 2;            //Velocidad Maxima X Player subiendo rampa
+	cPlayerVelMaxXSlopeDown = 4;            //Velocidad Maxima X Player bajando rampa
+	cPlayerVelMaxXSloping	= 6;            //Velocidad Maxima X Player resbalando por rampa
+	cPlayerAccelX           = 1.2;          //Aceleracion maxima X Player
+	cPlayerAccelXSlopeUp    = 0.2;          //Aceleracion maxima X Player subiendo rampa
+	cPlayerAccelXSlopeDown  = 1.2;          //Aceleracion maxima X Player bajando rampa
+	cPlayerAccelXSloping	= 0.15;          //Aceleracion maxima X Player resbalando por rampa
+	cPlayerDecelXSlopeUp    = 0.1;			//Factor deceleracion X al subir rampa
+	cPlayerAccelY			= 4;			//Aceleracion Player Y salto
+	cPlayerVelMaxY          = 10;			//Velocidad Maxima Y Player
 	cPlayerAtackBounce      = 4;            //Rebote al romper objet/atacar
 	cPlayerPowerJumpFactor  = 0.2;			//Factor de incremento poder salto
 	cPlayerMaxPowerJump     = 10;           //Maximo incremento poder salto

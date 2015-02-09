@@ -9,7 +9,7 @@
 //Salida por consola
 function log(string texto)
 begin
-	say ("WGE: " + texto);
+	//say ("WGE: " + texto);
 end;
 
 process WGE_DebugCursor()

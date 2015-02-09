@@ -239,7 +239,10 @@ BEGIN
 						
 		//gravedad
 		if (!onStairs)
-			vY += gravity;
+			//limitamos la velocidad Y maxima
+			if (abs(vY) < cPlayerVelMaxY) 
+				vY += gravity;
+			end;
 		end;
 		
 		//Cambio velocidades y aceleracion en rampas
