@@ -185,8 +185,10 @@ const
 	cPlayerAccelXSlopeDown  = 1.2;          //Aceleracion maxima Player bajando rampa
 	cPlayerAccelXSloping	= 0.15;          //Aceleracion maxima Player resbalando por rampa
 	cPlayerDecelXSlopeUp    = 0.1;			//Factor deceleracion al subir rampa
-	cPlayerAccelY			= 6;			//Aceleracion Player salto
+	cPlayerAccelY			= 4;			//Aceleracion Player salto
 	cPlayerAtackBounce      = 4;            //Rebote al romper objet/atacar
+	cPlayerPowerJumpFactor  = 0.2;			//Factor de incremento poder salto
+	cPlayerMaxPowerJump     = 10;           //Maximo incremento poder salto
 	
 	//Personaje
 	cPlayerAncho			= 16;			//Ancho del jugador

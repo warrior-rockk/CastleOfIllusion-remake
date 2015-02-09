@@ -34,14 +34,15 @@ int   colID;				//Proceso con el que se colisiona
 int   objectforPickID;		//Proceso de tipo objeto que se colisiona lateralmente
 int   memObjectforPickID;   //Memoria de objeto que se colisiona
 int   pickingCounter; 		//Contador para recojer objeto
-struct tiles_comprobar[8]
+struct tiles_comprobar[8]   //Matriz comprobacion colision tiles
 	int posx;
 	int posy;
 end;
+int jumpPower;				//Contador incremento salto
 
-int i,j;		//Variables auxiliares
-byte trace;     //Variable debug
-
+int i,j;					//Variables auxiliares
+byte trace;     			//Variable debug
+ 
 BEGIN
 	ancho = cPlayerAncho;
 	alto = cPlayerAlto;
@@ -96,13 +97,24 @@ BEGIN
 			end;
 			
 			//boton salto
-			if (WGE_Key(CKBT1,KEY_DOWN)) 
-				if(!jumping && (grounded || onStairs)) 
-					jumping = true;
-					grounded = false;
-					vY = -accelY;
-					onStairs = false;
+			if (WGE_Key(CKBT1,KEY_PRESSED))
+				//salto con key_down
+				if (WGE_Key(CKBT1,KEY_DOWN)) 
+					if(!jumping && (grounded || onStairs)) 
+						jumping = true;
+						grounded = false;
+						vY = -accelY;
+						onStairs = false;
+					end;
 				end;
+				//incremento del poder del salto con pulsacion larga
+				if (jumpPower <= cPlayerMaxPowerJump && clockTick)
+					vY -= cPlayerPowerJumpFactor;
+					jumpPower++;					
+				end;
+			else
+				//reinicio del incremento de poder de salto
+				jumpPower = 0;
 			end;
 			
 			//boton ataque/accion
