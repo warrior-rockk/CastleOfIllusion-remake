@@ -376,6 +376,10 @@ BEGIN
 				if ( state == ATACK_STATE && isBitSet(colID.props,BREAKABLE))
 					//rebote al atacar
 					vY = -cPlayerAtackBounce;
+					//si se pulsa ataque se añade incremento en rebote
+					if (WGE_Key(CKBT2,KEY_PRESSED))
+						vY -= cPlayerPowerAtackBounce;
+					end;
 					grounded = false;
 					//matamos al objeto
 					colID.state = DEAD_STATE;

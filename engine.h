@@ -188,6 +188,7 @@ const
 	cPlayerAccelY			= 4;			//Aceleracion Player Y salto
 	cPlayerVelMaxY          = 10;			//Velocidad Maxima Y Player
 	cPlayerAtackBounce      = 4;            //Rebote al romper objet/atacar
+	cPlayerPowerAtackBounce = 1.4;          //Extra de rebote al romper/atacar
 	cPlayerPowerJumpFactor  = 0.2;			//Factor de incremento poder salto
 	cPlayerMaxPowerJump     = 10;           //Maximo incremento poder salto
 	
