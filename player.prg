@@ -81,7 +81,7 @@ BEGIN
 		if (canMove)
 			
 			//direccion derecha
-			if (key(CKRIGHT)) 
+			if (key(K_RIGHT)) 
 				if (vX < velMaxX) 
 					vX+=accelx*(1-friction);
 				end;
@@ -89,7 +89,7 @@ BEGIN
 			end;
 			
 			//direccion izquierda
-			if (key(CKLEFT)) 
+			if (key(K_LEFT)) 
 				if (vX > -velMaxX) 
 					vX-=accelx*(1-friction);
 				end;
@@ -97,9 +97,9 @@ BEGIN
 			end;
 			
 			//boton salto
-			if (WGE_Key(CKBT1,KEY_PRESSED))
+			if (WGE_Key(K_JUMP,KEY_PRESSED))
 				//salto con key_down
-				if (WGE_Key(CKBT1,KEY_DOWN)) 
+				if (WGE_Key(K_JUMP,KEY_DOWN)) 
 					if(!jumping && (grounded || onStairs)) 
 						jumping = true;
 						grounded = false;
@@ -118,7 +118,7 @@ BEGIN
 			end;
 			
 			//boton ataque/accion
-			if (WGE_Key(CKBT2,KEY_DOWN)) 
+			if (WGE_Key(K_ACTION_ATACK,KEY_DOWN)) 
 				//activar atacando
 				if (jumping && !picked)
 					atacking = true;
@@ -154,7 +154,7 @@ BEGIN
 			end;
 			
 			//direccion arriba/subir escaleras
-			if (key(CKUP))			
+			if (key(K_UP))			
 				//si objeto cogido, no podemos ni agacharnos y bajar escaleras
 				if (!picked)
 					//si el centro del objeto esta en tile escaleras
@@ -181,7 +181,7 @@ BEGIN
 			end;
 			
 			//direccion abajo/agacharse/bajar escalera
-			if (key(CKDOWN))
+			if (key(K_DOWN))
 				//si objeto cogido, no podemos ni agacharnos y bajar escaleras
 				if (!picked)
 					//si el centro inferior del objeto esta en tile escaleras
@@ -233,7 +233,7 @@ BEGIN
 		end;
 		
 		//friccion
-		if (!key(CKLEFT) && !key(CKRIGHT))
+		if (!key(K_LEFT) && !key(K_RIGHT))
 			vX *= friction;
 		end;
 						
@@ -268,7 +268,7 @@ BEGIN
 				//Bajandola, cambio consignas velocidades
 				elseif (isBitSet(flags,B_HMIRROR))
 					//si esta atacando,resbala por la rampa
-					if ((atacking && key(CKLEFT)) || sloping)
+					if ((atacking && key(K_LEFT)) || sloping)
 						sloping = true;
 						canMove = false;
 						friction = 1;
@@ -292,7 +292,7 @@ BEGIN
 				//Bajandola, cambio consignas velocidades
 				elseif (!isBitSet(flags,B_HMIRROR))
 					//si esta atacando,resbala por la rampa
-					if ((atacking && key(CKRIGHT)) || sloping)
+					if ((atacking && key(K_RIGHT)) || sloping)
 						sloping = true;
 						canMove = false;
 						friction = 1;
@@ -377,7 +377,7 @@ BEGIN
 					//rebote al atacar
 					vY = -cPlayerAtackBounce;
 					//si se pulsa ataque se añade incremento en rebote
-					if (WGE_Key(CKBT2,KEY_PRESSED))
+					if (WGE_Key(K_ACTION_ATACK,KEY_PRESSED))
 						vY -= cPlayerPowerAtackBounce;
 					end;
 					grounded = false;
@@ -494,7 +494,7 @@ BEGIN
 				state = IDLE_STATE;
 			end;
 			//estados de frenadas al no pulsar movimiento
-			if ( abs(vX) > 0.1 && !key(CKRIGHT) && !key(CKLEFT)) 
+			if ( abs(vX) > 0.1 && !key(K_RIGHT) && !key(K_LEFT)) 
 				//si no esta en rampas o con objeto cogido
 				if (!on135Slope && !on45Slope && !picked)
 					//frenada cayendo
@@ -514,12 +514,12 @@ BEGIN
 			end;
 		end;
 		
-		if (key(CKLEFT))
+		if (key(K_LEFT))
 			state = MOVE_STATE;
 			//miramos hacia la izquierda
 			flags |= B_HMIRROR;
 		end;
-		if (key(CKRIGHT))
+		if (key(K_RIGHT))
 			state = MOVE_STATE;
 			//miramos hacia la derecha
 			flags &=~ B_HMIRROR;
@@ -537,7 +537,7 @@ BEGIN
 		if (onStairs)
 			state = ON_STAIRS_STATE;
 		end;
-		if (onStairs && (key(CKUP) || key(CKDOWN)) )
+		if (onStairs && (key(K_UP) || key(K_DOWN)) )
 			state = MOVE_ON_STAIRS_STATE;
 		end;
 		if (atacking)

@@ -97,6 +97,21 @@ begin
 			WGE_RestartLevel();
 		end;
 		
+		//pausa del juego
+		if (WGE_Key(K_PAUSE,KEY_DOWN))
+			if (gamePaused)
+				signal(idPlayer,s_wakeup);
+				signal(type objeto,s_wakeup);
+				signal(type plataforma,s_wakeup);
+				gamePaused = false;
+			else
+				signal(idPlayer,s_freeze);
+				signal(type objeto,s_freeze);
+				signal(type plataforma,s_freeze);
+				gamePaused = true;
+			end;
+		end;
+		
 		//Tareas de entrada al modo debug
 		if (debugMode && not actDebugMode)
 			//creamos el cursor

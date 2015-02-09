@@ -11,12 +11,13 @@
 #define isBitSet(a,b) 	( (a & b) == b )	//Funcion comparar bit
 
 //Teclas 
-#define	CKUP 	  _UP 
-#define	CKDOWN	  _DOWN 
-#define	CKLEFT    _LEFT 
-#define	CKRIGHT	  _RIGHT 
-#define	CKBT1	  _R_SHIFT
-#define	CKBT2	  _SPACE
+#define	K_UP 	  		_UP 
+#define	K_DOWN	  		_DOWN 
+#define	K_LEFT    		_LEFT 
+#define	K_RIGHT	  		_RIGHT 
+#define	K_JUMP	  		_R_SHIFT
+#define	K_ACTION_ATACK	_SPACE
+#define K_PAUSE         _ENTER
 
 //Estados de tecla
 #define KEY_PRESSED    0
@@ -253,6 +254,7 @@ Global
 	int minFPS; 				//FPS Mínimo
 	byte ClockTick;				//Flanco Tiempo
 	int clockCounter;			//Contador Reloj
+	byte gamePaused;            //Flag de pausa
 	
 	//debug
 	byte debugMode;				//Modo debug del engine
