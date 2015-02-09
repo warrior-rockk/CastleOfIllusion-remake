@@ -64,13 +64,12 @@ begin
 		end;
 		
 		//activacion/desactivacion del modo debug
-		if (key(_control) && key(_d))
+		if (key(_control) && WGE_Key(_d,KEY_DOWN))
 			debugMode = not debugMode;
-			WGE_Wait(20);
 		end;
 		
 		//Seteo de fps a 0
-		if (key(_control) && key(_f))
+		if (key(_control) && WGE_Key(_f,KEY_DOWN))
 			if (FPS==cNumFPS)
 				set_fps(cNumFPSDebug,0);
 				log("Pasamos a "+cNumFPSDebug+" FPS");
@@ -78,23 +77,20 @@ begin
 				set_fps(cNumFPS,0);
 				log("Pasamos a "+cNumFps+" FPS");
 			end;
-			WGE_Wait(20);
 			//Reseteamos mediciones
 			maxFPS = 0;
 			minFPS = 0;
 		end;
 
 		//Subida/Bajada de fps
-		If (key(_C_MINUS))
+		If (WGE_Key(_C_MINUS,KEY_DOWN))
 			log("no");
 			set_fps(fps-10,0);
 			log("Pasamos a "+fps+" FPS");
-			WGE_Wait(20);
 		end;
-		If (key(_C_PLUS))
+		If (WGE_Key(_C_PLUS,KEY_DOWN))
 			set_fps(fps+10,0);
 			log("Pasamos a "+fps+" FPS");
-			WGE_Wait(20);
 		end;
 
 		//reiniciar nivel
@@ -122,7 +118,6 @@ begin
 		
 		//Tareas ciclicas del modo debug
 		if (actDebugMode)
-
 			//Pintamos los puntos de deteccion del jugador
 			if (idPlayer<>0)
 				for (i=0;i<cNumColPoints;i++)			
@@ -130,7 +125,6 @@ begin
 					debugColPoint(idPlayer,i);
 				end;
 			end;
-					
 		end;
 		
 		//Tareas salida del modo debug
