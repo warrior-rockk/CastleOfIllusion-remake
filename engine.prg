@@ -198,7 +198,7 @@ begin
 	//Limpiamos la memoria dinamica
 	free(objetos);
 	free(paths);
-	//free(tileMap);
+	free(tileMap);
 	
 	//liberamos archivos cargados
 	unload_fpg(level.fpgTiles);
