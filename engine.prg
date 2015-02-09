@@ -84,7 +84,6 @@ begin
 
 		//Subida/Bajada de fps
 		If (WGE_Key(_C_MINUS,KEY_DOWN))
-			log("no");
 			set_fps(fps-10,0);
 			log("Pasamos a "+fps+" FPS");
 		end;
