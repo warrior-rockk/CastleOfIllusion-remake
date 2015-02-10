@@ -194,6 +194,8 @@ end;
 
 //Desactivación del engine y liberacion de memoria
 function WGE_Quit()
+private
+	int i; //variable auxiliar
 begin
 	//Limpiamos la memoria dinamica
 	free(objetos);
