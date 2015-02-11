@@ -17,6 +17,7 @@ private
 		
 	int i; 									//Variables auxiliares
 	byte clockTickMem;						//Memoria Flanco Reloj
+	int pauseText;
 begin
 	priority = 1000;         
 	
@@ -103,11 +104,13 @@ begin
 				signal(idPlayer,s_wakeup);
 				signal(type objeto,s_wakeup);
 				signal(type plataforma,s_wakeup);
+				delete_text(pauseText);
 				gamePaused = false;
 			else
 				signal(idPlayer,s_freeze);
 				signal(type objeto,s_freeze);
 				signal(type plataforma,s_freeze);
+				pauseText = write(0,cResx>>1,cResy>>1,0,ALIGN_CENTER,"-Paused-");
 				gamePaused = true;
 			end;
 		end;
