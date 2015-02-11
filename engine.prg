@@ -110,7 +110,7 @@ begin
 				signal(idPlayer,s_freeze);
 				signal(type objeto,s_freeze);
 				signal(type plataforma,s_freeze);
-				pauseText = write(0,cResx>>1,cResy>>1,0,ALIGN_CENTER,"-Paused-");
+				pauseText = write(0,cResx>>1,cResy>>1,ALIGN_CENTER,"-Paused-");
 				gamePaused = true;
 			end;
 		end;

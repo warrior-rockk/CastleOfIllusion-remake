@@ -3,7 +3,7 @@
 //  Motor para juegos plataformas 2D
 //  21/07/14
 //
-//  Definiciones globales del engine
+//  Definiciones del engine
 // ========================================================================
 
 //Defines del engine
