@@ -219,6 +219,8 @@ End;
 //definiciones del engine
 include "player.h";       	//Proceso jugador
 include "collisions.h"      //Funciones de colision
+include "animation.h"      //Funciones de animacion
+include "objetos.h"        //Funciones de objetos
 
 //Codigo del engine
 include "engine.prg";		//Core principal de engine
