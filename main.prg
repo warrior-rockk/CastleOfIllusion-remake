@@ -65,6 +65,8 @@ Begin
 	//caja(672,160-64);
 	player();
 	
+	say(idPlayer.cosa);
+	
 	//Bucle principal
 	Loop
 		   

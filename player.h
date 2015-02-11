@@ -64,8 +64,14 @@ end;
 
 Global
 	//jugador
-	int idPlayer;				//Identificador del proceso del jugador
+	player idPlayer;				//Identificador del proceso del jugador
 	int idPlatform;				//Identificador de plataforma sobre la que esta el player
 	int idObjectPicked;			//Identificador del objeto cogido
 	int idObjectThrowed;        //Identificador del objeto lanzado
 end;
+
+declare process player()
+public
+	int cosa=2;
+end
+end
