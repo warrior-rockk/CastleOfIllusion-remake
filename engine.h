@@ -99,30 +99,6 @@
 #define NO_COLLISION            2
 #define BREAKABLE               4
 
-//estados
-#define IDLE_STATE				0
-#define MOVE_STATE          	1
-#define MOVE_RIGHT_STATE 		2
-#define MOVE_LEFT_STATE  		3
-#define MOVE_UP_STATE	 		4
-#define MOVE_DOWN_STATE  		5
-#define MOVE_FREE_STATE  		6
-#define JUMP_STATE		  		7
-#define CROUCH_STATE			8
-#define BREAK_STATE				9
-#define FALL_STATE				10
-#define ON_STAIRS_STATE			11
-#define MOVE_ON_STAIRS_STATE 	12
-#define BREAK_FALL_STATE		13
-#define ATACK_STATE				14
-#define BREAK_ATACK_STATE		15
-#define SLOPING_STATE			16
-#define BREAK_SLOPING_STATE		17
-#define PICKING_STATE			18
-#define PICKED_STATE			19
-#define THROWING_STATE			20
-#define DEAD_STATE              21
-
 //Constantes del motor
 const
 	//Engine
@@ -175,36 +151,6 @@ const
 	//Mapeado
 	cTileSize   = 16;   					//Tamaño tiles (Ancho y alto iguales)
 	cHalfTSize = cTileSize >> 1; 			//Mitad del tamaño tile (util para todo el proyecto)
-	
-	//Fisicas
-	cPlayerVelMaxX			= 3.4;			//Velocidad Maxima X Player
-	cPlayerVelMaxXSlopeUp	= 2;            //Velocidad Maxima X Player subiendo rampa
-	cPlayerVelMaxXSlopeDown = 4;            //Velocidad Maxima X Player bajando rampa
-	cPlayerVelMaxXSloping	= 6;            //Velocidad Maxima X Player resbalando por rampa
-	cPlayerAccelX           = 1.2;          //Aceleracion maxima X Player
-	cPlayerAccelXSlopeUp    = 0.2;          //Aceleracion maxima X Player subiendo rampa
-	cPlayerAccelXSlopeDown  = 1.2;          //Aceleracion maxima X Player bajando rampa
-	cPlayerAccelXSloping	= 0.15;          //Aceleracion maxima X Player resbalando por rampa
-	cPlayerDecelXSlopeUp    = 0.1;			//Factor deceleracion X al subir rampa
-	cPlayerAccelY			= 4;			//Aceleracion Player Y salto
-	cPlayerVelMaxY          = 10;			//Velocidad Maxima Y Player
-	cPlayerAtackBounce      = 4;            //Rebote al romper objet/atacar
-	cPlayerPowerAtackBounce = 1.4;          //Extra de rebote al romper/atacar
-	cPlayerPowerJumpFactor  = 0.2;			//Factor de incremento poder salto
-	cPlayerMaxPowerJump     = 10;           //Maximo incremento poder salto
-	
-	//Personaje
-	cPlayerAncho			= 16;			//Ancho del jugador
-	cPlayerAlto				= 32;			//Alto del jugador
-	cPlayerAltoCrouch		= 22;			//Alto del jugador agachado
-	
-	cPickingTime			= 20;			//Tiempo retraso para recojer objeto
-	
-	//Offset Posicion objeto cogido
-	cObjectPickedPosX       = 3;						//Offset X posicion player para el objeto cogido
-	cObjectPickedPosY       = -(cPlayerAlto>>1);		//Offset Y posicion player para el objeto cogido
-	cThrowObjectVelX        = 3;							//Velocidad X lanzamiento objeto
-	cThrowObjectVelY        = -3;						//Velocidad Y lanzamiento objeto
 End;
 
 //Data Types
@@ -274,11 +220,6 @@ Global
 	_path* paths;				//Array Dinamico de paths
 	_tile** tileMap;  	        //Matriz Dinamica del mapa de tiles del nivel
 	byte mapUsesAlpha;				//Bit que indica que el mapa usa propiedad alpha (relentiza la carga)
-	//jugador
-	int idPlayer;				//Identificador del proceso del jugador
-	int idPlatform;				//Identificador de plataforma sobre la que esta el player
-	int idObjectPicked;			//Identificador del objeto cogido
-	int idObjectThrowed;        //Identificador del objeto lanzado
 	//Fisicas
 	float gravity 			= 0.3;		//Aceleracion gravedad
 	float floorFriction 	= 0.9;		//Friccion suelo
@@ -309,15 +250,18 @@ Local
 		int x;						//Offset X a sumar a la posicion del objeto
 		int y;						//Offset Y a sumar a la posicion del objeto
 		int colCode;				//Codigo del punto de colision
-		int enabled;				//Habilitacion del punto de colision
+		int enabled;			//Habilitacion del punto de colision
 	end;
 	int frameCount;					//Contador frames animacion
 End;
 
 
-//Includes del engine
+//definiciones del engine
+include "player.h";       	//Proceso jugador
+
+//Codigo del engine
 include "engine.prg";		//Core principal de engine
-include "player.prg";       //Proceso jugador
+include "player.prg";       	//Proceso jugador
 include "collisions.prg";	//Funciones de colision
 include "debug.prg";		//Funciones de debug
 include "objetos.prg"		//Procesos objetos
