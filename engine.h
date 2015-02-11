@@ -115,17 +115,6 @@ End;
 
 //Data Types
 
-//Objeto
-Type _objeto         			//Tipo de Dato de objeto
-	byte tipo;      			//Tipo del objeto
-	int grafico;    			//Grafico
-	int x0;         			//Posicion X
-	int y0;         			//Posicion Y
-	int angulo;     			//Angulo
-	int param[cMaxObjParams];	//Parametros del objeto
-	byte dibujado;				//Flag de si ha sido dibujado (sectorizacion)
-End;
-
 //Punto
 Type _point						//Tipo de dato punto
 	int x;						//Posicion X
@@ -176,7 +165,6 @@ Global
 		int fpgTiles;			//Identificador del archivo de graficos del tile
 		int fpgObjects;			//Identificador del archivo de graficos de los objetos del nivel
 	End;	
-	_objeto* objetos;			//Array Dinamico de objetos
 	_path* paths;				//Array Dinamico de paths
 	_tile** tileMap;  	        //Matriz Dinamica del mapa de tiles del nivel
 	byte mapUsesAlpha;				//Bit que indica que el mapa usa propiedad alpha (relentiza la carga)
