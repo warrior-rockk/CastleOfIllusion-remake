@@ -24,10 +24,6 @@
 #define KEY_DOWN       1
 #define KEY_UP         2
 
-//Modos de la funcion animacion
-#define ANIM_LOOP	0
-#define ANIM_ONCE   1
-
 //Codigo del tile
 //bits del 0 al 4 del mapa de tiles
 //				Tipo 0: No Solido
@@ -62,11 +58,6 @@
 #define BIT_TILE_SHAPE 		128
 #define BIT_TILE_DELANTE 	64
 #define BIT_TILE_ALPHA      32
-
-//propiedades de los objetos
-#define PICKABLE				1
-#define NO_COLLISION            2
-#define BREAKABLE               4
 
 //Constantes del motor
 const
