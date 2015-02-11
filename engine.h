@@ -24,40 +24,9 @@
 #define KEY_DOWN       1
 #define KEY_UP         2
 
-//Modos funcion colCheckVectorY
-#define FROMCOLLISION    0					//Comprobar pixeles para salir de la colision
-#define TOCOLLISION      1					//Comprobar pixeles hasta llegar a la colision
-
-//Modos funcion colCheckProcess
-#define BOTHAXIS			0					//Ambos ejes
-#define HORIZONTALAXIS		1					//Eje Horizontal
-#define VERTICALAXIS		2					//Eje Vertical
-
 //Modos de la funcion animacion
 #define ANIM_LOOP	0
 #define ANIM_ONCE   1
-
-//Direccion colision
-#define NOCOL		0
-#define COLUP		1
-#define COLDOWN		2
-#define COLIZQ		3
-#define COLDER   	4
-#define COLCENTER   5
-
-//Puntos de colision
-//los puntos laterales deben estar primero de los inferiores/superiores
-//para el buen funcionamiento de la deteccion de obstaculos
-#define RIGHT_UP_POINT		0
-#define RIGHT_DOWN_POINT	1
-#define LEFT_UP_POINT		2
-#define LEFT_DOWN_POINT		3
-#define DOWN_L_POINT		4
-#define DOWN_R_POINT		5
-#define UP_L_POINT			6
-#define UP_R_POINT			7
-#define CENTER_POINT		8
-#define CENTER_DOWN_POINT	9
 
 //Codigo del tile
 //bits del 0 al 4 del mapa de tiles
@@ -258,10 +227,11 @@ End;
 
 //definiciones del engine
 include "player.h";       	//Proceso jugador
+include "collisions.h"      //Funciones de colision
 
 //Codigo del engine
 include "engine.prg";		//Core principal de engine
-include "player.prg";       	//Proceso jugador
+include "player.prg";       //Proceso jugador
 include "collisions.prg";	//Funciones de colision
 include "debug.prg";		//Funciones de debug
 include "objetos.prg"		//Procesos objetos
