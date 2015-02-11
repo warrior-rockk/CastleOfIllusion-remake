@@ -256,6 +256,12 @@ begin
 	
 	//Asignamos tamaño dinamico al array de objetos
 	objetos = calloc(level.numObjects ,sizeof(_objeto));
+	//comprobamos el direccionamiento dinamico
+	if ( objetos == NULL )
+		log("Fallo alocando memoria dinámica (objetos)");
+		WGE_Quit();
+	end;
+	
 	//Leemos los datos de los objetos
 	for (i=0;i<level.numObjects;i++)
 			fread(levelFile,objetos[i].tipo);
@@ -272,13 +278,23 @@ begin
 	log("Leyendo Paths Nivel");
 	fread(levelFile,level.numPaths);
 	//Asignamos tamaño dinamico al array de paths
-	objetos = calloc(level.numPaths , sizeof(_path));
+	paths = calloc(level.numPaths , sizeof(_path));
+	//comprobamos el direccionamiento dinamico
+	if ( paths == NULL )
+		log("Fallo alocando memoria dinámica (paths)");
+		WGE_Quit();
+	end;
 	//Leemos los datos de los trackings	
 	for (i=0;i<level.numPaths;i++)
 			//Leemos numero de puntos
 			fread(levelFile,paths[i].numPuntos);
 			//Asignamos tamaño dinamico al array de puntos
-			paths[i].punto = alloc(paths[i].numPuntos * sizeof(_point));
+			paths[i].punto = calloc(paths[i].numPuntos,sizeof(_point));
+			//comprobamos el direccionamiento dinamico
+			if ( paths[i].punto == NULL )
+				log("Fallo alocando memoria dinámica (paths["+i+"])");
+				WGE_Quit();
+			end;
 			for (j=0;j<paths[i].numPuntos;j++)
 				//Leemos los puntos
 				fread(levelFile,paths[i].punto[j].x); 
@@ -361,9 +377,21 @@ Begin
 	
 	
 	//Creamos la matriz dinamica del tileMap
+	//Primera dimension
 	tileMap = calloc(level.numTilesY,sizeof(_tile*));
+	//comprobamos el direccionamiento
+	if ( tileMap == NULL )
+		log("Fallo alocando memoria dinámica (tileMap)");
+		WGE_Quit();
+	end;
+	//segunda dimension
 	from i = 0 to level.numTilesY-1;
 		tileMap[i] = calloc(level.numTilesX ,sizeof(_tile));
+		//comprobamos el direccionamiento
+		if ( tileMap[i] == NULL )
+			log("Fallo alocando memoria dinámica (tileMap["+i+"])");
+			WGE_Quit();
+		end;	
 	end;
 	
 	//Cargamos la informacion del grafico de los tiles del fichero de mapa
