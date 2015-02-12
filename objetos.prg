@@ -19,12 +19,15 @@ begin
 	ancho = 32;
 	alto = 32;
 	
-	graph = map_new(ancho,alto,8,0);
-	map_clear(0,graph,rand(200,300));
+	file = level.fpgObjects;
+	//graph = map_new(ancho,alto,8,0);
+	//map_clear(0,graph,rand(200,300));
 	
 	region = cGameRegion;
 	ctype = c_scroll;
 	z = cZObject;
+	
+	
 	
 	//igualamos la propiedades publicas a las de parametros
 	vX = _vX;
@@ -294,7 +297,7 @@ begin
 				//lanzamos comprobacion con procesos caja
 				repeat
 					//obtenemos siguiente colision
-					colID = get_id(TYPE caja);
+					colID = get_id(TYPE objeto);
 					//si no soy yo mismo
 					if (colID <> ID) 
 						//aplicamos la direccion de la colision
@@ -330,7 +333,7 @@ begin
 				//lanzamos comprobacion con procesos caja
 				repeat
 					//obtenemos siguiente colision
-					colID = get_id(TYPE caja);
+					colID = get_id(TYPE objeto);
 					//si no soy yo mismo
 					if (colID <> ID) 
 						//obtenemos la direccion de la colision
