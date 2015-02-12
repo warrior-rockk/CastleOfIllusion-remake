@@ -7,7 +7,7 @@
 // ========================================================================
 
 //Funcion que crea puntos de colision del jugador
-function int WGE_CreatePlayerColPoints(int idObject)
+function int WGE_CreatePlayerColPoints(entity idObject)
 
 begin
 		
@@ -66,7 +66,7 @@ begin
 end;
 
 //Funcion que crea puntos de colision de un objeto
-function int WGE_CreateObjectColPoints(int idObject)
+function int WGE_CreateObjectColPoints(entity idObject)
 
 begin
 		
@@ -126,7 +126,7 @@ end;
 
 //Funcion de colision con tile segun mapa de durezas segun su punto de colision
 //Posiciona el objeto en el borde del tile y devuelve un int con el sentido de la colision o 0 si no lo hay
-function int colCheckTileTerrain(int idObject,int i)
+function int colCheckTileTerrain(entity idObject,int i)
 private 
 
 _vector colVector;	//Vector de comprobacion colision
@@ -374,7 +374,7 @@ End;
 
 //Funcion de chequeo de colision entre procesos elegiendo el eje
 //Posiciona el objeto al borde del tile y devuelve un int con el sentido de la colision o 0 si no hay
-function int colCheckProcess(int idObject, int idObjectB, int axis)
+function int colCheckProcess(entity idObject,idObjectB, int axis)
 private
 float vcX,vcY,hW,hH,oX,oY;
 int ColDir;
@@ -443,7 +443,7 @@ end;
 
 //Funcion de chequeo de colision entre proceso y AABB
 //Posiciona el objeto al borde del tile y devuelve un int con el sentido de la colision o 0 si no hay
-function int colCheckAABB(int idObject, int shapeBx,int shapeBy,int shapeBW,int shapeBH)
+function int colCheckAABB(entity idObject, int shapeBx,int shapeBy,int shapeBW,int shapeBH)
 private
 float vcX,vcY,hW,hH,oX,oY;
 int ColDir;
@@ -491,7 +491,7 @@ end;
 
 //Funcion de chequeo de colision entre proceso y tile (dando sus coordenadas en mapa)
 //Posiciona el objeto al borde del tile y devuelve un int con el sentido de la colision o 0 si no hay
-function int colCheckTile(int idObject,int posX,int posY)
+function int colCheckTile(entity idObject,int posX,int posY)
 private
 float vcX,vcY,hW,hH,oX,oY;
 int ColDir;
@@ -553,7 +553,7 @@ begin
 end;
 
 //funcion que aplica la direccion de la colision en el objeto
-function applyDirCollision(int idObject,int colDir,byte *objGrounded)
+function applyDirCollision(entity idObject,int colDir,byte *objGrounded)
 begin
 	//acciones segun colision
 	if (colDir == COLIZQ || colDir == COLDER) 

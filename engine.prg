@@ -751,8 +751,8 @@ Begin
 	plataforma(620,729,32,16,8,25);
 	plataforma(458,729,32,16,8,25);
 	
-	objeto(5,218,712,16,16).props |= BREAKABLE;
-	objeto(5,1210,136,16,16).props |= BREAKABLE;
+	objeto(5,218,712,16,16,PICKABLE | BREAKABLE);
+	objeto(5,1210,136,16,16,PICKABLE | BREAKABLE);
 	
 	
 	//creamos los objetos del nivel
@@ -829,7 +829,7 @@ end;
 
 //Funcion que comprueba, segun el codigo del tile, el comportamiento de la colision segun la direccion
 //Devuelve 1 si colisiona en esa direccion o 0 si no colisiona.
-function int checkTileCode(int idObject,int colDir,int posY,int posX)
+function int checkTileCode(entity idObject,int colDir,int posY,int posX)
 begin
 	switch(colDir)
 		//Colisiones superiores
@@ -860,7 +860,7 @@ begin
 end;
 
 //funcion que devuelve el codigo de Tile de un punto de colision
-function int getTileCode(int idObject,int pointType)
+function int getTileCode(entity idObject,int pointType)
 begin
 	//sumamos la posicion del objeto al punto de colision
 	x = idObject.x + idObject.colPoint[pointType].x;
@@ -889,7 +889,7 @@ end;
 
 //Escalamos la posicion de floats en enteros
 //si la diferencia entre el float y el entero es una unidad
-function positionToInt(int idObject)
+function positionToInt(entity idObject)
 begin
 	if (abs(idObject.fX-idObject.x) >= 1 ) 
 		//redondeamos el valor a entero

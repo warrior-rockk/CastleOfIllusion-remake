@@ -7,8 +7,9 @@
 // ========================================================================
 
 //Defines del engine
-#define WGE_ENGINE							//Utilizando WGE engine
-#define isBitSet(a,b) 	( (a & b) == b )	//Funcion comparar bit
+#define WGE_ENGINE										//Utilizando WGE engine
+#define isBitSet(a,b) 	( (a & b) == b )				//Funcion comparar bit
+#define isType(a,b)     (a.reserved.process_type == b) 	//Funcion para comprobar tipo proceso
 
 //Teclas 
 #define	K_UP 	  		_UP 
@@ -185,6 +186,14 @@ End;
 
 //Variables locales
 Local
+	
+End;
+
+//Declaracion de proceso entidad. 
+//Plantilla de variables publicas para asociar a variables
+//generales que usan publicas sin conocer el tipo exacto del proceso
+Declare Process entity()
+public
 	float vX			= 0;     	//Velocidad X
 	float vY			= 0;     	//Velocidad Y
 	float fX			= 0;		//Posicion x coma flotante
@@ -201,8 +210,18 @@ Local
 		int enabled;			//Habilitacion del punto de colision
 	end;
 	int frameCount;					//Contador frames animacion
-End;
+end
+end
 
+//Declaracion de proceso Tile
+Declare Process pTile(int i,int j)
+public
+	int   alto			= 0;   		//Altura en pixeles del proceso
+	int   ancho			= 0;   		//Ancho en pixeles del proceso
+	byte  props			= 0;		//Propiedades de la entidad
+	int frameCount;					//Contador frames animacion
+end
+end
 
 //definiciones del engine
 include "player.h";       	//Proceso jugador

@@ -30,9 +30,9 @@ float accelX;				//Aceleracion Maxima Horizontal
 float accelY;				//Aceleracion Maxima Vertical
 float friction;				//Friccion local
 int	  dir;					//Direccion de la colision
-int   colID;				//Proceso con el que se colisiona
-int   objectforPickID;		//Proceso de tipo objeto que se colisiona lateralmente
-int   memObjectforPickID;   //Memoria de objeto que se colisiona
+entity colID;				//Proceso con el que se colisiona
+entity objectforPickID;		//Proceso de tipo objeto que se colisiona lateralmente
+entity memObjectforPickID;   //Memoria de objeto que se colisiona
 int   pickingCounter; 		//Contador para recojer objeto
 struct tiles_comprobar[8]   //Matriz comprobacion colision tiles
 	int posx;
@@ -127,8 +127,7 @@ BEGIN
 				if (picking && !picked)
 					picked = true;
 					//creamos un objeto picked con sus propiedades
-					idObjectPicked = pickedObject(memObjectforPickID.file,memObjectforPickID.graph,memObjectforPickID.ancho,memObjectforPickID.alto);
-					idObjectPicked.props = memObjectforPickID.props;
+					idObjectPicked = pickedObject(memObjectforPickID.file,memObjectforPickID.graph,memObjectforPickID.ancho,memObjectforPickID.alto,memObjectforPickID.props);
 					//le quitamos la propiedad de solido
 					idObjectPicked.props |= NO_COLLISION; 
 					signal(memObjectforPickID,s_kill);
@@ -137,8 +136,7 @@ BEGIN
 				//lanzar objeto
 				if (!picking & picked)
 					//creamos objeto con las propiedades del recogido
-					idObjectThrowed = objeto(idObjectPicked.graph,idObjectPicked.x,idObjectPicked.y,idObjectPicked.ancho,idObjectPicked.alto);
-					idObjectThrowed.props = idObjectPicked.props;
+					idObjectThrowed = objeto(idObjectPicked.graph,idObjectPicked.x,idObjectPicked.y,idObjectPicked.ancho,idObjectPicked.alto,idObjectPicked.props);
 					//matamos el objeto cogido
 					signal(idObjectPicked,s_kill);
 					idObjectPicked = 0;
@@ -693,6 +691,7 @@ BEGIN
 	end;
 end;
 
+/*
 process player_no_gravity()
 begin
 	ancho = 32;
@@ -718,3 +717,4 @@ begin
 		frame;
 	end;
 end;
+*/

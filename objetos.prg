@@ -8,7 +8,7 @@
 
 
 //Proceso caja con gravedad
-process caja(int x,int y,float vX,float vY);
+process caja(int x,int y,float _vX,float _vY)
 private
 byte grounded;
 int i;
@@ -25,6 +25,10 @@ begin
 	region = cGameRegion;
 	ctype = c_scroll;
 	z = cZObject;
+	
+	//igualamos la propiedades publicas a las de parametros
+	vX = _vX;
+	vY = _vY;
 	
 	fx = x;
 	fy = y;
@@ -97,7 +101,7 @@ end;
 //x inicial
 //y inicial
 //rango de movimiento
-process plataforma(int x,int y,int ancho,int alto,int graph,int rango)
+process plataforma(int x,int y,int _ancho,int _alto,int graph,int rango)
 private
 	int startX;
 	int startY;
@@ -108,6 +112,10 @@ begin
 	z = cZObject;
 	file = level.fpgObjects;
 	
+	//igualamos la propiedades publicas a las de parametros
+	ancho = _ancho;
+	alto = _alto;
+	
 	//modo debug sin graficos
 	if (file<0)
 		graph = map_new(ancho,alto,8,0);
@@ -115,15 +123,15 @@ begin
 	end;
 	
 	//puntos de colision del objeto
-	id.colPoint[LEFT_UP_POINT].x 		= -(ancho>>1);
-	id.colPoint[LEFT_UP_POINT].y 		= 0;
-	id.colPoint[LEFT_UP_POINT].colCode = COLIZQ;
-	id.colPoint[LEFT_UP_POINT].enabled = 1;
+	colPoint[LEFT_UP_POINT].x 		= -(ancho>>1);
+	colPoint[LEFT_UP_POINT].y 		= 0;
+	colPoint[LEFT_UP_POINT].colCode = COLIZQ;
+	colPoint[LEFT_UP_POINT].enabled = 1;
 	
-	id.colPoint[RIGHT_UP_POINT].x 		= (ancho>>1);
-	id.colPoint[RIGHT_UP_POINT].y 		= 0;
-	id.colPoint[RIGHT_UP_POINT].colCode = COLDER;
-	id.colPoint[RIGHT_UP_POINT].enabled = 1;
+	colPoint[RIGHT_UP_POINT].x 		= (ancho>>1);
+	colPoint[RIGHT_UP_POINT].y 		= 0;
+	colPoint[RIGHT_UP_POINT].colCode = COLDER;
+	colPoint[RIGHT_UP_POINT].enabled = 1;
 	
 	fx = x;
 	fy = y;
@@ -216,7 +224,7 @@ begin
 end;
 
 //Proceso objeto
-process objeto(int graph,int x,int y,int ancho,int alto);
+process objeto(int graph,int x,int y,int _ancho,int _alto,int _props)
 private
 byte grounded;
 int i;
@@ -230,6 +238,11 @@ begin
 	ctype = c_scroll;
 	z = cZObject;
 	file = level.fpgObjects;
+	
+	//igualamos la propiedades publicas a las de parametros
+	ancho = _ancho;
+	alto = _alto;
+	props = _props;
 	
 	props |= PICKABLE;
 	
@@ -372,15 +385,22 @@ begin
 end;
 
 //Objeto que ha cogido el personaje y lleva encima (objeto pasivo)
-process pickedObject(int file,int graph,int ancho,int alto);
+process pickedObject(int file,int graph,int _ancho,int _alto,int _props)
 private
-
+	entity idFather;	//Entidad del proceso padre
 begin
 	region = cGameRegion;
 	ctype = c_scroll;
 	z = cZObject;
 	
+	//igualamos la propiedades publicas a las de parametros
+	ancho = _ancho;
+	alto = _alto;
+	props = _props;
+	
 	props |= NO_COLLISION;
+	
+	idFather = father.id;
 	
 	//modo debug sin graficos
 	if (file<0)
@@ -390,8 +410,8 @@ begin
 	
 	//estado inicial
 	state = MOVE_STATE;
-	isBitSet(father.flags,B_HMIRROR)? x = father.x-(father.ancho>>1) : x = father.x+(father.ancho>>1);
-	y = father.y;
+	isBitSet(idfather.flags,B_HMIRROR)? x = idfather.x-(idfather.ancho>>1) : x = idfather.x+(idfather.ancho>>1);
+	y = idfather.y;
 				
 	loop
 		//estados

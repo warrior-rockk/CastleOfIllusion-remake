@@ -12,34 +12,35 @@
 function int WGE_Animate(int startFrame, int endFrame, int animationSpeed,int mode)
 private
 byte animFinished;	//flag de animacion terminada
-
+entity idFather;	//entidad del proceso padre
 begin
 	animFinished = false;
+	idFather = father.id;
 	
 	//evitamos el primer frame
-	if (father.frameCount <> 0)
+	if (idfather.frameCount <> 0)
 	    //si toca animar en el frame correspondiente
-		if ( (father.frameCount % animationSpeed ) == 0  && clockTick)	
+		if ( (idfather.frameCount % animationSpeed ) == 0  && clockTick)	
 			//incrementamos frame si estamos en el rango
-			if (father.graph < endFrame && father.graph >= startFrame)
-				father.graph++;
+			if (idfather.graph < endFrame && idfather.graph >= startFrame)
+				idfather.graph++;
 			else 
 				//si hemos llegado al final, pasamos al inicio
 				if (mode == ANIM_LOOP)
-					father.graph = startFrame; 
+					idfather.graph = startFrame; 
 				end;
 				animFinished =  true;
 			end;
 		else
 		//si no nos toca animar, reseteamos a inicio en caso de que estemos fuera de rango
-			if (father.graph > endFrame || father.graph < startFrame)
-				father.graph = startFrame; 
+			if (idfather.graph > endFrame || idfather.graph < startFrame)
+				idfather.graph = startFrame; 
 			end;
 		end;
 	end;
 	
 	//incrementamos contador local 
-	father.frameCount+=clockTick;
+	idfather.frameCount+=clockTick;
 	
 	//devolvemos finalizado
 	return animFinished;

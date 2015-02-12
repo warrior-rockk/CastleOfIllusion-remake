@@ -28,7 +28,6 @@ include "engine.h";      //archivo de definiciones,constantes y variables global
 
 //Proceso principal
 Process main()
-private int  colID;
 Begin
 		
 	level.playerx0 = 896;
@@ -64,8 +63,6 @@ Begin
 	//caja(672,160);
 	//caja(672,160-64);
 	player();
-	
-	say(idPlayer.cosa);
 	
 	//Bucle principal
 	Loop

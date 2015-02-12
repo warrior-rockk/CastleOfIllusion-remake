@@ -115,7 +115,7 @@ end;
 
 //Funcion para pintar los puntos de colision
 //de un proceso
-process debugColPoint(int idObject,int numPoint)
+process debugColPoint(entity idObject,int numPoint)
 begin
 	region = cGameRegion;
 	ctype = c_scroll;
@@ -192,7 +192,7 @@ end;
 
 //Funcion que dibuja un tile como un cuadrado de color variable
 //y dibujando su tipo correspondiente a modo de debug 
-function debugDrawTile(int idTile,byte tileColor,int i,int j)
+function debugDrawTile(entity idTile,byte tileColor,int i,int j)
 begin
 	//dibujamos el tile
 	map_clear(idTile.file,idTile.graph,0);
