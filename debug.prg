@@ -71,7 +71,7 @@ begin
 		if (mouse.right)
 			
 			//caja(x,y,4.0,-4.0);
-			idObj = objeto(1,x,y,16,16,0);
+			idObj = objeto(1,x,y,16,16,BREAKABLE);
 			idObj.vX = 2;
 			idObj.vY = -2;
 			
