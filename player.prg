@@ -8,7 +8,6 @@
 
 //TODO: Calcular nivel inferior al que seria muerte segun tamaño mapeado
 //		Salto distinto desde escalera
-//		Fuerza salto segun pulsacion tecla
 //		bloqueo del agacharse si muro en cabeza
 process player()
 private 
