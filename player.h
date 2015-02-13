@@ -29,6 +29,7 @@
 #define PICKED_STATE			19
 #define THROWING_STATE			20
 #define DEAD_STATE              21
+#define HURT_STATE              22
 
 Const
 	//Fisicas

@@ -24,6 +24,7 @@ byte  picking;				//Flag de recogiendo
 byte  picked;				//Flag de recogido
 byte  throwing;				//Flag de lanzando
 byte  canMove;				//Flag de movimiento permitido
+byte  hurt;					//Flag de daño
 float velMaxX;				//Velocidad Maxima Horizontal
 float accelX;				//Aceleracion Maxima Horizontal
 float accelY;				//Aceleracion Maxima Vertical
@@ -441,6 +442,7 @@ BEGIN
 			
 			
 			//si la colision es inferior y el monster no esta muerto
+			
 			if (dir == COLDOWN && colID.state != DEAD_STATE )
 				//si estamos atacando 
 				if ( state == ATACK_STATE)
@@ -454,10 +456,12 @@ BEGIN
 					//matamos al monster
 					colID.state = DEAD_STATE;
 				else
-					//corregimos la Y truncamos fY
-					y = fY;
-					fY = y;
+					//el monstruo te daña
+					hurt = true;
 				end;
+			elseif ( dir != NOCOL) //cualquier otra colision
+				//te daña
+				hurt = true;
 			end;
 					
 		until (colID == 0);
@@ -587,6 +591,9 @@ BEGIN
 		if (throwing)
 			state = THROWING_STATE;
 		end;
+		if (hurt)
+			state = HURT_STATE;
+		end;
 		
 		//si hay cambio de estado, resetamos contador animacion
 		if (prevState <> state)
@@ -713,6 +720,12 @@ BEGIN
 						state = IDLE_STATE;
 						throwing = false;
 					end;
+				end;
+			end;
+			case HURT_STATE:
+				if (WGE_Animate(32,33,10,ANIM_ONCE))
+						state = IDLE_STATE;
+						hurt = false;
 				end;
 			end;
 			default:
