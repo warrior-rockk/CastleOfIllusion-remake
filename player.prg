@@ -429,6 +429,41 @@ BEGIN
 			
 		until (colID == 0);
 		
+		//lanzamos comprobacion con procesos monstruos
+		repeat
+			
+			//obtenemos siguiente colision
+			colID = get_id(TYPE cycleClown);
+			
+						
+			//colisiones ambos ejes con procesos
+			dir = colCheckProcess(id,colID,BOTHAXIS);
+			
+			
+			//si la colision es inferior y el monster no esta muerto
+			if (dir == COLDOWN && colID.state != DEAD_STATE )
+				//si estamos atacando 
+				if ( state == ATACK_STATE)
+					//rebote al atacar
+					vY = -cPlayerAtackBounce;
+					//si se pulsa ataque se añade incremento en rebote
+					if (WGE_Key(K_ACTION_ATACK,KEY_PRESSED))
+						vY -= cPlayerPowerAtackBounce;
+					end;
+					grounded = false;
+					//matamos al monster
+					colID.state = DEAD_STATE;
+				else
+					//corregimos la Y truncamos fY
+					y = fY;
+					fY = y;
+				end;
+			end;
+					
+		until (colID == 0);
+		
+		//Fin colisiones ==============================
+		
 		//Actualizar velocidades
 		if (grounded)
 			vY = 0;

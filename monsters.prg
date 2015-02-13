@@ -10,22 +10,25 @@
 //Proceso enemigo cycleClown
 //Se mueve izquierda a derecha en un rango y dispara cuando el player está cerca
 process cycleClown(int graph,int x,int y,int _ancho,int _alto,int _props)
-begin
-end;
-/*
 private
-byte grounded;
-int i;
-int colID;
-float friction;
-int colDir;
-byte collided;
+byte grounded;		//flag de en suelo
+float friction;		//friccion local
 
+int colID;			//Id de colision
+int colDir;			//direccion de la colision
+byte collided;		//flag de colision
+
+int _x0;			//X inicial
+int xRange;			//Rango de movimiento X
+float xVel;			//Velocidad movimiento
+
+byte atack;			//Flag de atacar al enemigo
+int i;				//Variable auxiliar
 begin
 	region = cGameRegion;
 	ctype = c_scroll;
-	z = cZObject;
-	file = level.fpgObjects;
+	z = cZMonster;
+	file = level.fpgMonsters;
 	
 	//igualamos la propiedades publicas a las de parametros
 	ancho = _ancho;
@@ -41,120 +44,85 @@ begin
 	fx = x;
 	fy = y;
 	
+	_x0 = x;
+	xRange = 10;
+	xVel   = 0.2;
+	
 	WGE_CreateObjectColPoints(id);
 	
 	friction = floorFriction;
 	
-	state = MOVE_STATE;
+	state = MOVE_RIGHT_STATE;
 	
 	loop
 		
 		//FISICAS	
-		if (grounded)
-			vX *= friction;
-		end;
-		
 		vY += gravity;
 		
-		//comportamiento caja
+		//maquina de estados
 		switch (state)
 			case IDLE_STATE:
-				//normalizamos la posicion Y para evitar problemas de colision 
-				fY = y;
-				props &= ~ NO_COLLISION;
+				;
 			end;
-			case MOVE_STATE:
-								
-				//mientras se mueve, no es solido
-				props |= NO_COLLISION;
+			case MOVE_RIGHT_STATE: //movimiento a derecha
+				//movimiento lineal
+				vX = xVel;
 				
-				grounded = false;
-				collided = false;
-				
-				//Recorremos la lista de puntos a comprobar
-				for (i=0;i<cNumColPoints;i++)					
-					//aplicamos la direccion de la colision
-					applyDirCollision(ID,colCheckTileTerrain(ID,i),&grounded);			
+				//cambio de estado al superar rango
+				if (fx - _x0 > xRange)
+					state = MOVE_LEFT_STATE;
 				end;
 				
-				//lanzamos comprobacion con procesos caja
-				repeat
-					//obtenemos siguiente colision
-					colID = get_id(TYPE objeto);
-					//si no soy yo mismo
-					if (colID <> ID) 
-						//aplicamos la direccion de la colision
-						applyDirCollision(ID,colCheckProcess(id,colID,BOTHAXIS),&grounded);
-					end;
-				until (colID == 0);
-				
-				//cambio de estado		
-				if (grounded && abs(vX) < 0.1) 
-					state = IDLE_STATE;
-				end;
-				
+				//animacion movimiento
+				WGE_Animate(1,6,5,ANIM_LOOP);
 			end;
-			case THROWING_STATE:	
-				//mientras se mueve, no es solido
-				props |= NO_COLLISION;
+			case MOVE_LEFT_STATE: //movimiento a izquierda
+				//movimiento lineal
+				vX = -xVel;
 				
-				grounded = false;
-				collided = false;
-				
-				//Recorremos la lista de puntos a comprobar
-				for (i=0;i<cNumColPoints;i++)					
-					//obtenemos la direccion de la colision
-					colDir = colCheckTileTerrain(ID,i);
-					//aplicamos la direccion de la colision
-					applyDirCollision(ID,colDir,&grounded);
-					//seteamos flag de colisionado
-					if (colDir <> NOCOL)
-						collided = true;
-					end;
+				//cambio de estado al superar rango
+				if (_x0 - fx > xRange)
+					state = MOVE_RIGHT_STATE;
 				end;
 				
-				//lanzamos comprobacion con procesos caja
-				repeat
-					//obtenemos siguiente colision
-					colID = get_id(TYPE objeto);
-					//si no soy yo mismo
-					if (colID <> ID) 
-						//obtenemos la direccion de la colision
-						colDir = colCheckProcess(id,colID,BOTHAXIS);
-						//aplicamos la direccion de la colision
-						applyDirCollision(ID,colDir,&grounded);
-						//seteamos flag de colisionado
-						if (colDir <> NOCOL)
-							collided = true;
-						end;
-					end;
-				until (colID == 0);
-				
-				//cambio de estado
-				
-				//si es rompible y ha colisionado, lo destruimos
-				if (collided && isBitSet(props,BREAKABLE))
-					//actualizamos la posicion para ver la explosion en el sitio
-					vY = 0;
-					fx += vX;
-					fy += vY;
-					positionToInt(id);
-					
-					//cambiamos de estado
-					state = DEAD_STATE;
-				end;
-				
-				if (grounded && abs(vX) < 0.1) 
-					state = IDLE_STATE;
-				end;
-				
+				//animacion movimiento
+				WGE_Animate(1,6,5,ANIM_LOOP);
 			end;
 			case DEAD_STATE:
-				WGE_Animation(file,2,3,x,y,10,ANIM_ONCE);
+				deadMonster();
 				signal(id,s_kill);
 			end;
 		end;
 		
+		//Para todos los estados
+		//si existe el player
+		if (idPlayer <> 0 )
+			//miramos a su direccion
+			if (idPlayer.fX > fX)
+				flags &=~ B_HMIRROR; 
+			else
+				flags |= B_HMIRROR; 
+			end;
+			//player en rango ataque
+			if (abs(idPlayer.fX - fX) < 60 && !atack)
+				atack = true;
+				isBitSet(flags,B_HMIRROR) ? monsterFire(7,x,y-16,-2,-4) : monsterFire(7,x,y-16,2,-4);		
+			end;
+		end;
+		//podemos volver a atacar cuando muere el disparo
+		if (!exists(son))
+			atack = false;
+		end;
+		
+		//fisica terreno
+		grounded = false;
+				
+		//Recorremos la lista de puntos a comprobar
+		for (i=0;i<cNumColPoints;i++)					
+			//aplicamos la direccion de la colision
+			applyDirCollision(ID,colCheckTileTerrain(ID,i),&grounded);			
+		end;
+				
 		//Actualizar velocidades
 		if (grounded)
 			vY = 0;
@@ -168,4 +136,65 @@ begin
 		frame;
 	end;
 	
+end;
+
+//Proceso disparo de un monstruo
+process monsterFire(int graph,int x,int y,float _vX,float _vY)
+begin
+	region = cGameRegion;
+	ctype = c_scroll;
+	z = cZMonster;
+	file = level.fpgMonsters;
+	
+	//igualamos la propiedades publicas a las de parametros
+	vX = _vX;
+	vY = _vY;
+	
+	fX = x;
+	fY = y;
+	
+	repeat	
+			//fisicas
+			vY += gravity;
+			
+			fx += vX;
+			fy += vY;
+			positionToInt(id);
+			
+			frame;
+	//morimos al salirnos de la pantalla
+	until (out_region(id,cGameRegion));
+	
+end;
+
+//proceso de muerte de monstruo
+process deadMonster()
+begin
+	region = cGameRegion;
+	ctype = c_scroll;
+	z = cZMonster;
+	file = level.fpgMonsters;
+	
+	fX = father.x;
+	fY = father.y;
+	graph = father.graph;
+	flags = father.flags;
+	
+	vX = 0;
+	vY = -4;
+	
+	repeat	
+			//fisicas
+			vY += gravity;
+			
+			fx += vX;
+			fy += vY;
+			positionToInt(id);
+			
+			WGE_Animate(8,8,1,ANIM_LOOP);
+			
+			frame;
+	//morimos al salirnos de la pantalla
+	until (out_region(id,cGameRegion));
+
 end;

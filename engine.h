@@ -73,9 +73,10 @@ const
 	cTilePrior		 =-2;
 
 	//Profundidades
-	cZCursor    	 =-3; 		     		//Profundidad del cursor de Debug
-	cZMap2	    	 =-2;     				//Profundidad del mapeado encima del player
-	cZPlayer		 =-1;					//Profundidad del player
+	cZCursor    	 =-4; 		     		//Profundidad del cursor de Debug
+	cZMap2	    	 =-3;     				//Profundidad del mapeado encima del player
+	cZPlayer		 =-2;					//Profundidad del player
+	cZMonster        =-1;
 	cZObject         = 1;					//Profundidad de los objetos
 	cZMap1 	    	 = 2;					//Profundidad del mapeado tras el player
 	
@@ -229,6 +230,7 @@ include "player.h";       	//Proceso jugador
 include "collisions.h"      //Funciones de colision
 include "animation.h"      //Funciones de animacion
 include "objetos.h"        //Funciones de objetos
+include "monsters.h"		//Funciones de monstruos
 
 //Codigo del engine
 include "engine.prg";		//Core principal de engine
@@ -236,4 +238,5 @@ include "player.prg";       //Proceso jugador
 include "collisions.prg";	//Funciones de colision
 include "debug.prg";		//Funciones de debug
 include "objetos.prg"		//Procesos objetos
+include "monsters.prg"		//Procesos monstruos
 include "animation.prg"		//Funciones de animacion

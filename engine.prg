@@ -104,12 +104,14 @@ begin
 				signal(idPlayer,s_wakeup);
 				signal(type objeto,s_wakeup);
 				signal(type plataforma,s_wakeup);
+				signal(type cycleClown,s_wakeup_tree);
 				delete_text(pauseText);
 				gamePaused = false;
 			else
 				signal(idPlayer,s_freeze);
 				signal(type objeto,s_freeze);
 				signal(type plataforma,s_freeze);
+				signal(type cycleClown,s_freeze_tree);
 				pauseText = write(0,cResx>>1,cResy>>1,ALIGN_CENTER,"-Paused-");
 				gamePaused = true;
 			end;
@@ -755,6 +757,7 @@ Begin
 	objeto(5,218,712,16,16,PICKABLE | BREAKABLE);
 	objeto(5,1210,136,16,16,PICKABLE | BREAKABLE);
 	
+	cycleClown(1,1250,100,32,48,0);
 	
 	//creamos los objetos del nivel
 	//for (i=0;i<level.numObjects;i++) 
@@ -927,6 +930,8 @@ begin
 	signal(TYPE plataforma,s_kill);
 	//eliminamos al jugador
 	signal(idPlayer,s_kill);
+	//eliminamos a los enemigos
+	signal(TYPE cycleClown,s_kill_tree);
 	//dibujamos el mapa
 	WGE_DrawMap();
 	//creamos el nivel
