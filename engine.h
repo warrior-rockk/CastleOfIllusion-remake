@@ -165,6 +165,7 @@ Global
 		byte numTilesY;			//Tamaño vertical en tiles del mapa
 		int fpgTiles;			//Identificador del archivo de graficos del tile
 		int fpgObjects;			//Identificador del archivo de graficos de los objetos del nivel
+		int fpgMonsters;		//Identificador del archivo de graficos de los monstruos del nivel
 	End;	
 	_path* paths;				//Array Dinamico de paths
 	_tile** tileMap;  	        //Matriz Dinamica del mapa de tiles del nivel

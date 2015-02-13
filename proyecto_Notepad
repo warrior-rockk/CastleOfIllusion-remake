@@ -12,5 +12,7 @@
         <File name="animation.h" />
         <File name="collisions.h" />
         <File name="objetos.h" />
+        <File name="monsters.h" />
+        <File name="monsters.prg" />
     </Project>
 </NotepadPlus>

@@ -746,6 +746,7 @@ private
 end
 Begin
 	level.fpgObjects = fpg_load("test\objetos.fpg");
+	level.fpgMonsters = fpg_load("test\monsters.fpg");
 	
 	plataforma(800,696,32,16,8,25);
 	plataforma(620,729,32,16,8,25);
