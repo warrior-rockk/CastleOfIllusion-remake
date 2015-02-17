@@ -787,7 +787,7 @@ begin
 		//Si el jugador ya está en ejecución, lo enfocamos
 		if (idPlayer <> 0 )
 			scroll[cGameScroll].x0 = idPlayer.x - (cRegionW>>1);
-			scroll[cGameScroll].y0 = idPlayer.y - (cRegionH>>1);	
+			scroll[cGameScroll].y0 = idPlayer.y - (cRegionH>>1);				
 		end;
 		
 		//Ajustamos limites pantalla
@@ -921,7 +921,8 @@ begin
 	repeat
 		frame;
 	until (not fading);
-	
+	//detenemos el control del scroll
+	signal(TYPE WGE_ControlScroll,s_kill);
 	//eliminamos los tiles de la pantalla
 	signal(TYPE pTile,s_kill);
 	//eliminamos los objetos de la pantalla
@@ -929,9 +930,15 @@ begin
 	//eliminamos plataformas
 	signal(TYPE plataforma,s_kill);
 	//eliminamos al jugador
-	signal(idPlayer,s_kill);
+	signal(idPlayer,s_kill_tree);
+	idPlayer = 0;
 	//eliminamos a los enemigos
 	signal(TYPE cycleClown,s_kill_tree);
+	//actualizamos
+	frame;
+	
+	//arrancamos el control de scroll
+	WGE_ControlScroll();
 	//dibujamos el mapa
 	WGE_DrawMap();
 	//creamos el nivel
