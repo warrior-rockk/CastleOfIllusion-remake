@@ -116,105 +116,105 @@ BEGIN
 				//reinicio del incremento de poder de salto
 				jumpPower = 0;
 			end;
-			
-			//boton ataque/accion
-			if (WGE_Key(K_ACTION_ATACK,KEY_DOWN)) 
-				//activar atacando
-				if (jumping && !picked)
-					atacking = true;
-				end;
-				//recojer objeto
-				if (picking && !picked)
-					picked = true;
-					//creamos un objeto picked con sus propiedades
-					idObjectPicked = pickedObject(memObjectforPickID.file,memObjectforPickID.graph,memObjectforPickID.ancho,memObjectforPickID.alto,memObjectforPickID.props);
-					//le quitamos la propiedad de solido
-					idObjectPicked.props |= NO_COLLISION; 
-					signal(memObjectforPickID,s_kill);
-					memObjectforPickID = 0;
-				end;
-				//lanzar objeto
-				if (!picking & picked)
-					//creamos objeto con las propiedades del recogido
-					idObjectThrowed = objeto(idObjectPicked.graph,idObjectPicked.x,idObjectPicked.y,idObjectPicked.ancho,idObjectPicked.alto,idObjectPicked.props);
-					//matamos el objeto cogido
-					signal(idObjectPicked,s_kill);
-					idObjectPicked = 0;
-					//asignamos velocidades al objeto para lanzarlo
-					isBitSet(flags,B_HMIRROR) ? idObjectThrowed.vX = cThrowObjectVelX * -1 : idObjectThrowed.vX = cThrowObjectVelX;
-					idObjectThrowed.vY = cThrowObjectVelY;
-					idObjectThrowed.state = THROWING_STATE;
-					idObjectThrowed = 0;
-					//reseteamos flags
-					picked = false;
-					throwing = true;
-				end;
-			end;
-			
-			//direccion arriba/subir escaleras
-			if (key(K_UP))			
-				//si objeto cogido, no podemos ni agacharnos y bajar escaleras
-				if (!picked)
-					//si el centro del objeto esta en tile escaleras
-					if (getTileCode(id,CENTER_POINT) == STAIRS || getTileCode(id,CENTER_POINT) == TOP_STAIRS)
-						//quitamos velocidades
-						vY = 0;
-						vX = 0;
-						//centramos el objeto en el tile escalera
-						fx = x+(cTileSize>>1)-(x%cTileSize);
-						//subimos las escaleras
-						fY -= 2;
-						//Establecemos el flag de escalera
-						onStairs = true;
-						//desactivamos flag salto
-						jumping = false;
-					//en caso contrario, si el pie derecho esta en el TOP escalera, sales de ella
-					elseif (getTileCode(id,CENTER_DOWN_POINT) == TOP_STAIRS)
-						//subimos a la plataforma (tile superior a la escalera)
-						fy = (((y/cTileSize)*cTileSize)+cTileSize)-(alto>>1);
-						//Quitamos el flag de escalera				
-						onStairs = false;
-					end;				
-				end;
-			end;
-			
-			//direccion abajo/agacharse/bajar escalera
-			if (key(K_DOWN))
-				//si objeto cogido, no podemos ni agacharnos y bajar escaleras
-				if (!picked)
-					//si el centro inferior del objeto esta en tile escaleras
-					if (getTileCode(id,CENTER_DOWN_POINT) == TOP_STAIRS || getTileCode(id,CENTER_DOWN_POINT) == STAIRS)
-						//si el centro del objeto esta en tile escaleras
-						if (getTileCode(id,CENTER_POINT) == TOP_STAIRS || getTileCode(id,CENTER_POINT) == STAIRS)	
-							//centramos el objeto en el tile escalera
-							fx = x+(cTileSize>>1)-(x%cTileSize);
-							//bajamos las escaleras
-							fY += 2;
-						//en caso contrario, estamos en la base de la escalera
-						else
-							//bajamos el objeto a la escalera
-							fy += (alto>>1);
-						end;
-						//quitamos velocidades
-						vY = 0;
-						vX = 0;
-						//Establecemos el flag de escalera
-						onStairs = true;
-						//desactivamos flag salto
-						jumping = false;
-						//desactivamos flag agachado
-						crouched = false;
-					else 
-						//si no escalera, agacharse si esta en suelo
-						crouched = grounded;
-						onStairs = false;
-					end;
-				end;
-			else
-				crouched = false;
-			end;
 
 		end; //end del canMove
+		
+		//boton ataque/accion
+		if (WGE_Key(K_ACTION_ATACK,KEY_DOWN)) 
+			//activar atacando
+			if (jumping && !picked)
+				atacking = true;
+			end;
+			//recojer objeto
+			if (picking && !picked)
+				picked = true;
+				//creamos un objeto picked con sus propiedades
+				idObjectPicked = pickedObject(memObjectforPickID.file,memObjectforPickID.graph,memObjectforPickID.ancho,memObjectforPickID.alto,memObjectforPickID.props);
+				//le quitamos la propiedad de solido
+				idObjectPicked.props |= NO_COLLISION; 
+				signal(memObjectforPickID,s_kill);
+				memObjectforPickID = 0;
+			end;
+			//lanzar objeto
+			if (!picking & picked)
+				//creamos objeto con las propiedades del recogido
+				idObjectThrowed = objeto(idObjectPicked.graph,idObjectPicked.x,idObjectPicked.y,idObjectPicked.ancho,idObjectPicked.alto,idObjectPicked.props);
+				//matamos el objeto cogido
+				signal(idObjectPicked,s_kill);
+				idObjectPicked = 0;
+				//asignamos velocidades al objeto para lanzarlo
+				isBitSet(flags,B_HMIRROR) ? idObjectThrowed.vX = cThrowObjectVelX * -1 : idObjectThrowed.vX = cThrowObjectVelX;
+				idObjectThrowed.vY = cThrowObjectVelY;
+				idObjectThrowed.state = THROWING_STATE;
+				idObjectThrowed = 0;
+				//reseteamos flags
+				picked = false;
+				throwing = true;
+			end;
+		end;
+		
+		//direccion arriba/subir escaleras
+		if (key(K_UP))			
+			//si objeto cogido y permiso mover, no podemos subir escaleras
+			if (!picked && canMove)
+				//si el centro del objeto esta en tile escaleras
+				if (getTileCode(id,CENTER_POINT) == STAIRS || getTileCode(id,CENTER_POINT) == TOP_STAIRS)
+					//quitamos velocidades
+					vY = 0;
+					vX = 0;
+					//centramos el objeto en el tile escalera
+					fx = x+(cTileSize>>1)-(x%cTileSize);
+					//subimos las escaleras
+					fY -= 2;
+					//Establecemos el flag de escalera
+					onStairs = true;
+					//desactivamos flag salto
+					jumping = false;
+				//en caso contrario, si el pie derecho esta en el TOP escalera, sales de ella
+				elseif (getTileCode(id,CENTER_DOWN_POINT) == TOP_STAIRS)
+					//subimos a la plataforma (tile superior a la escalera)
+					fy = (((y/cTileSize)*cTileSize)+cTileSize)-(alto>>1);
+					//Quitamos el flag de escalera				
+					onStairs = false;
+				end;				
+			end;
+		end;
+		
+		//direccion abajo/agacharse/bajar escalera
+		if (key(K_DOWN))
+			//si objeto cogido y permiso movimiento, no podemos ni agacharnos y bajar escaleras
+			if (!picked && canMove)
+				//si el centro inferior del objeto esta en tile escaleras
+				if (getTileCode(id,CENTER_DOWN_POINT) == TOP_STAIRS || getTileCode(id,CENTER_DOWN_POINT) == STAIRS)
+					//si el centro del objeto esta en tile escaleras
+					if (getTileCode(id,CENTER_POINT) == TOP_STAIRS || getTileCode(id,CENTER_POINT) == STAIRS)	
+						//centramos el objeto en el tile escalera
+						fx = x+(cTileSize>>1)-(x%cTileSize);
+						//bajamos las escaleras
+						fY += 2;
+					//en caso contrario, estamos en la base de la escalera
+					else
+						//bajamos el objeto a la escalera
+						fy += (alto>>1);
+					end;
+					//quitamos velocidades
+					vY = 0;
+					vX = 0;
+					//Establecemos el flag de escalera
+					onStairs = true;
+					//desactivamos flag salto
+					jumping = false;
+					//desactivamos flag agachado
+					crouched = false;
+				else 
+					//si no escalera, agacharse si esta en suelo
+					crouched = grounded;
+					onStairs = false;
+				end;
+			end;
+		else
+			crouched = false;
+		end;
 		
 		//restauramos bit de mover
 		canMove = true;
@@ -231,9 +231,9 @@ BEGIN
 		end;
 		
 		//friccion
-		if (!key(K_LEFT) && !key(K_RIGHT))
+		//if (!key(K_LEFT) && !key(K_RIGHT))
 			vX *= friction;
-		end;
+		//end;
 						
 		//gravedad
 		if (!onStairs)
@@ -332,6 +332,8 @@ BEGIN
 			//corregimos la coordenada Y
 			fy = fy-((cPlayerAlto-cPlayerAltoCrouch)>>1);
 		end;
+		//si agachado, no puedes moverte
+		if (crouched) canMove = false; end;
 		
 		//COLISIONES	
 		
