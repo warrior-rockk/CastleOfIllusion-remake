@@ -921,17 +921,23 @@ begin
 	repeat
 		frame;
 	until (not fading);
+	log("detenemos scroll");
 	//detenemos el control del scroll
 	signal(TYPE WGE_ControlScroll,s_kill);
+	log("eliminamos tiles");
 	//eliminamos los tiles de la pantalla
 	signal(TYPE pTile,s_kill);
+	log("eliminamos objetos");
 	//eliminamos los objetos de la pantalla
-	signal(TYPE objeto,s_kill);
+	signal(TYPE objeto,s_kill_tree);
+	log("eliminamos plataformas");
 	//eliminamos plataformas
-	signal(TYPE plataforma,s_kill);
+	signal(TYPE plataforma,s_kill_tree);
+	log("eliminamos al jugador");
 	//eliminamos al jugador
 	signal(idPlayer,s_kill_tree);
 	idPlayer = 0;
+	log("eliminamos enemigos");
 	//eliminamos a los enemigos
 	signal(TYPE cycleClown,s_kill_tree);
 	//actualizamos
