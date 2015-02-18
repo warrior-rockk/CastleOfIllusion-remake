@@ -173,8 +173,8 @@ Global
 	byte mapUsesAlpha;				//Bit que indica que el mapa usa propiedad alpha (relentiza la carga)
 	//Fisicas
 	float gravity 			= 0.3;		//Aceleracion gravedad
-	float floorFriction 	= 0.9;		//Friccion suelo
-	float airFriction 		= 1;		//Friccion aire (no hay friccion en el aire)
+	float floorFriction 	= 0.85;		//Friccion suelo
+	float airFriction 		= 0.85;		//Friccion aire
 	//Borrar
 	int mapBox; 
 	int mapTriangle135;

@@ -83,7 +83,7 @@ BEGIN
 			//direccion derecha
 			if (key(K_RIGHT)) 
 				if (vX < velMaxX) 
-					vX+=accelx;
+					vX+=accelx*(1-friction);
 				end;
 				onStairs = false;
 			end;
@@ -91,7 +91,7 @@ BEGIN
 			//direccion izquierda
 			if (key(K_LEFT)) 
 				if (vX > -velMaxX) 
-					vX-=accelx;
+					vX-=accelx*(1-friction);
 				end;
 				onStairs = false;
 			end;
@@ -229,6 +229,7 @@ BEGIN
 		else
 			friction = airFriction;
 		end;
+		
 		
 		//friccion: La friccion actua cuando no se mueve o esta agachado
 		if ((!key(K_LEFT) && !key(K_RIGHT)) || crouched)
