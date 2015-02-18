@@ -231,7 +231,7 @@ process objeto(int graph,int x,int y,int _ancho,int _alto,int _props)
 private
 byte grounded;
 int i;
-int colID;
+entity colID;
 float friction;
 int colDir;
 byte collided;
@@ -343,6 +343,22 @@ begin
 							collided = true;
 						end;
 					end;
+				until (colID == 0);
+				
+				//lanzamos comprobacion con cycleClown (esto tiene que ser generico a enemigos)
+				repeat
+					//obtenemos siguiente colision
+					colID = get_id(TYPE cycleClown);
+					//obtenemos la direccion de la colision
+					colDir = colCheckProcess(id,colID,BOTHAXIS);
+					//aplicamos la direccion de la colision
+					applyDirCollision(ID,colDir,&grounded);
+					//seteamos flag de colisionado
+					if (colDir <> NOCOL)
+						collided = true;
+						colID.state = DEAD_STATE;
+					end;
+					
 				until (colID == 0);
 				
 				//cambio de estado
