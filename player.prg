@@ -233,8 +233,8 @@ BEGIN
 		end;
 		
 		
-		//friccion: La friccion actua cuando no se mueve o esta agachado
-		if ((!key(K_LEFT) && !key(K_RIGHT)) || crouched)
+		//friccion: La friccion actua cuando no se mueve o esta agachado o dañado
+		if ((!key(K_LEFT) && !key(K_RIGHT)) || crouched || hurt)
 			vX *= friction;
 		end;
 						
@@ -640,7 +640,7 @@ BEGIN
 		end;
 		if (hurt)
 			state = HURT_STATE;
-
+			
 			//si no somos invencibles
 			if (!hurtDisabled)
 				//salto hacia atrás
