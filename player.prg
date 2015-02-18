@@ -469,6 +469,20 @@ BEGIN
 					
 		until (colID == 0);
 		
+		//lanzamos comprobacion con disparos monstruos
+		repeat
+			
+			//obtenemos siguiente colision
+			colID = get_id(TYPE monsterFire);
+									
+			//colisiones ambos ejes con procesos
+			if (colCheckProcess(id,colID,BOTHAXIS) != NOCOL)
+				//el disparo te daña
+				hurt = true;
+			end;
+					
+		until (colID == 0);
+		
 		//Fin colisiones ==============================
 		
 		//Actualizar velocidades
