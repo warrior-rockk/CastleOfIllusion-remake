@@ -55,6 +55,7 @@ Const
 	cPlayerAltoCrouch		= 22;			//Alto del jugador agachado
 	
 	cPickingTime			= 20;			//Tiempo retraso para recojer objeto
+	cHurtDisabledTime       = 50;			//Tiempo invencible
 	
 	//Offset Posicion objeto cogido
 	cObjectPickedPosX       = 3;						//Offset X posicion player para el objeto cogido

@@ -25,6 +25,7 @@ byte  picked;				//Flag de recogido
 byte  throwing;				//Flag de lanzando
 byte  canMove;				//Flag de movimiento permitido
 byte  hurt;					//Flag de daño
+byte  hurtDisabled;			//Flag de invencible
 float velMaxX;				//Velocidad Maxima Horizontal
 float accelX;				//Aceleracion Maxima Horizontal
 float accelY;				//Aceleracion Maxima Vertical
@@ -34,6 +35,7 @@ entity colID;				//Proceso con el que se colisiona
 entity objectforPickID;		//Proceso de tipo objeto que se colisiona lateralmente
 entity memObjectforPickID;   //Memoria de objeto que se colisiona
 int   pickingCounter; 		//Contador para recojer objeto
+int   hurtDisabledCounter;  //Contador de invencibilidad
 struct tiles_comprobar[8]   //Matriz comprobacion colision tiles
 	int posx;
 	int posy;
@@ -531,6 +533,28 @@ BEGIN
 			vX = 0;
 		end;
 		
+		//invencibilidad
+		if (hurtDisabled)
+			if (hurtDisabledCounter >= cHurtDisabledTime)
+				hurtDisabled = false;
+				hurtDisabledCounter = 0;
+			elseif (clockTick)
+				hurtDisabledCounter++;
+			end;
+			
+			//parpadeo si invencible
+			if (clockTick)
+				if (isBitSet(idPlayer.flags,B_ABLEND))
+					idPlayer.flags &= ~ B_ABLEND;
+				else	
+					idPlayer.flags |= B_ABLEND;
+				end;
+			end;
+		else
+			hurtDisabledCounter = 0;
+			idPlayer.flags &= ~ B_ABLEND;
+		end;
+		
 		//CONTROL ESTADO GRAFICO		
 		
 		//guardamos estado actual
@@ -610,6 +634,21 @@ BEGIN
 		end;
 		if (hurt)
 			state = HURT_STATE;
+			hurtDisabled = true;
+			/*
+			//si no somos invencibles
+			if (!hurtDisabled)
+				//salto hacia atrás
+				if (prevState != HURT_STATE)
+					vX = -4;
+					vY = -4;
+					grounded = false;
+					hurtDisabled = true;
+				end;
+						
+			else
+				hurt = false;
+			end;*/
 		end;
 		
 		//si hay cambio de estado, resetamos contador animacion
@@ -740,9 +779,9 @@ BEGIN
 				end;
 			end;
 			case HURT_STATE:
-				if (WGE_Animate(32,33,10,ANIM_ONCE))
-						state = IDLE_STATE;
-						hurt = false;
+				if (WGE_Animate(32,33,15,ANIM_ONCE))					
+					state = IDLE_STATE;
+					hurt = false;
 				end;
 			end;
 			default:
