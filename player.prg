@@ -462,11 +462,15 @@ BEGIN
 					colID.state = DEAD_STATE;
 				else
 					//el monstruo te daña
-					hurt = true;
+					if (!hurtDisabled) 
+						hurt = true;
+					end;
 				end;
 			elseif ( dir != NOCOL) //cualquier otra colision
 				//te daña
-				hurt = true;
+				if (!hurtDisabled) 
+					hurt = true;
+				end;
 			end;
 					
 		until (colID == 0);
@@ -480,7 +484,9 @@ BEGIN
 			//colisiones ambos ejes con procesos
 			if (colCheckProcess(id,colID,INFOONLY) != NOCOL)
 				//el disparo te daña
-				hurt = true;
+				if (!hurtDisabled) 
+					hurt = true;
+				end;
 			end;
 					
 		until (colID == 0);
@@ -545,14 +551,14 @@ BEGIN
 			//parpadeo si invencible
 			if (clockTick)
 				if (isBitSet(idPlayer.flags,B_ABLEND))
-					idPlayer.flags &= ~ B_ABLEND;
+					unsetBit(idPlayer.flags,B_ABLEND);
 				else	
-					idPlayer.flags |= B_ABLEND;
+					setBit(idPlayer.flags,B_ABLEND);
 				end;
 			end;
 		else
 			hurtDisabledCounter = 0;
-			idPlayer.flags &= ~ B_ABLEND;
+			unsetBit(idPlayer.flags,B_ABLEND);
 		end;
 		
 		//CONTROL ESTADO GRAFICO		
@@ -634,21 +640,15 @@ BEGIN
 		end;
 		if (hurt)
 			state = HURT_STATE;
-			hurtDisabled = true;
-			/*
+						
 			//si no somos invencibles
 			if (!hurtDisabled)
 				//salto hacia atrás
-				if (prevState != HURT_STATE)
-					vX = -4;
-					vY = -4;
-					grounded = false;
-					hurtDisabled = true;
-				end;
-						
-			else
-				hurt = false;
-			end;*/
+				hurtDisabled = true;				
+				vX = -4;
+				vY = -4;
+				grounded = false;
+			end;	
 		end;
 		
 		//si hay cambio de estado, resetamos contador animacion
