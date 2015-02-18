@@ -389,12 +389,12 @@ begin
 	//Obtiene los vectores de los centros para comparar
 	//teniendo en cuenta la velocidad del objeto principal
 	//y el eje seleccionado en parametro axis
-	if (axis==BOTHAXIS || axis==HORIZONTALAXIS)
+	if (axis==BOTHAXIS || axis==HORIZONTALAXIS || axis==INFOONLY )
 		vcX = (idObject.fx+idObject.vX) - (idObjectB.fx );
 	else
 		vcX = (idObject.fx) - (idObjectB.fx );
 	end;
-	if (axis==BOTHAXIS || axis==VERTICALAXIS)
+	if (axis==BOTHAXIS || axis==VERTICALAXIS || axis==INFOONLY )
 		vcY = (idObject.fy+idObject.vY) - (idObjectB.fy );
 	else
 		vcY = (idObject.fy) - (idObjectB.fy );
@@ -414,23 +414,31 @@ begin
         oY = hH - abs(vcY);
         
 		if (oX >= oY) 
-            if (axis==BOTHAXIS || axis==VERTICALAXIS)
+            if (axis==BOTHAXIS || axis==VERTICALAXIS || axis==INFOONLY )
 				if (vcY > 0) 			//Arriba
 					colDir = COLUP;
-					idObject.fy += oY+idObject.vY;
+					if (axis != INFOONLY)
+						idObject.fy += oY+idObject.vY;
+					end;
 				else 
 					colDir = COLDOWN;	//Abajo
+					if (axis != INFOONLY)
 					idObject.fy -= oY-idObject.vY;
+					end;
 				end;
 			end;
         else
-			if (axis==BOTHAXIS || axis==HORIZONTALAXIS)
+			if (axis==BOTHAXIS || axis==HORIZONTALAXIS || axis==INFOONLY)
 				if (vcX > 0) 
 					colDir = COLIZQ;	//Izquierda
+					if (axis != INFOONLY)
 					idObject.fx += oX+idObject.vX;
+					end;
 				else 
 					colDir = COLDER;	//Derecha
-					idObject.fx -= oX-idObject.vX;
+					if (axis != INFOONLY)
+						idObject.fx -= oX-idObject.vX;
+					end;
 				end;
 			end;
 	     end;

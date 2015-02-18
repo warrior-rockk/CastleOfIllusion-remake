@@ -14,6 +14,7 @@
 #define BOTHAXIS			0					//Ambos ejes
 #define HORIZONTALAXIS		1					//Eje Horizontal
 #define VERTICALAXIS		2					//Eje Vertical
+#define INFOONLY			3                   //Solo informacion de colision
 
 //Direccion colision
 #define NOCOL		0

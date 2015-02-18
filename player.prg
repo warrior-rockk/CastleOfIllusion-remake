@@ -443,7 +443,7 @@ BEGIN
 			
 						
 			//colisiones ambos ejes con procesos
-			dir = colCheckProcess(id,colID,BOTHAXIS);
+			dir = colCheckProcess(id,colID,INFOONLY);
 			
 			
 			//si la colision es inferior y el monster no esta muerto
@@ -478,7 +478,7 @@ BEGIN
 			colID = get_id(TYPE monsterFire);
 									
 			//colisiones ambos ejes con procesos
-			if (colCheckProcess(id,colID,BOTHAXIS) != NOCOL)
+			if (colCheckProcess(id,colID,INFOONLY) != NOCOL)
 				//el disparo te daña
 				hurt = true;
 			end;
