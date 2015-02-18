@@ -174,7 +174,7 @@ Global
 	//Fisicas
 	float gravity 			= 0.3;		//Aceleracion gravedad
 	float floorFriction 	= 0.9;		//Friccion suelo
-	float airFriction 		= 0.95;		//Friccion aire
+	float airFriction 		= 1;		//Friccion aire (no hay friccion en el aire)
 	//Borrar
 	int mapBox; 
 	int mapTriangle135;

@@ -37,10 +37,10 @@ Const
 	cPlayerVelMaxXSlopeUp	= 2;            //Velocidad Maxima X Player subiendo rampa
 	cPlayerVelMaxXSlopeDown = 4;            //Velocidad Maxima X Player bajando rampa
 	cPlayerVelMaxXSloping	= 6;            //Velocidad Maxima X Player resbalando por rampa
-	cPlayerAccelX           = 2.2;//1.2;          //Aceleracion maxima X Player
-	cPlayerAccelXSlopeUp    = 0.2;          //Aceleracion maxima X Player subiendo rampa
-	cPlayerAccelXSlopeDown  = 1.2;          //Aceleracion maxima X Player bajando rampa
-	cPlayerAccelXSloping	= 0.15;          //Aceleracion maxima X Player resbalando por rampa
+	cPlayerAccelX           = 0.12;         //Aceleracion maxima X Player
+	cPlayerAccelXSlopeUp    = 0.06;         //Aceleracion maxima X Player subiendo rampa
+	cPlayerAccelXSlopeDown  = 0.13;          //Aceleracion maxima X Player bajando rampa
+	cPlayerAccelXSloping	= 0.15;         //Aceleracion maxima X Player resbalando por rampa
 	cPlayerDecelXSlopeUp    = 0.1;			//Factor deceleracion X al subir rampa
 	cPlayerAccelY			= 4;			//Aceleracion Player Y salto
 	cPlayerVelMaxY          = 10;			//Velocidad Maxima Y Player
