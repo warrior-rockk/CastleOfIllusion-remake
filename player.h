@@ -60,8 +60,11 @@ Const
 	//Offset Posicion objeto cogido
 	cObjectPickedPosX       = 3;						//Offset X posicion player para el objeto cogido
 	cObjectPickedPosY       = -(cPlayerAlto>>1);		//Offset Y posicion player para el objeto cogido
-	cThrowObjectVelX        = 3;							//Velocidad X lanzamiento objeto
+	cThrowObjectVelX        = 3;						//Velocidad X lanzamiento objeto
 	cThrowObjectVelY        = -3;						//Velocidad Y lanzamiento objeto
+	
+	cHurtVelX               = 4;			//desplazamiento X cuando daño
+	cHurtVelY               = 4;			//desplazamiento Y cuando daño
 end;
 
 Global

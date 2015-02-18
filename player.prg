@@ -640,13 +640,13 @@ BEGIN
 		end;
 		if (hurt)
 			state = HURT_STATE;
-						
+
 			//si no somos invencibles
 			if (!hurtDisabled)
 				//salto hacia atrás
 				hurtDisabled = true;				
-				vX = -4;
-				vY = -4;
+				isBitSet(flags,B_HMIRROR) ? vX = cHurtVelX : vX = -cHurtVelX;
+				vY = -cHurtVelY;
 				grounded = false;
 			end;	
 		end;
@@ -687,7 +687,7 @@ BEGIN
 			end;
 			case FALL_STATE:
 				if (picked)
-						WGE_Animate(31,31,1,ANIM_LOOP);
+					WGE_Animate(31,31,1,ANIM_LOOP);
 				else
 					WGE_Animate(11,11,1,ANIM_LOOP);
 				end;
