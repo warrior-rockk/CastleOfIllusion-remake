@@ -350,9 +350,7 @@ BEGIN
 			applyDirCollision(ID,dir,&grounded);
 			
 		end;
-		
-		
-		
+
 		//lanzamos comprobacion con procesos objeto
 		repeat
 			
@@ -434,12 +432,10 @@ BEGIN
 			
 			//obtenemos siguiente colision
 			colID = get_id(TYPE cycleClown);
-			
-						
+								
 			//colisiones ambos ejes con procesos
 			dir = colCheckProcess(id,colID,INFOONLY);
-			
-			
+				
 			//si la colision es inferior y el monster no esta muerto
 			
 			if (dir == COLDOWN && colID.state != DEAD_STATE )
@@ -497,6 +493,7 @@ BEGIN
 		fX += vX;
 		fY += vY;
 		
+		//actualizar posicion float-int
 		positionToInt(id);
 		
 		//recogiendo objetos
