@@ -140,6 +140,7 @@ BEGIN
 			end;
 			//lanzar objeto
 			if (!picking & picked)
+				//lanzamos el objeto
 				throwObject(flags,idObjectPicked);
 				idObjectPicked = 0;
 				//reseteamos flags
@@ -641,6 +642,13 @@ BEGIN
 				isBitSet(flags,B_HMIRROR) ? vX = cHurtVelX : vX = -cHurtVelX;
 				vY = -cHurtVelY;
 				grounded = false;
+				//si teniamos objeto, lo perdemos
+				if (picked)
+					throwObject(flags,idObjectPicked);
+					idObjectPicked = 0;
+					//reseteamos flags
+					picked = false;
+				end;
 			end;	
 		end;
 		
