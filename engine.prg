@@ -757,7 +757,8 @@ Begin
 	objeto(5,218,712,16,16,PICKABLE | BREAKABLE);
 	objeto(5,1210,136,16,16,PICKABLE | BREAKABLE);
 	
-	cycleClown(1,1250,100,32,48,0);
+	//cycleClown(1,1250,100,32,48,0);
+	monster(T_CYCLECLOWN,1250,100);
 	
 	//creamos los objetos del nivel
 	//for (i=0;i<level.numObjects;i++) 

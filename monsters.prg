@@ -6,6 +6,20 @@
 //  Procesos monsters (enemigos)
 // ========================================================================
 
+//Proceso monstruo generico
+//Sera el padre del monstruo concreto para tratarlo como unico para colisiones,etc..
+Process monster(int monsterType,int x,int y)
+begin
+	//creamos el tipo de monstruo
+	switch (monsterType)
+		case T_CYCLECLOWN:
+			cycleClown(1,x,y,32,48,0);
+		end;
+	end;
+	loop
+		frame;
+	end;
+end;
 
 //Proceso enemigo cycleClown
 //Se mueve izquierda a derecha en un rango y dispara cuando el player está cerca
@@ -133,8 +147,12 @@ begin
 		fx += vX;
 		fy += vY;
 		
+		//actualizamos la posicion
 		positionToInt(id);
-			
+		
+		//actualizamos el monstruo padre
+		updateMonster(id);
+		
 		frame;
 	end;
 	
@@ -199,4 +217,22 @@ begin
 	//morimos al salirnos de la pantalla
 	until (out_region(id,cGameRegion));
 
+end;
+
+//funcion que actualiza las propiedades del monstruo padre
+function updateMonster(entity monsterSon)
+private
+	monster idFather;	//id del monstruo padre
+begin
+	//asociamos al padre
+	idFather = 	monsterSon.father;
+	
+	//copiamos las propiedades
+	idFather.ancho = monsterSon.ancho;
+	idFather.alto = monsterSon.alto;
+	idFather.fX = monsterSon.fX;
+	idFather.fY = monsterSon.fY;
+	idFather.props = monsterSon.props;
+	idFather.state = monsterSon.state;
+	
 end;
