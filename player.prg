@@ -431,7 +431,7 @@ BEGIN
 		repeat
 			
 			//obtenemos siguiente colision
-			colID = get_id(TYPE cycleClown);
+			colID = get_id(TYPE monster);
 								
 			//colisiones ambos ejes con procesos
 			dir = colCheckProcess(id,colID,INFOONLY);

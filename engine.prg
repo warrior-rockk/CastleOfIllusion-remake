@@ -104,14 +104,14 @@ begin
 				signal(idPlayer,s_wakeup);
 				signal(type objeto,s_wakeup);
 				signal(type plataforma,s_wakeup);
-				signal(type cycleClown,s_wakeup_tree);
+				signal(type monster,s_wakeup_tree);
 				delete_text(pauseText);
 				gamePaused = false;
 			else
 				signal(idPlayer,s_freeze);
 				signal(type objeto,s_freeze);
 				signal(type plataforma,s_freeze);
-				signal(type cycleClown,s_freeze_tree);
+				signal(type monster,s_freeze_tree);
 				pauseText = write(0,cResx>>1,cResy>>1,ALIGN_CENTER,"-Paused-");
 				gamePaused = true;
 			end;
@@ -940,7 +940,7 @@ begin
 	idPlayer = 0;
 	log("eliminamos enemigos");
 	//eliminamos a los enemigos
-	signal(TYPE cycleClown,s_kill_tree);
+	signal(TYPE monster,s_kill_tree);
 	//actualizamos
 	frame;
 	

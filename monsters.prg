@@ -9,14 +9,26 @@
 //Proceso monstruo generico
 //Sera el padre del monstruo concreto para tratarlo como unico para colisiones,etc..
 Process monster(int monsterType,int x,int y)
+private
+	monster idMonster;	//id del mosntruo que se crea
 begin
 	//creamos el tipo de monstruo
 	switch (monsterType)
 		case T_CYCLECLOWN:
-			cycleClown(1,x,y,32,48,0);
+			idMonster = cycleClown(1,x,y,32,48,0);
 		end;
 	end;
+	
 	loop
+		//si existe el monstruo (sigue vivo)
+		if (exists(idMonster))
+			if (state == DEAD_STATE) 
+				//actualizo el estado del monstruo
+				idMonster.state = state;
+			end;
+		else
+			break;
+		end;
 		frame;
 	end;
 end;
@@ -233,6 +245,5 @@ begin
 	idFather.fX = monsterSon.fX;
 	idFather.fY = monsterSon.fY;
 	idFather.props = monsterSon.props;
-	idFather.state = monsterSon.state;
 	
 end;

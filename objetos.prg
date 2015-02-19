@@ -292,7 +292,7 @@ begin
 					applyDirCollision(ID,colCheckTileTerrain(ID,i),&grounded);			
 				end;
 				
-				//lanzamos comprobacion con procesos caja
+				//lanzamos comprobacion con procesos objeto
 				repeat
 					//obtenemos siguiente colision
 					colID = get_id(TYPE objeto);
@@ -328,7 +328,7 @@ begin
 					end;
 				end;
 				
-				//lanzamos comprobacion con procesos caja
+				//lanzamos comprobacion con procesos objeto
 				repeat
 					//obtenemos siguiente colision
 					colID = get_id(TYPE objeto);
@@ -345,10 +345,10 @@ begin
 					end;
 				until (colID == 0);
 				
-				//lanzamos comprobacion con cycleClown (esto tiene que ser generico a enemigos)
+				//lanzamos comprobacion con monstruos
 				repeat
 					//obtenemos siguiente colision
-					colID = get_id(TYPE cycleClown);
+					colID = get_id(TYPE monster);
 					//obtenemos la direccion de la colision
 					colDir = colCheckProcess(id,colID,BOTHAXIS);
 					//aplicamos la direccion de la colision
