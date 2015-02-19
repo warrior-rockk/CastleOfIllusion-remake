@@ -448,17 +448,17 @@ BEGIN
 						vY -= cPlayerPowerAtackBounce;
 					end;
 					grounded = false;
-					//matamos al monster
-					colID.state = DEAD_STATE;
+					//enviamos señal de daño
+					colID.state = HURT_STATE;
 				else
-					//el monstruo te daña
-					if (!hurtDisabled) 
+					//el monstruo te daña si no soy invencible y tiene propiedad de dañar
+					if (!hurtDisabled && isBitSet(colID.props,HURTPLAYER)) 
 						hurt = true;
 					end;
 				end;
 			elseif ( dir != NOCOL) //cualquier otra colision
-				//te daña
-				if (!hurtDisabled) 
+				//el monstruo te daña si no soy invencible y tiene propiedad de dañar
+				if (!hurtDisabled && isBitSet(colID.props,HURTPLAYER)) 
 					hurt = true;
 				end;
 			end;

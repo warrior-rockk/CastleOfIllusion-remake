@@ -15,14 +15,17 @@ begin
 	//creamos el tipo de monstruo
 	switch (monsterType)
 		case T_CYCLECLOWN:
-			idMonster = cycleClown(1,x,y,32,48,0);
+			idMonster = cycleClown(1,x,y,32,48,HURTPLAYER);
+		end;
+		case T_TOYPLANE:
+			idMonster = toyPlane(9,x,y,16,16,HURTPLAYER);
 		end;
 	end;
 	
 	loop
 		//si existe el monstruo (sigue vivo)
 		if (exists(idMonster))
-			if (state == DEAD_STATE) 
+			if (state == DEAD_STATE || state == HURT_STATE) 
 				//actualizo el estado del monstruo
 				idMonster.state = state;
 			end;
@@ -116,6 +119,9 @@ begin
 				//animacion movimiento
 				WGE_Animate(1,6,5,ANIM_LOOP);
 			end;
+			case HURT_STATE:   
+				state = DEAD_STATE;
+			end;
 			case DEAD_STATE:
 				deadMonster();
 				signal(id,s_kill);
@@ -198,6 +204,116 @@ begin
 	until (out_region(id,cGameRegion));
 	
 end;
+
+//Proceso enemigo toyPlane
+//Se mueve izquierda a derecha hasta tocar pared y no muerte hasta matar el mando a distancia
+process toyPlane(int graph,int x,int y,int _ancho,int _alto,int _props)
+private
+float friction;		//friccion local
+
+byte grounded;
+
+int colID;			//Id de colision
+int colDir;			//direccion de la colision
+byte collided;		//flag de colision
+byte wallTouch;		//flag de pared alcanzada
+float xVel;			//Velocidad movimiento
+
+int i;				//Variable auxiliar
+begin
+	region = cGameRegion;
+	ctype = c_scroll;
+	z = cZMonster;
+	file = level.fpgMonsters;
+	
+	//igualamos la propiedades publicas a las de parametros
+	ancho = _ancho;
+	alto = _alto;
+	props = _props;
+	
+	//modo debug sin graficos
+	if (file<0)
+		graph = map_new(ancho,alto,8,0);
+		map_clear(0,graph,rand(200,300));
+	end;
+	
+	fx = x;
+	fy = y;
+	
+	xVel   = -2;
+	
+	WGE_CreateObjectColPoints(id);
+	
+	friction = floorFriction;
+	
+	state = MOVE_STATE;
+	
+	loop
+		
+		//maquina de estados
+		switch (state)
+			case IDLE_STATE:
+				;
+			end;
+			case MOVE_STATE: //movimiento de pared a pared
+				//si toca pared, invierte movimiento
+				if (wallTouch)
+					xVel = xVel * -1;
+					wallTouch = false;
+				end;
+				//actualizamos movimiento
+				vX = xVel;
+				//animacion movimiento
+				WGE_Animate(9,10,5,ANIM_LOOP);
+				//sentido del grafico
+				xVel < 0 ? setBit(flags,B_HMIRROR) : unsetBit(flags,B_HMIRROR);
+			end;
+			case HURT_STATE: //toque
+				//detenemos el movimiento
+				vX = 0;
+				//no dañamos en este estado
+				unsetBit(props,HURTPLAYER);
+				//animacion toque
+				WGE_Animate(12,14,5,ANIM_LOOP);
+			end;
+			case DEAD_STATE:
+				deadMonster();
+				signal(id,s_kill);
+			end;
+		end;
+		
+		//fisica terreno
+					
+		//Recorremos la lista de puntos a comprobar
+		for (i=0;i<cNumColPoints;i++)					
+			//aplicamos la direccion de la colision
+			applyDirCollision(ID,colCheckTileTerrain(ID,i),&grounded);			
+		end;
+				
+		//Actualizar velocidades
+		if (grounded)
+			vY = 0;
+		end;
+		
+		//si no hay velocidad, a tocado muro
+		if (vX == 0)
+			wallTouch = true;
+		end;
+		
+		fx += vX;
+		fy += vY;
+		
+		//actualizamos la posicion
+		positionToInt(id);
+		
+		//actualizamos el monstruo padre
+		updateMonster(id);
+		
+		frame;
+	end;
+	
+end;
+
 
 //proceso de muerte de monstruo
 process deadMonster()
