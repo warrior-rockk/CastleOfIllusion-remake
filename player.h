@@ -70,9 +70,7 @@ end;
 Global
 	//jugador
 	entity idPlayer;				//Identificador del proceso del jugador
-	int idPlatform;				//Identificador de plataforma sobre la que esta el player
-	entity idObjectPicked;			//Identificador del objeto cogido
-	entity idObjectThrowed;        //Identificador del objeto lanzado
+	int idPlatform;				    //Identificador de plataforma sobre la que esta el player
 end;
 
 //declaracion de proceso player

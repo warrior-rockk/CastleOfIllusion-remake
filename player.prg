@@ -33,7 +33,8 @@ float friction;				//Friccion local
 int	  dir;					//Direccion de la colision
 entity colID;				//Proceso con el que se colisiona
 entity objectforPickID;		//Proceso de tipo objeto que se colisiona lateralmente
-entity memObjectforPickID;   //Memoria de objeto que se colisiona
+entity memObjectforPickID;  //Memoria de objeto que se colisiona
+entity idObjectPicked;		//Identificador del objeto cogido
 int   pickingCounter; 		//Contador para recojer objeto
 int   hurtDisabledCounter;  //Contador de invencibilidad
 struct tiles_comprobar[8]   //Matriz comprobacion colision tiles
@@ -139,16 +140,8 @@ BEGIN
 			end;
 			//lanzar objeto
 			if (!picking & picked)
-				//creamos objeto con las propiedades del recogido
-				idObjectThrowed = objeto(idObjectPicked.graph,idObjectPicked.x,idObjectPicked.y,idObjectPicked.ancho,idObjectPicked.alto,idObjectPicked.props);
-				//matamos el objeto cogido
-				signal(idObjectPicked,s_kill);
+				throwObject(flags,idObjectPicked);
 				idObjectPicked = 0;
-				//asignamos velocidades al objeto para lanzarlo
-				isBitSet(flags,B_HMIRROR) ? idObjectThrowed.vX = cThrowObjectVelX * -1 : idObjectThrowed.vX = cThrowObjectVelX;
-				idObjectThrowed.vY = cThrowObjectVelY;
-				idObjectThrowed.state = THROWING_STATE;
-				idObjectThrowed = 0;
 				//reseteamos flags
 				picked = false;
 				throwing = true;
@@ -792,6 +785,22 @@ BEGIN
 		frame;
 	
 	end;
+end;
+
+//funcion que lanza el objeto que lleva el player
+function throwObject(int playerFlags,entity idObjectPicked)
+private
+	objeto idObjectThrowed;		//id del objeto que se lanza
+begin
+	//creamos objeto con las propiedades del recogido
+	idObjectThrowed = objeto(idObjectPicked.graph,idObjectPicked.x,idObjectPicked.y,idObjectPicked.ancho,idObjectPicked.alto,idObjectPicked.props);
+	//matamos el objeto cogido
+	signal(idObjectPicked,s_kill);
+	//asignamos velocidades al objeto para lanzarlo
+	isBitSet(playerFlags,B_HMIRROR) ? idObjectThrowed.vX = cThrowObjectVelX * -1 : idObjectThrowed.vX = cThrowObjectVelX;
+	idObjectThrowed.vY = cThrowObjectVelY;
+	idObjectThrowed.state = THROWING_STATE;
+	idObjectThrowed = 0;
 end;
 
 /*
