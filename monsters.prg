@@ -124,6 +124,7 @@ begin
 				state = DEAD_STATE;
 			end;
 			case DEAD_STATE:
+				graph = 8;
 				deadMonster();
 				signal(id,s_kill);
 			end;
@@ -335,6 +336,69 @@ begin
 	
 end;
 
+//Proceso enemigo toyPlaneControl
+//Cuando muere, mata a los toyPlane
+process toyPlaneControl(int graph,int x,int y,int _ancho,int _alto,int _props)
+private
+int colID;			//Id de colision
+int colDir;			//direccion de la colision
+byte collided;		//flag de colision
+
+int i;				//Variable auxiliar
+begin
+	region = cGameRegion;
+	ctype = c_scroll;
+	z = cZMonster;
+	file = level.fpgMonsters;
+	
+	//igualamos la propiedades publicas a las de parametros
+	ancho = _ancho;
+	alto = _alto;
+	props = _props;
+	
+	//modo debug sin graficos
+	if (file<0)
+		graph = map_new(ancho,alto,8,0);
+		map_clear(0,graph,rand(200,300));
+	end;
+	
+	fx = x;
+	fy = y;
+	
+	WGE_CreateObjectColPoints(id);
+	
+	state = IDLE_STATE;
+	
+	loop
+		
+		//maquina de estados
+		switch (state)
+			case IDLE_STATE: 
+				WGE_Animate(15,16,30,ANIM_LOOP);
+			end;
+			case HURT_STATE: //toque
+				state = DEAD_STATE;
+			end;
+			case DEAD_STATE:
+				graph = 17;
+				deadMonster();
+				signal(id,s_kill);
+			end;
+		end;
+		
+		fx += vX;
+		fy += vY;
+		
+		//actualizamos la posicion
+		positionToInt(id);
+		
+		//actualizamos el monstruo padre
+		updateMonster(id);
+		
+		frame;
+	end;
+	
+end;
 
 //proceso de muerte de monstruo
 process deadMonster()
@@ -360,7 +424,7 @@ begin
 			fy += vY;
 			positionToInt(id);
 			
-			WGE_Animate(8,8,1,ANIM_LOOP);
+			WGE_Animate(graph,graph,1,ANIM_LOOP);
 			
 			frame;
 	//morimos al salirnos de la pantalla
