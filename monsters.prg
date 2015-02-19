@@ -28,6 +28,7 @@ begin
 			if (state == DEAD_STATE || state == HURT_STATE) 
 				//actualizo el estado del monstruo
 				idMonster.state = state;
+				state = 0;
 			end;
 		else
 			break;
@@ -219,6 +220,7 @@ byte collided;		//flag de colision
 byte wallTouch;		//flag de pared alcanzada
 float xVel;			//Velocidad movimiento
 
+int hurtedCounter; 	//contador tiempo dañado
 int i;				//Variable auxiliar
 begin
 	region = cGameRegion;
@@ -252,14 +254,24 @@ begin
 		
 		//maquina de estados
 		switch (state)
-			case IDLE_STATE:
-				;
+			case IDLE_STATE: //mirando al frente para cambiar de direcccion
+				//detenemos movimiento
+				vX = 0;
+				//pausa con animacion mirando al frente
+				if (WGE_Animate(11,11,30,ANIM_ONCE))
+					wallTouch = false;
+					state = MOVE_STATE;
+					vX = xVel;
+				end;
 			end;
 			case MOVE_STATE: //movimiento de pared a pared
+				//dañamos al player
+				setBit(props,HURTPLAYER);
 				//si toca pared, invierte movimiento
 				if (wallTouch)
 					xVel = xVel * -1;
 					wallTouch = false;
+					state = IDLE_STATE;
 				end;
 				//actualizamos movimiento
 				vX = xVel;
@@ -273,8 +285,17 @@ begin
 				vX = 0;
 				//no dañamos en este estado
 				unsetBit(props,HURTPLAYER);
-				//animacion toque
-				WGE_Animate(12,14,5,ANIM_LOOP);
+				//animacion toque durante 8 animaciones
+				if (hurtedCounter < 8)
+					if (WGE_Animate(12,14,5,ANIM_LOOP))
+						hurtedCounter++;
+					end;
+				else
+					//pasado el tiempo, volvemos a movernos
+					hurtedCounter = 0;
+					state = MOVE_STATE;
+					vX = xVel;
+				end;
 			end;
 			case DEAD_STATE:
 				deadMonster();
@@ -296,7 +317,7 @@ begin
 		end;
 		
 		//si no hay velocidad, a tocado muro
-		if (vX == 0)
+		if (vX == 0 && state == MOVE_STATE)
 			wallTouch = true;
 		end;
 		
