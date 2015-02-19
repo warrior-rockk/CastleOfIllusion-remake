@@ -755,7 +755,7 @@ Begin
 	plataforma(458,729,32,16,8,25);
 	
 	objeto(5,218,712,16,16,PICKABLE | BREAKABLE);
-	objeto(5,1210,136,16,16,PICKABLE | BREAKABLE);
+	objeto(5,1210,136,16,16,PICKABLE);
 	
 	//cycleClown(1,1250,100,32,48,0);
 	monster(T_CYCLECLOWN,1250,100);

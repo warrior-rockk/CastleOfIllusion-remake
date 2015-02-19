@@ -350,9 +350,8 @@ begin
 					//obtenemos siguiente colision
 					colID = get_id(TYPE monster);
 					//obtenemos la direccion de la colision
-					colDir = colCheckProcess(id,colID,BOTHAXIS);
-					//aplicamos la direccion de la colision
-					applyDirCollision(ID,colDir,&grounded);
+					colDir = colCheckProcess(id,colID,INFOONLY);
+					
 					//seteamos flag de colisionado
 					if (colDir <> NOCOL)
 						collided = true;
