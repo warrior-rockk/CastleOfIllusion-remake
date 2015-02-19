@@ -760,6 +760,7 @@ Begin
 	//cycleClown(1,1250,100,32,48,0);
 	monster(T_CYCLECLOWN,1250,100);
 	monster(T_TOYPLANE,526,300);
+	monster(T_TOYPLANECONTROL,526,320);
 	
 	//creamos los objetos del nivel
 	//for (i=0;i<level.numObjects;i++) 

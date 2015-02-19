@@ -20,6 +20,9 @@ begin
 		case T_TOYPLANE:
 			idMonster = toyPlane(9,x,y,16,16,HURTPLAYER);
 		end;
+		case T_TOYPLANECONTROL:
+			idMonster = toyPlaneControl(13,x,y,16,16,HURTPLAYER);
+		end;
 	end;
 	
 	loop

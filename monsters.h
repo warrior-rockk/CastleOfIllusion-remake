@@ -11,8 +11,9 @@
 
 
 //Tipos de monstruo
-#define T_CYCLECLOWN	0 		//Monstruo CycleClown
-#define T_TOYPLANE   	1 		//Monstruo ToyPlane
+#define T_CYCLECLOWN			0 		//Monstruo CycleClown
+#define T_TOYPLANE   			1 		//Monstruo ToyPlane
+#define T_TOYPLANECONTROL   	2 		//Monstruo ToyPlaneControl
 
 //declaracion de proceso monstruo generico
 Declare Process monster(int monsterType,int x,int y)
