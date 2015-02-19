@@ -23,6 +23,7 @@ int xRange;			//Rango de movimiento X
 float xVel;			//Velocidad movimiento
 
 byte atack;			//Flag de atacar al enemigo
+int atackRangeX;		//Rango en el que ataca
 int i;				//Variable auxiliar
 begin
 	region = cGameRegion;
@@ -47,6 +48,7 @@ begin
 	_x0 = x;
 	xRange = 10;
 	xVel   = 0.2;
+	atackRangeX = 50;
 	
 	WGE_CreateObjectColPoints(id);
 	
@@ -104,7 +106,7 @@ begin
 				flags |= B_HMIRROR; 
 			end;
 			//player en rango ataque
-			if (abs(idPlayer.fX - fX) < 60 && !atack)
+			if (abs(idPlayer.fX - fX) < atackRangeX && !atack)
 				atack = true;
 				isBitSet(flags,B_HMIRROR) ? monsterFire(7,x,y-16,-2,-4) : monsterFire(7,x,y-16,2,-4);		
 			end;
