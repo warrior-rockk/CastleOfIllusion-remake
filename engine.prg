@@ -100,20 +100,20 @@ begin
 		
 		//pausa del juego
 		if (WGE_Key(K_PAUSE,KEY_DOWN))
-			if (gamePaused)
+			if (game.paused)
 				signal(idPlayer,s_wakeup);
 				signal(type objeto,s_wakeup);
 				signal(type plataforma,s_wakeup);
 				signal(type monster,s_wakeup_tree);
 				delete_text(pauseText);
-				gamePaused = false;
+				game.paused = false;
 			else
 				signal(idPlayer,s_freeze);
 				signal(type objeto,s_freeze);
 				signal(type plataforma,s_freeze);
 				signal(type monster,s_freeze_tree);
 				pauseText = write(0,cResx>>1,cResy>>1,ALIGN_CENTER,"-Paused-");
-				gamePaused = true;
+				game.paused = true;
 			end;
 		end;
 		

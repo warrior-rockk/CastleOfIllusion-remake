@@ -153,8 +153,13 @@ Global
 	int minFPS; 				//FPS Mínimo
 	byte ClockTick;				//Flanco Tiempo
 	int clockCounter;			//Contador Reloj
-	byte gamePaused;            //Flag de pausa
-	
+	//juego
+	struct game
+		byte paused;			//Flag de pausa
+		int playerLife;			//vida del jugador
+		int playerTries;		//vidas del jugador
+		int score;				//puntuación
+	end;
 	//debug
 	byte debugMode;				//Modo debug del engine
 	//nivel y mapeado
