@@ -39,6 +39,11 @@ begin
 	mapSolidOnFall = map_new(cTileSize,cTileSize,8);
 	draw_SolidOnFall(mapSolidOnFall);
 	
+	//iniciamos juego
+	game.playerTries 	= 3;
+	game.playerLife 	= 3;
+	game.score      	= 0;
+	
 	//Bucle principal de control del engine
 	Loop 
 		//Medicion fps
