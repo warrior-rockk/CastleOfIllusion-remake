@@ -646,6 +646,8 @@ BEGIN
 					//reseteamos flags
 					picked = false;
 				end;
+				//perdemos energia
+				game.playerLife--;
 			end;	
 		end;
 		
