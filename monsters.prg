@@ -346,6 +346,7 @@ private
 int colID;			//Id de colision
 int colDir;			//direccion de la colision
 byte collided;		//flag de colision
+monster idToyPlane;	//id de toyPlane activo
 
 int i;				//Variable auxiliar
 begin
@@ -381,6 +382,13 @@ begin
 			end;
 			case HURT_STATE: //toque
 				state = DEAD_STATE;
+				//matamos todo toyPlane que esté activo
+				repeat
+					idToyPlane = get_id(TYPE toyPlane);
+					if (idToyPlane <> 0 )
+						idToyPlane.state = DEAD_STATE;
+					end;
+				until (idToyPlane == 0);
 			end;
 			case DEAD_STATE:
 				graph = 17;
