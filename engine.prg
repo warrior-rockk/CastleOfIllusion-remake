@@ -42,6 +42,7 @@ begin
 	//iniciamos juego
 	game.playerTries 	= 3;
 	game.playerLife 	= 3;
+	game.playerMaxLife  = 3;
 	game.score      	= 0;
 	
 	//Bucle principal de control del engine
@@ -768,6 +769,7 @@ Begin
 	monster(T_TOYPLANECONTROL,526,320);
 	
 	objeto(4,550,300,16,16,ITEM_BIG_COIN | PICKABLE | BREAKABLE);
+	objeto(4,570,300,16,16,ITEM_STAR | PICKABLE | BREAKABLE);
 	
 	//creamos los objetos del nivel
 	//for (i=0;i<level.numObjects;i++) 

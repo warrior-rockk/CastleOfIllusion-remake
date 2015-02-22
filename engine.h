@@ -157,6 +157,7 @@ Global
 	struct game
 		byte paused;			//Flag de pausa
 		int playerLife;			//vida del jugador
+		int playerMaxLife;      //vida maxima del jugador
 		int playerTries;		//vidas del jugador
 		int score;				//puntuación
 	end;

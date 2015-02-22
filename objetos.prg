@@ -381,7 +381,7 @@ begin
 			end;
 			case DEAD_STATE:
 				//si el objeto tiene item dentro, lo lanzamos
-				if (isBitSet(props,ITEM_BIG_COIN))
+				if (isBitSet(props,ITEM_BIG_COIN) || isBitSet(props,ITEM_STAR))
 					item(x,y,16,16,props);
 				end;
 				WGE_Animation(file,2,3,x,y,10,ANIM_ONCE);
@@ -523,13 +523,22 @@ begin
 				end;
 				
 				//animacion del item
-				WGE_Animate(6,7,20,ANIM_LOOP);
+				if (isBitSet(props,ITEM_BIG_COIN))
+					WGE_Animate(6,7,20,ANIM_LOOP);
+				end;
+				if (isBitSet(props,ITEM_STAR))
+					WGE_Animate(11,12,20,ANIM_LOOP);
+				end;
 			end;
 			
 			case DEAD_STATE:
 				//segun el item,realizamos una accion determinada
 				if (isBitSet(props,ITEM_BIG_COIN))
 					game.score += 100;
+				end;
+				if (isBitSet(props,ITEM_STAR))
+					game.playerMaxLife += 1;
+					game.playerLife = game.playerMaxLife;
 				end;
 				signal(id,s_kill);
 			end;

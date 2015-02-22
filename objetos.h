@@ -11,6 +11,7 @@
 #define NO_COLLISION            2
 #define BREAKABLE               4
 #define ITEM_BIG_COIN           8
+#define ITEM_STAR              16
 
 //Objeto
 Type _objeto         			//Tipo de Dato de objeto
