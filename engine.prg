@@ -767,6 +767,8 @@ Begin
 	monster(T_TOYPLANE,526,300);
 	monster(T_TOYPLANECONTROL,526,320);
 	
+	objeto(4,550,300,16,16,ITEM_BIG_COIN | PICKABLE | BREAKABLE);
+	
 	//creamos los objetos del nivel
 	//for (i=0;i<level.numObjects;i++) 
 		//crea_objeto(i,1);
@@ -938,6 +940,9 @@ begin
 	log("eliminamos objetos");
 	//eliminamos los objetos de la pantalla
 	signal(TYPE objeto,s_kill_tree);
+	log("eliminamos items");
+	//eliminamos los items
+	signal(TYPE item,s_kill_tree);
 	log("eliminamos plataformas");
 	//eliminamos plataformas
 	signal(TYPE plataforma,s_kill_tree);

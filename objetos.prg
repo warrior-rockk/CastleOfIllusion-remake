@@ -380,6 +380,10 @@ begin
 				
 			end;
 			case DEAD_STATE:
+				//si el objeto tiene item dentro, lo lanzamos
+				if (isBitSet(props,ITEM_BIG_COIN))
+					item(x,y,16,16,props);
+				end;
 				WGE_Animation(file,2,3,x,y,10,ANIM_ONCE);
 				signal(id,s_kill);
 			end;
@@ -447,4 +451,101 @@ begin
 		
 		frame;
 	end;
+end;
+
+//proceso item
+process item(int x,int y,int _ancho,int _alto,int _props)
+private
+byte grounded;
+int i;
+entity colID;
+float friction;
+int colDir;
+byte collided;
+
+begin
+	region = cGameRegion;
+	ctype = c_scroll;
+	z = cZObject;
+	file = level.fpgObjects;
+	
+	//igualamos la propiedades publicas a las de parametros
+	ancho = _ancho;
+	alto = _alto;
+	props = _props;
+	
+	//modo debug sin graficos
+	if (file<0)
+		graph = map_new(ancho,alto,8,0);
+		map_clear(0,graph,rand(200,300));
+	end;
+	
+	fx = x;
+	fy = y;
+	vY = -4;
+	
+	WGE_CreateObjectColPoints(id);
+	
+	friction = floorFriction;
+	
+	state = IDLE_STATE;
+	
+	unSetBit(props,BREAKABLE);
+	unSetBit(props,PICKABLE);
+	
+	loop
+		
+		//FISICAS	
+		if (grounded)
+			vX *= friction;
+		end;
+		
+		vY += gravity;
+		
+		//comportamiento caja
+		switch (state)
+			case IDLE_STATE:
+							
+				grounded = false;
+				collided = false;
+				
+				//Recorremos la lista de puntos a comprobar
+				for (i=0;i<cNumColPoints;i++)					
+					//aplicamos la direccion de la colision
+					applyDirCollision(ID,colCheckTileTerrain(ID,i),&grounded);			
+				end;
+				
+				//comprobamos si colisiona con el jugador
+				colDir = colCheckProcess(id,idPlayer,INFOONLY);
+				
+				if (colDir <> NOCOL)
+					state = DEAD_STATE;
+				end;
+				
+				//animacion del item
+				WGE_Animate(6,7,20,ANIM_LOOP);
+			end;
+			
+			case DEAD_STATE:
+				//segun el item,realizamos una accion determinada
+				if (isBitSet(props,ITEM_BIG_COIN))
+					game.score += 100;
+				end;
+				signal(id,s_kill);
+			end;
+		end;
+		
+		//Actualizar velocidades
+		if (grounded)
+			vY = 0;
+		end;
+		
+		fx += vX;
+		fy += vY;
+		
+		positionToInt(id);
+			
+		frame;
+	end;
+	
 end;
