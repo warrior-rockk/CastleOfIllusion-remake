@@ -37,34 +37,8 @@ Begin
 	level.playerx0 =388;
 	level.playery0 =320;
 	
-	priority = cMainPrior;	
-		
 	//Iniciamos el engine
 	WGE_Init();
-	//Iniciamos modo grafico
-	WGE_InitScreen();
-	//Creamos datos nivel aleatorios
-	//WGE_GenLevelData("test\random.dat");
-	//Cargamos archivo nivel
-	//WGE_LoadLevel("test\random.dat");
-	//Creamos un mapa aleatorio
-	//WGE_GenRandomMapFile("test\random.bin",12,8);
-	//Creamos un mapa con matriz definida
-	//WGE_GenMatrixMapFile("test\random.bin");
-	//Cargamos el mapeado del nivel
-	WGE_LoadMapLevel("test\ToyLand.bin","test\tiles.fpg");
-	//Iniciamos Scroll
-	WGE_InitScroll();
-	//Dibujamos el mapeado
-	WGE_DrawMap();
-	//Creamos el nivel cargado
-	WGE_CreateLevel();
-	
-	//Creamos el jugador
-	//idPlayer = player_no_gravity();
-	//caja(672,160);
-	//caja(672,160-64);
-	player();
 	
 	//Bucle principal
 	Loop

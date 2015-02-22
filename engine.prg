@@ -9,17 +9,9 @@
 //Tareas de inicializacion del engine
 //TODO: el mapa que esta en la posicion de mapStairs, se borra¿¿¿
 //¿es por culpa de tener id 0 el sistema y el primer fpg?
-process WGE_Init()
-private
-	byte actDebugMode = 0;					//Modo debug activado
-	int idDebugText[cMaxDebugInfo-1];		//Textos debug
-	int idCursor;							//Id proceso cursor
-		
-	int i; 									//Variables auxiliares
-	byte clockTickMem;						//Memoria Flanco Reloj
-	int pauseText;
+function WGE_Init()
 begin
-	priority = 1000;         
+	         
 	
 	//Dibujamos mapas para testeo (esto ira eliminado)
 	mapBox = map_new(cTileSize,cTileSize,8);
@@ -39,21 +31,86 @@ begin
 	mapSolidOnFall = map_new(cTileSize,cTileSize,8);
 	draw_SolidOnFall(mapSolidOnFall);
 	
-	//iniciamos juego
+	//iniciamos variables juego
 	game.playerTries 	= 3;
 	game.playerLife 	= 3;
 	game.playerMaxLife  = 3;
 	game.score      	= 0;
+	game.state          = SPLASH;
+		
+	//Iniciamos modo grafico
+	WGE_InitScreen();
 	
-	//Bucle principal de control del engine
-	Loop 
-		//Medicion fps
-		if (fps > maxFPS)
-			maxFPS = fps;
-			if (minFPS == 0) minFPS = maxFPS; end;
-		end;
-		if (fps < minFPS && fps<>0)
-			minFPS = fps;
+	//Arrancamos el loop del juego
+	WGE_Loop();
+	
+	//Arrancamos rutinas debug si esta definido
+	#ifdef DEBUG
+		WGE_Debug();
+	#endif
+end;
+
+//Bucle principal del engine que controla el juego
+process WGE_Loop()
+private
+	int i; 									//Variables auxiliares
+	byte clockTickMem;						//Memoria Flanco Reloj
+	int pauseText;
+begin
+	priority = cMainPrior;
+	
+	loop
+		//estado del juego
+		switch (game.state)
+			case SPLASH:
+				game.state = LOADLEVEL;
+			end;
+			case MENU:
+			end;
+			case LOADLEVEL:
+				//Creamos datos nivel aleatorios
+				//WGE_GenLevelData("test\random.dat");
+				//Cargamos archivo nivel
+				//WGE_LoadLevel("test\random.dat");
+				//Creamos un mapa aleatorio
+				//WGE_GenRandomMapFile("test\random.bin",12,8);
+				//Creamos un mapa con matriz definida
+				//WGE_GenMatrixMapFile("test\random.bin");
+				//Cargamos el mapeado del nivel
+				WGE_LoadMapLevel("test\ToyLand.bin","test\tiles.fpg");
+				//Iniciamos Scroll
+				WGE_InitScroll();
+				//Dibujamos el mapeado
+				WGE_DrawMap();
+				//Creamos el nivel cargado
+				WGE_CreateLevel();
+				
+				//Creamos el jugador
+				player();
+				
+				game.state = PLAYLEVEL;
+			end;
+			case PLAYLEVEL:
+				
+				//pausa del juego
+				if (WGE_Key(K_PAUSE,KEY_DOWN))
+					if (game.paused)
+						signal(idPlayer,s_wakeup);
+						signal(type objeto,s_wakeup);
+						signal(type plataforma,s_wakeup);
+						signal(type monster,s_wakeup_tree);
+						delete_text(pauseText);
+						game.paused = false;
+					else
+						signal(idPlayer,s_freeze);
+						signal(type objeto,s_freeze);
+						signal(type plataforma,s_freeze);
+						signal(type monster,s_freeze_tree);
+						pauseText = write(0,cResx>>1,cResy>>1,ALIGN_CENTER,"-Paused-");
+						game.paused = true;
+					end;
+				end;
+			end;
 		end;
 		
 		//contador de reloj por frames.A 60 fps = 16ms 
@@ -70,100 +127,6 @@ begin
 			clockTickMem = false;
 		end;
 		
-		//activacion/desactivacion del modo debug
-		if (key(_control) && WGE_Key(_d,KEY_DOWN))
-			debugMode = not debugMode;
-		end;
-		
-		//Seteo de fps a 0
-		if (key(_control) && WGE_Key(_f,KEY_DOWN))
-			if (FPS==cNumFPS)
-				set_fps(cNumFPSDebug,0);
-				log("Pasamos a "+cNumFPSDebug+" FPS");
-			else
-				set_fps(cNumFPS,0);
-				log("Pasamos a "+cNumFps+" FPS");
-			end;
-			//Reseteamos mediciones
-			maxFPS = 0;
-			minFPS = 0;
-		end;
-
-		//Subida/Bajada de fps
-		If (WGE_Key(_C_MINUS,KEY_DOWN))
-			set_fps(fps-10,0);
-			log("Pasamos a "+fps+" FPS");
-		end;
-		If (WGE_Key(_C_PLUS,KEY_DOWN))
-			set_fps(fps+10,0);
-			log("Pasamos a "+fps+" FPS");
-		end;
-
-		//reiniciar nivel
-		if (WGE_Key(_r,KEY_DOWN))
-			WGE_RestartLevel();
-		end;
-		
-		//pausa del juego
-		if (WGE_Key(K_PAUSE,KEY_DOWN))
-			if (game.paused)
-				signal(idPlayer,s_wakeup);
-				signal(type objeto,s_wakeup);
-				signal(type plataforma,s_wakeup);
-				signal(type monster,s_wakeup_tree);
-				delete_text(pauseText);
-				game.paused = false;
-			else
-				signal(idPlayer,s_freeze);
-				signal(type objeto,s_freeze);
-				signal(type plataforma,s_freeze);
-				signal(type monster,s_freeze_tree);
-				pauseText = write(0,cResx>>1,cResy>>1,ALIGN_CENTER,"-Paused-");
-				game.paused = true;
-			end;
-		end;
-		
-		//Tareas de entrada al modo debug
-		if (debugMode && not actDebugMode)
-			//creamos el cursor
-			idCursor = WGE_DebugCursor();
-			//creamos frame de la region
-			WGE_RegionFrame();
-			//mostramos informacion de debug
-			idDebugText[0] = write_int(0,cDebugInfoX,cDebugInfoY,0,&fps);
-			idDebugText[1] = write_int(0,cDebugInfoX,cDebugInfoY+10,0,&idCursor.x);
-			idDebugText[2] = write_int(0,cDebugInfoX,cDebugInfoY+20,0,&idCursor.y);
-			idDebugText[3] = write_float(0,cDebugInfoX,cDebugInfoY+30,0,&idPlayer.vX);
-			//idDebugText[4] = write_float(0,cDebugInfoX,cDebugInfoY+40,0,&friction);
-			//Hacemos al player un blend aditivo para ver las colisiones
-			if (idPlayer<>0) idPlayer.flags |= B_ABLEND; end;
-			//activamos el modo debug
-			actDebugMode = 1;
-		end;
-		
-		//Tareas ciclicas del modo debug
-		if (actDebugMode)
-			//Pintamos los puntos de deteccion del jugador
-			if (idPlayer<>0)
-				for (i=0;i<cNumColPoints;i++)			
-					//debugColPoint(idPlayer.fx+idPlayer.colPoint[i].x,idPlayer.fy+idPlayer.colPoint[i].y);
-					debugColPoint(idPlayer,i);
-				end;
-			end;
-		end;
-		
-		//Tareas salida del modo debug
-		if (not debugMode && actDebugMode)
-			//limpiamos los textos
-			for (i=0;i<cMaxDebugInfo;i++)
-				delete_text(idDebugText[i]);
-			end;
-			//Quitamos al player el blend aditivo para ver las colisiones
-			if (idPlayer<>0) idPlayer.flags &= ~ B_ABLEND; end;
-			//desactivamos el modo debug
-			actDebugMode = 0;
-		end;
-		
 		//Control estado de teclas
 		keyUse ^= 1;
         for ( i = 0; i < 127; i++ )
@@ -172,7 +135,7 @@ begin
 		
 		frame;
 	end;
-	
+
 end;
 
 //Inicialización del modo grafico

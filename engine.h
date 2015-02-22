@@ -8,6 +8,7 @@
 
 //Defines del engine
 #define WGE_ENGINE										//Utilizando WGE engine
+#define DEBUG;											//Utilizando rutinas de debug
 #define isBitSet(a,b) 	( (a & b) == b )				//Funcion comparar bit
 #define setBit(a,b)     ( a |= b )						//Setear un bit
 #define unsetBit(a,b)   ( a &=~ b )						//Quitar un bit
@@ -26,6 +27,12 @@
 #define KEY_PRESSED    0
 #define KEY_DOWN       1
 #define KEY_UP         2
+
+//Estado del juego
+#define	SPLASH		0
+#define MENU		1
+#define LOADLEVEL   2
+#define PLAYLEVEL   3
 
 //Codigo del tile
 //bits del 0 al 4 del mapa de tiles
@@ -155,6 +162,7 @@ Global
 	int clockCounter;			//Contador Reloj
 	//juego
 	struct game
+		int state;              //estado del juego
 		byte paused;			//Flag de pausa
 		int playerLife;			//vida del jugador
 		int playerMaxLife;      //vida maxima del jugador
