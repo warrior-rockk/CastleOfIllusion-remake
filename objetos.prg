@@ -355,7 +355,7 @@ begin
 					//seteamos flag de colisionado
 					if (colDir <> NOCOL)
 						collided = true;
-						colID.state = DEAD_STATE;
+						colID.state = HURT_STATE;
 					end;
 					
 				until (colID == 0);
