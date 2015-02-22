@@ -110,6 +110,8 @@ begin
 						game.paused = true;
 					end;
 				end;
+				
+								
 			end;
 		end;
 		
@@ -178,6 +180,8 @@ begin
 	
 	//liberamos archivos cargados
 	unload_fpg(level.fpgTiles);
+	unload_fpg(level.fpgObjects);
+	unload_fpg(level.fpgMonsters);
 	
 	log("Se finaliza la ejecución");
 	log("FPS Max: "+maxFPS);
