@@ -229,13 +229,14 @@ end;
 //Proceso objeto
 process objeto(int graph,int x,int y,int _ancho,int _alto,int _props)
 private
-byte grounded;
-int i;
-entity colID;
-float friction;
-int colDir;
-byte collided;
+	byte grounded;		//Flag de en suelo
+	float friction;		//Friccion local
+	
+	entity colID;		//Entidad con la que colisiona
+	int colDir;			//Direccion de la colision
+	byte collided;		//flag de colisionado
 
+	int i;				//Variables auxiliares
 begin
 	region = cGameRegion;
 	ctype = c_scroll;
@@ -264,14 +265,7 @@ begin
 	
 	loop
 		
-		//FISICAS	
-		if (grounded)
-			vX *= friction;
-		end;
-		
-		vY += gravity;
-		
-		//comportamiento caja
+		//maquina de estados
 		switch (state)
 			case IDLE_STATE:
 				//normalizamos la posicion Y para evitar problemas de colision 
@@ -388,6 +382,13 @@ begin
 				signal(id,s_kill);
 			end;
 		end;
+		
+		//FISICAS	
+		if (grounded)
+			vX *= friction;
+		end;
+		
+		vY += gravity;
 		
 		//Actualizar velocidades
 		if (grounded)
