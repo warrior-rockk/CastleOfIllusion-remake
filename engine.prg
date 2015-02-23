@@ -99,6 +99,7 @@ begin
 						signal(type objeto,s_wakeup);
 						signal(type plataforma,s_wakeup);
 						signal(type monster,s_wakeup_tree);
+						signal(type item,s_wakeup_tree);
 						delete_text(pauseText);
 						game.paused = false;
 					else
@@ -106,6 +107,7 @@ begin
 						signal(type objeto,s_freeze);
 						signal(type plataforma,s_freeze);
 						signal(type monster,s_freeze_tree);
+						signal(type item,s_freeze_tree);
 						pauseText = write(0,cResx>>1,cResy>>1,ALIGN_CENTER,"-Paused-");
 						game.paused = true;
 					end;
@@ -900,28 +902,29 @@ begin
 	repeat
 		frame;
 	until (not fading);
-	log("detenemos scroll");
 	//detenemos el control del scroll
+	log("detenemos scroll");
 	signal(TYPE WGE_ControlScroll,s_kill);
-	log("eliminamos tiles");
 	//eliminamos los tiles de la pantalla
+	log("eliminamos tiles");
 	signal(TYPE pTile,s_kill);
-	log("eliminamos objetos");
 	//eliminamos los objetos de la pantalla
+	log("eliminamos objetos");
 	signal(TYPE objeto,s_kill_tree);
-	log("eliminamos items");
 	//eliminamos los items
+	log("eliminamos items");
 	signal(TYPE item,s_kill_tree);
-	log("eliminamos plataformas");
 	//eliminamos plataformas
+	log("eliminamos plataformas");
 	signal(TYPE plataforma,s_kill_tree);
-	log("eliminamos al jugador");
 	//eliminamos al jugador
+	log("eliminamos al jugador");
 	signal(idPlayer,s_kill_tree);
 	idPlayer = 0;
-	log("eliminamos enemigos");
 	//eliminamos a los enemigos
+	log("eliminamos enemigos");
 	signal(TYPE monster,s_kill_tree);
+	
 	//actualizamos
 	frame;
 	
