@@ -29,8 +29,11 @@ begin
 		//si existe el monstruo (sigue vivo)
 		if (exists(idMonster))
 			if (state == DEAD_STATE || state == HURT_STATE) 
-				//actualizo el estado del monstruo
-				idMonster.state = state;
+				//si el monstruo no esta muerto o dañado
+				if (idMonster.state <> DEAD_STATE && idMonster.state <> HURT_STATE)
+					//actualizo el estado del monstruo
+					idMonster.state = state;
+				end;
 				state = 0;
 			end;
 		else
