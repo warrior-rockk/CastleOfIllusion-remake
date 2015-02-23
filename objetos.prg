@@ -264,6 +264,12 @@ begin
 	state = MOVE_STATE;
 	
 	loop
+		//FISICAS	
+		if (grounded)
+			vX *= friction;
+		end;
+		
+		vY += gravity;
 		
 		//maquina de estados
 		switch (state)
@@ -382,14 +388,7 @@ begin
 				signal(id,s_kill);
 			end;
 		end;
-		
-		//FISICAS	
-		if (grounded)
-			vX *= friction;
-		end;
-		
-		vY += gravity;
-		
+			
 		//Actualizar velocidades
 		if (grounded)
 			vY = 0;
