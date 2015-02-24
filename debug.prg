@@ -167,12 +167,10 @@ begin
 		//al hacer click secundario, creamos una caja
 		if (mouse.right)
 			
-			//caja(x,y,4.0,-4.0);
 			idObj = objeto(1,x,y,16,16,BREAKABLE);
 			idObj.vX = 2;
 			idObj.vY = -2;
 			
-			//caja(x,y,0.0,0.0);
 			WGE_Wait(20);
 		end;
 		
