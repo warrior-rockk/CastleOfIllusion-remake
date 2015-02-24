@@ -6,10 +6,7 @@
 //  Proceso jugador principal
 // ========================================================================
 
-//TODO: Calcular nivel inferior al que seria muerte segun tamaño mapeado
-//		Salto distinto desde escalera
-//		bloqueo del agacharse si muro en cabeza
-//      al lanzar en parado un objeto no rompible, que te caiga al lado
+//proceso jugador
 process player()
 private 
 

@@ -7,8 +7,6 @@
 // ========================================================================
 
 //Tareas de inicializacion del engine
-//TODO: el mapa que esta en la posicion de mapStairs, se borra¿¿¿
-//¿es por culpa de tener id 0 el sistema y el primer fpg?
 function WGE_Init()
 begin
 	         

@@ -1,0 +1,9 @@
+PLAYER:Calcular nivel inferior al que seria muerte segun tamaño mapeado ¿buen metodo?
+PLAYER:Poder Salto distinto desde escalera
+PLAYER:bloqueo del agacharse si muro en cabeza
+PLAYER:al lanzar en parado un objeto no rompible, que te caiga al lado
+
+ENGINE (BUG):Tareas de inicializacion del engine:el mapa que esta en la posicion de mapStairs, se borra¿¿¿ ¿es por culpa de tener id 0 el 	sistema y el primer fpg?
+
+OBJETOS:propiedad bouncy para rebotar al tocar suelo??
+

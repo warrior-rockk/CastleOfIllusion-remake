@@ -14,5 +14,6 @@
         <File name="objetos.h" />
         <File name="monsters.h" />
         <File name="monsters.prg" />
+        <File name="TODO.txt" />
     </Project>
 </NotepadPlus>
