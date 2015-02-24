@@ -945,3 +945,18 @@ begin
 		frame;
 	until (not fading);
 end;
+
+//funcion que actualiza las velocidades y la posicion de un proceso
+function updateVelPos(entity idObject,byte grounded)
+begin
+	//Actualizar velocidades
+	if (grounded)
+		idObject.vY = 0;
+	end;
+	
+	//actualizar posiciones
+	idObject.fx += idObject.vX;
+	idObject.fy += idObject.vY;
+	
+	positionToInt(idObject);
+end;

@@ -375,6 +375,9 @@ begin
 			end;
 		end;
 			
+		//actualizamos velocidad y posicion
+		updateVelPos(id,grounded);
+		/*
 		//Actualizar velocidades
 		if (grounded)
 			vY = 0;
@@ -385,7 +388,7 @@ begin
 		fy += vY;
 		
 		positionToInt(id);
-			
+		*/
 		frame;
 	end;
 	
