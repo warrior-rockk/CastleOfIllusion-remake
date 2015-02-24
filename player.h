@@ -35,19 +35,21 @@ Const
 	//Fisicas
 	cPlayerVelMaxX			= 3.4;			//Velocidad Maxima X Player
 	cPlayerVelMaxXSlopeUp	= 2;            //Velocidad Maxima X Player subiendo rampa
-	cPlayerVelMaxXSlopeDown = 3.6;            //Velocidad Maxima X Player bajando rampa
+	cPlayerVelMaxXSlopeDown = 3.6;          //Velocidad Maxima X Player bajando rampa
 	cPlayerVelMaxXSloping	= 6;            //Velocidad Maxima X Player resbalando por rampa
 	cPlayerAccelX           = 0.6;          //Aceleracion maxima X Player
-	cPlayerAccelXSlopeUp    = 0.2;         //Aceleracion maxima X Player subiendo rampa
-	cPlayerAccelXSlopeDown  = 0.65;         //Aceleracion maxima X Player bajando rampa
+	cPlayerAccelXSlopeUp    = 0.2;      	//Aceleracion maxima X Player subiendo rampa
+	cPlayerAccelXSlopeDown  = 0.65;    	    //Aceleracion maxima X Player bajando rampa
 	cPlayerAccelXSloping	= 0.15;         //Aceleracion maxima X Player resbalando por rampa
 	cPlayerDecelXSlopeUp    = 0.1;			//Factor deceleracion X al subir rampa
 	cPlayerAccelY			= 4;			//Aceleracion Player Y salto
 	cPlayerVelMaxY          = 10;			//Velocidad Maxima Y Player
+	cPlayerVelYStairs       = 2;			//Velocidad movimiento en escalera
 	cPlayerAtackBounce      = 4;            //Rebote al romper objet/atacar
 	cPlayerPowerAtackBounce = 1.4;          //Extra de rebote al romper/atacar
 	cPlayerPowerJumpFactor  = 0.2;			//Factor de incremento poder salto
 	cPlayerMaxPowerJump     = 10;           //Maximo incremento poder salto
+	cPlayerMinVelToIdle     = 0.1;			//Velocidad minima para pasar a reposo
 	
 	//Personaje
 	cPlayerAncho			= 16;			//Ancho del jugador

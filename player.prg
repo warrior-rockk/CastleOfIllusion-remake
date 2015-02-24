@@ -162,7 +162,7 @@ BEGIN
 					//centramos el objeto en el tile escalera
 					fx = x+(cTileSize>>1)-(x%cTileSize);
 					//subimos las escaleras
-					fY -= 2;
+					fY -= cPlayerVelYStairs;
 					//Establecemos el flag de escalera
 					onStairs = true;
 					//desactivamos flag salto
@@ -188,7 +188,7 @@ BEGIN
 						//centramos el objeto en el tile escalera
 						fx = x+(cTileSize>>1)-(x%cTileSize);
 						//bajamos las escaleras
-						fY += 2;
+						fY += cPlayerVelYStairs;
 					//en caso contrario, estamos en la base de la escalera
 					else
 						//bajamos el objeto a la escalera
@@ -565,11 +565,11 @@ BEGIN
 		//resto de frenadas
 		if (state <> BREAK_ATACK_STATE && state <> BREAK_SLOPING_STATE)
 			//estado parado
-			if (abs(vX) < 0.1 && abs(vY) < 0.1)
+			if (abs(vX) < cPlayerMinVelToIdle && abs(vY) < cPlayerMinVelToIdle)
 				state = IDLE_STATE;
 			end;
 			//estados de frenadas al no pulsar movimiento
-			if ( abs(vX) > 0.1 && !key(K_RIGHT) && !key(K_LEFT)) 
+			if ( abs(vX) > cPlayerMinVelToIdle && !key(K_RIGHT) && !key(K_LEFT)) 
 				//si no esta en rampas o con objeto cogido
 				if (!on135Slope && !on45Slope && !picked)
 					//frenada cayendo
