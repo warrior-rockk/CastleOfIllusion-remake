@@ -572,10 +572,18 @@ begin
 			//comprobacion si no es rompible
 			if (!isBitSet(idObject.props,BREAKABLE))
 				//rebote en suelo
-				idObject.vY *= -cBouncyVel;
-				//cantidad de rebote
-				if ( abs(idObject.vY) < cBouncyVel )
-					*objGrounded = true;		
+				if (isType(idObject,TYPE object))
+					idObject.vY *= -cBouncyObjectVel;
+					//cantidad de rebote
+					if ( abs(idObject.vY) < cBouncyObjectVel )
+						*objGrounded = true;		
+					end;
+				else
+					idObject.vY *= -cBouncyItemVel;
+					//cantidad de rebote
+					if ( abs(idObject.vY) < cBouncyItemVel )
+						*objGrounded = true;		
+					end;
 				end;
 			else
 				*objGrounded = true;

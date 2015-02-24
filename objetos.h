@@ -16,10 +16,11 @@
 
 //constantes de objetos
 const
-	cMinVelXToIdle	= 			0.1;        //Velocidad X minima para pasar a reposo
-	cItemVelY 		=			-4;			//Velocidad Y al salir un item
-	cBouncyVel      =           0.6;        //Velocidad Y rebote suelo
-	cBigCoinScore	=			100;		//Puntuacion de moneda grande
+	cMinVelXToIdle		= 			0.1;        //Velocidad X minima para pasar a reposo
+	cItemVelY 			=			-4;			//Velocidad Y al salir un item
+	cBouncyObjectVel	=           0.6;        //Velocidad Y rebote suelo para objetos
+	cBouncyItemVel		=           0.8;        //Velocidad Y rebote suelo para items
+	cBigCoinScore		=			100;		//Puntuacion de moneda grande
 end;
 
 //Objeto
