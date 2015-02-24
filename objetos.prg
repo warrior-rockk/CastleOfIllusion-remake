@@ -273,6 +273,9 @@ begin
 			case IDLE_STATE:
 				//normalizamos la posicion Y para evitar problemas de colision 
 				fY = y;
+				//podemos centrar los objetos en rejilla del tamaño del mapa de tiles
+				//menos real pero mas parecido a master system
+				//fx = x+(cTileSize>>1)-(x%cTileSize);
 				//en estado reposo se desactivan las fisicas
 				setBit(props,NO_PHYSICS);
 				vX = 0;
@@ -377,18 +380,7 @@ begin
 			
 		//actualizamos velocidad y posicion
 		updateVelPos(id,grounded);
-		/*
-		//Actualizar velocidades
-		if (grounded)
-			vY = 0;
-		end;
 		
-		//actualizar posiciones
-		fx += vX;
-		fy += vY;
-		
-		positionToInt(id);
-		*/
 		frame;
 	end;
 	
