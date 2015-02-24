@@ -174,7 +174,9 @@ begin
 		
 		//FISICAS	
 		collided = terrainPhysics(ID,friction,&grounded);
-				
+		
+		//guardamos estado actual
+		prevState = state;		
 		//maquina de estados
 		switch (state)
 			case IDLE_STATE:
@@ -324,6 +326,10 @@ begin
 				
 	loop
 		//estados
+		
+		//guardamos estado actual
+		prevState = state;
+		//maquina estados
 		switch (state)
 			//animacion de recogiendolo
 			case MOVE_STATE:
@@ -391,7 +397,10 @@ begin
 		//FISICAS	
 		collided = terrainPhysics(ID,friction,&grounded);
 		
-		//comportamiento caja
+		//guardamos estado actual
+		prevState = state;
+		
+		//comportamiento item
 		switch (state)
 			case IDLE_STATE:
 							

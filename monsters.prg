@@ -259,13 +259,16 @@ begin
 	
 	loop
 		
+		//guardamos estado actual
+		prevState = state;
+		
 		//maquina de estados
 		switch (state)
 			case IDLE_STATE: //mirando al frente para cambiar de direcccion
 				//detenemos movimiento
 				vX = 0;
 				//pausa con animacion mirando al frente
-				if (WGE_Animate(11,11,30,ANIM_ONCE))
+				if (WGE_Animate(11,11,5,ANIM_ONCE))
 					wallTouch = false;
 					state = MOVE_STATE;
 					vX = xVel;

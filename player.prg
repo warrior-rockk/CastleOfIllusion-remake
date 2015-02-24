@@ -654,7 +654,6 @@ BEGIN
 		
 		//si hay cambio de estado, resetamos contador animacion
 		if (prevState <> state)
-			frameCount = 0;
 			log("Proceso: " + id + " pasa de estado " + prevState + " a " + state);
 		end;
 		

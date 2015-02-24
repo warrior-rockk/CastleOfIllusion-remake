@@ -17,6 +17,11 @@ begin
 	animFinished = false;
 	idFather = father.id;
 	
+	//si el proceso cambia de estado, se reseta cuenta
+	if ( idFather.prevState <> idFather.state )
+		idFather.frameCount = 0;
+	end;
+	
 	//evitamos el primer frame
 	if (idfather.frameCount <> 0)
 	    //si toca animar en el frame correspondiente
