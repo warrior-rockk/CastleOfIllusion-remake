@@ -97,6 +97,9 @@ begin
 		//FISICAS	
 		vY += gravity;
 		
+		//guardamos estado actual
+		prevState = state;
+		
 		//maquina de estados
 		switch (state)
 			case IDLE_STATE:
@@ -380,6 +383,9 @@ begin
 	state = IDLE_STATE;
 	
 	loop
+		
+		//guardamos estado actual
+		prevState = state;
 		
 		//maquina de estados
 		switch (state)
