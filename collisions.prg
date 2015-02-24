@@ -567,20 +567,21 @@ begin
 	if (colDir == COLIZQ || colDir == COLDER) 
 		idObject.vX = 0;
 	elseif (colDir == COLDOWN) 
-		if (idObject == idPlayer)
-			*objGrounded = true;
-		else
+		//si es un objeto o un item, rebota al tocar suelo
+		if (isType(idObject,TYPE object) || isType(idObject,TYPE item))
 			//comprobacion si no es rompible
 			if (!isBitSet(idObject.props,BREAKABLE))
 				//rebote en suelo
-				idObject.vY *= -0.6; //-0.8;
-				if (idObject.vY < 0.6 && idObject.vY > -0.6)
+				idObject.vY *= -cBouncyVel;
+				//cantidad de rebote
+				if ( abs(idObject.vY) < cBouncyVel )
 					*objGrounded = true;		
 				end;
 			else
 				*objGrounded = true;
 			end;
-			
+		else
+			*objGrounded = true;
 		end;
 	elseif (colDir == COLUP) 
 		idObject.vY = 0;			//Flota por el techo	

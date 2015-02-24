@@ -114,7 +114,7 @@ private
 	int cursorMap;	//Id grafico  cursor
 	int posTileX;	//posicion X Tile Clicado
 	int posTileY;	//posicion Y Tile Clicado
-	objeto idObj;	//Objeto de debug;
+	object idObj;	//Objeto de debug;
 begin
 	//creamos el cursor de debug
 	cursorMap = map_new(cTileSize,cTileSize,8);
@@ -167,7 +167,7 @@ begin
 		//al hacer click secundario, creamos una caja
 		if (mouse.right)
 			
-			idObj = objeto(1,x,y,16,16,BREAKABLE);
+			idObj = object(1,x,y,16,16,BREAKABLE);
 			idObj.vX = 2;
 			idObj.vY = -2;
 			

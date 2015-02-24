@@ -353,7 +353,7 @@ BEGIN
 		repeat
 			
 			//obtenemos siguiente colision
-			colID = get_id(TYPE objeto);
+			colID = get_id(TYPE object);
 			
 			//tratamos las colisiones separadas por ejes
 			//para poder andar sobre varios procesos corrigiendo la y
@@ -794,10 +794,10 @@ end;
 //funcion que lanza el objeto que lleva el player
 function throwObject(int playerFlags,entity idObjectPicked)
 private
-	objeto idObjectThrowed;		//id del objeto que se lanza
+	object idObjectThrowed;		//id del objeto que se lanza
 begin
 	//creamos objeto con las propiedades del recogido
-	idObjectThrowed = objeto(idObjectPicked.graph,idObjectPicked.x,idObjectPicked.y,idObjectPicked.ancho,idObjectPicked.alto,idObjectPicked.props);
+	idObjectThrowed = object(idObjectPicked.graph,idObjectPicked.x,idObjectPicked.y,idObjectPicked.ancho,idObjectPicked.alto,idObjectPicked.props);
 	//matamos el objeto cogido
 	signal(idObjectPicked,s_kill);
 	//asignamos velocidades al objeto para lanzarlo

@@ -134,7 +134,7 @@ begin
 end;
 
 //Proceso objeto
-process objeto(int graph,int x,int y,int _ancho,int _alto,int _props)
+process object(int graph,int x,int y,int _ancho,int _alto,int _props)
 private
 	byte grounded;		//Flag de en suelo
 	float friction;		//Friccion local
@@ -202,7 +202,7 @@ begin
 				//lanzamos comprobacion con procesos objeto
 				repeat
 					//obtenemos siguiente colision
-					colID = get_id(TYPE objeto);
+					colID = get_id(TYPE object);
 					//si no soy yo mismo
 					if (colID <> ID) 
 						//aplicamos la direccion de la colision
@@ -227,7 +227,7 @@ begin
 				//lanzamos comprobacion con procesos objeto
 				repeat
 					//obtenemos siguiente colision
-					colID = get_id(TYPE objeto);
+					colID = get_id(TYPE object);
 					//si no soy yo mismo
 					if (colID <> ID) 
 						//obtenemos la direccion de la colision

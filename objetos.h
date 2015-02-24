@@ -18,6 +18,7 @@
 const
 	cMinVelXToIdle	= 			0.1;        //Velocidad X minima para pasar a reposo
 	cItemVelY 		=			-4;			//Velocidad Y al salir un item
+	cBouncyVel      =           0.6;        //Velocidad Y rebote suelo
 	cBigCoinScore	=			100;		//Puntuacion de moneda grande
 end;
 
@@ -37,7 +38,7 @@ Global
 end;
 
 //declaracion de proceso objeto
-Declare Process objeto(int graph,int x,int y,int _ancho,int _alto,int _props)
+Declare Process object(int graph,int x,int y,int _ancho,int _alto,int _props)
 public
 	float vX			= 0;     	//Velocidad X
 	float vY			= 0;     	//Velocidad Y

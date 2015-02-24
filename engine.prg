@@ -94,7 +94,7 @@ begin
 				if (WGE_Key(K_PAUSE,KEY_DOWN))
 					if (game.paused)
 						signal(idPlayer,s_wakeup);
-						signal(type objeto,s_wakeup);
+						signal(type object,s_wakeup);
 						signal(type plataforma,s_wakeup);
 						signal(type monster,s_wakeup_tree);
 						signal(type item,s_wakeup_tree);
@@ -102,7 +102,7 @@ begin
 						game.paused = false;
 					else
 						signal(idPlayer,s_freeze);
-						signal(type objeto,s_freeze);
+						signal(type object,s_freeze);
 						signal(type plataforma,s_freeze);
 						signal(type monster,s_freeze_tree);
 						signal(type item,s_freeze_tree);
@@ -727,16 +727,16 @@ Begin
 	plataforma(620,729,32,16,8,25);
 	plataforma(458,729,32,16,8,25);
 	
-	objeto(5,218,712,16,16,PICKABLE | BREAKABLE);
-	objeto(5,1210,136,16,16,PICKABLE);
+	object(5,218,712,16,16,PICKABLE | BREAKABLE);
+	object(5,1210,136,16,16,PICKABLE);
 	
 	//cycleClown(1,1250,100,32,48,0);
 	monster(T_CYCLECLOWN,1250,100);
 	monster(T_TOYPLANE,526,300);
 	monster(T_TOYPLANECONTROL,526,320);
 	
-	objeto(4,550,300,16,16,ITEM_BIG_COIN | PICKABLE | BREAKABLE);
-	objeto(4,570,300,16,16,ITEM_STAR | PICKABLE | BREAKABLE);
+	object(4,550,300,16,16,ITEM_BIG_COIN | PICKABLE | BREAKABLE);
+	object(4,570,300,16,16,ITEM_STAR | PICKABLE | BREAKABLE);
 	
 	//creamos los objetos del nivel
 	//for (i=0;i<level.numObjects;i++) 
@@ -908,7 +908,7 @@ begin
 	signal(TYPE pTile,s_kill);
 	//eliminamos los objetos de la pantalla
 	log("eliminamos objetos");
-	signal(TYPE objeto,s_kill_tree);
+	signal(TYPE object,s_kill_tree);
 	//eliminamos los items
 	log("eliminamos items");
 	signal(TYPE item,s_kill_tree);
