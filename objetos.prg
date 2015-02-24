@@ -209,7 +209,7 @@ begin
 				until (colID == 0);
 				
 				//cambio de estado		
-				if (grounded && abs(vX) < 0.1) 
+				if (grounded && abs(vX) < cMinVelXToIdle) 
 					state = IDLE_STATE;
 					//desactivamos las fisicas al objeto
 					setBit(props,NO_PHYSICS);
@@ -268,7 +268,7 @@ begin
 					state = DEAD_STATE;
 				end;
 				//si no ha colisionado y toca suelo, cambiamos de estado
-				if (grounded && abs(vX) < 0.1) 
+				if (grounded && abs(vX) < cMinVelXToIdle) 
 					state = IDLE_STATE;
 				end;
 				
@@ -276,7 +276,7 @@ begin
 			case DEAD_STATE:
 				//si el objeto tiene item dentro, lo lanzamos
 				if (isBitSet(props,ITEM_BIG_COIN) || isBitSet(props,ITEM_STAR))
-					item(x,y,16,16,props);
+					item(x,y,ancho,alto,props);
 				end;
 				//lanzamos animacion explosion objeto
 				WGE_Animation(file,2,3,x,y,10,ANIM_ONCE);
@@ -373,7 +373,7 @@ begin
 	//establecemos posicion y velocidad
 	fx = x;
 	fy = y;
-	vY = -4;
+	vY = cItemVelY;
 	
 	WGE_CreateObjectColPoints(id);
 	
@@ -415,7 +415,7 @@ begin
 				//segun el item,realizamos una accion determinada
 				if (isBitSet(props,ITEM_BIG_COIN))
 					//incrementa puntuacion
-					game.score += 100;
+					game.score += cBigCoinScore;
 				end;
 				if (isBitSet(props,ITEM_STAR))
 					//añade una estrella a la vida

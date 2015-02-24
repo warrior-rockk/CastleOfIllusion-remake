@@ -14,6 +14,13 @@
 #define ITEM_BIG_COIN          16		//Contiene item moneda grande
 #define ITEM_STAR              32		//Contiene item estrella extra
 
+//constantes de objetos
+const
+	cMinVelXToIdle	= 			0.1;        //Velocidad X minima para pasar a reposo
+	cItemVelY 		=			-4;			//Velocidad Y al salir un item
+	cBigCoinScore	=			100;		//Puntuacion de moneda grande
+end;
+
 //Objeto
 Type _objeto         			//Tipo de Dato de objeto
 	byte tipo;      			//Tipo del objeto
