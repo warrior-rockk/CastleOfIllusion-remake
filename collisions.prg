@@ -573,7 +573,7 @@ begin
 			//comprobacion si no es rompible
 			if (!isBitSet(idObject.props,BREAKABLE))
 				//rebote en suelo
-				idObject.vY *= -0.8;
+				idObject.vY *= -0.6; //-0.8;
 				if (idObject.vY < 0.6 && idObject.vY > -0.6)
 					*objGrounded = true;		
 				end;

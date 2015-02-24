@@ -7,11 +7,12 @@
 // ========================================================================
 
 //propiedades de los objetos
-#define PICKABLE				1
-#define NO_COLLISION            2
-#define BREAKABLE               4
-#define ITEM_BIG_COIN           8
-#define ITEM_STAR              16
+#define PICKABLE				1		//Puede ser recogido
+#define NO_COLLISION            2		//No colisiona con otros procesos
+#define NO_PHYSICS              4       //No le afecta las fisicas
+#define BREAKABLE               8		//Se rompe al lanzarlo y colisionar
+#define ITEM_BIG_COIN          16		//Contiene item moneda grande
+#define ITEM_STAR              32		//Contiene item estrella extra
 
 //Objeto
 Type _objeto         			//Tipo de Dato de objeto

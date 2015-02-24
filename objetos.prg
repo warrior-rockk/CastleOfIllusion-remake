@@ -264,33 +264,50 @@ begin
 	state = MOVE_STATE;
 	
 	loop
-		//FISICAS	
-		if (grounded)
-			vX *= friction;
-		end;
 		
-		vY += gravity;
+		//FISICAS	
+		if (!isBitSet(props,NO_PHYSICS))
+			if (grounded)
+				vX *= friction;
+			end;
+			
+			vY += gravity;
+			
+			grounded = false;
+			collided = false;
+			
+			//COLISION TERRENO
+			//Recorremos la lista de puntos a comprobar
+			for (i=0;i<cNumColPoints;i++)					
+				//obtenemos la direccion de la colision
+				colDir = colCheckTileTerrain(ID,i);
+				//aplicamos la direccion de la colision
+				applyDirCollision(ID,colDir,&grounded);
+				//seteamos flag de colisionado
+				if (colDir <> NOCOL)
+					collided = true;
+				end;
+			end;
+		end;
 		
 		//maquina de estados
 		switch (state)
 			case IDLE_STATE:
 				//normalizamos la posicion Y para evitar problemas de colision 
 				fY = y;
-				props &= ~ NO_COLLISION;
+				//en estado reposo se desactivan las fisicas
+				setBit(props,NO_PHYSICS);
+				vX = 0;
+				vY = 0;
+				//vuelver a ser colisionable por procesos
+				unSetBit(props,NO_COLLISION);
 			end;
 			case MOVE_STATE:
 								
 				//mientras se mueve, no es solido
-				props |= NO_COLLISION;
-				
-				grounded = false;
-				collided = false;
-				
-				//Recorremos la lista de puntos a comprobar
-				for (i=0;i<cNumColPoints;i++)					
-					//aplicamos la direccion de la colision
-					applyDirCollision(ID,colCheckTileTerrain(ID,i),&grounded);			
-				end;
+				SetBit(props,NO_COLLISION);
+				//fisicas activadas
+				unSetBit(props,NO_PHYSICS);				
 				
 				//lanzamos comprobacion con procesos objeto
 				repeat
@@ -306,27 +323,16 @@ begin
 				//cambio de estado		
 				if (grounded && abs(vX) < 0.1) 
 					state = IDLE_STATE;
+					//desactivamos las fisicas al objeto
+					setBit(props,NO_PHYSICS);
 				end;
 				
 			end;
 			case THROWING_STATE:	
 				//mientras se mueve, no es solido
-				props |= NO_COLLISION;
-				
-				grounded = false;
-				collided = false;
-				
-				//Recorremos la lista de puntos a comprobar
-				for (i=0;i<cNumColPoints;i++)					
-					//obtenemos la direccion de la colision
-					colDir = colCheckTileTerrain(ID,i);
-					//aplicamos la direccion de la colision
-					applyDirCollision(ID,colDir,&grounded);
-					//seteamos flag de colisionado
-					if (colDir <> NOCOL)
-						collided = true;
-					end;
-				end;
+				setBit(props,NO_COLLISION);
+				//fisicas activadas
+				unSetBit(props,NO_PHYSICS);
 				
 				//lanzamos comprobacion con procesos objeto
 				repeat
@@ -373,7 +379,7 @@ begin
 					//cambiamos de estado
 					state = DEAD_STATE;
 				end;
-				
+				//si no ha colisionado y toca suelo, cambiamos de estado
 				if (grounded && abs(vX) < 0.1) 
 					state = IDLE_STATE;
 				end;
@@ -384,7 +390,9 @@ begin
 				if (isBitSet(props,ITEM_BIG_COIN) || isBitSet(props,ITEM_STAR))
 					item(x,y,16,16,props);
 				end;
+				//lanzamos animacion explosion objeto
 				WGE_Animation(file,2,3,x,y,10,ANIM_ONCE);
+				//matamos el objeto
 				signal(id,s_kill);
 			end;
 		end;
@@ -394,6 +402,7 @@ begin
 			vY = 0;
 		end;
 		
+		//actualizar posiciones
 		fx += vX;
 		fy += vY;
 		
