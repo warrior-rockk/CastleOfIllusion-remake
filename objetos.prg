@@ -438,13 +438,14 @@ end;
 //proceso item
 process item(int x,int y,int _ancho,int _alto,int _props)
 private
-byte grounded;
-int i;
-entity colID;
-float friction;
-int colDir;
-byte collided;
+	byte grounded;			//flag de en suelo
+	float friction;			//friccion local
+	
+	entity colID;			//entidad con al que colisiona
+	int colDir;				//direccion de la colision
+	byte collided;			//flag de colisionado
 
+	int i;					//Var aux
 begin
 	region = cGameRegion;
 	ctype = c_scroll;
@@ -462,6 +463,7 @@ begin
 		map_clear(0,graph,rand(200,300));
 	end;
 	
+	//establecemos posicion y velocidad
 	fx = x;
 	fy = y;
 	vY = -4;
@@ -472,34 +474,23 @@ begin
 	
 	state = IDLE_STATE;
 	
+	//ajustamos propiedades fijas de un item
 	unSetBit(props,BREAKABLE);
 	unSetBit(props,PICKABLE);
+	unSetBit(props,NO_PHYSICS);
 	
 	loop
 		
 		//FISICAS	
-		if (grounded)
-			vX *= friction;
-		end;
-		
-		vY += gravity;
+		collided = terrainPhysics(ID,friction,&grounded);
 		
 		//comportamiento caja
 		switch (state)
 			case IDLE_STATE:
 							
-				grounded = false;
-				collided = false;
-				
-				//Recorremos la lista de puntos a comprobar
-				for (i=0;i<cNumColPoints;i++)					
-					//aplicamos la direccion de la colision
-					applyDirCollision(ID,colCheckTileTerrain(ID,i),&grounded);			
-				end;
-				
 				//comprobamos si colisiona con el jugador
 				colDir = colCheckProcess(id,idPlayer,INFOONLY);
-				
+				//si colisiona, eliminamos el item
 				if (colDir <> NOCOL)
 					state = DEAD_STATE;
 				end;
@@ -516,26 +507,22 @@ begin
 			case DEAD_STATE:
 				//segun el item,realizamos una accion determinada
 				if (isBitSet(props,ITEM_BIG_COIN))
+					//incrementa puntuacion
 					game.score += 100;
 				end;
 				if (isBitSet(props,ITEM_STAR))
+					//añade una estrella a la vida
 					game.playerMaxLife += 1;
 					game.playerLife = game.playerMaxLife;
 				end;
+				//elimina el item
 				signal(id,s_kill);
 			end;
 		end;
 		
-		//Actualizar velocidades
-		if (grounded)
-			vY = 0;
-		end;
+		//actualizamos velocidad y posicion
+		updateVelPos(id,grounded);
 		
-		fx += vX;
-		fy += vY;
-		
-		positionToInt(id);
-			
 		frame;
 	end;
 	
