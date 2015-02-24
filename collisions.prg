@@ -588,3 +588,46 @@ begin
 		//idObject.vY = 2;		//Rebota hacia abajo con valor fijo
 	end;
 end;
+
+//funcion que engloba la gestion de las fisicas de un proceso
+//devuelve si hubo alguna colision con el terreno
+function byte terrainPhysics(entity idObject,float friction,byte *objGrounded)
+private
+	int i;					//Var auxiliar
+	int collided = false; 	//flag de colision
+	int colDir;				//Direccion colision
+	int grounded;			//flag de en suelo
+begin
+	//leemos el flag de en suelo del objeto
+	grounded = *objGrounded;
+	
+	if (!isBitSet(idObject.props,NO_PHYSICS))
+		if (grounded)
+			idObject.vX *= friction;
+		end;
+		
+		idObject.vY += gravity;
+		
+		grounded = false;
+		collided = false;
+		
+		//COLISION TERRENO
+		//Recorremos la lista de puntos a comprobar
+		for (i=0;i<cNumColPoints;i++)					
+			//obtenemos la direccion de la colision
+			colDir = colCheckTileTerrain(idObject,i);
+			//aplicamos la direccion de la colision
+			applyDirCollision(idObject,colDir,&grounded);
+			//seteamos flag de colisionado
+			if (colDir <> NOCOL)
+				collided = true;
+			end;
+		end;
+	end;
+	
+	//aplicamos el flag de en suelo al objeto
+	*objGrounded = grounded;
+	
+	return collided;	//devolvemos flag colision
+	
+end;

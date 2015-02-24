@@ -266,30 +266,8 @@ begin
 	loop
 		
 		//FISICAS	
-		if (!isBitSet(props,NO_PHYSICS))
-			if (grounded)
-				vX *= friction;
-			end;
-			
-			vY += gravity;
-			
-			grounded = false;
-			collided = false;
-			
-			//COLISION TERRENO
-			//Recorremos la lista de puntos a comprobar
-			for (i=0;i<cNumColPoints;i++)					
-				//obtenemos la direccion de la colision
-				colDir = colCheckTileTerrain(ID,i);
-				//aplicamos la direccion de la colision
-				applyDirCollision(ID,colDir,&grounded);
-				//seteamos flag de colisionado
-				if (colDir <> NOCOL)
-					collided = true;
-				end;
-			end;
-		end;
-		
+		collided = terrainPhysics(ID,friction,&grounded);
+				
 		//maquina de estados
 		switch (state)
 			case IDLE_STATE:
