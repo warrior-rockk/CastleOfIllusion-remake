@@ -56,6 +56,9 @@ begin
 	
 	//bucle principal
 	loop
+		//guardamos estado actual
+		prevState = state;
+		
 		switch (state)
 			case IDLE_STATE:
 				//estado por defecto

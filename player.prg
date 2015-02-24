@@ -139,7 +139,7 @@ BEGIN
 			//lanzar objeto
 			if (!picking & picked)
 				//lanzamos el objeto
-				throwObject(flags,idObjectPicked);
+				throwObject(ID,idObjectPicked);
 				idObjectPicked = 0;
 				//reseteamos flags
 				picked = false;
@@ -639,7 +639,7 @@ BEGIN
 				grounded = false;
 				//si teniamos objeto, lo perdemos
 				if (picked)
-					throwObject(flags,idObjectPicked);
+					throwObject(ID,idObjectPicked);
 					idObjectPicked = 0;
 					//reseteamos flags
 					picked = false;
@@ -792,17 +792,42 @@ BEGIN
 end;
 
 //funcion que lanza el objeto que lleva el player
-function throwObject(int playerFlags,entity idObjectPicked)
+function throwObject(entity idProcess,idObjectPicked)
 private
 	object idObjectThrowed;		//id del objeto que se lanza
+	int objectX;				//posicion X del objeto que se creamos
+	int objectY;				//posicion Y del objeto que se creamos
+	int dir;                    //direccion del lanzamiento
 begin
+	//obtenemos direccion segun flags proceso
+	isBitSet(idProcess.flags,B_HMIRROR) ? dir =  -1 : dir = 1;
+	
+	//definimos posicion del objeto a crear segun velocidad X del player y propiedad objeto
+	if (abs(idProcess.vX) < cPlayerMinVelToIdle && !isBitSet(idObjectPicked.props,BREAKABLE))
+	    objectX = idObjectPicked.x+((idProcess.ancho)*dir);
+		objectY = idObjectPicked.y;
+	else
+		objectX = idObjectPicked.x;
+		objectY = idObjectPicked.y;
+	end;
+	
 	//creamos objeto con las propiedades del recogido
-	idObjectThrowed = object(idObjectPicked.graph,idObjectPicked.x,idObjectPicked.y,idObjectPicked.ancho,idObjectPicked.alto,idObjectPicked.props);
+	idObjectThrowed = object(idObjectPicked.graph,objectX,objectY,idObjectPicked.ancho,idObjectPicked.alto,idObjectPicked.props);
+	
 	//matamos el objeto cogido
 	signal(idObjectPicked,s_kill);
+	
 	//asignamos velocidades al objeto para lanzarlo
-	isBitSet(playerFlags,B_HMIRROR) ? idObjectThrowed.vX = cThrowObjectVelX * -1 : idObjectThrowed.vX = cThrowObjectVelX;
-	idObjectThrowed.vY = cThrowObjectVelY;
+	if (abs(idProcess.vX) < cPlayerMinVelToIdle && !isBitSet(idObjectPicked.props,BREAKABLE))
+		//lo dejamos caer
+		idObjectThrowed.vX = 0;
+		idObjectThrowed.vY = 0;
+	else
+		idObjectThrowed.vX = cThrowObjectVelX * dir;
+		idObjectThrowed.vY = cThrowObjectVelY;
+	end;
+	
+	
 	idObjectThrowed.state = THROWING_STATE;
 	idObjectThrowed = 0;
 end;
