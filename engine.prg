@@ -246,20 +246,15 @@ function WGE_Quit()
 private
 	int i; //variable auxiliar
 begin
-	//Limpiamos la memoria dinamica
-	free(objetos);
-	free(paths);
-	free(tileMap);
-	
-	//liberamos archivos cargados
-	unload_fpg(level.fpgTiles);
-	unload_fpg(level.fpgObjects);
-	unload_fpg(level.fpgMonsters);
+	//descargamos el nivel
+	clearLevel();
 	
 	log("Se finaliza la ejecución",DEBUG_ENGINE);
 	log("FPS Max: "+maxFPS,DEBUG_ENGINE);
 	log("FPS Min: "+minFPS,DEBUG_ENGINE);
+	
 	exit();
+		
 end;
 
 //Funcion que setea el modo alpha.Solo se usa cuando se necesita porque

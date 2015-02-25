@@ -3,6 +3,7 @@ PLAYER:Poder Salto distinto desde escalera
 PLAYER:bloqueo del agacharse si muro en cabeza
 
 ENGINE (BUG):Tareas de inicializacion del engine:el mapa que esta en la posicion de mapStairs, se borra¿¿¿ ¿es por culpa de tener id 0 el 	sistema y el primer fpg?
+            -en el primer frame de creacion de nivel no estan los procesos en su sitio??
 
 OBJETOS:propiedad bouncy para rebotar al tocar suelo??
 OBJETOS:no se rompio cofre al caer en parte alta escalera
