@@ -113,21 +113,25 @@ end;
 
 //Salida por consola
 function log(string texto,int debugLevel)
+private
+	string header;		//cabecera del log
 begin
+	header = "[" + ftime("%d-%m-%Y %H:%M:%S",time()) + "] ";
+	
 	switch (debugLevel)
 		case DEBUG_ENGINE:
 			if (traceEngine)
-				say ("WGE: " + texto);
+				say (header + "WGE: " + texto);
 			end;
 		end;
 		case DEBUG_PLAYER:
 			if (tracePlayer)
-				say ("WGE_Player: " + texto);
+				say (header + "WGE_Player: " + texto);
 			end;
 		end;
 		case DEBUG_TILES:
 			if (traceTiles)
-				say ("WGE_Tiles: " + texto);
+				say (header + "WGE_Tiles: " + texto);
 			end;
 		end;
 	end;

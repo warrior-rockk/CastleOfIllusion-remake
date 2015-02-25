@@ -7,5 +7,5 @@ ENGINE (BUG):Tareas de inicializacion del engine:el mapa que esta en la posicion
 OBJETOS:propiedad bouncy para rebotar al tocar suelo??
 OBJETOS:no se rompio cofre al caer en parte alta escalera
 
-DEBUG:que el log tenga categorias
+DEBUG:escribir el log a archivo??
 
