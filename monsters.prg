@@ -208,16 +208,15 @@ end;
 process toyPlane(int graph,int x,int y,int _ancho,int _alto,int _props)
 private
 float friction;		//friccion local
-
-byte grounded;
+byte grounded;		//flag de en suelo
 
 int colID;			//Id de colision
 int colDir;			//direccion de la colision
 byte collided;		//flag de colision
-byte wallTouch;		//flag de pared alcanzada
-float xVel;			//Velocidad movimiento
 
+float xVel;			//Velocidad movimiento
 int hurtedCounter; 	//contador tiempo dañado
+
 int i;				//Variable auxiliar
 begin
 	region = cGameRegion;
@@ -248,6 +247,8 @@ begin
 	state = MOVE_STATE;
 	
 	loop
+		//FISICAS	
+		collided = terrainPhysics(ID,friction,&grounded);
 		
 		//guardamos estado actual
 		prevState = state;
@@ -259,7 +260,7 @@ begin
 				vX = 0;
 				//pausa con animacion mirando al frente
 				if (WGE_Animate(11,11,5,ANIM_ONCE))
-					wallTouch = false;
+					collided = false;
 					state = MOVE_STATE;
 					vX = xVel;
 				end;
@@ -268,9 +269,9 @@ begin
 				//dañamos al player
 				setBit(props,HURTPLAYER);
 				//si toca pared, invierte movimiento
-				if (wallTouch)
+				if (collided)
 					xVel = xVel * -1;
-					wallTouch = false;
+					collided = false;
 					state = IDLE_STATE;
 				end;
 				//actualizamos movimiento
@@ -303,29 +304,11 @@ begin
 			end;
 		end;
 		
-		//fisica terreno
-					
-		//Recorremos la lista de puntos a comprobar
-		for (i=0;i<cNumColPoints;i++)					
-			//aplicamos la direccion de la colision
-			applyDirCollision(ID,colCheckTileTerrain(ID,i),&grounded);			
-		end;
-				
-		//Actualizar velocidades
-		if (grounded)
-			vY = 0;
-		end;
+		//no tiene gravedad
+		vY = 0;
 		
-		//si no hay velocidad, a tocado muro
-		if (vX == 0 && state == MOVE_STATE)
-			wallTouch = true;
-		end;
-		
-		fx += vX;
-		fy += vY;
-		
-		//actualizamos la posicion
-		positionToInt(id);
+		//actualizamos velocidad y posicion
+		updateVelPos(id,grounded);
 		
 		//actualizamos el monstruo padre
 		updateMonster(id);
