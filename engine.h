@@ -8,7 +8,6 @@
 
 //Defines del engine
 #define WGE_ENGINE										//Utilizando WGE engine
-#define USE_DEBUG;										//Utilizando rutinas de debug
 #define isBitSet(a,b) 	( (a & b) == b )				//Funcion comparar bit
 #define setBit(a,b)     ( a |= b )						//Setear un bit
 #define unsetBit(a,b)   ( a &=~ b )						//Quitar un bit
@@ -95,12 +94,6 @@ const
 	cNumColPoints 	= 10;					//Puntos de colision/deteccion
 	cTransLevel      = 128;					//Nivel transparencia Alpha
 		
-	//Debug		
-	cCursorColor 	= 100;					//Color del cursor de debugMode
-	cDebugInfoX  	= 10;					//Posicion X de la informacion de debug
-	cDebugInfoY  	= 210;					//Posicion Y de la informacion de debug
-	cMaxDebugInfo	= 10;					//Maximo lineas informacion de debug
-
 	//Pantalla
 	cNumFPS    	 	= 60;  					//Frames por segundo
 	cNumFPSDebug 	= 0;					//Frames por segundo en debug (CTRL+F)
@@ -256,17 +249,18 @@ end
 end
 
 //definiciones del engine
+include "debug.h";			//funciones debug
 include "player.h";       	//Proceso jugador
 include "collisions.h"      //Funciones de colision
-include "animation.h"      //Funciones de animacion
-include "objetos.h"        //Funciones de objetos
+include "animation.h"      	//Funciones de animacion
+include "objetos.h"        	//Funciones de objetos
 include "monsters.h"		//Funciones de monstruos
 
 //Codigo del engine
 include "engine.prg";		//Core principal de engine
+include "debug.prg";		//Funciones de debug
 include "player.prg";       //Proceso jugador
 include "collisions.prg";	//Funciones de colision
-include "debug.prg";		//Funciones de debug
 include "objetos.prg"		//Procesos objetos
 include "monsters.prg"		//Procesos monstruos
 include "animation.prg"		//Funciones de animacion
