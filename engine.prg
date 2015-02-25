@@ -138,7 +138,7 @@ begin
 				end;
 				
 				//muerte del jugador por perdida energia
-				if (game.playerLife == 2 && idPlayer.state != HURT_STATE)
+				if (game.playerLife == 0 && idPlayer.state != HURT_STATE)
 					//creamos el proceso/animacion muerte
 					idDeadPlayer = deadPlayer();
 					//matamos al player
@@ -157,7 +157,7 @@ begin
 					WGE_Wait(100);
 					
 					//GameOver por perdida de vidas
-					if (game.playerTries == 2 )
+					if (game.playerTries == 0 )
 						game.state = GAME_OVER;
 					else
 						//reiniciamos el nivel
