@@ -653,7 +653,7 @@ BEGIN
 		
 		//si hay cambio de estado, resetamos contador animacion
 		if (prevState <> state)
-			log("Proceso: " + id + " pasa de estado " + prevState + " a " + state);
+			log("Proceso: " + id + " pasa de estado " + prevState + " a " + state,DEBUG_PLAYER);
 		end;
 		
 		//gestion del estado

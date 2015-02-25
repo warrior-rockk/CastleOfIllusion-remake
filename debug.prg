@@ -34,10 +34,10 @@ begin
 		if (key(_control) && WGE_Key(_f,KEY_DOWN))
 			if (FPS==cNumFPS)
 				set_fps(cNumFPSDebug,0);
-				log("Pasamos a "+cNumFPSDebug+" FPS");
+				log("Pasamos a "+cNumFPSDebug+" FPS",DEBUG_ENGINE);
 			else
 				set_fps(cNumFPS,0);
-				log("Pasamos a "+cNumFps+" FPS");
+				log("Pasamos a "+cNumFps+" FPS",DEBUG_ENGINE);
 			end;
 			//Reseteamos mediciones
 			maxFPS = 0;
@@ -47,11 +47,11 @@ begin
 		//Subida/Bajada de fps
 		If (WGE_Key(_C_MINUS,KEY_DOWN))
 			set_fps(fps-10,0);
-			log("Pasamos a "+fps+" FPS");
+			log("Pasamos a "+fps+" FPS",DEBUG_ENGINE);
 		end;
 		If (WGE_Key(_C_PLUS,KEY_DOWN))
 			set_fps(fps+10,0);
-			log("Pasamos a "+fps+" FPS");
+			log("Pasamos a "+fps+" FPS",DEBUG_ENGINE);
 		end;
 
 		//reiniciar nivel
@@ -112,9 +112,26 @@ begin
 end;
 
 //Salida por consola
-function log(string texto)
+function log(string texto,int debugLevel)
 begin
-	say ("WGE: " + texto);
+	switch (debugLevel)
+		case DEBUG_ENGINE:
+			if (traceEngine)
+				say ("WGE: " + texto);
+			end;
+		end;
+		case DEBUG_PLAYER:
+			if (tracePlayer)
+				say ("WGE_Player: " + texto);
+			end;
+		end;
+		case DEBUG_TILES:
+			if (traceTiles)
+				say ("WGE_Tiles: " + texto);
+			end;
+		end;
+	end;
+	
 end;
 
 process WGE_DebugCursor()
@@ -162,10 +179,10 @@ begin
 					" TileProf: " +tileMap[posTileY][posTileX].tileProf +
 					" TileAlpha: "+tileMap[posTileY][posTileX].tileAlpha +
 					" TileCode: " +tileMap[posTileY][posTileX].tileCode + 
-					" ProcessID: "+collision(type pTile));
+					" ProcessID: "+collision(type pTile),DEBUG_TILES);
 			else
 				log("TilePosX: "+posTileX+" TilePosY: "+posTileY + 
-				    " fuera del mapeado");
+				    " fuera del mapeado",DEBUG_TILES);
 			end;
 			
 			WGE_Wait(20);

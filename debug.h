@@ -23,3 +23,10 @@ const
 	cMaxDebugInfo	= 10;					//Maximo lineas informacion de debug
 
 End;
+
+//variables globales
+Global
+	byte traceEngine = 1;		//flag de activacion nivel debug
+	byte tracePlayer = 1;		//flag de activacion nivel debug
+	byte traceTiles	 = 1;		//flag de activacion nivel debug
+end;

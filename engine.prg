@@ -150,7 +150,7 @@ begin
 	//set_mode(992,600,8);
 	set_fps(cNumFPS,0);
 	
-	log("Modo Grafico inicializado");
+	log("Modo Grafico inicializado",DEBUG_ENGINE);
 end;
 
 //Definicion Region y Scroll
@@ -162,7 +162,7 @@ begin
 	start_scroll(cGameScroll,0,map_new(cRegionW,cRegionH,8),0,cGameRegion,3);
 	
 	scroll[cGameScroll].ratio = 100;
-	log("Scroll creado");
+	log("Scroll creado",DEBUG_ENGINE);
 	
 	WGE_ControlScroll();
 
@@ -183,9 +183,9 @@ begin
 	unload_fpg(level.fpgObjects);
 	unload_fpg(level.fpgMonsters);
 	
-	log("Se finaliza la ejecución");
-	log("FPS Max: "+maxFPS);
-	log("FPS Min: "+minFPS);
+	log("Se finaliza la ejecución",DEBUG_ENGINE);
+	log("FPS Max: "+maxFPS,DEBUG_ENGINE);
+	log("FPS Min: "+minFPS,DEBUG_ENGINE);
 	exit();
 end;
 
@@ -193,12 +193,12 @@ end;
 //demora unos segundos generar las tablas de transparencia
 process WGE_InitAlpha()
 begin
-	log("Activando modo alpha");
+	log("Activando modo alpha",DEBUG_ENGINE);
 		
 	drawing_alpha(cTransLevel);
 	drawing_alpha(255);
 	
-	log("Modo alpha activado"); 
+	log("Modo alpha activado",DEBUG_ENGINE); 
 end;
 
 //Carga de archivo de nivel
@@ -211,7 +211,7 @@ end
 begin 
 	//Comprobamos si existe el archivo de datos del nivel
 	if (not fexists(file_))
-		log("No existe el fichero: " + file_);
+		log("No existe el fichero: " + file_,DEBUG_ENGINE);
 		WGE_Quit();
 	end;
 	
@@ -221,19 +221,19 @@ begin
 	fseek(levelFile,0,SEEK_SET);  
 	
 	//Leemos icion inicial jugador
-	log("Leyendo datos nivel");
+	log("Leyendo datos nivel",DEBUG_ENGINE);
 	fread(levelFile,level.playerX0); 
 	fread(levelFile,level.playerY0);
 	
 	//Leemos numero de objetos
-	log("Leyendo objetos nivel");
+	log("Leyendo objetos nivel",DEBUG_ENGINE);
 	fread(levelFile,level.numObjects);
 	
 	//Asignamos tamaño dinamico al array de objetos
 	objetos = calloc(level.numObjects ,sizeof(_objeto));
 	//comprobamos el direccionamiento dinamico
 	if ( objetos == NULL )
-		log("Fallo alocando memoria dinámica (objetos)");
+		log("Fallo alocando memoria dinámica (objetos)",DEBUG_ENGINE);
 		WGE_Quit();
 	end;
 	
@@ -250,13 +250,13 @@ begin
 	end; 
 	
 	//Leemos numero de paths
-	log("Leyendo Paths Nivel");
+	log("Leyendo Paths Nivel",DEBUG_ENGINE);
 	fread(levelFile,level.numPaths);
 	//Asignamos tamaño dinamico al array de paths
 	paths = calloc(level.numPaths , sizeof(_path));
 	//comprobamos el direccionamiento dinamico
 	if ( paths == NULL )
-		log("Fallo alocando memoria dinámica (paths)");
+		log("Fallo alocando memoria dinámica (paths)",DEBUG_ENGINE);
 		WGE_Quit();
 	end;
 	//Leemos los datos de los trackings	
@@ -267,7 +267,7 @@ begin
 			paths[i].punto = calloc(paths[i].numPuntos,sizeof(_point));
 			//comprobamos el direccionamiento dinamico
 			if ( paths[i].punto == NULL )
-				log("Fallo alocando memoria dinámica (paths["+i+"])");
+				log("Fallo alocando memoria dinámica (paths["+i+"])",DEBUG_ENGINE);
 				WGE_Quit();
 			end;
 			for (j=0;j<paths[i].numPuntos;j++)
@@ -279,7 +279,7 @@ begin
 	
 	//cerramos el archivo
 	fclose(levelFile);
-	log("Fichero nivel leído con " + level.numObjects + " Objetos y " + level.numPaths + " Paths");	
+	log("Fichero nivel leído con " + level.numObjects + " Objetos y " + level.numPaths + " Paths",DEBUG_ENGINE);	
 	
 end;  
 
@@ -297,7 +297,7 @@ begin
 	//Borramos el anterior si existe
 	if (fexists(file_))
 		fremove(file_);
-		log("Borramos el archivo DataLevel anterior");
+		log("Borramos el archivo DataLevel anterior",DEBUG_ENGINE);
 	end;	
 	
 	//Abrimos el archivo
@@ -318,7 +318,7 @@ begin
 		
 	//cerramos el archivo
 	fclose(levelFile);
-	log("Fichero nivel creado");	
+	log("Fichero nivel creado",DEBUG_ENGINE);	
 	
 end;
 
@@ -333,7 +333,7 @@ Begin
 	
 	//Comprobamos si existe el archivo de mapa del nivel
 	if (not fexists(file_))
-		log("No existe el fichero de mapa: " + file_);
+		log("No existe el fichero de mapa: " + file_,DEBUG_ENGINE);
 		WGE_Quit();
 	end;
 	
@@ -344,7 +344,7 @@ Begin
 	fseek(levelMapFile,0,SEEK_SET);  
 		
 	//Leemos datos del mapa
-	log("Leyendo datos archivo del mapa");
+	log("Leyendo datos archivo del mapa",DEBUG_ENGINE);
 	
 	fread(levelMapFile,level.numTiles); 	//cargamos el numero de tiles que usa el mapa
 	fread(levelMapFile,level.numTilesX);   //cargamos el numero de columnas de tiles
@@ -356,7 +356,7 @@ Begin
 	tileMap = calloc(level.numTilesY,sizeof(_tile*));
 	//comprobamos el direccionamiento
 	if ( tileMap == NULL )
-		log("Fallo alocando memoria dinámica (tileMap)");
+		log("Fallo alocando memoria dinámica (tileMap)",DEBUG_ENGINE);
 		WGE_Quit();
 	end;
 	//segunda dimension
@@ -364,7 +364,7 @@ Begin
 		tileMap[i] = calloc(level.numTilesX ,sizeof(_tile));
 		//comprobamos el direccionamiento
 		if ( tileMap[i] == NULL )
-			log("Fallo alocando memoria dinámica (tileMap["+i+"])");
+			log("Fallo alocando memoria dinámica (tileMap["+i+"])",DEBUG_ENGINE);
 			WGE_Quit();
 		end;	
 	end;
@@ -373,7 +373,7 @@ Begin
 	for (i=0;i<level.numTilesY;i++)
 		for (j=0;j<level.numTilesX;j++)
 			if (fread(levelMapFile,tileMap[i][j].tileGraph)  == 0)
-				log("Fallo leyendo grafico de tiles ("+j+","+i+") en: " + file_);
+				log("Fallo leyendo grafico de tiles ("+j+","+i+") en: " + file_,DEBUG_ENGINE);
 				WGE_Quit();
 			end;
 		end;
@@ -385,7 +385,7 @@ Begin
 	for (i=0;i<level.numTilesY;i++)
 		for (j=0;j<level.numTilesX;j++)
 			if (fread(levelMapFile,mapTileCode) == 0)
-				log("Fallo leyendo codigo de tiles ("+j+","+i+") en: " + file_);
+				log("Fallo leyendo codigo de tiles ("+j+","+i+") en: " + file_,DEBUG_ENGINE);
 				WGE_Quit();
 			else
 				//decodificamos los datos del codigo de tile a propiedades
@@ -406,15 +406,15 @@ Begin
 	
 	//cerramos el archivo
 	fclose(levelMapFile);
-	log("Fichero mapa leído con " + level.numTiles + " Tiles. " + level.numTilesX + " Tiles en X y " + level.numTilesY + " Tiles en Y");   
+	log("Fichero mapa leído con " + level.numTiles + " Tiles. " + level.numTilesX + " Tiles en X y " + level.numTilesY + " Tiles en Y",DEBUG_ENGINE);   
 
 	//Comprobamos si existe el archivo grafico de tiles
 	if (fexists(fpgFile))
 		level.fpgTiles = fpg_load(fpgFile);
-		log("Archivo fpg de tiles leído correctamente");
+		log("Archivo fpg de tiles leído correctamente",DEBUG_ENGINE);
 	else
-		log("No existe el fichero fpg de tiles: " + fpgFile);
-		log("Activamos graficos Debug");
+		log("No existe el fichero fpg de tiles: " + fpgFile,DEBUG_ENGINE);
+		log("Activamos graficos Debug",DEBUG_ENGINE);
 		level.fpgTiles = -1;
 	end;
 End;
@@ -432,7 +432,7 @@ Begin
 	//Borramos el anterior si existe
 	if (fexists(file_))
 		fremove(file_);
-		log("Borramos el archivo MapData anterior");
+		log("Borramos el archivo MapData anterior",DEBUG_ENGINE);
 	end;
 	
 	//creamos el archivo de mapa
@@ -468,7 +468,7 @@ Begin
 	
 	//cerramos el archivo
 	fclose(levelMapFile);
-	log("Fichero mapa aleatorio creado");   
+	log("Fichero mapa aleatorio creado",DEBUG_ENGINE);   
 	
 end;
 
@@ -506,7 +506,7 @@ Begin
 	//Borramos el anterior si existe
 	if (fexists(file_))
 		fremove(file_);
-		log("Borramos el archivo MapData anterior");
+		log("Borramos el archivo MapData anterior",DEBUG_ENGINE);
 	end;
 	
 	//creamos el archivo de mapa
@@ -546,7 +546,7 @@ Begin
 	
 	//cerramos el archivo
 	fclose(levelMapFile);
-	log("Fichero mapa aleatorio creado");   
+	log("Fichero mapa aleatorio creado",DEBUG_ENGINE);   
 	
 end;
 
@@ -574,12 +574,12 @@ Begin
 			until(key(_space));*/
 					
 			pTile(i,j);
-			log("Creado tile: "+i+" "+j);
+			log("Creado tile: "+i+" "+j,DEBUG_TILES);
 			numTilesDraw++;
 		end;
 	end;
 
-	log("Mapa dibujado correctamente. Creados "+numTilesDraw+" tiles");
+	log("Mapa dibujado correctamente. Creados "+numTilesDraw+" tiles",DEBUG_ENGINE);
 	
 End;
 
@@ -619,7 +619,7 @@ BEGIN
 			i=i;
 			j=j+(cRegionW/cTileSize)+(cTilesXOffScreen*2);
 			  
-			log("Paso de izq a der "+i+","+j);
+			log("Paso de izq a der "+i+","+j,DEBUG_TILES);
 			redraw = 1;
 		end;
 		
@@ -631,7 +631,7 @@ BEGIN
 			i=i;
 			j=j-(cRegionW/cTileSize)-(cTilesXOffScreen*2);
 			
-			log("Paso de der a izq "+i+","+j);
+			log("Paso de der a izq "+i+","+j,DEBUG_TILES);
 			redraw = 1;
 		end;
 		
@@ -642,7 +642,7 @@ BEGIN
 			i=i+(cRegionH/cTileSize)+(cTilesYOffScreen*2);
 			j=j;       
 			
-			log("Paso de arrib a abaj "+i+","+j);
+			log("Paso de arrib a abaj "+i+","+j,DEBUG_TILES);
 			redraw = 1;
 		end;
 		
@@ -652,7 +652,7 @@ BEGIN
 			i=i-(cRegionH/cTileSize)-(cTilesYOffScreen*2);
 			j=j;       
 					
-			log("Paso de abajo a arriba "+i+","+j);
+			log("Paso de abajo a arriba "+i+","+j,DEBUG_TILES);
 			redraw = 1;
 		end;
 		
@@ -893,7 +893,7 @@ end;
 //Funcion para reiniciar el nivel actual
 function WGE_RestartLevel()
 begin
-	log("Reiniciando nivel");
+	log("Reiniciando nivel",DEBUG_ENGINE);
 	
 	//apagamos pantalla
 	fade_off();
@@ -901,26 +901,26 @@ begin
 		frame;
 	until (not fading);
 	//detenemos el control del scroll
-	log("detenemos scroll");
+	log("detenemos scroll",DEBUG_ENGINE);
 	signal(TYPE WGE_ControlScroll,s_kill);
 	//eliminamos los tiles de la pantalla
-	log("eliminamos tiles");
+	log("eliminamos tiles",DEBUG_ENGINE);
 	signal(TYPE pTile,s_kill);
 	//eliminamos los objetos de la pantalla
-	log("eliminamos objetos");
+	log("eliminamos objetos",DEBUG_ENGINE);
 	signal(TYPE object,s_kill_tree);
 	//eliminamos los items
-	log("eliminamos items");
+	log("eliminamos items",DEBUG_ENGINE);
 	signal(TYPE item,s_kill_tree);
 	//eliminamos plataformas
-	log("eliminamos plataformas");
+	log("eliminamos plataformas",DEBUG_ENGINE);
 	signal(TYPE plataforma,s_kill_tree);
 	//eliminamos al jugador
-	log("eliminamos al jugador");
+	log("eliminamos al jugador",DEBUG_ENGINE);
 	signal(idPlayer,s_kill_tree);
 	idPlayer = 0;
 	//eliminamos a los enemigos
-	log("eliminamos enemigos");
+	log("eliminamos enemigos",DEBUG_ENGINE);
 	signal(TYPE monster,s_kill_tree);
 	
 	//actualizamos
