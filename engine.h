@@ -73,7 +73,7 @@
 const
 	//Engine
 	cTimeInterval    = 1; 					//Intervalo reloj: cTimeInterval*16ms
-	
+	cFadeTime		 = 2;					//Velocidad de los fundidos de pantalla (1..64)
 	//Prioridades (orden ejecucion)
 	cMainPrior	 	 = 3;
 	cPlayerPrior	 = 2;

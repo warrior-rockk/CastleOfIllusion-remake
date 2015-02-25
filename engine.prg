@@ -38,9 +38,14 @@ begin
 	game.state          = SPLASH;
 	
 	//Archivos de los niveles
+	//level 0
 	levelFiles[0].MapFile 	= "test\ToyLand.bin";
 	levelFiles[0].DataFile 	= "test\random.dat";
 	levelFiles[0].TileFile 	= "test\tiles.fpg";
+	//level 1
+	levelFiles[1].MapFile 	= "test\ToyLand.bin";
+	levelFiles[1].DataFile 	= "test\random.dat";
+	levelFiles[1].TileFile 	= "test\tiles.fpg";
 	
 	//Iniciamos modo grafico
 	WGE_InitScreen();
@@ -67,6 +72,10 @@ begin
 		//estado del juego
 		switch (game.state)
 			case SPLASH:
+				//apagamos pantalla
+				fade(0,0,0,cFadeTime);
+				while(fading) frame; end;
+				
 				game.state = LOADLEVEL;
 			end;
 			case MENU:
@@ -91,6 +100,10 @@ begin
 				
 				//Creamos el jugador
 				player();
+				
+				//encendemos pantalla
+				fade(100,100,100,cFadeTime);
+				while(fading) frame; end;
 				
 				game.state = PLAYLEVEL;
 			end;
@@ -121,10 +134,27 @@ begin
 				//congelamos durante la melodia de fin a los procesos
 				gameSignal(s_freeze_tree);
 				WGE_Wait(100);
-				//reiniciamos el nivel TEMPORAL
-				WGE_RestartLevel();
 				
-				game.state = PLAYLEVEL;
+				//apagamos pantalla
+				fade(0,0,0,cFadeTime);
+				while(fading) frame; end;
+				
+				gameSignal(s_kill_tree);
+				idPlayer = 0;
+				
+				//Limpiamos la memoria dinamica
+				free(objetos);
+				free(paths);
+				free(tileMap);
+				
+				//liberamos archivos cargados
+				unload_fpg(level.fpgTiles);
+				unload_fpg(level.fpgObjects);
+				unload_fpg(level.fpgMonsters);
+				
+				game.numLevel++;
+				
+				game.state = LOADLEVEL;
 			end;
 		end;
 		
@@ -977,6 +1007,8 @@ end;
 //funcion que envia signals a los tipos del juego
 function gameSignal(int _signal)
 begin
+	signal(TYPE WGE_ControlScroll,_signal);
+	signal(TYPE pTile,_signal);
 	signal(idPlayer,_signal);
 	signal(type object,_signal);
 	signal(type plataforma,_signal);
