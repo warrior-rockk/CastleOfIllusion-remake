@@ -91,7 +91,7 @@ begin
 	
 	friction = floorFriction;
 	
-	state = MOVE_RIGHT_STATE;
+	state = MOVE_STATE;
 	
 	loop
 		
@@ -106,29 +106,36 @@ begin
 			case IDLE_STATE:
 				;
 			end;
-			case MOVE_RIGHT_STATE: //movimiento a derecha
+			case MOVE_STATE: //movimiento en rango
+				//cambio de direccion al superar rango
+				if (abs(fx - _x0) > xRange)
+					xVel *= -1;
+				end;
+				
 				//movimiento lineal
 				vX = xVel;
 				
-				//cambio de estado al superar rango
-				if (fx - _x0 > xRange)
-					state = MOVE_LEFT_STATE;
-				end;
-				
 				//animacion movimiento
-				WGE_Animate(1,6,5,ANIM_LOOP);
-			end;
-			case MOVE_LEFT_STATE: //movimiento a izquierda
-				//movimiento lineal
-				vX = -xVel;
+				WGE_Animate(1,6,5,ANIM_LOOP);	
 				
-				//cambio de estado al superar rango
-				if (_x0 - fx > xRange)
-					state = MOVE_RIGHT_STATE;
+				//si existe el player
+				if (idPlayer <> 0 )
+					//miramos a su direccion
+					if (idPlayer.fX > fX)
+						flags &=~ B_HMIRROR; 
+					else
+						flags |= B_HMIRROR; 
+					end;
+					//player en rango ataque
+					if (abs(idPlayer.fX - fX) < atackRangeX && !atack)
+						atack = true;
+						isBitSet(flags,B_HMIRROR) ? monsterFire(7,x,y-16,-2,-4) : monsterFire(7,x,y-16,2,-4);		
+					end;
 				end;
-				
-				//animacion movimiento
-				WGE_Animate(1,6,5,ANIM_LOOP);
+				//podemos volver a atacar cuando muere el disparo
+				if (!exists(son))
+					atack = false;
+				end;
 			end;
 			case HURT_STATE:   
 				state = DEAD_STATE;
@@ -139,27 +146,7 @@ begin
 				signal(id,s_kill);
 			end;
 		end;
-		
-		//Para todos los estados
-		//si existe el player
-		if (idPlayer <> 0 )
-			//miramos a su direccion
-			if (idPlayer.fX > fX)
-				flags &=~ B_HMIRROR; 
-			else
-				flags |= B_HMIRROR; 
-			end;
-			//player en rango ataque
-			if (abs(idPlayer.fX - fX) < atackRangeX && !atack)
-				atack = true;
-				isBitSet(flags,B_HMIRROR) ? monsterFire(7,x,y-16,-2,-4) : monsterFire(7,x,y-16,2,-4);		
-			end;
-		end;
-		//podemos volver a atacar cuando muere el disparo
-		if (!exists(son))
-			atack = false;
-		end;
-		
+				
 		//actualizamos velocidad y posicion
 		updateVelPos(id,grounded);
 		
