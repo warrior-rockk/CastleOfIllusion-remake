@@ -96,7 +96,7 @@ begin
 	loop
 		
 		//FISICAS	
-		vY += gravity;
+		collided = terrainPhysics(ID,friction,&grounded);
 		
 		//guardamos estado actual
 		prevState = state;
@@ -160,25 +160,8 @@ begin
 			atack = false;
 		end;
 		
-		//fisica terreno
-		grounded = false;
-				
-		//Recorremos la lista de puntos a comprobar
-		for (i=0;i<cNumColPoints;i++)					
-			//aplicamos la direccion de la colision
-			applyDirCollision(ID,colCheckTileTerrain(ID,i),&grounded);			
-		end;
-				
-		//Actualizar velocidades
-		if (grounded)
-			vY = 0;
-		end;
-		
-		fx += vX;
-		fy += vY;
-		
-		//actualizamos la posicion
-		positionToInt(id);
+		//actualizamos velocidad y posicion
+		updateVelPos(id,grounded);
 		
 		//actualizamos el monstruo padre
 		updateMonster(id);
