@@ -167,6 +167,7 @@ Global
 		int playerTries;		//vidas del jugador
 		int score;				//puntuación
 	end;
+	int fpgGame;				//archivo de graficos globales
 	//debug
 	byte debugMode;				//Modo debug del engine
 	//nivel y mapeado

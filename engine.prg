@@ -47,8 +47,10 @@ begin
 	levelFiles[1].DataFile 	= "test\random.dat";
 	levelFiles[1].TileFile 	= "test\tiles.fpg";
 	
+	//archivo graficos generales
+	fpgGame 	=	fpg_load("test\game.fpg");	 
 	//archivo del player
-	fpgPlayer = fpg_load("test\player.fpg");
+	fpgPlayer 	=	fpg_load("test\player.fpg");
 	
 	//Iniciamos modo grafico
 	WGE_InitScreen();
@@ -301,6 +303,7 @@ begin
 	clearLevel();
 	
 	//descargamos archivos globales
+	unload_fpg(fpgGame);
 	unload_fpg(fpgPlayer);
 	
 	//borramos todos los textos
@@ -1064,3 +1067,93 @@ begin
 	unload_fpg(level.fpgMonsters);
 	
 end;
+
+//Cuadro de informacion general
+/*
+process HUD()
+private
+int tiempo_anterior;
+begin
+	score_str = itoa(score);
+	
+	write_string(fich_fuente,198,181,2,&score_str); //mostramos el score
+	write_string(fich_fuente,116,181,0,&vidas_str); //mostramos las vidas
+	write_int(fich_fuente,236,181,2,&tiempo); //mostramos el tiempo 
+
+	loop
+		map_put(fich_screen,1,4,0,0);
+		
+		//Dibujamos las estrellas de energía
+		switch (estrellas)
+		case 4:
+			if (energia>=1)
+				map_put(fich_screen,1,3,25,186);
+			else
+				map_put(fich_screen,1,2,25,186);
+			end;
+			if (energia>=2)
+				map_put(fich_screen,1,3,25+16,186);
+			else
+				map_put(fich_screen,1,2,25+16,186);
+			end;
+			if (energia>=3)
+				map_put(fich_screen,1,3,25+16+16,186);
+			else
+				map_put(fich_screen,1,2,25+16+16,186);
+			end;
+			if (energia>=4)
+				map_put(fich_screen,1,3,25+16+16+16,186);
+			else
+				map_put(fich_screen,1,2,25+16+16+16,186);
+			end;
+			put_screen(fich_screen,1);	
+		end;
+		case 3:
+			if (energia>=1)
+				map_put(fich_screen,1,3,25,186);
+			else
+				map_put(fich_screen,1,2,25,186);
+			end;
+			if (energia>=2)
+				map_put(fich_screen,1,3,25+16,186);
+			else
+				map_put(fich_screen,1,2,25+16,186);
+			end;
+			if (energia>=3)
+				map_put(fich_screen,1,3,25+16+16,186);
+			else
+				map_put(fich_screen,1,2,25+16+16,186);
+			end;
+			put_screen(fich_screen,1);	
+		end;
+		default:
+		end;
+		end;
+		if (energia == 0)
+			p_personaje.estado = C_ESTADO_MUERTO;
+			//reinicia_nivel = 1;
+		end;
+		//Gestionamos las vidas con el formato de 1 ceros
+		vidas_str = itoa(vidas);  
+		if (len(vidas_str) < 2 )
+			repeat
+				vidas_str = "0" + vidas_str;
+			until(len(vidas_str)==2)
+		end;
+		//Gestionamos la puntuacion con el formato de 6 ceros
+		score_str = itoa(score);
+		if (len(score_str) < 5 )
+			repeat
+				score_str = "0" + score_str;
+			until(len(score_str)==5)
+		end;
+		//Gestionamos el tiempo restante
+		if (tiempo_anterior != timer[0]/100)
+			tiempo--;
+			tiempo_anterior = timer[0]/100;
+		end;
+		
+		frame;
+	end;
+end;
+*/
