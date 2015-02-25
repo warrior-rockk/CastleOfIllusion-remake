@@ -159,6 +159,7 @@ Global
 		int state;              //estado del juego
 		byte paused;			//Flag de pausa
 		byte endLevel;			//Flag de fin de nivel
+		int numLevel;			//Nivel actual
 		int playerLife;			//vida del jugador
 		int playerMaxLife;      //vida maxima del jugador
 		int playerTries;		//vidas del jugador
@@ -178,7 +179,13 @@ Global
 		int fpgTiles;			//Identificador del archivo de graficos del tile
 		int fpgObjects;			//Identificador del archivo de graficos de los objetos del nivel
 		int fpgMonsters;		//Identificador del archivo de graficos de los monstruos del nivel
-	End;	
+	End;
+	//archivos de los niveles
+	struct levelFiles[10]
+		string MapFile;			//archivo binario del mapa
+		string DataFile;		//archivo binario datos del nivel
+		string TileFile;		//archivo grafico de los tiles del mapa
+	end;
 	_path* paths;				//Array Dinamico de paths
 	_tile** tileMap;  	        //Matriz Dinamica del mapa de tiles del nivel
 	byte mapUsesAlpha;				//Bit que indica que el mapa usa propiedad alpha (relentiza la carga)

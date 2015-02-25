@@ -34,8 +34,14 @@ begin
 	game.playerLife 	= 3;
 	game.playerMaxLife  = 3;
 	game.score      	= 0;
+	game.numLevel       = 0;
 	game.state          = SPLASH;
-		
+	
+	//Archivos de los niveles
+	levelFiles[0].MapFile 	= "test\ToyLand.bin";
+	levelFiles[0].DataFile 	= "test\random.dat";
+	levelFiles[0].TileFile 	= "test\tiles.fpg";
+	
 	//Iniciamos modo grafico
 	WGE_InitScreen();
 	
@@ -75,7 +81,7 @@ begin
 				//Creamos un mapa con matriz definida
 				//WGE_GenMatrixMapFile("test\random.bin");
 				//Cargamos el mapeado del nivel
-				WGE_LoadMapLevel("test\ToyLand.bin","test\tiles.fpg");
+				WGE_LoadMapLevel(levelFiles[game.numLevel].MapFile,levelFiles[game.numLevel].TileFile);
 				//Iniciamos Scroll
 				WGE_InitScroll();
 				//Dibujamos el mapeado
