@@ -421,6 +421,9 @@ begin
 				if (isBitSet(props,ITEM_STAR))
 					WGE_Animate(11,12,20,ANIM_LOOP);
 				end;
+				if (isBitSet(props,GEM))
+					WGE_Animate(13,13,10,ANIM_LOOP);
+				end;
 			end;
 			
 			case DEAD_STATE:
@@ -433,6 +436,10 @@ begin
 					//añade una estrella a la vida
 					game.playerMaxLife += 1;
 					game.playerLife = game.playerMaxLife;
+				end;
+				if (isBitSet(props,GEM))
+					//fin del nivel actual
+					game.endLevel = true;
 				end;
 				//elimina el item
 				signal(id,s_kill);

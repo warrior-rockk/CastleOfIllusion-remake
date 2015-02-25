@@ -93,25 +93,24 @@ begin
 				//pausa del juego
 				if (WGE_Key(K_PAUSE,KEY_DOWN))
 					if (game.paused)
-						signal(idPlayer,s_wakeup);
-						signal(type object,s_wakeup);
-						signal(type plataforma,s_wakeup);
-						signal(type monster,s_wakeup_tree);
-						signal(type item,s_wakeup_tree);
+						gameSignal(s_wakeup_tree);
 						delete_text(pauseText);
 						game.paused = false;
 					else
-						signal(idPlayer,s_freeze);
-						signal(type object,s_freeze);
-						signal(type plataforma,s_freeze);
-						signal(type monster,s_freeze_tree);
-						signal(type item,s_freeze_tree);
+						gameSignal(s_freeze_tree);
 						pauseText = write(0,cResx>>1,cResy>>1,ALIGN_CENTER,"-Paused-");
 						game.paused = true;
 					end;
 				end;
 				
-								
+				//fin del nivel actual
+				if (game.endLevel)
+					game.endLevel = false;
+					gameSignal(s_freeze_tree);
+					WGE_Wait(100);
+					WGE_RestartLevel();
+				end;
+				
 			end;
 		end;
 		
@@ -738,6 +737,8 @@ Begin
 	object(4,550,300,16,16,ITEM_BIG_COIN | PICKABLE | BREAKABLE);
 	object(4,570,300,16,16,ITEM_STAR | PICKABLE | BREAKABLE);
 	
+	item(1996,257,16,16,GEM);
+	
 	//creamos los objetos del nivel
 	//for (i=0;i<level.numObjects;i++) 
 		//crea_objeto(i,1);
@@ -957,4 +958,14 @@ begin
 	idObject.fy += idObject.vY;
 	
 	positionToInt(idObject);
+end;
+
+//funcion que envia signals a los tipos del juego
+function gameSignal(int _signal)
+begin
+	signal(idPlayer,_signal);
+	signal(type object,_signal);
+	signal(type plataforma,_signal);
+	signal(type monster,_signal);
+	signal(type item,_signal);
 end;

@@ -95,7 +95,7 @@ const
 	cTransLevel      = 128;					//Nivel transparencia Alpha
 		
 	//Pantalla
-	cNumFPS    	 	= 0;//60;  					//Frames por segundo
+	cNumFPS    	 	= 60;  					//Frames por segundo
 	cNumFPSDebug 	= 0;					//Frames por segundo en debug (CTRL+F)
 	cResX 			= 320;					//Resolucion Horizontal Pantalla
 	cResY 			= 300;  				//Resolucion Vertical Pantalla
@@ -157,6 +157,7 @@ Global
 	struct game
 		int state;              //estado del juego
 		byte paused;			//Flag de pausa
+		byte endLevel;			//Flag de fin de nivel
 		int playerLife;			//vida del jugador
 		int playerMaxLife;      //vida maxima del jugador
 		int playerTries;		//vidas del jugador
