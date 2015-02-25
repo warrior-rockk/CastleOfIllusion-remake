@@ -15,7 +15,6 @@ begin
 	//creamos el tipo de monstruo
 	switch (monsterType)
 		case T_CYCLECLOWN:
-			//idMonster = cycleClown(1,x,y,32,48,HURTPLAYER);
 			idMonster = cycleClown(1,x,y,26,40,HURTPLAYER);
 		end;
 		case T_TOYPLANE:
@@ -360,9 +359,7 @@ end;
 //Cuando muere, mata a los toyPlane
 process toyPlaneControl(int graph,int x,int y,int _ancho,int _alto,int _props)
 private
-int colID;			//Id de colision
-int colDir;			//direccion de la colision
-byte collided;		//flag de colision
+byte grounded;		//flag de en suelo
 monster idToyPlane;	//id de toyPlane activo
 
 int i;				//Variable auxiliar
@@ -392,6 +389,8 @@ begin
 	state = IDLE_STATE;
 	
 	loop
+		//FISICAS	
+		terrainPhysics(ID,1,&grounded);
 		
 		//guardamos estado actual
 		prevState = state;
@@ -418,11 +417,8 @@ begin
 			end;
 		end;
 		
-		fx += vX;
-		fy += vY;
-		
-		//actualizamos la posicion
-		positionToInt(id);
+		//actualizamos velocidad y posicion
+		updateVelPos(id,grounded);
 		
 		//actualizamos el monstruo padre
 		updateMonster(id);
