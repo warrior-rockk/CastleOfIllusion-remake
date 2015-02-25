@@ -28,11 +28,13 @@
 #define KEY_UP         2
 
 //Estado del juego
-#define	SPLASH		0
-#define MENU		1
-#define LOADLEVEL   2
-#define PLAYLEVEL   3
-#define LEVELENDED  4
+#define	SPLASH			0
+#define MENU			1
+#define LOADLEVEL   	2
+#define PLAYLEVEL   	3
+#define RESTARTLEVEL	5
+#define LEVELENDED  	6
+
 
 //Codigo del tile
 //bits del 0 al 4 del mapa de tiles
@@ -73,7 +75,7 @@
 const
 	//Engine
 	cTimeInterval    = 1; 					//Intervalo reloj: cTimeInterval*16ms
-	cFadeTime		 = 2;					//Velocidad de los fundidos de pantalla (1..64)
+	cFadeTime		 = 16;					//Velocidad de los fundidos de pantalla (1..64)
 	//Prioridades (orden ejecucion)
 	cMainPrior	 	 = 3;
 	cPlayerPrior	 = 2;

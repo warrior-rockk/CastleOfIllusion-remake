@@ -56,7 +56,8 @@ begin
 
 		//reiniciar nivel
 		if (WGE_Key(_r,KEY_DOWN))
-			WGE_RestartLevel();
+			//WGE_RestartLevel();
+			game.state = RESTARTLEVEL;
 		end;
 		
 		//Tareas de entrada al modo debug

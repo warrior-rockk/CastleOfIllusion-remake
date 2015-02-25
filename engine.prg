@@ -101,9 +101,15 @@ begin
 				//Creamos el jugador
 				player();
 				
+				//procesos congelados
+				gameSignal(s_freeze_tree);
+				
 				//encendemos pantalla
 				fade(100,100,100,cFadeTime);
 				while(fading) frame; end;
+				
+				//se despiertan los procesos
+				gameSignal(s_wakeup_tree);
 				
 				game.state = PLAYLEVEL;
 			end;
@@ -128,7 +134,42 @@ begin
 				end;
 				
 			end;
+			case RESTARTLEVEL:
+				log("Reiniciando nivel",DEBUG_ENGINE);
+				
+				//apagamos pantalla
+				fade(0,0,0,cFadeTime);
+				while(fading) frame; end;
+				
+				//detenemos los procesos
+				gameSignal(s_kill_tree);
+				idPlayer = 0;
+					
+				//actualizamos
+				frame;
+				
+				//arrancamos el control de scroll
+				WGE_ControlScroll();
+				//dibujamos el mapa
+				WGE_DrawMap();
+				//creamos el nivel
+				WGE_CreateLevel();
+				//creamos al player
+				player();
+				
+				//esperamos un tiempo
+				WGE_Wait(50);
+				
+				//encendemos pantalla
+				fade(100,100,100,cFadeTime);
+				while(fading) frame; end;
+				
+				game.state = PLAYLEVEL;
+				
+			end;
 			case LEVELENDED:
+				log("finalizando nivel",DEBUG_ENGINE);
+				
 				//bajamos el flag
 				game.endLevel = false;
 				//congelamos durante la melodia de fin a los procesos
@@ -139,18 +180,7 @@ begin
 				fade(0,0,0,cFadeTime);
 				while(fading) frame; end;
 				
-				gameSignal(s_kill_tree);
-				idPlayer = 0;
-				
-				//Limpiamos la memoria dinamica
-				free(objetos);
-				free(paths);
-				free(tileMap);
-				
-				//liberamos archivos cargados
-				unload_fpg(level.fpgTiles);
-				unload_fpg(level.fpgObjects);
-				unload_fpg(level.fpgMonsters);
+				clearLevel();
 				
 				game.numLevel++;
 				
@@ -935,59 +965,6 @@ return ((event==KEY_DOWN)?(  keyState[ k ][ keyUse ] && !keyState[ k ][ keyUse ^
 		( keyState[ k ][ keyUse ]));
 end;
 
-//Funcion para reiniciar el nivel actual
-function WGE_RestartLevel()
-begin
-	log("Reiniciando nivel",DEBUG_ENGINE);
-	
-	//apagamos pantalla
-	fade_off();
-	repeat
-		frame;
-	until (not fading);
-	//detenemos el control del scroll
-	log("detenemos scroll",DEBUG_ENGINE);
-	signal(TYPE WGE_ControlScroll,s_kill);
-	//eliminamos los tiles de la pantalla
-	log("eliminamos tiles",DEBUG_ENGINE);
-	signal(TYPE pTile,s_kill);
-	//eliminamos los objetos de la pantalla
-	log("eliminamos objetos",DEBUG_ENGINE);
-	signal(TYPE object,s_kill_tree);
-	//eliminamos los items
-	log("eliminamos items",DEBUG_ENGINE);
-	signal(TYPE item,s_kill_tree);
-	//eliminamos plataformas
-	log("eliminamos plataformas",DEBUG_ENGINE);
-	signal(TYPE plataforma,s_kill_tree);
-	//eliminamos al jugador
-	log("eliminamos al jugador",DEBUG_ENGINE);
-	signal(idPlayer,s_kill_tree);
-	idPlayer = 0;
-	//eliminamos a los enemigos
-	log("eliminamos enemigos",DEBUG_ENGINE);
-	signal(TYPE monster,s_kill_tree);
-	
-	//actualizamos
-	frame;
-	
-	//arrancamos el control de scroll
-	WGE_ControlScroll();
-	//dibujamos el mapa
-	WGE_DrawMap();
-	//creamos el nivel
-	WGE_CreateLevel();
-	//creamos al player
-	player();
-	//esperamos un tiempo
-	WGE_Wait(50);
-	
-	//encendemos pantalla
-	fade_on();
-	repeat
-		frame;
-	until (not fading);
-end;
 
 //funcion que actualiza las velocidades y la posicion de un proceso
 function updateVelPos(entity idObject,byte grounded)
@@ -1014,4 +991,21 @@ begin
 	signal(type plataforma,_signal);
 	signal(type monster,_signal);
 	signal(type item,_signal);
+end;
+
+//funcion para limpiar y descargar archivos del nivel actual
+function clearLevel()
+begin
+	gameSignal(s_kill_tree);
+	idPlayer = 0;
+	
+	//Limpiamos la memoria dinamica
+	free(objetos);
+	free(paths);
+	free(tileMap);
+	
+	//liberamos archivos cargados
+	unload_fpg(level.fpgTiles);
+	unload_fpg(level.fpgObjects);
+	unload_fpg(level.fpgMonsters);
 end;
