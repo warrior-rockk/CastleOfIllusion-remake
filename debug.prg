@@ -12,6 +12,7 @@ private
 	byte actDebugMode = 0;					//Modo debug activado
 	int idDebugText[cMaxDebugInfo-1];		//Textos debug
 	int idCursor;							//Id proceso cursor
+	int pID;								//Process ID
 	int i;									//Variables auxiliares
 begin 
 	loop
@@ -78,13 +79,20 @@ begin
 		
 		//Tareas ciclicas del modo debug
 		if (actDebugMode)
+			//Pintamos la caja de deteccion del player
+			debugColBox(idPlayer);
+			//pintamos caja deteccion monsters
+			repeat
+				pID = get_id(TYPE monster);
+				debugColBox(pID);
+			until (pID == 0);
+			
 			//Pintamos los puntos de deteccion del jugador
-			if (idPlayer<>0)
-				for (i=0;i<cNumColPoints;i++)			
-					//debugColPoint(idPlayer.fx+idPlayer.colPoint[i].x,idPlayer.fy+idPlayer.colPoint[i].y);
-					debugColPoint(idPlayer,i);
-				end;
-			end;
+			/*for (i=0;i<cNumColPoints;i++)			
+				//debugColPoint(idPlayer.fx+idPlayer.colPoint[i].x,idPlayer.fy+idPlayer.colPoint[i].y);
+				debugColPoint(idPlayer,i);
+			end;*/
+			
 		end;
 		
 		//Tareas salida del modo debug
@@ -235,6 +243,8 @@ begin
 	y = idObject.fy+idObject.colPoint[numPoint].y;
 	
 	frame;
+	
+	map_unload(0,graph);
 end;
 
 //Funcion para dibujar un triangulo del tamaño de tile.
@@ -326,4 +336,29 @@ begin
 	//dibujamos la nariz para diferenciar hacia donde mira
 	drawing_color(200);
 	draw_fcircle((idPlayer.ancho>>1)+(idPlayer.ancho>>2),(idPlayer.alto>>2),4);
+end;
+
+//Funcion para pintar la caja de colision 
+//de un proceso segun su alto/ancho
+process debugColBox(entity idObject)
+begin
+	if (idObject <> 0 )
+		region = cGameRegion;
+		ctype = c_scroll;
+		z = -100;
+		setBit(flags,B_ABLEND);
+		
+		graph = map_new(idObject.ancho,idObject.alto,8);
+		drawing_map(0,graph);
+		
+		drawing_color(300);
+		draw_box(0,0,idObject.ancho,idObject.alto);
+		
+		x = idObject.x;
+		y = idObject.y;
+		
+		frame;
+		
+		map_unload(0,graph);
+	end;
 end;

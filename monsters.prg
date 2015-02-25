@@ -468,6 +468,8 @@ begin
 	idFather.alto = monsterSon.alto;
 	idFather.fX = monsterSon.fX;
 	idFather.fY = monsterSon.fY;
+	idFather.x  = monsterSon.x;
+	idFather.y  = monsterSon.y;
 	idFather.props = monsterSon.props;
 	
 end;
