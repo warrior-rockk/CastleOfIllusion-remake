@@ -24,6 +24,7 @@ public
 	float fY			= 0;		//Posicion y coma flotante
 	int   alto			= 0;   		//Altura en pixeles del proceso
 	int   ancho			= 0;   		//Ancho en pixeles del proceso
+	int   axisAlign     = 0;		//Alineacion del eje del grafico respecto caja colision
 	int   state 		= 0;   		//Estado de la entidad
 	int   prevState     = 0;		//Estado anterior
 	byte  props			= 0;		//Propiedades de la entidad
@@ -46,6 +47,7 @@ public
 	float fY			= 0;		//Posicion y coma flotante
 	int   alto			= 0;   		//Altura en pixeles del proceso
 	int   ancho			= 0;   		//Ancho en pixeles del proceso
+	int   axisAlign     = 0;		//Alineacion del eje del grafico respecto caja colision
 	int   state 		= 0;   		//Estado de la entidad
 	int   prevState     = 0;		//Estado anterior
 	byte  props			= 0;		//Propiedades de la entidad
@@ -68,6 +70,7 @@ public
 	float fY			= 0;		//Posicion y coma flotante
 	int   alto			= 0;   		//Altura en pixeles del proceso
 	int   ancho			= 0;   		//Ancho en pixeles del proceso
+	int   axisAlign     = 0;		//Alineacion del eje del grafico respecto caja colision
 	int   state 		= 0;   		//Estado de la entidad
 	int   prevState     = 0;		//Estado anterior
 	byte  props			= 0;		//Propiedades de la entidad
@@ -90,6 +93,7 @@ public
 	float fY			= 0;		//Posicion y coma flotante
 	int   alto			= 0;   		//Altura en pixeles del proceso
 	int   ancho			= 0;   		//Ancho en pixeles del proceso
+	int   axisAlign     = 0;		//Alineacion del eje del grafico respecto caja colision
 	int   state 		= 0;   		//Estado de la entidad
 	int   prevState     = 0;		//Estado anterior
 	byte  props			= 0;		//Propiedades de la entidad
@@ -112,6 +116,7 @@ public
 	float fY			= 0;		//Posicion y coma flotante
 	int   alto			= 0;   		//Altura en pixeles del proceso
 	int   ancho			= 0;   		//Ancho en pixeles del proceso
+	int   axisAlign     = 0;		//Alineacion del eje del grafico respecto caja colision
 	int   state 		= 0;   		//Estado de la entidad
 	int   prevState     = 0;		//Estado anterior
 	byte  props			= 0;		//Propiedades de la entidad
@@ -133,6 +138,7 @@ public
 	float fY			= 0;		//Posicion y coma flotante
 	int   alto			= 0;   		//Altura en pixeles del proceso
 	int   ancho			= 0;   		//Ancho en pixeles del proceso
+	int   axisAlign     = 0;		//Alineacion del eje del grafico respecto caja colision
 	int   state 		= 0;   		//Estado de la entidad
 	int   prevState     = 0;		//Estado anterior
 	byte  props			= 0;		//Propiedades de la entidad

@@ -15,8 +15,8 @@ begin
 	//creamos el tipo de monstruo
 	switch (monsterType)
 		case T_CYCLECLOWN:
-			idMonster = cycleClown(1,x,y,32,48,HURTPLAYER);
-			//idMonster = cycleClown(1,x,y,16,16,HURTPLAYER);
+			//idMonster = cycleClown(1,x,y,32,48,HURTPLAYER);
+			idMonster = cycleClown(1,x,y,26,40,HURTPLAYER);
 		end;
 		case T_TOYPLANE:
 			idMonster = toyPlane(9,x,y,16,16,HURTPLAYER);
@@ -71,6 +71,7 @@ begin
 	//igualamos la propiedades publicas a las de parametros
 	ancho = _ancho;
 	alto = _alto;
+	axisAlign = DOWN_AXIS;
 	props = _props;
 	
 	//modo debug sin graficos
@@ -182,6 +183,9 @@ begin
 		
 		//actualizamos el monstruo padre
 		updateMonster(id);
+		
+		//alineacion del eje X del grafico
+		alignAxis(id);
 		
 		frame;
 	end;
@@ -344,6 +348,9 @@ begin
 		//actualizamos el monstruo padre
 		updateMonster(id);
 		
+		//alineacion del eje X del grafico
+		alignAxis(id);
+		
 		frame;
 	end;
 	
@@ -368,6 +375,7 @@ begin
 	//igualamos la propiedades publicas a las de parametros
 	ancho = _ancho;
 	alto = _alto;
+	axisAlign = DOWN_AXIS;
 	props = _props;
 	
 	//modo debug sin graficos
@@ -419,6 +427,9 @@ begin
 		//actualizamos el monstruo padre
 		updateMonster(id);
 		
+		//alineacion del eje X del grafico
+		alignAxis(id);
+		
 		frame;
 	end;
 	
@@ -467,6 +478,7 @@ begin
 	//copiamos las propiedades
 	idFather.ancho = monsterSon.ancho;
 	idFather.alto = monsterSon.alto;
+	idFather.axisAlign = monsterSon.axisAlign;
 	idFather.fX = monsterSon.fX;
 	idFather.fY = monsterSon.fY;
 	idFather.x  = monsterSon.x;

@@ -37,3 +37,8 @@
 #define UP_R_POINT			7
 #define CENTER_POINT		8
 #define CENTER_DOWN_POINT	9
+
+//Alineaciones del eje respecto a la caja deteccion
+#define CENTER_AXIS			0
+#define UP_AXIS	  			1
+#define DOWN_AXIS			2

@@ -639,3 +639,18 @@ begin
 	return collided;	//devolvemos flag colision
 	
 end;
+
+//funcion que alinea el eje central del grafico respecto a la caja de deteccion
+function alignAxis(entity idObject)
+begin
+	switch (idObject.axisAlign)
+		case CENTER_AXIS:
+		end;
+		case UP_AXIS:
+			map_info_set(idObject.file,idObject.graph,G_Y_CENTER,abs((map_info(idObject.file,idObject.graph,G_HEIGHT))+(idObject.alto>>1)));
+		end;
+		case DOWN_AXIS:
+			map_info_set(idObject.file,idObject.graph,G_Y_CENTER,abs((map_info(idObject.file,idObject.graph,G_HEIGHT))-(idObject.alto>>1)));
+		end;
+	end;
+end;

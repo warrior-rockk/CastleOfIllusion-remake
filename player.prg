@@ -47,6 +47,8 @@ byte trace;     			//Variable debug
 BEGIN
 	ancho = cPlayerAncho;
 	alto =  cPlayerAlto;
+	axisAlign = DOWN_AXIS;
+	
 	velMaxX = cPlayerVelMaxX;
 	accelx 	= cPlayerAccelX;
 	accelY 	= cPlayerAccelY;
@@ -787,7 +789,7 @@ BEGIN
 		end;
 		
 		//alineacion del eje X del grafico
-		map_info_set(file,graph,G_Y_CENTER,abs((map_info(file,graph,G_HEIGHT))-(alto>>1)));
+		alignAxis(id);
 		
 		frame;
 	
