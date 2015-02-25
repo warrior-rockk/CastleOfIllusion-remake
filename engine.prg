@@ -47,6 +47,9 @@ begin
 	levelFiles[1].DataFile 	= "test\random.dat";
 	levelFiles[1].TileFile 	= "test\tiles.fpg";
 	
+	//archivo del player
+	fpgPlayer = fpg_load("test\player.fpg");
+	
 	//Iniciamos modo grafico
 	WGE_InitScreen();
 	
@@ -65,6 +68,7 @@ private
 	int i; 									//Variables auxiliares
 	byte clockTickMem;						//Memoria Flanco Reloj
 	int pauseText;
+	int idDeadPlayer;						//id del proceso muerte del player
 begin
 	priority = cMainPrior;
 	
@@ -133,6 +137,33 @@ begin
 					game.state = LEVELENDED;
 				end;
 				
+				//muerte del jugador por perdida energia
+				if (game.playerLife == 2 && idPlayer.state != HURT_STATE)
+					//creamos el proceso/animacion muerte
+					idDeadPlayer = deadPlayer();
+					//matamos al player
+					signal(idPlayer,s_kill);
+					idPlayer = 0;
+					//restamos una vida
+					game.playerTries --;
+					
+					//esperamos a que el proceso muerte desaparezca de pantalla
+					while(exists(idDeadPlayer))
+						frame;
+					end;
+					//congelamos los procesos
+					gameSignal(s_freeze_tree);
+					//esperamos un tiempo
+					WGE_Wait(100);
+					
+					//GameOver por perdida de vidas
+					if (game.playerTries == 2 )
+						game.state = GAME_OVER;
+					else
+						//reiniciamos el nivel
+						game.state = RESTARTLEVEL;
+					end;
+				end;
 			end;
 			case RESTARTLEVEL:
 				log("Reiniciando nivel",DEBUG_ENGINE);
@@ -164,6 +195,9 @@ begin
 				fade(100,100,100,cFadeTime);
 				while(fading) frame; end;
 				
+				//variables de inicio de nivel
+				game.playerLife = 3;
+				
 				game.state = PLAYLEVEL;
 				
 			end;
@@ -185,6 +219,23 @@ begin
 				game.numLevel++;
 				
 				game.state = LOADLEVEL;
+			end;
+			case GAME_OVER:
+				//apagamos pantalla
+				fade(0,0,0,cFadeTime);
+				while(fading) frame; end;
+				//matamos los procesos
+				gameSignal(s_kill_tree);
+				//encendemos pantalla
+				fade(100,100,100,cFadeTime);
+				while(fading) frame; end;
+				//mensaje hasta pulsar tecla
+				write(0,cResx>>1,cResy>>1,ALIGN_CENTER,"GAME OVER");
+				repeat
+					frame;
+				until(key(_ENTER));
+				//salimos del juego (TEMPORAL)
+				WGE_Quit();
 			end;
 		end;
 		
@@ -248,6 +299,12 @@ private
 begin
 	//descargamos el nivel
 	clearLevel();
+	
+	//descargamos archivos globales
+	unload_fpg(fpgPlayer);
+	
+	//borramos todos los textos
+	delete_text(all_text);
 	
 	log("Se finaliza la ejecución",DEBUG_ENGINE);
 	log("FPS Max: "+maxFPS,DEBUG_ENGINE);
@@ -981,7 +1038,9 @@ function gameSignal(int _signal)
 begin
 	signal(TYPE WGE_ControlScroll,_signal);
 	signal(TYPE pTile,_signal);
-	signal(idPlayer,_signal);
+	if (idPlayer <> 0 ) 
+		signal(idPlayer,_signal);
+	end;
 	signal(type object,_signal);
 	signal(type plataforma,_signal);
 	signal(type monster,_signal);
@@ -1003,4 +1062,5 @@ begin
 	unload_fpg(level.fpgTiles);
 	unload_fpg(level.fpgObjects);
 	unload_fpg(level.fpgMonsters);
+	
 end;

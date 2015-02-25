@@ -57,7 +57,7 @@ BEGIN
 	ctype = c_scroll;
 	z = cZPlayer;
 	priority = cPlayerPrior;
-	file = fpg_load("test\player.fpg");
+	file = fpgPlayer;
 	
 	//establecemos el id de player
 	idPlayer = id;
@@ -837,6 +837,39 @@ begin
 	idObjectThrowed = 0;
 end;
 
+//proceso de muerte del jugador
+process deadPlayer()
+begin
+	region = cGameRegion;
+	ctype = c_scroll;
+	z = cZPlayer;
+	file = fpgPlayer;
+	
+	fX = idPlayer.x;
+	fY = idPlayer.y;
+	
+	flags = idPlayer.flags;
+	
+	vX = 0;
+	vY = -4;
+	
+	graph = 34;
+	
+	repeat	
+			//fisicas
+			vY += gravity;
+			
+			fx += vX;
+			fy += vY;
+			positionToInt(id);
+			
+			WGE_Animate(34,36,10,ANIM_ONCE);
+			
+			frame;
+	//morimos al salirnos de la pantalla
+	until (out_region(id,cGameRegion));
+end;
+	
 /*
 process player_no_gravity()
 begin

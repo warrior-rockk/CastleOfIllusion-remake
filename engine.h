@@ -34,7 +34,7 @@
 #define PLAYLEVEL   	3
 #define RESTARTLEVEL	5
 #define LEVELENDED  	6
-
+#define GAME_OVER       7
 
 //Codigo del tile
 //bits del 0 al 4 del mapa de tiles
