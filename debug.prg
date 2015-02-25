@@ -116,8 +116,8 @@ function log(string texto,int debugLevel)
 private
 	string header;		//cabecera del log
 begin
-	header = "[" + ftime("%d-%m-%Y %H:%M:%S",time()) + "] ";
-	
+	header = "[" + ftime("%d-%m-%Y %H:%M:%S:%C",time()) + "] ";
+		
 	switch (debugLevel)
 		case DEBUG_ENGINE:
 			if (traceEngine)

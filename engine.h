@@ -95,7 +95,7 @@ const
 	cTransLevel      = 128;					//Nivel transparencia Alpha
 		
 	//Pantalla
-	cNumFPS    	 	= 60;  					//Frames por segundo
+	cNumFPS    	 	= 0;//60;  					//Frames por segundo
 	cNumFPSDebug 	= 0;					//Frames por segundo en debug (CTRL+F)
 	cResX 			= 320;					//Resolucion Horizontal Pantalla
 	cResY 			= 300;  				//Resolucion Vertical Pantalla
