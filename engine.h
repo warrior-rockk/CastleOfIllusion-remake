@@ -32,6 +32,7 @@
 #define MENU		1
 #define LOADLEVEL   2
 #define PLAYLEVEL   3
+#define LEVELENDED  4
 
 //Codigo del tile
 //bits del 0 al 4 del mapa de tiles

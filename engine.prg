@@ -105,12 +105,20 @@ begin
 				
 				//fin del nivel actual
 				if (game.endLevel)
-					game.endLevel = false;
-					gameSignal(s_freeze_tree);
-					WGE_Wait(100);
-					WGE_RestartLevel();
+					game.state = LEVELENDED;
 				end;
 				
+			end;
+			case LEVELENDED:
+				//bajamos el flag
+				game.endLevel = false;
+				//congelamos durante la melodia de fin a los procesos
+				gameSignal(s_freeze_tree);
+				WGE_Wait(100);
+				//reiniciamos el nivel TEMPORAL
+				WGE_RestartLevel();
+				
+				game.state = PLAYLEVEL;
 			end;
 		end;
 		
