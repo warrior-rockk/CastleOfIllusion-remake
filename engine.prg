@@ -43,7 +43,7 @@ begin
 	WGE_Loop();
 	
 	//Arrancamos rutinas debug si esta definido
-	#ifdef DEBUG
+	#ifdef USE_DEBUG
 		WGE_Debug();
 	#endif
 end;

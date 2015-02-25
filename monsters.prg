@@ -16,6 +16,7 @@ begin
 	switch (monsterType)
 		case T_CYCLECLOWN:
 			idMonster = cycleClown(1,x,y,32,48,HURTPLAYER);
+			//idMonster = cycleClown(1,x,y,16,16,HURTPLAYER);
 		end;
 		case T_TOYPLANE:
 			idMonster = toyPlane(9,x,y,16,16,HURTPLAYER);

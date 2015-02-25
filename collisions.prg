@@ -8,9 +8,8 @@
 
 //Funcion que crea puntos de colision del jugador
 function int WGE_CreatePlayerColPoints(entity idObject)
-
 begin
-		
+	
 	idObject.colPoint[RIGHT_UP_POINT].x 			= (idObject.ancho>>1)-1;
 	idObject.colPoint[RIGHT_UP_POINT].y 			= -(idObject.alto/4);
 	idObject.colPoint[RIGHT_UP_POINT].colCode 	= COLDER;
@@ -116,7 +115,7 @@ begin
 	idObject.colPoint[CENTER_POINT].enabled = 0;
 	
 	idObject.colPoint[CENTER_DOWN_POINT].x 		= 0;
-	idObject.colPoint[CENTER_DOWN_POINT].y 		= (idObject.alto>>1)-1;
+	idObject.colPoint[CENTER_DOWN_POINT].y 		= (idObject.alto>>1)-1; //diferencia con player?
 	idObject.colPoint[CENTER_DOWN_POINT].colCode = COLCENTER;
 	idObject.colPoint[CENTER_DOWN_POINT].enabled = 0;
 	

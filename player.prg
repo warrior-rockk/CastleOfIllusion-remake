@@ -46,7 +46,7 @@ byte trace;     			//Variable debug
  
 BEGIN
 	ancho = cPlayerAncho;
-	alto = cPlayerAlto;
+	alto =  cPlayerAlto;
 	velMaxX = cPlayerVelMaxX;
 	accelx 	= cPlayerAccelX;
 	accelY 	= cPlayerAccelY;
@@ -785,6 +785,9 @@ BEGIN
 				WGE_Animate(1,2,40,ANIM_LOOP);
 			end;
 		end;
+		
+		//alineacion del eje X del grafico
+		map_info_set(file,graph,G_Y_CENTER,abs((map_info(file,graph,G_HEIGHT))-(alto>>1)));
 		
 		frame;
 	

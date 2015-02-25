@@ -88,10 +88,10 @@ begin
 			until (pID == 0);
 			
 			//Pintamos los puntos de deteccion del jugador
-			/*for (i=0;i<cNumColPoints;i++)			
+			for (i=0;i<cNumColPoints;i++)			
 				//debugColPoint(idPlayer.fx+idPlayer.colPoint[i].x,idPlayer.fy+idPlayer.colPoint[i].y);
 				debugColPoint(idPlayer,i);
-			end;*/
+			end;
 			
 		end;
 		
