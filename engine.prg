@@ -97,6 +97,8 @@ begin
 				//WGE_GenMatrixMapFile("test\random.bin");
 				//Cargamos el mapeado del nivel
 				WGE_LoadMapLevel(levelFiles[game.numLevel].MapFile,levelFiles[game.numLevel].TileFile);
+				game.levelTime      = 300; //TEMPORAL: esto lo leera del archivo nivel
+				
 				//Iniciamos Scroll
 				WGE_InitScroll();
 				//Dibujamos el mapeado
@@ -106,6 +108,9 @@ begin
 				
 				//Creamos el jugador
 				player();
+				
+				//creamos el HUD
+				HUD();
 				
 				//procesos congelados
 				gameSignal(s_freeze_tree);
@@ -199,6 +204,7 @@ begin
 				
 				//variables de inicio de nivel
 				game.playerLife = 3;
+				game.levelTime      = 300; //TEMPORAL: esto lo leera del archivo nivel
 				
 				game.state = PLAYLEVEL;
 				
@@ -1072,23 +1078,45 @@ begin
 end;
 
 //Cuadro de informacion en pantalla "Head's Up Display"
-/*
 process HUD()
 private
-int tiempo_anterior;
+	string strScore;	//puntuacion en formato string 5 digitos
+	string strTries;	//vidas en formato string 2 digitos
 begin
 	file = fpgGame;
+	region = cHUDRegion;
+	ctype = C_SCREEN;
 	
-	score_str = itoa(score);
+	//posicion del HUD
+	x = (cHUDRegionW >> 1);
+	y = cHUDRegionY;
 	
-	write_string(fich_fuente,198,181,2,&score_str); //mostramos el score
-	write_string(fich_fuente,116,181,0,&vidas_str); //mostramos las vidas
+	//grafico del HUD
+	graph = 1;
+	
+	map_info_set(file,graph,G_Y_CENTER,0);
+	
+	//mostramos string de puntuacion
+	write_var(0,x+cHUDScoreX,y+cHUDScoreY,ALIGN_CENTER,strScore);
+	//mostramos string de vidas
+	write_var(0,x+cHUDTriesX,y+cHUDTriesY,ALIGN_CENTER,strTries);
+	//mostramos tiempo nivel
+	write_var(0,x+cHUDTimeX,y+cHUDTimeY,ALIGN_CENTER_RIGHT,game.levelTime);
+	
+	/*
 	write_int(fich_fuente,236,181,2,&tiempo); //mostramos el tiempo 
-
+	*/
+	
 	loop
-		map_put(fich_screen,1,4,0,0);
+		//Convertimos la puntuacion a string formato de 5 digitos
+		int2String(game.score,&strScore,5);
 		
-
+		//Convertimos las vidas a string formato de 2 digitos
+		int2String(game.playerTries,&strTries,2);
+		
+		//map_put(fich_screen,1,4,0,0);
+		
+/*
 		//Dibujamos las estrellas de energía
 		switch (estrellas)
 		case 4:
@@ -1146,7 +1174,7 @@ begin
 				vidas_str = "0" + vidas_str;
 			until(len(vidas_str)==2)
 		end;
-		//Gestionamos la puntuacion con el formato de 6 ceros
+		
 		score_str = itoa(score);
 		if (len(score_str) < 5 )
 			repeat
@@ -1157,8 +1185,20 @@ begin
 		if (tiempo_anterior != timer[0]/100)
 			tiempo--;
 			tiempo_anterior = timer[0]/100;
-		end;
+		end;*/
 		frame;
 	end;
 end;
-*/
+
+//funcion que convierte un entero a string añadiendo ceros a la izquierda
+function int2String(int entero,string *texto,int numDigitos)
+begin
+	//convertimos el entero a string
+	*texto = itoa(entero);
+	//añadimos 0 a la izquierda
+	if (len(*texto) < numDigitos )
+		repeat
+			*texto = "0" + *texto;
+		until(len(*texto)==numDigitos)
+	end;
+end;

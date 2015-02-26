@@ -108,11 +108,18 @@ const
 	cGameRegionY 	= 0;					//Region Vertical Pantalla de juego (Representacion Mapeado)
 	cGameRegionW 	= cResX;				//Region Horizontal Pantalla de juego (Representacion Mapeado) 
 	cGameRegionH 	= 200;					//Region Vertical Pantalla de juego (Representacion Mapeado)	
+	//HUD
 	cHUDRegion  	= 2;    				//Numero Region informacion juego
 	cHUDRegionX 	= 0;					//Region Horizontal informacion juego HUD
 	cHUDRegionY 	= cGameRegionH;			//Region Vertical informacion juego HUD
 	cHUDRegionW 	= cResX;				//Region Horizontal informacion juego HUD
 	cHUDRegionH 	= 100;					//Region Vertical informacion juego HUD
+	cHUDscoreX      = 48;					//Posicion X del score en el HUD
+	cHUDScoreY      = 18;					//Posicion Y del score en el HUD
+	cHUDTriesX      = 0;					//Posicion X de las vidas en el HUD
+	cHUDTriesY      = 18;					//Posicion Y de las vidas en el HUD
+	cHUDTimeX       = 108;					//Posicion X del tiempo en el HUD
+	cHUDTimeY       = 18;					//Posicion Y del tiempo en el HUD
 	
 	//Numero de tiles fuera de la pantalla. 
 	//Si la resolucion no es multiplo del tamaño del tile,es aconsejable usar 
@@ -171,6 +178,7 @@ Global
 		int playerMaxLife;      //vida maxima del jugador
 		int playerTries;		//vidas del jugador
 		int score;				//puntuación
+		int levelTime;			//tiempo actual nivel
 	end;
 	int fpgGame;				//archivo de graficos globales
 	//debug
