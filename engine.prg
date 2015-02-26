@@ -1094,6 +1094,8 @@ private
 	string strScore;	//puntuacion en formato string 5 digitos
 	string strTries;	//vidas en formato string 2 digitos
 	string strTime;		//tiempo en formato string 3 digitos
+	
+	int i;				//variables auxiliares
 begin
 	file = fpgGame;
 	region = cHUDRegion;
@@ -1115,8 +1117,6 @@ begin
 	//mostramos tiempo nivel
 	write_var(0,x+cHUDTimeX,y+cHUDTimeY,ALIGN_CENTER,strTime);
 	
-	map_put(file,1,2,10,10);
-	
 	loop
 		//Convertimos la puntuacion a string formato de 5 digitos
 		int2String(game.score,&strScore,5);
@@ -1127,55 +1127,18 @@ begin
 		//Convertimos el tiempo a string formato de 3 digitos
 		int2String(game.levelTime,&strTime,3);
 		
+		//copiamos el HUD vacío
 		
-		
-/*
-		//Dibujamos las estrellas de energía
-		switch (estrellas)
-		case 4:
-			if (energia>=1)
-				map_put(fich_screen,1,3,25,186);
+		//dibujamos las estrellas de energia
+		for (i=0;i<game.playerMaxLife;i++)
+			if (game.playerLife < i)
+				//estrella apagada
+				map_put(file,1,2,cHudLifeX+(16*i),cHudLifeY);
 			else
-				map_put(fich_screen,1,2,25,186);
+				//estrella encendida
+				map_put(file,1,3,cHudLifeX+(16*i),cHudLifeY);
 			end;
-			if (energia>=2)
-				map_put(fich_screen,1,3,25+16,186);
-			else
-				map_put(fich_screen,1,2,25+16,186);
-			end;
-			if (energia>=3)
-				map_put(fich_screen,1,3,25+16+16,186);
-			else
-				map_put(fich_screen,1,2,25+16+16,186);
-			end;
-			if (energia>=4)
-				map_put(fich_screen,1,3,25+16+16+16,186);
-			else
-				map_put(fich_screen,1,2,25+16+16+16,186);
-			end;
-			put_screen(fich_screen,1);	
 		end;
-		case 3:
-			if (energia>=1)
-				map_put(fich_screen,1,3,25,186);
-			else
-				map_put(fich_screen,1,2,25,186);
-			end;
-			if (energia>=2)
-				map_put(fich_screen,1,3,25+16,186);
-			else
-				map_put(fich_screen,1,2,25+16,186);
-			end;
-			if (energia>=3)
-				map_put(fich_screen,1,3,25+16+16,186);
-			else
-				map_put(fich_screen,1,2,25+16+16,186);
-			end;
-			put_screen(fich_screen,1);	
-		end;
-		default:
-		end;
-		end;*/
 		
 		frame;
 	end;
