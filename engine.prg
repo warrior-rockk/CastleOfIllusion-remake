@@ -1093,6 +1093,7 @@ process HUD()
 private
 	string strScore;	//puntuacion en formato string 5 digitos
 	string strTries;	//vidas en formato string 2 digitos
+	string strTime;		//tiempo en formato string 3 digitos
 begin
 	file = fpgGame;
 	region = cHUDRegion;
@@ -1112,7 +1113,7 @@ begin
 	//mostramos string de vidas
 	write_var(0,x+cHUDTriesX,y+cHUDTriesY,ALIGN_CENTER,strTries);
 	//mostramos tiempo nivel
-	write_var(0,x+cHUDTimeX,y+cHUDTimeY,ALIGN_CENTER_RIGHT,game.levelTime);
+	write_var(0,x+cHUDTimeX,y+cHUDTimeY,ALIGN_CENTER,strTime);
 	
 	/*
 	write_int(fich_fuente,236,181,2,&tiempo); //mostramos el tiempo 
@@ -1124,6 +1125,9 @@ begin
 		
 		//Convertimos las vidas a string formato de 2 digitos
 		int2String(game.playerTries,&strTries,2);
+		
+		//Convertimos el tiempo a string formato de 3 digitos
+		int2String(game.levelTime,&strTime,3);
 		
 		//map_put(fich_screen,1,4,0,0);
 		

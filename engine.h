@@ -118,7 +118,7 @@ const
 	cHUDScoreY      = 18;					//Posicion Y del score en el HUD
 	cHUDTriesX      = 0;					//Posicion X de las vidas en el HUD
 	cHUDTriesY      = 18;					//Posicion Y de las vidas en el HUD
-	cHUDTimeX       = 108;					//Posicion X del tiempo en el HUD
+	cHUDTimeX       = 100;					//Posicion X del tiempo en el HUD
 	cHUDTimeY       = 18;					//Posicion Y del tiempo en el HUD
 	
 	//Numero de tiles fuera de la pantalla. 
