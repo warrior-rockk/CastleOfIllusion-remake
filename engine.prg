@@ -1115,9 +1115,7 @@ begin
 	//mostramos tiempo nivel
 	write_var(0,x+cHUDTimeX,y+cHUDTimeY,ALIGN_CENTER,strTime);
 	
-	/*
-	write_int(fich_fuente,236,181,2,&tiempo); //mostramos el tiempo 
-	*/
+	map_put(file,1,2,10,10);
 	
 	loop
 		//Convertimos la puntuacion a string formato de 5 digitos
@@ -1129,7 +1127,7 @@ begin
 		//Convertimos el tiempo a string formato de 3 digitos
 		int2String(game.levelTime,&strTime,3);
 		
-		//map_put(fich_screen,1,4,0,0);
+		
 		
 /*
 		//Dibujamos las estrellas de energía
@@ -1177,30 +1175,8 @@ begin
 		end;
 		default:
 		end;
-		end;
-		if (energia == 0)
-			p_personaje.estado = C_ESTADO_MUERTO;
-			//reinicia_nivel = 1;
-		end;
-		//Gestionamos las vidas con el formato de 1 ceros
-		vidas_str = itoa(vidas);  
-		if (len(vidas_str) < 2 )
-			repeat
-				vidas_str = "0" + vidas_str;
-			until(len(vidas_str)==2)
-		end;
-		
-		score_str = itoa(score);
-		if (len(score_str) < 5 )
-			repeat
-				score_str = "0" + score_str;
-			until(len(score_str)==5)
-		end;
-		//Gestionamos el tiempo restante
-		if (tiempo_anterior != timer[0]/100)
-			tiempo--;
-			tiempo_anterior = timer[0]/100;
 		end;*/
+		
 		frame;
 	end;
 end;
