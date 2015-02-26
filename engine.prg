@@ -126,6 +126,11 @@ begin
 			end;
 			case PLAYLEVEL:
 				
+				//cronometro nivel
+				if ((clockCounter % cNumFps) == 0 && clockTick)
+					game.levelTime--;
+				end;
+				
 				//pausa del juego
 				if (WGE_Key(K_PAUSE,KEY_DOWN))
 					if (game.paused)
@@ -144,8 +149,13 @@ begin
 					game.state = LEVELENDED;
 				end;
 				
-				//muerte del jugador por perdida energia
-				if (game.playerLife == 0 && idPlayer.state != HURT_STATE)
+				//muerte del jugador 
+				if ( 
+				   //por perdida energia
+				   (game.playerLife == 0 && idPlayer.state != HURT_STATE) ||
+				    //por tiempo a 0
+				   (game.levelTime == 0)
+				   )									
 					//creamos el proceso/animacion muerte
 					idDeadPlayer = deadPlayer();
 					//matamos al player
@@ -171,6 +181,7 @@ begin
 						game.state = RESTARTLEVEL;
 					end;
 				end;
+				
 			end;
 			case RESTARTLEVEL:
 				log("Reiniciando nivel",DEBUG_ENGINE);
