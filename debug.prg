@@ -161,8 +161,8 @@ begin
 	z = cZCursor;
 		
 	//posicionamos el cursor a mitad de pantalla
-	mouse.x = (cRegionW>>1);
-	mouse.y = (cRegionH>>1);
+	mouse.x = (cGameRegionW>>1);
+	mouse.y = (cGameRegionH>>1);
 	
 	repeat
 		
@@ -229,10 +229,10 @@ begin
 	graph = map_new(cResX+1,cResY+1,8);
 	drawing_map(0,graph);
 	drawing_color(300);
-	draw_line(0,0,cRegionW,0);
-	draw_line(0,0,0,cRegionH);
-	draw_line(cRegionW,0,cRegionW,cRegionH);
-	draw_line(0,cRegionH,cRegionW,cRegionH);
+	draw_line(0,0,cGameRegionW,0);
+	draw_line(0,0,0,cGameRegionH);
+	draw_line(cGameRegionW,0,cGameRegionW,cGameRegionH);
+	draw_line(0,cGameRegionH,cGameRegionW,cGameRegionH);
 	x = cResX>>1;
 	y = cResY>>1;
 	

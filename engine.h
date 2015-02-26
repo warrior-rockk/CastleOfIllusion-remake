@@ -104,10 +104,15 @@ const
 	cResY 			= 300;  				//Resolucion Vertical Pantalla
 	cGameScroll 	= 0;    				//Numero Scroll
 	cGameRegion 	= 1;    				//Numero Region Pantalla Juego
-	cRegionX 		= 0;					//Region Horizontal Pantalla de juego (Representacion Mapeado) 
-	cRegionY 		= 0;					//Region Vertical Pantalla de juego (Representacion Mapeado)
-	cRegionW 		= cResX;				//Region Horizontal Pantalla de juego (Representacion Mapeado) 
-	cRegionH 		= 200;					//Region Vertical Pantalla de juego (Representacion Mapeado)	
+	cGameRegionX 	= 0;					//Region Horizontal Pantalla de juego (Representacion Mapeado) 
+	cGameRegionY 	= 0;					//Region Vertical Pantalla de juego (Representacion Mapeado)
+	cGameRegionW 	= cResX;				//Region Horizontal Pantalla de juego (Representacion Mapeado) 
+	cGameRegionH 	= 200;					//Region Vertical Pantalla de juego (Representacion Mapeado)	
+	cHUDRegion  	= 2;    				//Numero Region informacion juego
+	cHUDRegionX 	= 0;					//Region Horizontal informacion juego HUD
+	cHUDRegionY 	= cGameRegionH;			//Region Vertical informacion juego HUD
+	cHUDRegionW 	= cResX;				//Region Horizontal informacion juego HUD
+	cHUDRegionH 	= 100;					//Region Vertical informacion juego HUD
 	
 	//Numero de tiles fuera de la pantalla. 
 	//Si la resolucion no es multiplo del tamaño del tile,es aconsejable usar 

@@ -275,6 +275,10 @@ begin
 	set_mode(cResX,cResY,8);
 	//set_mode(992,600,8);
 	set_fps(cNumFPS,0);
+	//definimos la region del scroll
+	define_region(cGameRegion,cGameRegionX,cGameRegionY,cGameRegionW,cGameRegionH);
+	//definimos la region del HUD
+	define_region(cHUDRegion,cHUDRegionX,cHUDRegionY,cHUDRegionW,cHUDRegionH);
 	
 	log("Modo Grafico inicializado",DEBUG_ENGINE);
 end;
@@ -282,10 +286,9 @@ end;
 //Definicion Region y Scroll
 function WGE_InitScroll()
 begin
-	define_region(cGameRegion,cRegionX,cRegionY,cRegionW,cRegionH);
-	//define_region(cGameRegion,cRegionX,cRegionY,992,600);
+	
 	//Caida de frames radical si el mapa del scroll es pequeño (por tener que repetirlo?)
-	start_scroll(cGameScroll,0,map_new(cRegionW,cRegionH,8),0,cGameRegion,3);
+	start_scroll(cGameScroll,0,map_new(cGameRegionW,cGameRegionH,8),0,cGameRegion,3);
 	
 	scroll[cGameScroll].ratio = 100;
 	log("Scroll creado",DEBUG_ENGINE);
@@ -692,8 +695,8 @@ Begin
 	
 	//creamos los procesos tiles segun la posicion x e y iniciales y la longitud de resolucion de pantalla
 	//En los extremos de la pantalla se crean el numero definido de tiles (TILESOFFSCREEN) extras para asegurar la fluidez
-	for (i=((y_inicial/cTileSize)-cTilesYOffScreen);i<(((cRegionH+y_inicial)/cTileSize)+cTilesYOffScreen);i++)
-		for (j=((x_inicial/cTileSize)-cTilesXOffScreen);j<(((cRegionW+x_inicial)/cTileSize)+cTilesXOffScreen);j++)
+	for (i=((y_inicial/cTileSize)-cTilesYOffScreen);i<(((cGameRegionH+y_inicial)/cTileSize)+cTilesYOffScreen);i++)
+		for (j=((x_inicial/cTileSize)-cTilesXOffScreen);j<(((cGameRegionW+x_inicial)/cTileSize)+cTilesXOffScreen);j++)
 			/*repeat
 				frame; 
 			until(not key(_space));
@@ -745,7 +748,7 @@ BEGIN
 			//nueva posicion:a la derecha del tile de offscreen (que pasa a ser onscreen)
 			//Se multiplica por 2 porque tenemos tiles offscreen a ambos lados
 			i=i;
-			j=j+(cRegionW/cTileSize)+(cTilesXOffScreen*2);
+			j=j+(cGameRegionW/cTileSize)+(cTilesXOffScreen*2);
 			  
 			log("Paso de izq a der "+i+","+j,DEBUG_TILES);
 			redraw = 1;
@@ -753,11 +756,11 @@ BEGIN
 		
 		
 		//Si sale el tile por la derecha
-		if ((scroll[0].x0+cRegionW)< (x-(cTileSize*cTilesXOffScreen)))
+		if ((scroll[0].x0+cGameRegionW)< (x-(cTileSize*cTilesXOffScreen)))
 			//nueva posicion:a la derecha del tile de offscreen (que pasa a ser onscreen)
 			//Se multiplica por 2 porque tenemos tiles offscreen a ambos lados
 			i=i;
-			j=j-(cRegionW/cTileSize)-(cTilesXOffScreen*2);
+			j=j-(cGameRegionW/cTileSize)-(cTilesXOffScreen*2);
 			
 			log("Paso de der a izq "+i+","+j,DEBUG_TILES);
 			redraw = 1;
@@ -767,7 +770,7 @@ BEGIN
 		//Si sale por arriba
 		if (scroll[0].y0 > (y+(cTileSize*cTilesYOffScreen)) )
 			//nueva posicion
-			i=i+(cRegionH/cTileSize)+(cTilesYOffScreen*2);
+			i=i+(cGameRegionH/cTileSize)+(cTilesYOffScreen*2);
 			j=j;       
 			
 			log("Paso de arrib a abaj "+i+","+j,DEBUG_TILES);
@@ -775,9 +778,9 @@ BEGIN
 		end;
 		
 		//Si sale por abajo
-		if ((scroll[0].y0+cRegionH) < (y-(cTileSize*cTilesYOffScreen))) 
+		if ((scroll[0].y0+cGameRegionH) < (y-(cTileSize*cTilesYOffScreen))) 
 			//nueva posicion
-			i=i-(cRegionH/cTileSize)-(cTilesYOffScreen*2);
+			i=i-(cGameRegionH/cTileSize)-(cTilesYOffScreen*2);
 			j=j;       
 					
 			log("Paso de abajo a arriba "+i+","+j,DEBUG_TILES);
@@ -886,8 +889,8 @@ begin
 	priority = cScrollPrior;
 	
 	//Centramos el scroll en la posicion inicial
-	scroll[cGameScroll].x0 = level.playerX0 - (cRegionW>>1);
-	scroll[cGameScroll].y0 = level.playerY0 - (cRegionH>>1);	
+	scroll[cGameScroll].x0 = level.playerX0 - (cGameRegionW>>1);
+	scroll[cGameScroll].y0 = level.playerY0 - (cGameRegionH>>1);	
 	
 	loop
 		
@@ -895,8 +898,8 @@ begin
 		
 		//Si el jugador ya está en ejecución, lo enfocamos
 		if (idPlayer <> 0 )
-			scroll[cGameScroll].x0 = idPlayer.x - (cRegionW>>1);
-			scroll[cGameScroll].y0 = idPlayer.y - (cRegionH>>1);				
+			scroll[cGameScroll].x0 = idPlayer.x - (cGameRegionW>>1);
+			scroll[cGameScroll].y0 = idPlayer.y - (cGameRegionH>>1);				
 		end;
 		
 		//Ajustamos limites pantalla
@@ -906,16 +909,16 @@ begin
 			scroll[cGameScroll].x0 = 0;
 		end;
 		//Limite derecho
-		if ((scroll[cGameScroll].x0+cRegionW) > (level.numTilesX*cTileSize))
-			scroll[cGameScroll].x0 = (level.numTilesX*cTileSize)-cRegionW;
+		if ((scroll[cGameScroll].x0+cGameRegionW) > (level.numTilesX*cTileSize))
+			scroll[cGameScroll].x0 = (level.numTilesX*cTileSize)-cGameRegionW;
 		end;
 		//Limite inferior
 		if (scroll[cGameScroll].y0 < 0 )
 			scroll[cGameScroll].y0 = 0;
 		end;
 		//Limite superior
-		if ((scroll[cGameScroll].y0+cRegionH) > (level.numTilesY*cTileSize))
-			scroll[cGameScroll].y0 = (level.numTilesY*cTileSize)-cRegionH;
+		if ((scroll[cGameScroll].y0+cGameRegionH) > (level.numTilesY*cTileSize))
+			scroll[cGameScroll].y0 = (level.numTilesY*cTileSize)-cGameRegionH;
 		end;
 		
 		//Actualizamos el scroll
@@ -1068,12 +1071,14 @@ begin
 	
 end;
 
-//Cuadro de informacion general
+//Cuadro de informacion en pantalla "Head's Up Display"
 /*
 process HUD()
 private
 int tiempo_anterior;
 begin
+	file = fpgGame;
+	
 	score_str = itoa(score);
 	
 	write_string(fich_fuente,198,181,2,&score_str); //mostramos el score
@@ -1083,6 +1088,7 @@ begin
 	loop
 		map_put(fich_screen,1,4,0,0);
 		
+
 		//Dibujamos las estrellas de energía
 		switch (estrellas)
 		case 4:
@@ -1152,7 +1158,6 @@ begin
 			tiempo--;
 			tiempo_anterior = timer[0]/100;
 		end;
-		
 		frame;
 	end;
 end;
