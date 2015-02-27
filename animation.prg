@@ -22,6 +22,11 @@ begin
 		idFather.frameCount = 0;
 	end;
 	
+	//si el proceso no tiene grafico aun, se le asigna el startFrame
+	if (idFather.graph == 0)
+		idFather.graph = startFrame;
+	end;
+	
 	//evitamos el primer frame
 	if (idfather.frameCount <> 0)
 	    //si toca animar en el frame correspondiente

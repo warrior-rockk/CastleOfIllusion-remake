@@ -33,7 +33,7 @@ Begin
 	level.playerx0 = 896;
 	level.playery0 = 672;
 	level.playerx0 =1166;
-	level.playery0 =128;
+	level.playery0 =100;
 	//level.playerx0 =388;
 	//level.playery0 =320;
 	

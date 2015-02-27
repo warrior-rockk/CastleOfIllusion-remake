@@ -122,6 +122,8 @@ begin
 				fade(100,100,100,cFadeTime);
 				while(fading) frame; end;
 				
+				WGE_Wait(100);
+				
 				//se despiertan los procesos
 				gameSignal(s_wakeup_tree);
 				
