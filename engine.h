@@ -184,6 +184,7 @@ Global
 		int levelTime;			//tiempo actual nivel
 	end;
 	int fpgGame;				//archivo de graficos globales
+	int fntGame;				//fuente general del juego
 	//debug
 	byte debugMode;				//Modo debug del engine
 	//nivel y mapeado

@@ -48,9 +48,12 @@ begin
 	levelFiles[1].TileFile 	= "test\tiles.fpg";
 	
 	//archivo graficos generales
-	fpgGame 	=	fpg_load("test\game.fpg");	 
+	fpgGame 	= fpg_load("test\game.fpg");	 
 	//archivo del player
-	fpgPlayer 	=	fpg_load("test\player.fpg");
+	fpgPlayer 	= fpg_load("test\player.fpg");
+	
+	//fuente del juego
+	fntGame     = fnt_load("test\gameFont.fnt");
 	
 	//Iniciamos modo grafico
 	WGE_InitScreen();
@@ -139,7 +142,7 @@ begin
 						game.paused = false;
 					else
 						gameSignal(s_freeze_tree);
-						pauseText = write(0,cResx>>1,cResy>>1,ALIGN_CENTER,"-Paused-");
+						pauseText = write(fntGame,cResx>>1,cResy>>1,ALIGN_CENTER,"-PAUSED-");
 						game.paused = true;
 					end;
 				end;
@@ -253,7 +256,7 @@ begin
 				fade(100,100,100,cFadeTime);
 				while(fading) frame; end;
 				//mensaje hasta pulsar tecla
-				write(0,cResx>>1,cResy>>1,ALIGN_CENTER,"GAME OVER");
+				write(fntGame,cResx>>1,cResy>>1,ALIGN_CENTER,"GAME OVER");
 				repeat
 					frame;
 				until(key(_ENTER));
@@ -329,6 +332,9 @@ begin
 	//descargamos archivos globales
 	unload_fpg(fpgGame);
 	unload_fpg(fpgPlayer);
+	
+	//descargamos el archivo de fuente
+	unload_fnt(fntGame);
 	
 	//borramos todos los textos
 	delete_text(all_text);
@@ -1119,11 +1125,11 @@ begin
 	map_info_set(file,graph,G_Y_CENTER,0);
 	
 	//mostramos string de puntuacion
-	write_var(0,x+cHUDScoreX,y+cHUDScoreY,ALIGN_CENTER,strScore);
+	write_var(fntGame,x+cHUDScoreX,y+cHUDScoreY,ALIGN_CENTER,strScore);
 	//mostramos string de vidas
-	write_var(0,x+cHUDTriesX,y+cHUDTriesY,ALIGN_CENTER,strTries);
+	write_var(fntGame,x+cHUDTriesX,y+cHUDTriesY,ALIGN_CENTER,strTries);
 	//mostramos tiempo nivel
-	write_var(0,x+cHUDTimeX,y+cHUDTimeY,ALIGN_CENTER,strTime);
+	write_var(fntGame,x+cHUDTimeX,y+cHUDTimeY,ALIGN_CENTER,strTime);
 	
 	loop
 		//Convertimos la puntuacion a string formato de 5 digitos
