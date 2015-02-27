@@ -159,7 +159,9 @@ begin
 				   //por perdida energia
 				   (game.playerLife == 0 && idPlayer.state != HURT_STATE) ||
 				    //por tiempo a 0
-				   (game.levelTime == 0)
+				   (game.levelTime == 0)                                  ||
+				   //por salir de la region
+				   out_region(idPlayer,cGameRegion)
 				   )									
 					//creamos el proceso/animacion muerte
 					idDeadPlayer = deadPlayer();
