@@ -120,8 +120,9 @@ const
 	cHUDTriesY      = 18;					//Posicion Y de las vidas en el HUD
 	cHUDTimeX       = 100;					//Posicion X del tiempo en el HUD
 	cHUDTimeY       = 18;					//Posicion Y del tiempo en el HUD
-	cHUDLifeX       = 12;
-	cHUDLifeY       = 18;
+	cHUDLifeX       = 12;					//Posicion X de la primera estrella de vida
+	cHUDLifeY       = 18;					//Posicion X de la primera estrella de vida
+	cHUDLifeSize    = 16;					//Tamaño de una estrella de vida
 	
 	//Numero de tiles fuera de la pantalla. 
 	//Si la resolucion no es multiplo del tamaño del tile,es aconsejable usar 

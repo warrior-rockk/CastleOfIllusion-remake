@@ -126,8 +126,8 @@ begin
 			end;
 			case PLAYLEVEL:
 				
-				//cronometro nivel
-				if ((clockCounter % cNumFps) == 0 && clockTick)
+				//cronometro nivels		
+				if ((clockCounter % cNumFps) == 0 && clockTick && !game.paused)
 					game.levelTime--;
 				end;
 				
@@ -245,6 +245,10 @@ begin
 				while(fading) frame; end;
 				//matamos los procesos
 				gameSignal(s_kill_tree);
+				//quitamos el HUD
+				signal(TYPE HUD,s_kill);
+				//quitamos todos los textos
+				delete_text(all_text);
 				//encendemos pantalla
 				fade(100,100,100,cFadeTime);
 				while(fading) frame; end;
@@ -1073,8 +1077,12 @@ end;
 //funcion para limpiar y descargar archivos del nivel actual
 function clearLevel()
 begin
+	//matamos los procesos
 	gameSignal(s_kill_tree);
 	idPlayer = 0;
+	
+	//quitamos el HUD
+	signal(TYPE HUD,s_kill);
 	
 	//Limpiamos la memoria dinamica
 	free(objetos);
@@ -1095,9 +1103,9 @@ private
 	string strTries;	//vidas en formato string 2 digitos
 	string strTime;		//tiempo en formato string 3 digitos
 	
+	int prevPlayerLife;	//Energia anterior del player para redibujar
 	int i;				//variables auxiliares
 begin
-	file = fpgGame;
 	region = cHUDRegion;
 	ctype = C_SCREEN;
 	
@@ -1106,8 +1114,8 @@ begin
 	y = cHUDRegionY;
 	
 	//grafico del HUD
-	graph = 1;
-	
+	graph = map_clone(fpgGame,1);
+	//cambiamos su centro
 	map_info_set(file,graph,G_Y_CENTER,0);
 	
 	//mostramos string de puntuacion
@@ -1127,18 +1135,29 @@ begin
 		//Convertimos el tiempo a string formato de 3 digitos
 		int2String(game.levelTime,&strTime,3);
 		
-		//copiamos el HUD vacío
+		//comprobamos si ha cambiado la vida del player para redibujar
+		if (prevPlayerLife <> game.playerLife)
 		
-		//dibujamos las estrellas de energia
-		for (i=0;i<game.playerMaxLife;i++)
-			if (game.playerLife < i)
-				//estrella apagada
-				map_put(file,1,2,cHudLifeX+(16*i),cHudLifeY);
-			else
-				//estrella encendida
-				map_put(file,1,3,cHudLifeX+(16*i),cHudLifeY);
+			//copiamos el HUD vacío
+			map_del(0,graph);
+			graph = map_clone(0,1);
+			//reestablecemos el centro
+			map_info_set(file,graph,G_Y_CENTER,0);
+			
+			//dibujamos las estrellas de energia
+			for (i=0;i<game.playerMaxLife;i++)
+				if (game.playerLife <= i)
+					//estrella apagada
+					map_put(0,graph,2,cHudLifeX+(cHUDLifeSize*i),cHudLifeY);
+				else
+					//estrella encendida
+					map_put(0,graph,3,cHudLifeX+(cHUDLifeSize*i),cHudLifeY);
+				end;
 			end;
 		end;
+		
+		//actualizamos la energia del player
+		prevPlayerLife = game.playerLife;
 		
 		frame;
 	end;
