@@ -661,10 +661,18 @@ BEGIN
 			case IDLE_STATE:
 				if ((on45Slope && !isBitSet(flags,B_HMIRROR)) ||
 				    (on135Slope && isBitSet(flags,B_HMIRROR)) )
-					WGE_Animate(45,46,40,ANIM_LOOP);
+					if (picked)
+						WGE_Animate(57,58,40,ANIM_LOOP);
+					else
+						WGE_Animate(45,46,40,ANIM_LOOP);
+					end;
 				elseif ( (on45Slope && isBitSet(flags,B_HMIRROR)) ||
 						(on135Slope && !isBitSet(flags,B_HMIRROR)) )
-					WGE_Animate(37,38,40,ANIM_LOOP);
+					if (picked)
+						WGE_Animate(59,60,40,ANIM_LOOP);
+					else
+						WGE_Animate(37,38,40,ANIM_LOOP);
+					end;
 				elseif (picked)
 					WGE_Animate(22,22,40,ANIM_LOOP);
 				else
@@ -674,10 +682,18 @@ BEGIN
 			case MOVE_STATE:
 				if ((on45Slope && !isBitSet(flags,B_HMIRROR)) ||
 				    (on135Slope && isBitSet(flags,B_HMIRROR)) )
-					WGE_Animate(39,44,4,ANIM_LOOP);
+					if (picked)
+						WGE_Animate(61,66,4,ANIM_LOOP);
+					else
+						WGE_Animate(39,44,4,ANIM_LOOP);
+					end;
 				elseif ( (on45Slope && isBitSet(flags,B_HMIRROR)) ||
 						(on135Slope && !isBitSet(flags,B_HMIRROR)) )
-					WGE_Animate(47,52,4,ANIM_LOOP);
+					if (picked)
+						WGE_Animate(67,72,4,ANIM_LOOP);
+					else
+						WGE_Animate(47,52,4,ANIM_LOOP);
+					end;
 				elseif (picked)
 					WGE_Animate(27,29,4,ANIM_LOOP);
 				else
