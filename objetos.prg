@@ -15,7 +15,7 @@ process plataforma(int x,int y,int _ancho,int _alto,int graph,int rango)
 private
 	int startX;
 	int startY;
-	
+	int prevX;
 begin
 	region = cGameRegion;
 	ctype = c_scroll;
@@ -120,6 +120,10 @@ begin
 			end;
 		end;
 		
+		//guardamos la posicion actual X
+		prevX = x;
+		
+		//actualizamos posicion
 		positionToInt(id);
 		
 		//si el player esta en plataforma
