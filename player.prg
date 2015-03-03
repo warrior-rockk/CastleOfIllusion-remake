@@ -676,7 +676,20 @@ BEGIN
 				elseif (picked)
 					WGE_Animate(22,22,40,ANIM_LOOP);
 				else
-					WGE_Animate(1,2,40,ANIM_LOOP);
+					//si la mitad del cuerpo esta en el aire
+					if (getTileCode(id,DOWN_R_POINT) <> NOCOL && 
+					    getTileCode(id,DOWN_L_POINT) == NOCOL )
+						//animacion de tambaleo
+						WGE_Animate(80,81,10,ANIM_LOOP);
+						unSetBit(flags,B_HMIRROR);
+					elseif (getTileCode(id,DOWN_L_POINT) <> NOCOL && 
+					        getTileCode(id,DOWN_R_POINT) == NOCOL )
+						//animacion de tambaleo
+						WGE_Animate(80,81,10,ANIM_LOOP);
+						SetBit(flags,B_HMIRROR);
+					else
+						WGE_Animate(1,2,40,ANIM_LOOP);
+					end;
 				end;
 			end;
 			case MOVE_STATE:

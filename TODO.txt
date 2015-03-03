@@ -1,5 +1,4 @@
 PLAYER:Poder Salto distinto desde escalera
-PLAYER:animacion al estar en borde de tile
 
 ENGINE (BUG):Tareas de inicializacion del engine:el mapa que esta en la posicion de mapStairs, se borra¿¿¿ ¿es por culpa de tener id 0 el 	sistema y el primer fpg?
             -paleta del juego??

@@ -31,12 +31,12 @@ begin
 	idObject.colPoint[LEFT_DOWN_POINT].enabled = 1;
 	
 	idObject.colPoint[DOWN_R_POINT].x 		= (idObject.ancho/4);
-	idObject.colPoint[DOWN_R_POINT].y 		= (idObject.alto>>1)-1;
+	idObject.colPoint[DOWN_R_POINT].y 		= (idObject.alto>>1);
 	idObject.colPoint[DOWN_R_POINT].colCode = COLDOWN;
 	idObject.colPoint[DOWN_R_POINT].enabled = 1;
 	
 	idObject.colPoint[DOWN_L_POINT].x 		= -(idObject.ancho/4);
-	idObject.colPoint[DOWN_L_POINT].y 		= (idObject.alto>>1)-1;
+	idObject.colPoint[DOWN_L_POINT].y 		= (idObject.alto>>1);
 	idObject.colPoint[DOWN_L_POINT].colCode = COLDOWN;
 	idObject.colPoint[DOWN_L_POINT].enabled = 1;
 	
