@@ -67,11 +67,7 @@ begin
 			case MOVE_RIGHT_STATE: //movimiento a derecha
 				//movimiento lineal
 				fx+=vX; 
-				//si el player esta en plataforma
-				if (idPlatform == ID)
-					//movemos el player
-					idPlayer.fx +=vX;
-				end;
+				
 				//cambio de estado al colisionar
 				if (getTileCode(id,RIGHT_UP_POINT) <> NO_SOLID)
 					state = MOVE_LEFT_STATE;
@@ -80,11 +76,7 @@ begin
 			case MOVE_LEFT_STATE: //movimiento a izquierda
 				//movimiento lineal
 				fx-=vX; 
-				//movimiento lineal
-				if (idPlatform == ID)
-					//movemos el player
-					idPlayer.fx -=vX;
-				end;
+				
 				//cambio de estado al colisionar
 				if (getTileCode(id,LEFT_UP_POINT) <> NO_SOLID)
 					state = MOVE_RIGHT_STATE;
@@ -123,7 +115,6 @@ begin
 				//si el player esta en plataforma
 				if (idPlatform == ID)
 					//movemos el player
-					idPlayer.fX +=vX;
 					idPlayer.fY -=vY;
 				end;
 			end;
@@ -131,6 +122,12 @@ begin
 		
 		positionToInt(id);
 		
+		//si el player esta en plataforma
+		if (idPlatform == ID)
+			//actualizamos la posicion del player lo que se movio la plataforma
+			idPlayer.fX += x - prevX;
+		end;
+			
 		frame;
 	end;
 	

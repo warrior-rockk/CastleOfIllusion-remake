@@ -1038,10 +1038,16 @@ end;
 //si la diferencia entre el float y el entero es una unidad
 function positionToInt(entity idObject)
 begin
-	if (abs(idObject.fX-idObject.x) >= 1 ) 
+	//asignamos la posicion previa
+	idObject.prevX = idObject.x;
+	//movemos si la posicion a cambiado partes enteras
+	idObject.x+= idObject.fX - idObject.prevX;
+		
+	/*if (abs(idObject.fX-idObject.x) >= 1 ) 
 		//redondeamos el valor a entero
 		idObject.x = round(idObject.fX);
-	end;
+	end;*/
+	
 	//en vertical,la asignacion es directa	
 	idObject.y = idObject.fY;
 end;

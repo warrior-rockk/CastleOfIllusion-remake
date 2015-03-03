@@ -2,8 +2,6 @@ PLAYER:Calcular nivel inferior al que seria muerte segun tamaño mapeado ¿buen me
 PLAYER:Poder Salto distinto desde escalera
 PLAYER:animacion al estar en borde de tile
 
-PLATAFORMAS:no se mueven fluidas
-
 ENGINE (BUG):Tareas de inicializacion del engine:el mapa que esta en la posicion de mapStairs, se borra¿¿¿ ¿es por culpa de tener id 0 el 	sistema y el primer fpg?
             -paleta del juego??
 OBJETOS:propiedad bouncy para rebotar al tocar suelo??

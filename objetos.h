@@ -46,6 +46,7 @@ public
 	float vY			= 0;     	//Velocidad Y
 	float fX			= 0;		//Posicion x coma flotante
 	float fY			= 0;		//Posicion y coma flotante
+	int   prevX         = 0;        //Posicion X entera anterior
 	int   alto			= 0;   		//Altura en pixeles del proceso
 	int   ancho			= 0;   		//Ancho en pixeles del proceso
 	int   axisAlign     = 0;		//Alineacion del eje del grafico respecto caja colision
@@ -69,6 +70,7 @@ public
 	float vY			= 0;     	//Velocidad Y
 	float fX			= 0;		//Posicion x coma flotante
 	float fY			= 0;		//Posicion y coma flotante
+	int   prevX         = 0;        //Posicion X entera anterior
 	int   alto			= 0;   		//Altura en pixeles del proceso
 	int   ancho			= 0;   		//Ancho en pixeles del proceso
 	int   axisAlign     = 0;		//Alineacion del eje del grafico respecto caja colision
@@ -92,6 +94,7 @@ public
 	float vY			= 0;     	//Velocidad Y
 	float fX			= 0;		//Posicion x coma flotante
 	float fY			= 0;		//Posicion y coma flotante
+	int   prevX         = 0;        //Posicion X entera anterior
 	int   alto			= 0;   		//Altura en pixeles del proceso
 	int   ancho			= 0;   		//Ancho en pixeles del proceso
 	int   axisAlign     = 0;		//Alineacion del eje del grafico respecto caja colision
@@ -115,6 +118,7 @@ public
 	float vY			= 0;     	//Velocidad Y
 	float fX			= 0;		//Posicion x coma flotante
 	float fY			= 0;		//Posicion y coma flotante
+	int   prevX         = 0;        //Posicion X entera anterior
 	int   alto			= 0;   		//Altura en pixeles del proceso
 	int   ancho			= 0;   		//Ancho en pixeles del proceso
 	int   state 		= 0;   		//Estado de la entidad
@@ -138,6 +142,7 @@ public
 	float vY			= 0;     	//Velocidad Y
 	float fX			= 0;		//Posicion x coma flotante
 	float fY			= 0;		//Posicion y coma flotante
+	int   prevX         = 0;        //Posicion X entera anterior
 	int   alto			= 0;   		//Altura en pixeles del proceso
 	int   ancho			= 0;   		//Ancho en pixeles del proceso
 	int   axisAlign     = 0;		//Alineacion del eje del grafico respecto caja colision

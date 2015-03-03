@@ -43,7 +43,7 @@ int jumpPower;				//Contador incremento salto
 
 int i,j;					//Variables auxiliares
 byte trace;     			//Variable debug
- 
+
 BEGIN
 	ancho = cPlayerAncho;
 	alto =  cPlayerAlto;
@@ -495,7 +495,7 @@ BEGIN
 		
 		//actualizar posicion float-int
 		positionToInt(id);
-		
+				
 		//recogiendo objetos
 		//activacion picking
 		if (objectForPickID <> 0)
