@@ -21,7 +21,7 @@ begin
 			idMonster = toyPlane(9,x,y,16,16,HURTPLAYER);
 		end;
 		case T_TOYPLANECONTROL:
-			idMonster = toyPlaneControl(13,x,y,16,16,HURTPLAYER);
+			idMonster = toyPlaneControl(15,x,y,16,16,HURTPLAYER);
 		end;
 	end;
 	
