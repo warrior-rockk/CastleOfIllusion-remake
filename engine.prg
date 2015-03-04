@@ -990,18 +990,16 @@ begin
 				   tileMap[posY][posX].tileCode == SLOPE_45  ||
 			      (tileMap[posY][posX].tileCode == SOLID_ON_FALL && idObject.vY>0) ||
 				  (tileMap[posY][posX].tileCode == TOP_STAIRS && idObject.vY>0);
-			/*return ((tileMap[posY][posX].tileCode <> SOLID_ON_FALL) && (tileMap[posY][posX].tileCode <> STAIRS) ) || 
-			        (tileMap[posY][posX].tileCode == SOLID_ON_FALL && idObject.vY>0) ||
-					(tileMap[posY][posX].tileCode == STAIRS && idObject.onStairs);*/
-				   
 		end;
 		//Colisiones lateral izquierdas
 		case COLIZQ:
 			return tileMap[posY][posX].tileCode == SOLID;
+			      
 		end;
 		//Colisiones lateral derechas
 		case COLDER:
-			return tileMap[posY][posX].tileCode == SOLID;;
+			return tileMap[posY][posX].tileCode == SOLID;
+			       
 		end;
 	end;
 end;

@@ -87,6 +87,15 @@ begin
 				pID = get_id(TYPE monster);
 				debugColBox(pID);
 			until (pID == 0);
+			//pintamos caja deteccion objetos
+			repeat
+				pID = get_id(TYPE object);
+				debugColBox(pID);
+				//Pintamos los puntos de los objetos
+				for (i=0;i<cNumColPoints;i++)			
+					debugColPoint(pID,i);
+				end;
+			until (pID == 0);
 			
 			//Pintamos los puntos de deteccion del jugador
 			for (i=0;i<cNumColPoints;i++)			
@@ -247,26 +256,28 @@ end;
 //de un proceso
 process debugColPoint(entity idObject,int numPoint)
 begin
-	region = cGameRegion;
-	ctype = c_scroll;
-	z = -100;
-
-	graph = map_new(1,1,8);
-	drawing_map(0,graph);
-	if (idObject.colPoint[numPoint].enabled)
-		drawing_color(100);
-	else
-		drawing_color(30);
+	if (idObject <> 0 ) 
+		region = cGameRegion;
+		ctype = c_scroll;
+		z = -100;
+		
+		graph = map_new(1,1,8);
+		drawing_map(0,graph);
+		if (idObject.colPoint[numPoint].enabled)
+			drawing_color(100);
+		else
+			drawing_color(30);
+		end;
+		
+		draw_box(0,0,1,1);
+		
+		x = idObject.fx+idObject.colPoint[numPoint].x;
+		y = idObject.fy+idObject.colPoint[numPoint].y;
+		
+		frame;
+		
+		map_unload(0,graph);
 	end;
-	
-	draw_box(0,0,1,1);
-	
-	x = idObject.fx+idObject.colPoint[numPoint].x;
-	y = idObject.fy+idObject.colPoint[numPoint].y;
-	
-	frame;
-	
-	map_unload(0,graph);
 end;
 
 //Funcion para dibujar un triangulo del tamaño de tile.

@@ -262,20 +262,24 @@ begin
 				
 				//cambio de estado
 				
-				//si es rompible y ha colisionado, lo destruimos
-				if (collided && isBitSet(props,BREAKABLE))
-					//actualizamos la posicion para ver la explosion en el sitio
-					vY = 0;
-					fx += vX;
-					fy += vY;
-					positionToInt(id);
-					
-					//cambiamos de estado
-					state = DEAD_STATE;
-				end;
-				//si no ha colisionado y toca suelo, cambiamos de estado
-				if (grounded && abs(vX) < cMinVelXToIdle) 
-					state = IDLE_STATE;
+				//si es rompible
+				if (isBitSet(props,BREAKABLE))
+					//si colisiona con algo o toca suelo
+					if (collided || grounded )
+						//actualizamos la posicion para ver la explosion en el sitio
+						vY = 0;
+						fx += vX;
+						fy += vY;
+						positionToInt(id);
+						
+						//cambiamos de estado
+						state = DEAD_STATE;
+					end;
+				else
+					//si no ha colisionado y toca suelo, cambiamos de estado
+					if (grounded && abs(vX) < cMinVelXToIdle) 
+						state = IDLE_STATE;
+					end;
 				end;
 				
 			end;
