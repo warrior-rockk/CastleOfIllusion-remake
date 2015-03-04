@@ -221,8 +221,8 @@ begin
 				while(fading) frame; end;
 				
 				//variables de inicio de nivel
-				game.playerLife = 3;
-				game.levelTime      = 300; //TEMPORAL: esto lo leera del archivo nivel
+				game.playerLife = game.playerMaxLife;
+				game.levelTime  = 300; //TEMPORAL: esto lo leera del archivo nivel
 				
 				game.state = PLAYLEVEL;
 				

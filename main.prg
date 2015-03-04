@@ -36,8 +36,8 @@ Begin
 	level.playery0 =100;
 	level.playerx0 =388;
 	level.playery0 =320;
-	//level.playerx0 =408;
-	//level.playery0 =640;
+	level.playerx0 =408;
+	level.playery0 =640;
 	
 	//Iniciamos el engine
 	WGE_Init();
