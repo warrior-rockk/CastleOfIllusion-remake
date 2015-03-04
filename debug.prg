@@ -144,6 +144,11 @@ begin
 				say (header + "WGE_Tiles: " + texto);
 			end;
 		end;
+		case DEBUG_MONSTERS:
+			if (traceMonsters)
+				say (header + "WGE_Monsters: " + texto);
+			end;
+		end;
 	end;
 	
 end;

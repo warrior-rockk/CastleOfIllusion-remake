@@ -13,6 +13,7 @@
 #define DEBUG_ENGINE		0
 #define	DEBUG_PLAYER		1 
 #define	DEBUG_TILES			2
+#define DEBUG_MONSTERS      3
 
 //Constantes del motor
 const
@@ -26,7 +27,8 @@ End;
 
 //variables globales
 Global
-	byte traceEngine = 1;		//flag de activacion nivel debug
-	byte tracePlayer = 1;		//flag de activacion nivel debug
-	byte traceTiles	 = 1;		//flag de activacion nivel debug
+	byte traceEngine 	= 1;		//flag de activacion nivel debug
+	byte tracePlayer 	= 1;		//flag de activacion nivel debug
+	byte traceTiles	 	= 0;		//flag de activacion nivel debug
+	byte traceMonsters 	= 1;		//flag de activacion nivel debug
 end;

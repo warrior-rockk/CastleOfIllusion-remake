@@ -5,4 +5,5 @@ ENGINE (BUG):Tareas de inicializacion del engine:el mapa que esta en la posicion
 
 DEBUG:escribir el log a archivo??
 
-ENGINE: objetos y monstruos aparecen y desaparecen al salir de la region
+ENGINE: objetos  aparecen y desaparecen al salir de la region
+		-con screen_get puedo caputar la pantalla y hacer transiciones

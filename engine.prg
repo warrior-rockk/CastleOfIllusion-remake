@@ -892,15 +892,14 @@ Begin
 	object(5,218,712,16,16,PICKABLE | BREAKABLE);
 	object(5,1210,136,16,16,PICKABLE);
 	
-	//cycleClown(1,1250,100,32,48,0);
-	monster(T_CYCLECLOWN,1250,100);
-	monster(T_TOYPLANE,526,300);
-	monster(T_TOYPLANECONTROL,526,320);
-	
 	object(4,550,300,16,16,ITEM_BIG_COIN | PICKABLE | BREAKABLE);
 	object(4,570,300,16,16,ITEM_STAR | PICKABLE | BREAKABLE);
 	
 	item(1996,257,16,16,GEM);
+	
+	monster(T_CYCLECLOWN,1250,100);
+	monster(T_TOYPLANE,526,300);
+	monster(T_TOYPLANECONTROL,526,320);
 	
 	//creamos los objetos del nivel
 	//for (i=0;i<level.numObjects;i++) 
@@ -1181,4 +1180,11 @@ begin
 			*texto = "0" + *texto;
 		until(len(*texto)==numDigitos)
 	end;
+end;
+
+//funcion que devuelve si una posicion x/y esta en la region del juego
+function region_in(int _x0,int _y0)
+begin
+	return (_x0 <= scroll[cGameScroll].x0+(cGameRegionW) && _x0 >= scroll[cGameScroll].x0 &&
+		   _y0 >= scroll[cGameScroll].y0 && _y0 <= scroll[cGameScroll].y0+(cGameRegionH) );
 end;

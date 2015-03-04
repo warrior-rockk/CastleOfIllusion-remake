@@ -10,24 +10,20 @@
 //Sera el padre del monstruo concreto para tratarlo como unico para colisiones,etc..
 Process monster(int monsterType,int x,int y)
 private
-	monster idMonster;	//id del mosntruo que se crea
+	monster idMonster;		//id del mosntruo que se crea
+	int 	_x0;			//X inicial
+	int 	_y0;           	//Y inicial
+	byte    inRegion;		//flag de monstruo en region
 begin
-	//creamos el tipo de monstruo
-	switch (monsterType)
-		case T_CYCLECLOWN:
-			idMonster = cycleClown(1,x,y,26,40,HURTPLAYER);
-		end;
-		case T_TOYPLANE:
-			idMonster = toyPlane(9,x,y,16,16,HURTPLAYER);
-		end;
-		case T_TOYPLANECONTROL:
-			idMonster = toyPlaneControl(15,x,y,16,16,HURTPLAYER);
-		end;
-	end;
+	//guardamos la posicion inicial
+	_x0 = x;
+	_y0 = y;
+	inRegion = false;
 	
 	loop
 		//si existe el monstruo (sigue vivo)
 		if (exists(idMonster))
+			//envio de estado muerte o daño
 			if (state == DEAD_STATE || state == HURT_STATE) 
 				//si el monstruo no esta muerto o dañado
 				if (idMonster.state <> DEAD_STATE && idMonster.state <> HURT_STATE)
@@ -36,9 +32,42 @@ begin
 				end;
 				state = 0;
 			end;
+			//desaparece al salir de la region del juego
+			if (!region_in(x,y)) 
+				log("Se elimina el monstruo "+idMonster,DEBUG_MONSTERS);
+				signal(idMonster,s_kill);			
+			end;
 		else
-			break;
+			//si no hay monstruo creado, es como si estuviera muerto
+			state = DEAD_STATE;
+			
+			//lo creamos si entra en la region
+			if (region_in(_x0,_y0) && !inRegion) 
+				//flag de region
+				inRegion = true;
+				//reinciamos estado padre
+				state = 0;
+				//creamos el tipo de monstruo
+				switch (monsterType)
+					case T_CYCLECLOWN:
+						idMonster = cycleClown(1,_x0,_y0,26,40,HURTPLAYER);
+					end;
+					case T_TOYPLANE:
+						idMonster = toyPlane(9,_x0,_y0,16,16,HURTPLAYER);
+					end;
+					case T_TOYPLANECONTROL:
+						idMonster = toyPlaneControl(15,_x0,_y0,16,16,HURTPLAYER);
+					end;
+				end;	
+				log("Se crea el monstruo "+idMonster,DEBUG_MONSTERS);
+			end;
+			
+			//bajamos el flag cuando salgas de la region
+			if (!region_in(_x0,_y0))
+				inRegion = false;
+			end;
 		end;
+		
 		frame;
 	end;
 end;
