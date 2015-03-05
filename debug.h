@@ -14,6 +14,7 @@
 #define	DEBUG_PLAYER		1 
 #define	DEBUG_TILES			2
 #define DEBUG_MONSTERS      3
+#define DEBUG_OBJECTS       4
 
 //Constantes del motor
 const
@@ -31,4 +32,5 @@ Global
 	byte tracePlayer 	= 1;		//flag de activacion nivel debug
 	byte traceTiles	 	= 0;		//flag de activacion nivel debug
 	byte traceMonsters 	= 1;		//flag de activacion nivel debug
+	byte traceObjects   = 1;		//flag de activacion nivel debug
 end;

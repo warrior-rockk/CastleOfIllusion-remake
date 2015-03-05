@@ -5,7 +5,7 @@ ENGINE (BUG):Tareas de inicializacion del engine:el mapa que esta en la posicion
 
 DEBUG:escribir el log a archivo??
 
-ENGINE: objetos  aparecen y desaparecen al salir de la region
-		-con screen_get puedo caputar la pantalla y hacer transiciones
+ENGINE: -con screen_get puedo caputar la pantalla y hacer transiciones
+
+ITEM: que desaparezcan tras un tiempo de no cojerlos
 		
-MONSTERS: al estar desaparecidos siguen colisionado con los objetos

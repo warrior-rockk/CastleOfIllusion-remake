@@ -207,9 +207,9 @@ begin
 				unSetBit(props,NO_COLLISION);
 				
 				//desaparece si sale de la region
-				if (!region_in(_x0,_y0))
-					inRegion = false;
+				if (!inRegion)
 					state = INVISIBLE_STATE;
+					log("Ocultamos objeto "+id,DEBUG_OBJECTS);
 				end;
 			end;
 			case MOVE_STATE:
@@ -327,6 +327,7 @@ begin
 				else
 					//pasa a estado invisible
 					state = INVISIBLE_STATE;
+					log("Ocultamos objeto persistente "+id,DEBUG_OBJECTS);
 				end;
 			end;
 			case INVISIBLE_STATE:
@@ -351,6 +352,7 @@ begin
 					//vuelve a tener fisicas y ser solido
 					unSetBit(props,NO_PHYSICS);
 					unSetBit(props,NO_COLLISION);
+					log("Mostramos objeto "+id,DEBUG_OBJECTS);
 				end;
 				//bajamos el flag cuando salgas de la region
 				if (!region_in(_x0,_y0))
@@ -362,62 +364,14 @@ begin
 		//actualizamos velocidad y posicion
 		updateVelPos(id,grounded);
 		
-		frame;
-	end;
-	
-end;
-
-//Objeto que ha cogido el personaje y lleva encima (objeto pasivo)
-process pickedObject(int file,int graph,int _ancho,int _alto,int _props)
-private
-	entity idFather;	//Entidad del proceso padre
-begin
-	region = cGameRegion;
-	ctype = c_scroll;
-	z = cZObject;
-	
-	//igualamos la propiedades publicas a las de parametros
-	ancho = _ancho;
-	alto = _alto;
-	props = _props;
-	
-	props |= NO_COLLISION;
-	
-	idFather = father.id;
-	
-	//modo debug sin graficos
-	if (file<0)
-		graph = map_new(ancho,alto,8,0);
-		map_clear(0,graph,rand(200,300));
-	end;
-	
-	//estado inicial
-	state = MOVE_STATE;
-	isBitSet(idfather.flags,B_HMIRROR)? x = idfather.x-(idfather.ancho>>1) : x = idfather.x+(idfather.ancho>>1);
-	y = idfather.y;
-				
-	loop
-		//estados
-		
-		//guardamos estado actual
-		prevState = state;
-		//maquina estados
-		switch (state)
-			//animacion de recogiendolo
-			case MOVE_STATE:
-				if (WGE_Animate(graph,graph,10,ANIM_ONCE))
-					state = IDLE_STATE;
-				end;
-			end;
-			//actualizamos posicion segun la del player
-			case IDLE_STATE:
-				isBitSet(father.flags,B_HMIRROR) ? x = father.x-cObjectPickedPosX : x = father.x+cObjectPickedPosX;
-				y = father.y+cObjectPickedPosY;
-			end;
+		//comprobamos si sale de la region
+		if (!region_in(x,y))
+			inRegion = false;
 		end;
-		
+				
 		frame;
 	end;
+	
 end;
 
 //proceso item

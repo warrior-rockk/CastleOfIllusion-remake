@@ -149,6 +149,11 @@ begin
 				say (header + "WGE_Monsters: " + texto);
 			end;
 		end;
+		case DEBUG_OBJECTS:
+			if (traceOBJECTS)
+				say (header + "WGE_Objects: " + texto);
+			end;
+		end;
 	end;
 	
 end;
