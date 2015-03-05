@@ -206,11 +206,6 @@ begin
 				//vuelver a ser colisionable por procesos
 				unSetBit(props,NO_COLLISION);
 				
-				//desaparece si sale de la region
-				if (!inRegion)
-					state = INVISIBLE_STATE;
-					log("Ocultamos objeto "+id,DEBUG_OBJECTS);
-				end;
 			end;
 			case MOVE_STATE:
 								
@@ -367,8 +362,11 @@ begin
 		//comprobamos si sale de la region
 		if (!region_in(x,y))
 			inRegion = false;
+			//desaparece si sale de la region
+			state = INVISIBLE_STATE;
+			log("Ocultamos objeto "+id,DEBUG_OBJECTS);
 		end;
-				
+						
 		frame;
 	end;
 	
