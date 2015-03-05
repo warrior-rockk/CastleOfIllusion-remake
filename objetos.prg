@@ -381,7 +381,8 @@ private
 	entity colID;			//entidad con al que colisiona
 	int colDir;				//direccion de la colision
 	byte collided;			//flag de colisionado
-
+	
+	int itemTime;			//Tiempo item antes de desaparecer
 	int i;					//Var aux
 begin
 	region = cGameRegion;
@@ -427,7 +428,26 @@ begin
 		//comportamiento item
 		switch (state)
 			case IDLE_STATE:
-							
+				if (!isBitSet(props,GEM))
+					//tiempo item
+					if ((clockCounter % cNumFps) == 0 && clockTick)
+						itemTime++;
+					end;
+					
+					//parpadeo
+					if ((itemTime >= cItemTimeOut - 2) && clockTick)
+						if (isBitSet(flags,B_ABLEND))
+							unsetBit(flags,B_ABLEND);
+						else	
+							setBit(flags,B_ABLEND);
+						end;
+					end;
+					//timeout
+					if (itemTime >= cItemTimeOut)
+						state = DEAD_STATE;
+					end;
+				end;
+				
 				//comprobamos si colisiona con el jugador
 				colDir = colCheckProcess(id,idPlayer,INFOONLY);
 				//si colisiona, eliminamos el item
