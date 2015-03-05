@@ -222,6 +222,22 @@ begin
 				end;
 				
 			end;
+			case PICKING_STATE:
+				grounded = false;
+				//ponemos el objeto en posicion de recogida
+				isBitSet(idPlayer.flags,B_HMIRROR)? fx = idPlayer.x-(idPlayer.ancho>>1) : fx = idPlayer.x+(idPlayer.ancho>>1);
+				fy = idPlayer.y;
+				//no es colisionable
+				setBit(props,NO_COLLISION);
+				//tiempo en posicion recogiendolo
+				if (WGE_Animate(graph,graph,10,ANIM_ONCE))
+					state = PICKED_STATE;
+				end;
+			end;
+			case PICKED_STATE:
+				isBitSet(idPlayer.flags,B_HMIRROR) ? fx = idPlayer.x-cObjectPickedPosX : fx = idPlayer.x+cObjectPickedPosX;
+				fy = idPlayer.y+cObjectPickedPosY;
+			end;
 			case THROWING_STATE:	
 				//mientras se mueve, no es solido
 				setBit(props,NO_COLLISION);

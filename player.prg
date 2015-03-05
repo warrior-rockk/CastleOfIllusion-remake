@@ -131,11 +131,9 @@ BEGIN
 			//recojer objeto
 			if (picking && !picked)
 				picked = true;
-				//creamos un objeto picked con sus propiedades
-				idObjectPicked = pickedObject(memObjectforPickID.file,memObjectforPickID.graph,memObjectforPickID.ancho,memObjectforPickID.alto,memObjectforPickID.props);
-				//le quitamos la propiedad de solido
-				idObjectPicked.props |= NO_COLLISION; 
-				signal(memObjectforPickID,s_kill);
+				//cambiamos el estado del objeto a recogiendo
+				idObjectPicked = memObjectforPickID;
+				idObjectPicked.state = PICKING_STATE;
 				memObjectforPickID = 0;
 			end;
 			//lanzar objeto
@@ -845,11 +843,12 @@ begin
 		objectY = idObjectPicked.y;
 	end;
 	
-	//creamos objeto con las propiedades del recogido
-	idObjectThrowed = object(idObjectPicked.graph,objectX,objectY,idObjectPicked.ancho,idObjectPicked.alto,idObjectPicked.props);
-	
-	//matamos el objeto cogido
-	signal(idObjectPicked,s_kill);
+	//Actualizamos su posicion para lanzarlo
+	idObjectPicked.fX = objectX;
+	idObjectPicked.fY = objectY;
+		
+		
+	idObjectThrowed = idObjectPicked.id;
 	
 	//asignamos velocidades al objeto para lanzarlo
 	if (abs(idProcess.vX) < cPlayerMinVelToIdle && !isBitSet(idObjectPicked.props,BREAKABLE))
@@ -861,7 +860,7 @@ begin
 		idObjectThrowed.vY = cThrowObjectVelY;
 	end;
 	
-	
+	//cambiamos el estado del objeto para lanzarlo
 	idObjectThrowed.state = THROWING_STATE;
 	idObjectThrowed = 0;
 end;
