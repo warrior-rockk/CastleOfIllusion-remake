@@ -30,6 +30,7 @@
 #define THROWING_STATE			20
 #define DEAD_STATE              21
 #define HURT_STATE              22
+#define INVISIBLE_STATE         23
 
 Const
 	//Fisicas

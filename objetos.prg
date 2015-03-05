@@ -146,7 +146,12 @@ private
 	entity colID;		//Entidad con la que colisiona
 	int colDir;			//Direccion de la colision
 	byte collided;		//flag de colisionado
-
+	
+	byte inRegion;		//flag de objeto en region
+	int _x0;			//X inicial del objeto
+	int _y0;			//Y inicial del objeto
+	int _graph;			//grafico inicial
+	
 	int i;				//Variables auxiliares
 begin
 	region = cGameRegion;
@@ -158,6 +163,11 @@ begin
 	ancho = _ancho;
 	alto = _alto;
 	props = _props;
+	
+	//asignamos los valores iniciales
+	_x0 = x;
+	_y0 = y;
+	_graph = graph;
 	
 	//modo debug sin graficos
 	if (file<0)
@@ -195,6 +205,12 @@ begin
 				vY = 0;
 				//vuelver a ser colisionable por procesos
 				unSetBit(props,NO_COLLISION);
+				
+				//desaparece si sale de la region
+				if (!region_in(_x0,_y0))
+					inRegion = false;
+					state = INVISIBLE_STATE;
+				end;
 			end;
 			case MOVE_STATE:
 								
@@ -268,7 +284,7 @@ begin
 					colDir = colCheckProcess(id,colID,INFOONLY);
 					
 					//seteamos flag de colisionado
-					if (colDir <> NOCOL)
+					if (colDir <> NOCOL && colID.state <> DEAD_STATE)
 						collided = true;
 						colID.state = HURT_STATE;
 					end;
@@ -305,8 +321,41 @@ begin
 				end;
 				//lanzamos animacion explosion objeto
 				WGE_Animation(file,2,3,x,y,10,ANIM_ONCE);
-				//matamos el objeto
-				signal(id,s_kill);
+				if (isBitSet(props,NO_PERSISTENT))
+					//matamos el objeto
+					signal(id,s_kill);			
+				else
+					//pasa a estado invisible
+					state = INVISIBLE_STATE;
+				end;
+			end;
+			case INVISIBLE_STATE:
+				//lo convertimos en invisible
+				graph = 0;
+				vX = 0;
+				vY = 0;
+				setBit(props,NO_PHYSICS);
+				setBit(props,NO_COLLISION);
+				
+				//volvemos a estado inicial si entra en la region
+				if (region_in(_x0,_y0) && !inRegion) 
+					//flag de region
+					inRegion = true;
+					//actualizamos a coordenadas iniciales
+					fX = _x0;
+					fY = _y0;
+					//actualizamos a grafico inicial
+					graph = _graph;
+					//actualizamos a estado inicial
+					state = MOVE_STATE;
+					//vuelve a tener fisicas y ser solido
+					unSetBit(props,NO_PHYSICS);
+					unSetBit(props,NO_COLLISION);
+				end;
+				//bajamos el flag cuando salgas de la region
+				if (!region_in(_x0,_y0))
+					inRegion = false;
+				end;
 			end;
 		end;
 			

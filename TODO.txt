@@ -7,3 +7,5 @@ DEBUG:escribir el log a archivo??
 
 ENGINE: objetos  aparecen y desaparecen al salir de la region
 		-con screen_get puedo caputar la pantalla y hacer transiciones
+		
+MONSTERS: al estar desaparecidos siguen colisionado con los objetos

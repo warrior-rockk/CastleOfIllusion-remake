@@ -11,9 +11,11 @@
 #define NO_COLLISION            2		//No colisiona con otros procesos
 #define NO_PHYSICS              4       //No le afecta las fisicas
 #define BREAKABLE               8		//Se rompe al lanzarlo y colisionar
-#define ITEM_BIG_COIN          16		//Contiene item moneda grande
-#define ITEM_STAR              32		//Contiene item estrella extra
-#define GEM					   64		//Gema fin de nivel
+#define NO_PERSISTENT          16       //No se vuelve a crear si desaparece
+#define ITEM_BIG_COIN          32		//Contiene item moneda grande
+#define ITEM_STAR              64		//Contiene item estrella extra
+#define GEM					  128		//Gema fin de nivel
+
 
 //constantes de objetos
 const
