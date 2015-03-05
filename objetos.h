@@ -24,8 +24,9 @@ const
 	cBouncyObjectVel	=           0.6;        //Velocidad Y rebote suelo para objetos
 	cBouncyItemVel		=           0.8;        //Velocidad Y rebote suelo para items
 	cBigCoinScore		=			100;		//Puntuacion de moneda grande
-	cItemTimeOut        =           5;          //Timeout Item
-	cItemBlinkTime      =           2;			//Tiempo parpadeo antes de timeout
+	cItemTimeOut        =           8;          //Timeout Item
+	cItemTimeToBlink    =           4;			//Tiempo parpadeo antes de timeout
+	cItemBlinkTime      =           3;			//Velocidad parpadeo
 end;
 
 //Objeto

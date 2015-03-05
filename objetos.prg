@@ -435,11 +435,11 @@ begin
 					end;
 					
 					//parpadeo
-					if ((itemTime >= cItemTimeOut - 2) && clockTick)
-						if (isBitSet(flags,B_ABLEND))
-							unsetBit(flags,B_ABLEND);
+					if ((itemTime >= (cItemTimeOut - cItemTimeToBlink)) && tickClock(cItemBlinkTime))
+						if (isBitSet(flags,B_TRANSLUCENT))
+							unsetBit(flags,B_TRANSLUCENT);
 						else	
-							setBit(flags,B_ABLEND);
+							setBit(flags,B_TRANSLUCENT);
 						end;
 					end;
 					//timeout
