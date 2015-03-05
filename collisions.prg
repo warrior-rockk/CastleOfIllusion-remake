@@ -608,7 +608,7 @@ private
 begin
 	//leemos el flag de en suelo del objeto
 	grounded = *objGrounded;
-	
+			
 	if (!isBitSet(idObject.props,NO_PHYSICS))
 		if (grounded)
 			idObject.vX *= friction;
@@ -617,7 +617,7 @@ begin
 		idObject.vY += gravity;
 		
 		grounded = false;
-		collided = false;
+		collided = false;		
 		
 		//COLISION TERRENO
 		//Recorremos la lista de puntos a comprobar
@@ -631,6 +631,8 @@ begin
 				collided = true;
 			end;
 		end;
+	else
+		grounded = true;
 	end;
 	
 	//aplicamos el flag de en suelo al objeto

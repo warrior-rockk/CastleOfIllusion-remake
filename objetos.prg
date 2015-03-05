@@ -223,7 +223,6 @@ begin
 				
 			end;
 			case PICKING_STATE:
-				grounded = false;
 				//ponemos el objeto en posicion de recogida
 				isBitSet(idPlayer.flags,B_HMIRROR)? fx = idPlayer.x-(idPlayer.ancho>>1) : fx = idPlayer.x+(idPlayer.ancho>>1);
 				fy = idPlayer.y;
