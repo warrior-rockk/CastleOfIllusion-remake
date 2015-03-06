@@ -877,9 +877,10 @@ Begin
 	object(5,1210,136,16,16,PICKABLE);
 	
 	object(4,550,300,16,16,ITEM_BIG_COIN | PICKABLE | BREAKABLE | NO_PERSISTENT );
-	object(4,570,300,16,16,ITEM_STAR | PICKABLE | BREAKABLE | NO_PERSISTENT );
+	object(4,570,300,16,16,ITEM_BIG_COIN | PICKABLE | BREAKABLE | NO_PERSISTENT );
 	
-	item(1996,257,16,16,GEM);
+	item(590,300,16,16,ITEM_STAR);
+	item(1996,257,16,16,ITEM_GEM);
 	
 	monster(T_CYCLECLOWN,1250,100);
 	monster(T_TOYPLANE,526,300);
@@ -931,7 +932,8 @@ Begin
 	//los objetos se reinician,no se matan
 	restartEntityType(TYPE object);
 	
-	item(1996,257,16,16,GEM);
+	item(590,300,16,16,ITEM_STAR);
+	item(1996,257,16,16,ITEM_GEM);
 	
 	monster(T_CYCLECLOWN,1250,100);
 	monster(T_TOYPLANE,526,300);

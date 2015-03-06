@@ -13,8 +13,8 @@
 #define BREAKABLE               8		//Se rompe al lanzarlo y colisionar
 #define NO_PERSISTENT          16       //No se vuelve a crear si desaparece
 #define ITEM_BIG_COIN          32		//Contiene item moneda grande
-#define ITEM_STAR              64		//Contiene item estrella extra
-#define GEM					  128		//Gema fin de nivel
+#define ITEM_STAR	           64		//Estrella energia extra
+#define ITEM_GEM			  128		//Gema fin de nivel
 
 
 //constantes de objetos

@@ -435,7 +435,7 @@ begin
 		//comportamiento item
 		switch (state)
 			case IDLE_STATE:
-				if (!isBitSet(props,GEM))
+				if (!isBitSet(props,ITEM_GEM))
 					//tiempo item
 					if ((clockCounter % cNumFps) == 0 && clockTick)
 						itemTime++;
@@ -470,7 +470,7 @@ begin
 				if (isBitSet(props,ITEM_STAR))
 					WGE_Animate(11,12,20,ANIM_LOOP);
 				end;
-				if (isBitSet(props,GEM))
+				if (isBitSet(props,ITEM_GEM))
 					WGE_Animate(13,13,10,ANIM_LOOP);
 				end;
 			end;
@@ -488,7 +488,7 @@ begin
 						game.playerMaxLife += 1;
 						game.playerLife = game.playerMaxLife;
 					end;
-					if (isBitSet(props,GEM))
+					if (isBitSet(props,ITEM_GEM))
 						//fin del nivel actual
 						game.endLevel = true;
 					end;
