@@ -7,5 +7,4 @@ DEBUG:escribir el log a archivo??
 
 ENGINE: -con screen_get puedo caputar la pantalla y hacer transiciones
 
-ITEM: que desaparezcan tras un tiempo de no cojerlos
 		

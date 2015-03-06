@@ -31,6 +31,7 @@
 #define DEAD_STATE              21
 #define HURT_STATE              22
 #define INVISIBLE_STATE         23
+#define INITIAL_STATE           24
 
 Const
 	//Fisicas

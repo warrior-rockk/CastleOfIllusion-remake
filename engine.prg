@@ -197,33 +197,17 @@ begin
 				fade(0,0,0,cFadeTime);
 				while(fading) frame; end;
 				
-				//detenemos los procesos
-				gameSignal(s_kill_tree);
-				idPlayer = 0;
-					
-				//actualizamos
-				frame;
-				
-				//arrancamos el control de scroll
-				WGE_ControlScroll();
-				//dibujamos el mapa
-				WGE_DrawMap();
-				//creamos el nivel
-				WGE_CreateLevel();
-				//creamos al player
-				player();
-				
-				//esperamos un tiempo
-				WGE_Wait(50);
+				//reiniciamos el nivel
+				WGE_RestartLevel();
 				
 				//encendemos pantalla
 				fade(100,100,100,cFadeTime);
 				while(fading) frame; end;
 				
-				//variables de inicio de nivel
+				//variables de reinicio de nivel
 				game.playerLife = game.playerMaxLife;
-				game.levelTime  = 300; //TEMPORAL: esto lo leera del archivo nivel
-				
+				game.levelTime  = 300; //TEMPORAL: esto lo leera del archivo nivel	
+	
 				game.state = PLAYLEVEL;
 				
 			end;
@@ -892,8 +876,8 @@ Begin
 	object(5,218,712,16,16,PICKABLE | BREAKABLE);
 	object(5,1210,136,16,16,PICKABLE);
 	
-	object(4,550,300,16,16,ITEM_BIG_COIN | PICKABLE | BREAKABLE );
-	object(4,570,300,16,16,ITEM_STAR | PICKABLE | BREAKABLE);
+	object(4,550,300,16,16,ITEM_BIG_COIN | PICKABLE | BREAKABLE | NO_PERSISTENT );
+	object(4,570,300,16,16,ITEM_STAR | PICKABLE | BREAKABLE | NO_PERSISTENT );
 	
 	item(1996,257,16,16,GEM);
 	
@@ -913,6 +897,59 @@ Begin
 	          
 End;
 
+//Funcion que reinicia un nivel ya creado
+function WGE_RestartLevel()
+private 
+	int i;			//Indices auxiliares
+end
+Begin
+    //detenemos los procesos
+	signal(TYPE WGE_ControlScroll,s_kill_tree);
+	signal(TYPE pTile,s_kill_tree);
+	if (idPlayer <> 0 ) 
+		signal(idPlayer,s_kill_tree);
+	end;
+	idPlayer = 0;
+	signal(type plataforma,s_kill_tree);
+	signal(type monster,s_kill_tree);
+	signal(type item,s_kill_tree);
+
+	
+	//arrancamos el control de scroll
+	WGE_ControlScroll();
+	//dibujamos el mapa
+	WGE_DrawMap();
+		
+	//creamos al player
+	player();
+	
+	//creamos los proceso del nivel
+	plataforma(800,696,32,16,8,25);
+	plataforma(620,729,32,16,8,25);
+	plataforma(458,729,32,16,8,25);
+	
+	//los objetos se reinician,no se matan
+	restartEntityType(TYPE object);
+	
+	item(1996,257,16,16,GEM);
+	
+	monster(T_CYCLECLOWN,1250,100);
+	monster(T_TOYPLANE,526,300);
+	monster(T_TOYPLANECONTROL,526,320);
+	
+	//creamos los objetos del nivel
+	//for (i=0;i<level.numObjects;i++) 
+		//crea_objeto(i,1);
+	//end;
+			
+	//creamos los enemigos del nivel
+	//crea_enemigo(x);
+	
+	//if (C_AHORRO_OBJETOS)control_sectores();end;
+	
+End;
+
+//Proceso que controla el movimiento del scroll
 process WGE_ControlScroll()
 	
 begin
@@ -1074,6 +1111,7 @@ begin
 	if (idPlayer <> 0 ) 
 		signal(idPlayer,_signal);
 	end;
+	
 	signal(type object,_signal);
 	signal(type plataforma,_signal);
 	signal(type monster,_signal);
@@ -1187,4 +1225,22 @@ function region_in(int _x0,int _y0)
 begin
 	return (_x0 <= scroll[cGameScroll].x0+(cGameRegionW) && _x0 >= scroll[cGameScroll].x0 &&
 		   _y0 >= scroll[cGameScroll].y0 && _y0 <= scroll[cGameScroll].y0+(cGameRegionH) );
+end;
+
+//funcion que devuelve a inicio las entidades de un tipo
+function restartEntityType(int entityType)
+private
+	entity entityID; //id de la entidad
+begin
+	repeat
+		//obtenemos siguiente entidad
+		entityID = get_id(entityType);
+		//reiniciamos la entidad
+		if (entityID <> 0) 
+     		//si es objeto y es persistente
+			if (isType(entityID,TYPE object) && !isBitSet(entityID.props,NO_PERSISTENT))
+				entityID.state = INITIAL_STATE;
+			end;
+		end;
+	until (entityID == 0);
 end;

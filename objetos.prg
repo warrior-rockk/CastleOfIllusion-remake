@@ -193,6 +193,19 @@ begin
 		prevState = state;		
 		//maquina de estados
 		switch (state)
+			case INITIAL_STATE:
+				//actualizamos a coordenadas iniciales
+				fX = _x0;
+				fY = _y0;
+				//actualizamos a grafico inicial
+				graph = _graph;
+				//actualizamos a estado inicial
+				state = MOVE_STATE;
+				//vuelve a tener fisicas y ser solido
+				unSetBit(props,NO_PHYSICS);
+				unSetBit(props,NO_COLLISION);	
+				log("Iniciamos objeto "+id,DEBUG_OBJECTS);
+			end;
 			case IDLE_STATE:
 				//normalizamos la posicion Y para evitar problemas de colision 
 				fY = y;
@@ -360,11 +373,13 @@ begin
 		updateVelPos(id,grounded);
 		
 		//comprobamos si sale de la region
-		if (!region_in(x,y))
+		if (!region_in(x,y) )
 			inRegion = false;
 			//desaparece si sale de la region
-			state = INVISIBLE_STATE;
-			log("Ocultamos objeto "+id,DEBUG_OBJECTS);
+			if (state <> INVISIBLE_STATE)
+				state = INVISIBLE_STATE;
+				log("Ocultamos objeto "+id,DEBUG_OBJECTS);
+			end;
 		end;
 						
 		frame;
