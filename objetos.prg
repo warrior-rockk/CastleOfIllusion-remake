@@ -383,6 +383,8 @@ private
 	byte collided;			//flag de colisionado
 	
 	int itemTime;			//Tiempo item antes de desaparecer
+	byte picked; 			//flag de item recogido
+	
 	int i;					//Var aux
 begin
 	region = cGameRegion;
@@ -453,6 +455,7 @@ begin
 				//si colisiona, eliminamos el item
 				if (colDir <> NOCOL)
 					state = DEAD_STATE;
+					picked = true;
 				end;
 				
 				//animacion del item
@@ -468,19 +471,22 @@ begin
 			end;
 			
 			case DEAD_STATE:
-				//segun el item,realizamos una accion determinada
-				if (isBitSet(props,ITEM_BIG_COIN))
-					//incrementa puntuacion
-					game.score += cBigCoinScore;
-				end;
-				if (isBitSet(props,ITEM_STAR))
-					//añade una estrella a la vida
-					game.playerMaxLife += 1;
-					game.playerLife = game.playerMaxLife;
-				end;
-				if (isBitSet(props,GEM))
-					//fin del nivel actual
-					game.endLevel = true;
+				//si ha sido recodido el item
+				if (picked)
+					//segun el item,realizamos una accion determinada
+					if (isBitSet(props,ITEM_BIG_COIN))
+						//incrementa puntuacion
+						game.score += cBigCoinScore;
+					end;
+					if (isBitSet(props,ITEM_STAR))
+						//añade una estrella a la vida
+						game.playerMaxLife += 1;
+						game.playerLife = game.playerMaxLife;
+					end;
+					if (isBitSet(props,GEM))
+						//fin del nivel actual
+						game.endLevel = true;
+					end;
 				end;
 				//elimina el item
 				signal(id,s_kill);
