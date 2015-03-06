@@ -350,17 +350,7 @@ begin
 				if (region_in(_x0,_y0) && !inRegion) 
 					//flag de region
 					inRegion = true;
-					//actualizamos a coordenadas iniciales
-					fX = _x0;
-					fY = _y0;
-					//actualizamos a grafico inicial
-					graph = _graph;
-					//actualizamos a estado inicial
-					state = MOVE_STATE;
-					//vuelve a tener fisicas y ser solido
-					unSetBit(props,NO_PHYSICS);
-					unSetBit(props,NO_COLLISION);
-					log("Mostramos objeto "+id,DEBUG_OBJECTS);
+					state = INITIAL_STATE;
 				end;
 				//bajamos el flag cuando salgas de la region
 				if (!region_in(_x0,_y0))
