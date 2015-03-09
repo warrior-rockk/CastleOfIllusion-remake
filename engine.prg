@@ -248,8 +248,16 @@ begin
 				repeat
 					frame;
 				until(key(_ENTER));
-				//salimos del juego (TEMPORAL)
-				WGE_Quit();
+				//continuamos juego
+				game.state = CONTINUEGAME;
+			end;
+			case CONTINUEGAME:
+				delete_text(all_text);
+				clearLevel();
+				game.numLevel=0;
+				game.playerLife = game.playerMaxLife;
+				game.playerTries = 3;
+				game.state = LOADLEVEL;
 			end;
 		end;
 		

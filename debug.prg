@@ -55,8 +55,7 @@ begin
 		end;
 
 		//reiniciar nivel
-		if (WGE_Key(_r,KEY_DOWN))
-			//WGE_RestartLevel();
+		if (WGE_Key(_r,KEY_DOWN) && game.state == PLAYLEVEL)
 			game.state = RESTARTLEVEL;
 		end;
 		
