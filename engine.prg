@@ -887,7 +887,7 @@ Begin
 	object(T_SOLIDITEM,4,550,300,16,16,ITEM_BIG_COIN | PICKABLE | BREAKABLE | NO_PERSISTENT );
 	object(T_SOLIDITEM,4,570,300,16,16,ITEM_BIG_COIN | PICKABLE | BREAKABLE | NO_PERSISTENT );
 	
-	object(T_ITEM,0,590,300,16,16,ITEM_STAR);
+	object(T_ITEM,0,590,300,16,16,ITEM_STAR | NO_PERSISTENT);
 	object(T_ITEM,0,1996,257,16,16,ITEM_GEM);
 	
 	monster(T_CYCLECLOWN,1250,100);
@@ -935,13 +935,11 @@ Begin
 	plataforma(800,696,32,16,8,25);
 	plataforma(620,729,32,16,8,25);
 	plataforma(458,729,32,16,8,25);
-	item(590,300,16,16,ITEM_STAR);
-	item(1996,257,16,16,ITEM_GEM);
 	
 	//Reiniciamos los procesos del nivel
 	restartEntityType(TYPE object);
 	restartEntityType(TYPE monster);
-	
+
 	//creamos los objetos del nivel
 	//for (i=0;i<level.numObjects;i++) 
 		//crea_objeto(i,1);
