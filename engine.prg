@@ -102,6 +102,9 @@ begin
 				WGE_LoadMapLevel(levelFiles[game.numLevel].MapFile,levelFiles[game.numLevel].TileFile);
 				game.levelTime      = 300; //TEMPORAL: esto lo leera del archivo nivel
 				
+				//variables de reinicio de nivel
+				game.playerLife = game.playerMaxLife;
+								
 				//Iniciamos Scroll
 				WGE_InitScroll();
 				//Dibujamos el mapeado

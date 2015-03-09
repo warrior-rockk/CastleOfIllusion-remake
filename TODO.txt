@@ -7,4 +7,5 @@ DEBUG:escribir el log a archivo??
 
 ENGINE: -con screen_get puedo caputar la pantalla y hacer transiciones
 
-		
+OBJECTS:-la jarra no rebota
+		-plataformas como objetos?
