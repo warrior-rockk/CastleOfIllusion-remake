@@ -21,13 +21,17 @@ begin
 	inRegion = false;
 	
 	loop
+		//si se reinicia, se baja el flag de en region
+		if (state == INITIAL_STATE)
+			inRegion = false;
+		end;
+		
 		//si existe el monstruo (sigue vivo)
 		if (exists(idMonster))
 			//si nos mandan reiniciar
 			if (state == INITIAL_STATE)
 				//eliminamos el monstruo existente
 				signal(idMonster,s_kill);
-				inRegion = false;
 				log("Se reinicia el monstruo "+idMonster,DEBUG_MONSTERS);
 			else
 				//envio de estado muerte o daño
@@ -48,6 +52,7 @@ begin
 		else
 			//si no hay monstruo creado, es como si estuviera muerto
 			state = DEAD_STATE;
+			setBit(props,NO_COLLISION);
 			
 			//lo creamos si entra en la region
 			if (region_in(_x0,_y0) && !inRegion) 

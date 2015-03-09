@@ -164,6 +164,11 @@ begin
 	hidded   = false;
 	
 	loop
+		//si se reinicia, se baja el flag de en region
+		if (state == INITIAL_STATE)
+			inRegion = false;
+		end;
+		
 		//si existe el objeto
 		if (exists(idObject))
 			//si nos mandan reiniciar
@@ -171,7 +176,6 @@ begin
 				//eliminamos el objeto existente
 				signal(idObject,s_kill);
 				hidded = true;
-				inRegion = false;
 				log("Se reinicia el objeto "+idObject,DEBUG_OBJECTS);
 			else
 				//actualizamos el hijo
