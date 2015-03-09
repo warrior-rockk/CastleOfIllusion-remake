@@ -1,0 +1,26 @@
+Los procesos forman parte de una estructura llamada entity que contiene las variables locales. Todos los procesos
+susceptibles de ser entidad tienen los siguientes datos publicos:
+	-posiciones x y como float
+	-velocidades x y
+	-ancho y alto de la caja de deteccion y alineacion del eje del grafico
+	-propiedades
+	-estado y estado anterior
+	-array de puntos de colision del terreno
+	-etc..
+
+Para las entidades que no son el player, la estructura generia es, funcion de fisica (si la van a usar, aunque se puede
+desactivar via propiedades), maquina de estados , donde deben tener un estado HURT y otro DEAD para todos, y 
+actualizacion de posiciones y velocidades.
+
+Los enemigos son hijos de un proceso padre monster que toma las propiedades de ellos y asi se puede englobar las 
+colisiones con un tipo genérico. COmo las colisiones se hacen por el dato de ancho y alto de la collision box, no 
+necesitamos que esos padres tengan grafico.
+
+Existen varias funciones de colision. Para el terreno, se usa una colision por vector de direccion x e y que comprueba
+con los tiles que intersecta. 
+Para procesos, se usa una comprobacion AABB con las cajas de deteccion de los procesos. Es posible definiR 
+
+El gameEngine en si, es una maquina de estados para poner el juego en diversos estados, splashscreen, menu,gameover,etc..
+
+
+	
