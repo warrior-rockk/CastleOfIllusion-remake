@@ -876,7 +876,7 @@ Begin
 	object(5,218,712,16,16,PICKABLE | BREAKABLE);
 	object(5,1210,136,16,16,PICKABLE);
 	
-	object(4,550,300,16,16,ITEM_BIG_COIN | PICKABLE | BREAKABLE | NO_PERSISTENT );
+	object(4,550,300,16,16,ITEM_BIG_COIN | PICKABLE | NO_PERSISTENT );
 	object(4,570,300,16,16,ITEM_BIG_COIN | PICKABLE | BREAKABLE | NO_PERSISTENT );
 	
 	item(590,300,16,16,ITEM_STAR);
@@ -912,7 +912,6 @@ Begin
 	end;
 	idPlayer = 0;
 	signal(type plataforma,s_kill_tree);
-	signal(type monster,s_kill_tree);
 	signal(type item,s_kill_tree);
 
 	
@@ -928,16 +927,12 @@ Begin
 	plataforma(800,696,32,16,8,25);
 	plataforma(620,729,32,16,8,25);
 	plataforma(458,729,32,16,8,25);
-	
-	//los objetos se reinician,no se matan
-	restartEntityType(TYPE object);
-	
 	item(590,300,16,16,ITEM_STAR);
 	item(1996,257,16,16,ITEM_GEM);
 	
-	monster(T_CYCLECLOWN,1250,100);
-	monster(T_TOYPLANE,526,300);
-	monster(T_TOYPLANECONTROL,526,320);
+	//Reiniciamos los procesos del nivel
+	restartEntityType(TYPE object);
+	restartEntityType(TYPE monster);
 	
 	//creamos los objetos del nivel
 	//for (i=0;i<level.numObjects;i++) 
@@ -1239,10 +1234,7 @@ begin
 		entityID = get_id(entityType);
 		//reiniciamos la entidad
 		if (entityID <> 0) 
-     		//si es objeto y es persistente
-			if (isType(entityID,TYPE object) && !isBitSet(entityID.props,NO_PERSISTENT))
-				entityID.state = INITIAL_STATE;
-			end;
+     		entityID.state = INITIAL_STATE;
 		end;
 	until (entityID == 0);
 end;

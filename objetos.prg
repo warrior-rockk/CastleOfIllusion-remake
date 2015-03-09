@@ -137,8 +137,88 @@ begin
 	
 end;
 
-//Proceso objeto
-process object(int graph,int x,int y,int _ancho,int _alto,int _props)
+//Proceso objeto generico
+//Sera el padre del objeto concreto para tratarlo como unico para colisiones,etc..
+Process object(int graph,int x,int y,int _ancho,int _alto,int _props)
+private
+	object idObject;		//id del objeto que se crea
+	int 	_x0;			//X inicial
+	int 	_y0;           	//Y inicial
+	int     _graph;         //graph inicial
+	byte    inRegion;		//flag de objeto en region
+	byte    hidded;         //flag de oculto
+begin
+	//el objeto padre tiene prioridad superior a los hijos
+	priority = cObjectPrior;
+	
+	//guardamos la posicion y grafico inicial
+	_x0 = x;
+	_y0 = y;
+	_graph = graph;
+	
+	//el padre no tiene grafico
+	graph = 0;
+	
+	//reseteamos flags
+	inRegion = false;
+	hidded   = false;
+	
+	loop
+		//si existe el objeto
+		if (exists(idObject))
+			//si nos mandan reiniciar
+			if (state == INITIAL_STATE)
+				//eliminamos el objeto existente
+				signal(idObject,s_kill);
+				hidded = true;
+				inRegion = false;
+				log("Se reinicia el objeto "+idObject,DEBUG_OBJECTS);
+			else
+				//actualizamos el hijo
+				idObject.state = state;
+				idObject.props = props;
+				idobject.fx     = fx;
+				idobject.fy     = fy;
+				idobject.x     = x;
+				idobject.y     = y;
+				idobject.vx    = vx;
+				idobject.vy    = vy;
+						
+				//desaparece al salir de la region del juego
+				if (!region_in(x,y)) 
+					log("Se elimina el objeto "+idObject,DEBUG_OBJECTS);
+					//eliminamos el objeto
+					signal(idObject,s_kill);	
+					//marcamos el flag de oculto (pero "vivo")
+					hidded = true;
+				end;
+			end;
+		else
+			//si no existe objeto, el padre no es colisionable
+			setBit(props,NO_COLLISION);
+			
+			//creamos el objeto si entra en la region y si es persistente
+			if (region_in(_x0,_y0) && !inRegion && (!isBitSet(props,NO_PERSISTENT) || hidded)) 
+				//creamos el tipo de objeto
+				idObject = solidItem(_graph,_x0,_y0,_ancho,_alto,_props);	
+				//Seteo flags
+				inRegion = true;
+				hidded = false;
+				log("Se crea el objeto "+idObject,DEBUG_OBJECTS);
+			end;
+			
+			//bajamos el flag cuando salgas de la region
+			if (!region_in(_x0,_y0))
+				inRegion = false;
+			end;
+		end;
+		
+		frame;
+	end;
+end;
+
+//Proceso solidItem
+process solidItem(int graph,int x,int y,int _ancho,int _alto,int _props)
 private
 	byte grounded;		//Flag de en suelo
 	float friction;		//Friccion local
@@ -146,12 +226,7 @@ private
 	entity colID;		//Entidad con la que colisiona
 	int colDir;			//Direccion de la colision
 	byte collided;		//flag de colisionado
-	
-	byte inRegion;		//flag de objeto en region
-	int _x0;			//X inicial del objeto
-	int _y0;			//Y inicial del objeto
-	int _graph;			//grafico inicial
-	
+		
 	int i;				//Variables auxiliares
 begin
 	region = cGameRegion;
@@ -164,11 +239,7 @@ begin
 	alto = _alto;
 	props = _props;
 	
-	//asignamos los valores iniciales
-	_x0 = x;
-	_y0 = y;
-	_graph = graph;
-	
+		
 	//modo debug sin graficos
 	if (file<0)
 		graph = map_new(ancho,alto,8,0);
@@ -193,19 +264,6 @@ begin
 		prevState = state;		
 		//maquina de estados
 		switch (state)
-			case INITIAL_STATE:
-				//actualizamos a coordenadas iniciales
-				fX = _x0;
-				fY = _y0;
-				//actualizamos a grafico inicial
-				graph = _graph;
-				//actualizamos a estado inicial
-				state = MOVE_STATE;
-				//vuelve a tener fisicas y ser solido
-				unSetBit(props,NO_PHYSICS);
-				unSetBit(props,NO_COLLISION);	
-				log("Iniciamos objeto "+id,DEBUG_OBJECTS);
-			end;
 			case IDLE_STATE:
 				//normalizamos la posicion Y para evitar problemas de colision 
 				fY = y;
@@ -329,49 +387,17 @@ begin
 				end;
 				//lanzamos animacion explosion objeto
 				WGE_Animation(file,2,3,x,y,10,ANIM_ONCE);
-				if (isBitSet(props,NO_PERSISTENT))
-					//matamos el objeto
-					signal(id,s_kill);			
-				else
-					//pasa a estado invisible
-					state = INVISIBLE_STATE;
-					log("Ocultamos objeto persistente "+id,DEBUG_OBJECTS);
-				end;
-			end;
-			case INVISIBLE_STATE:
-				//lo convertimos en invisible
-				graph = 0;
-				vX = 0;
-				vY = 0;
-				setBit(props,NO_PHYSICS);
-				setBit(props,NO_COLLISION);
-				
-				//volvemos a estado inicial si entra en la region
-				if (region_in(_x0,_y0) && !inRegion) 
-					//flag de region
-					inRegion = true;
-					state = INITIAL_STATE;
-				end;
-				//bajamos el flag cuando salgas de la region
-				if (!region_in(_x0,_y0))
-					inRegion = false;
-				end;
+				//matamos el objeto
+				signal(id,s_kill);
 			end;
 		end;
 			
 		//actualizamos velocidad y posicion
 		updateVelPos(id,grounded);
 		
-		//comprobamos si sale de la region
-		if (!region_in(x,y) )
-			inRegion = false;
-			//desaparece si sale de la region
-			if (state <> INVISIBLE_STATE)
-				state = INVISIBLE_STATE;
-				log("Ocultamos objeto "+id,DEBUG_OBJECTS);
-			end;
-		end;
-						
+		//actualizamos el objeto padre
+		updateObject(id);		
+		
 		frame;
 	end;
 	
@@ -503,5 +529,28 @@ begin
 		
 		frame;
 	end;
+	
+end;
+
+//funcion que actualiza las propiedades del objeto padre
+function updateObject(entity objectSon)
+private
+	object idFather;	//id del Objeto padre
+begin
+	//asociamos al padre
+	idFather = 	objectSon.father;
+	
+	//copiamos las propiedades
+	idFather.ancho 		= objectSon.ancho;
+	idFather.alto 		= objectSon.alto;
+	idFather.axisAlign	= objectSon.axisAlign;
+	idFather.fX 		= objectSon.fX;
+	idFather.fY 		= objectSon.fY;
+	idFather.x  		= objectSon.x;
+	idFather.y  		= objectSon.y;
+	idFather.vX 		= objectSon.vX;
+	idFather.vY 		= objectSon.vY;
+	idFather.props 		= objectSon.props;
+	idFather.state      = objectSon.state;
 	
 end;

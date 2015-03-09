@@ -23,19 +23,27 @@ begin
 	loop
 		//si existe el monstruo (sigue vivo)
 		if (exists(idMonster))
-			//envio de estado muerte o daño
-			if (state == DEAD_STATE || state == HURT_STATE) 
-				//si el monstruo no esta muerto o dañado
-				if (idMonster.state <> DEAD_STATE && idMonster.state <> HURT_STATE)
-					//actualizo el estado del monstruo
-					idMonster.state = state;
+			//si nos mandan reiniciar
+			if (state == INITIAL_STATE)
+				//eliminamos el monstruo existente
+				signal(idMonster,s_kill);
+				inRegion = false;
+				log("Se reinicia el monstruo "+idMonster,DEBUG_MONSTERS);
+			else
+				//envio de estado muerte o daño
+				if (state == DEAD_STATE || state == HURT_STATE) 
+					//si el monstruo no esta muerto o dañado
+					if (idMonster.state <> DEAD_STATE && idMonster.state <> HURT_STATE)
+						//actualizo el estado del monstruo
+						idMonster.state = state;
+					end;
+					state = 0;
 				end;
-				state = 0;
-			end;
-			//desaparece al salir de la region del juego
-			if (!region_in(x,y)) 
-				log("Se elimina el monstruo "+idMonster,DEBUG_MONSTERS);
-				signal(idMonster,s_kill);			
+				//desaparece al salir de la region del juego
+				if (!region_in(x,y)) 
+					log("Se elimina el monstruo "+idMonster,DEBUG_MONSTERS);
+					signal(idMonster,s_kill);			
+				end;
 			end;
 		else
 			//si no hay monstruo creado, es como si estuviera muerto

@@ -863,6 +863,7 @@ begin
 	//cambiamos el estado del objeto para lanzarlo
 	idObjectThrowed.state = THROWING_STATE;
 	unsetBit(idObjectThrowed.props,NO_PHYSICS);
+	setBit(idObjectThrowed.props,NO_COLLISION);
 	idObjectThrowed = 0;
 end;
 
