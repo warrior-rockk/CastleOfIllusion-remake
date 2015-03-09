@@ -6,6 +6,10 @@
 //  Definiciones de las funciones de animacion
 // ========================================================================
 
+//tipos de objetos
+#define T_SOLIDITEM				0       //Objeto solido (cofre,piedra...)
+#define T_ITEM                  1       //Objeto Item
+
 //propiedades de los objetos
 #define PICKABLE				1		//Puede ser recogido
 #define NO_COLLISION            2		//No colisiona con otros procesos
@@ -45,7 +49,7 @@ Global
 end;
 
 //declaracion de proceso objeto
-Declare Process object(int graph,int x,int y,int _ancho,int _alto,int _props)
+Declare Process object(int objectType,int graph,int x,int y,int _ancho,int _alto,int _props)
 public
 	float vX			= 0;     	//Velocidad X
 	float vY			= 0;     	//Velocidad Y

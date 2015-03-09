@@ -139,7 +139,7 @@ end;
 
 //Proceso objeto generico
 //Sera el padre del objeto concreto para tratarlo como unico para colisiones,etc..
-Process object(int graph,int x,int y,int _ancho,int _alto,int _props)
+Process object(int objectType,int graph,int x,int y,int _ancho,int _alto,int _props)
 private
 	object idObject;		//id del objeto que se crea
 	int 	_x0;			//X inicial
@@ -204,7 +204,15 @@ begin
 			//creamos el objeto si entra en la region y si es persistente
 			if (region_in(_x0,_y0) && !inRegion && (!isBitSet(props,NO_PERSISTENT) || hidded)) 
 				//creamos el tipo de objeto
-				idObject = solidItem(_graph,_x0,_y0,_ancho,_alto,_props);	
+				switch (objectType)
+					case T_SOLIDITEM:
+						idObject = solidItem(_graph,_x0,_y0,_ancho,_alto,_props);
+					end;
+					case T_ITEM:
+						idObject = item(_x0,_y0,_ancho,_alto,_props);
+					end;
+				end;
+				
 				//Seteo flags
 				inRegion = true;
 				hidded = false;
@@ -453,6 +461,7 @@ begin
 	unSetBit(props,BREAKABLE);
 	unSetBit(props,PICKABLE);
 	unSetBit(props,NO_PHYSICS);
+	setBit(props,NO_COLLISION);
 	
 	loop
 		
@@ -531,6 +540,9 @@ begin
 		//actualizamos velocidad y posicion
 		updateVelPos(id,grounded);
 		
+		//actualizamos el objeto padre
+		updateObject(id);
+		
 		frame;
 	end;
 	
@@ -541,20 +553,23 @@ function updateObject(entity objectSon)
 private
 	object idFather;	//id del Objeto padre
 begin
-	//asociamos al padre
-	idFather = 	objectSon.father;
-	
-	//copiamos las propiedades
-	idFather.ancho 		= objectSon.ancho;
-	idFather.alto 		= objectSon.alto;
-	idFather.axisAlign	= objectSon.axisAlign;
-	idFather.fX 		= objectSon.fX;
-	idFather.fY 		= objectSon.fY;
-	idFather.x  		= objectSon.x;
-	idFather.y  		= objectSon.y;
-	idFather.vX 		= objectSon.vX;
-	idFather.vY 		= objectSon.vY;
-	idFather.props 		= objectSon.props;
-	idFather.state      = objectSon.state;
-	
+	//aseguramos que el padre es un objeto
+	if (isType(objectSon.father,TYPE object))
+		
+		//asociamos al padre
+		idFather = 	objectSon.father;
+		
+		//copiamos las propiedades
+		idFather.ancho 		= objectSon.ancho;
+		idFather.alto 		= objectSon.alto;
+		idFather.axisAlign	= objectSon.axisAlign;
+		idFather.fX 		= objectSon.fX;
+		idFather.fY 		= objectSon.fY;
+		idFather.x  		= objectSon.x;
+		idFather.y  		= objectSon.y;
+		idFather.vX 		= objectSon.vX;
+		idFather.vY 		= objectSon.vY;
+		idFather.props 		= objectSon.props;
+		idFather.state      = objectSon.state;
+	end;
 end;

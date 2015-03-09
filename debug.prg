@@ -215,7 +215,7 @@ begin
 		//al hacer click secundario, creamos una caja
 		if (mouse.right)
 			
-			idObj = object(1,x,y,16,16,BREAKABLE);
+			idObj = object(T_SOLIDITEM,1,x,y,16,16,BREAKABLE);
 			idObj.vX = 2;
 			idObj.vY = -2;
 			

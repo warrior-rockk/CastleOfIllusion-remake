@@ -463,17 +463,19 @@ function updateMonster(entity monsterSon)
 private
 	monster idFather;	//id del monstruo padre
 begin
-	//asociamos al padre
-	idFather = 	monsterSon.father;
-	
-	//copiamos las propiedades
-	idFather.ancho = monsterSon.ancho;
-	idFather.alto = monsterSon.alto;
-	idFather.axisAlign = monsterSon.axisAlign;
-	idFather.fX = monsterSon.fX;
-	idFather.fY = monsterSon.fY;
-	idFather.x  = monsterSon.x;
-	idFather.y  = monsterSon.y;
-	idFather.props = monsterSon.props;
-	
+	//aseguramos que el padre es un monstruo
+	if (isType(monsterSon.father,TYPE monster))
+		//asociamos al padre
+		idFather = 	monsterSon.father;
+		
+		//copiamos las propiedades
+		idFather.ancho = monsterSon.ancho;
+		idFather.alto = monsterSon.alto;
+		idFather.axisAlign = monsterSon.axisAlign;
+		idFather.fX = monsterSon.fX;
+		idFather.fY = monsterSon.fY;
+		idFather.x  = monsterSon.x;
+		idFather.y  = monsterSon.y;
+		idFather.props = monsterSon.props;
+	end;
 end;
