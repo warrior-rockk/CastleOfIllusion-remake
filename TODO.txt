@@ -6,6 +6,7 @@ ENGINE (BUG):Tareas de inicializacion del engine:el mapa que esta en la posicion
 DEBUG:escribir el log a archivo??
 
 ENGINE: -con screen_get puedo caputar la pantalla y hacer transiciones
-
+		-hay bug con modo debug y los nuevos objetos
+		
 OBJECTS:-la jarra no rebota
 		-plataformas como objetos?
