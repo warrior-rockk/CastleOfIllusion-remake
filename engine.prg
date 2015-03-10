@@ -1229,10 +1229,10 @@ begin
 end;
 
 //funcion que devuelve si una posicion x/y esta en la region del juego
-function region_in(int _x0,int _y0)
+function region_in(int _x0,int _y0,int _ancho,int _alto)
 begin
-	return (_x0 <= scroll[cGameScroll].x0+(cGameRegionW) && _x0 >= scroll[cGameScroll].x0 &&
-		   _y0 >= scroll[cGameScroll].y0 && _y0 <= scroll[cGameScroll].y0+(cGameRegionH) );
+	return ((_x0 - _ancho) <= scroll[cGameScroll].x0+(cGameRegionW) && (_x0 + _ancho) >= scroll[cGameScroll].x0 &&
+		   (_y0 + _alto) >= scroll[cGameScroll].y0 && (_y0 - _alto) <= scroll[cGameScroll].y0+(cGameRegionH) );
 end;
 
 //funcion que devuelve a inicio las entidades de un tipo

@@ -23,7 +23,7 @@ begin
 	loop
 		//si se reinicia, se actualiza flags region
 		if (state == INITIAL_STATE)
-			inRegion  = region_in(_x0,_y0);
+			inRegion  = region_in(_x0,_y0,ancho,alto);
 			outRegion = true;
 		end;
 		
@@ -75,12 +75,12 @@ begin
 		end;
 		
 		//Comprobamos si entra en la region
-		if (region_in(x,y))
+		if (region_in(x,y,ancho,alto))
 			inRegion = true;
 		end;
 		
 		//Comprobamos si sale de la region
-		if (!region_in(x,y))
+		if (!region_in(x,y,ancho,alto))
 			outRegion = true;
 		end;
 			
