@@ -139,70 +139,51 @@ end;
 
 //Proceso objeto generico
 //Sera el padre del objeto concreto para tratarlo como unico para colisiones,etc..
-Process object(int objectType,int graph,int x,int y,int _ancho,int _alto,int _props)
+Process object(int objectType,int _graph,int _x0,int _y0,int _ancho,int _alto,int _props)
 private
 	object idObject;		//id del objeto que se crea
-	int 	_x0;			//X inicial
-	int 	_y0;           	//Y inicial
-	int     _graph;         //graph inicial
-	byte    inRegion;		//flag de objeto en region
-	byte    hidded;         //flag de oculto
+	
+	byte    inRegion;	   //flag de objeto en region
+	byte    outRegion;     //flag de objeto fuera de la region
+
 begin
 	//el objeto padre tiene prioridad superior a los hijos
 	priority = cObjectPrior;
 	
-	//guardamos la posicion y grafico inicial
-	_x0 = x;
-	_y0 = y;
-	_graph = graph;
-	
-	//el padre no tiene grafico
-	graph = 0;
-	
-	//reseteamos flags
-	inRegion = false;
-	hidded   = false;
-	
+	state = INITIAL_STATE;
+			
 	loop
 		//si se reinicia, se baja el flag de en region
 		if (state == INITIAL_STATE)
-			inRegion = false;
+			inRegion  = region_in(_x0,_y0);
+			outRegion = true;
 		end;
 		
 		//si existe el objeto
 		if (exists(idObject))
-			//si nos mandan reiniciar
-			if (state == INITIAL_STATE)
-				//eliminamos el objeto existente
-				signal(idObject,s_kill);
-				hidded = true;
-				log("Se reinicia el objeto "+idObject,DEBUG_OBJECTS);
-			else
-				//actualizamos el hijo
-				idObject.state = state;
-				idObject.props = props;
-				idobject.fx     = fx;
-				idobject.fy     = fy;
-				idobject.x     = x;
-				idobject.y     = y;
-				idobject.vx    = vx;
-				idobject.vy    = vy;
-						
-				//desaparece al salir de la region del juego
-				if (!region_in(x,y)) 
-					log("Se elimina el objeto "+idObject,DEBUG_OBJECTS);
-					//eliminamos el objeto
-					signal(idObject,s_kill);	
-					//marcamos el flag de oculto (pero "vivo")
-					hidded = true;
-				end;
+			
+			//actualizamos el hijo
+			updateObject(id,idObject);
+					
+			//desaparece al salir de la region del juego
+			if (outRegion) 
+				//eliminamos el objeto
+				signal(idObject,s_kill);	
+				log("Se elimina el objeto "+idObject,DEBUG_OBJECTS);
+				
+				inRegion = false;
 			end;
+
 		else
 			//si no existe objeto, el padre no es colisionable
 			setBit(props,NO_COLLISION);
 			
+			//la region se comprueba con las coordenadas iniciales
+			x = _x0;
+			y = _y0;
+			
 			//creamos el objeto si entra en la region y si es persistente
-			if (region_in(_x0,_y0) && !inRegion && (!isBitSet(props,NO_PERSISTENT) || hidded)) 
+			if (inRegion && outRegion )
 				//creamos el tipo de objeto
 				switch (objectType)
 					case T_SOLIDITEM:
@@ -212,19 +193,22 @@ begin
 						idObject = item(_x0,_y0,_ancho,_alto,_props);
 					end;
 				end;
-				
-				//Seteo flags
-				inRegion = true;
-				hidded = false;
 				log("Se crea el objeto "+idObject,DEBUG_OBJECTS);
-			end;
-			
-			//bajamos el flag cuando salgas de la region
-			if (!region_in(_x0,_y0))
-				inRegion = false;
+				
+				outRegion = false;
 			end;
 		end;
 		
+		//Comprobamos si entra en la region
+		if (region_in(x,y) && !inRegion)
+			inRegion = true;
+		end;
+		
+		//Comprobamos si sale de la region
+		if (!region_in(x,y))
+			outRegion = true;
+		end;
+			
 		frame;
 	end;
 end;
@@ -395,10 +379,16 @@ begin
 			case DEAD_STATE:
 				//si el objeto tiene item dentro, lo lanzamos
 				if (isBitSet(props,ITEM_BIG_COIN) || isBitSet(props,ITEM_STAR))
-					item(x,y,ancho,alto,props);
+					//item(x,y,ancho,alto,props);
+					object(T_ITEM,0,x,y,16,16,ITEM_BIG_COIN);
 				end;
 				//lanzamos animacion explosion objeto
 				WGE_Animation(file,2,3,x,y,10,ANIM_ONCE);
+				//si el objeto no es persistente
+				if (isBitSet(props,NO_PERSISTENT))
+					//matamos al padre
+					signal(father,s_kill);
+				end;
 				//matamos el objeto
 				signal(id,s_kill);
 			end;
@@ -408,7 +398,9 @@ begin
 		updateVelPos(id,grounded);
 		
 		//actualizamos el objeto padre
-		updateObject(id);		
+		if (isType(father,TYPE object))
+			updateObject(id,father);		
+		end;
 		
 		frame;
 	end;
@@ -532,8 +524,10 @@ begin
 						game.endLevel = true;
 					end;
 				end;
+				//elimina el padre (items no son remanentes)
+				signal(father,s_kill);
 				//elimina el item
-				signal(id,s_kill);
+				signal(id,s_kill);		
 			end;
 		end;
 		
@@ -541,35 +535,31 @@ begin
 		updateVelPos(id,grounded);
 		
 		//actualizamos el objeto padre
-		updateObject(id);
+		if (isType(father,TYPE object))
+			updateObject(id,father);		
+		end;
 		
 		frame;
 	end;
 	
 end;
 
-//funcion que actualiza las propiedades del objeto padre
-function updateObject(entity objectSon)
-private
-	object idFather;	//id del Objeto padre
+
+//funcion que actualiza las propiedades de un objeto sobre otro
+function updateObject(entity objectA,objectB)
 begin
-	//aseguramos que el padre es un objeto
-	if (isType(objectSon.father,TYPE object))
 		
-		//asociamos al padre
-		idFather = 	objectSon.father;
-		
-		//copiamos las propiedades
-		idFather.ancho 		= objectSon.ancho;
-		idFather.alto 		= objectSon.alto;
-		idFather.axisAlign	= objectSon.axisAlign;
-		idFather.fX 		= objectSon.fX;
-		idFather.fY 		= objectSon.fY;
-		idFather.x  		= objectSon.x;
-		idFather.y  		= objectSon.y;
-		idFather.vX 		= objectSon.vX;
-		idFather.vY 		= objectSon.vY;
-		idFather.props 		= objectSon.props;
-		idFather.state      = objectSon.state;
-	end;
+	//copiamos las propiedades
+	objectB.ancho 		= objectA.ancho;
+	objectB.alto 		= objectA.alto;
+	objectB.axisAlign	= objectA.axisAlign;
+	objectB.fX 			= objectA.fX;
+	objectB.fY 			= objectA.fY;
+	objectB.x  			= objectA.x;
+	objectB.y  			= objectA.y;
+	objectB.vX 			= objectA.vX;
+	objectB.vY 			= objectA.vY;
+	objectB.props 		= objectA.props;
+	objectB.state       = objectA.state;
+	
 end;

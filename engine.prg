@@ -893,10 +893,12 @@ Begin
 	object(T_ITEM,0,590,300,16,16,ITEM_STAR | NO_PERSISTENT);
 	object(T_ITEM,0,1996,257,16,16,ITEM_GEM);
 	
-	monster(T_CYCLECLOWN,1250,100);
+	object(T_SOLIDITEM,1,610,300,16,16,PICKABLE | BREAKABLE);
+	
+	/*monster(T_CYCLECLOWN,1250,100);
 	monster(T_TOYPLANE,526,300);
 	monster(T_TOYPLANECONTROL,526,320);
-	
+	*/
 	//creamos los objetos del nivel
 	//for (i=0;i<level.numObjects;i++) 
 		//crea_objeto(i,1);

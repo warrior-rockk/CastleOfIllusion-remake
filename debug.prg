@@ -91,9 +91,10 @@ begin
 				pID = get_id(TYPE object);
 				debugColBox(pID);
 				//Pintamos los puntos de los objetos
-				for (i=0;i<cNumColPoints;i++)			
+				//de momento no se pinta porque el padre Object no toma los puntos de colision
+				/*for (i=0;i<cNumColPoints;i++)			
 					debugColPoint(pID,i);
-				end;
+				end;*/
 			until (pID == 0);
 			
 			//Pintamos los puntos de deteccion del jugador

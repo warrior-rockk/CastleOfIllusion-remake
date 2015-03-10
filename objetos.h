@@ -49,7 +49,7 @@ Global
 end;
 
 //declaracion de proceso objeto
-Declare Process object(int objectType,int graph,int x,int y,int _ancho,int _alto,int _props)
+Declare Process object(int objectType,int _graph,int _x0,int _y0,int _ancho,int _alto,int _props)
 public
 	float vX			= 0;     	//Velocidad X
 	float vY			= 0;     	//Velocidad Y
