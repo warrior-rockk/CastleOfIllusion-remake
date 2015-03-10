@@ -153,7 +153,7 @@ begin
 	state = INITIAL_STATE;
 			
 	loop
-		//si se reinicia, se baja el flag de en region
+		//si se reinicia, se actualiza flags region
 		if (state == INITIAL_STATE)
 			inRegion  = region_in(_x0,_y0);
 			outRegion = true;

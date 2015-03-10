@@ -17,7 +17,7 @@
 
 
 //declaracion de proceso monstruo generico
-Declare Process monster(int monsterType,int x,int y)
+Declare Process monster(int monsterType,int _x0,int _y0)
 public
 	float vX			= 0;     	//Velocidad X
 	float vY			= 0;     	//Velocidad Y

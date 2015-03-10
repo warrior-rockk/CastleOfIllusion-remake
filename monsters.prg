@@ -8,58 +8,54 @@
 
 //Proceso monstruo generico
 //Sera el padre del monstruo concreto para tratarlo como unico para colisiones,etc..
-Process monster(int monsterType,int x,int y)
+Process monster(int monsterType,int _x0,int _y0)
 private
 	monster idMonster;		//id del mosntruo que se crea
-	int 	_x0;			//X inicial
-	int 	_y0;           	//Y inicial
+	
 	byte    inRegion;		//flag de monstruo en region
+	byte    outRegion;		//flag de monstruo fuera de region
 begin
-	//guardamos la posicion inicial
-	_x0 = x;
-	_y0 = y;
-	inRegion = false;
+	//el objeto padre tiene que tener prioridad superior a los hijos
+	priority = cMonsterPrior;
+	
+	state = INITIAL_STATE;
 	
 	loop
-		//si se reinicia, se baja el flag de en region
+		//si se reinicia, se actualiza flags region
 		if (state == INITIAL_STATE)
-			inRegion = false;
+			inRegion  = region_in(_x0,_y0);
+			outRegion = true;
 		end;
 		
-		//si existe el monstruo (sigue vivo)
+		//si existe el monstruo
 		if (exists(idMonster))
-			//si nos mandan reiniciar
-			if (state == INITIAL_STATE)
-				//eliminamos el monstruo existente
+			
+			//actualizamos el hijo
+			updateMonster(id,idMonster);
+			
+			//desaparece al salir de la region del juego
+			if (outRegion) 
+				//eliminamos el mosntruo
 				signal(idMonster,s_kill);
-				log("Se reinicia el monstruo "+idMonster,DEBUG_MONSTERS);
-			else
-				//envio de estado muerte o daño
-				if (state == DEAD_STATE || state == HURT_STATE) 
-					//si el monstruo no esta muerto o dañado
-					if (idMonster.state <> DEAD_STATE && idMonster.state <> HURT_STATE)
-						//actualizo el estado del monstruo
-						idMonster.state = state;
-					end;
-					state = 0;
-				end;
-				//desaparece al salir de la region del juego
-				if (!region_in(x,y)) 
-					log("Se elimina el monstruo "+idMonster,DEBUG_MONSTERS);
-					signal(idMonster,s_kill);			
-				end;
+				log("Se elimina el monstruo "+idMonster,DEBUG_MONSTERS);
+				//bajamos flags
+				inRegion = false;
+				outRegion = false;
+				//la region se comprueba con las coordenadas iniciales
+				x = _x0;
+				y = _y0;
 			end;
+			
 		else
-			//si no hay monstruo creado, es como si estuviera muerto
-			state = DEAD_STATE;
+			//si no existe objeto, el padre no es colisionable
 			setBit(props,NO_COLLISION);
 			
-			//lo creamos si entra en la region
-			if (region_in(_x0,_y0) && !inRegion) 
-				//flag de region
-				inRegion = true;
-				//reinciamos estado padre
-				state = 0;
+			//la region se comprueba con las coordenadas iniciales
+			x = _x0;
+			y = _y0;
+			
+			//creamos el monstruo si entra en la region
+			if (inRegion && outRegion) 
 				//creamos el tipo de monstruo
 				switch (monsterType)
 					case T_CYCLECLOWN:
@@ -73,14 +69,21 @@ begin
 					end;
 				end;	
 				log("Se crea el monstruo "+idMonster,DEBUG_MONSTERS);
-			end;
-			
-			//bajamos el flag cuando salgas de la region
-			if (!region_in(_x0,_y0))
-				inRegion = false;
+				
+				outRegion = false;
 			end;
 		end;
 		
+		//Comprobamos si entra en la region
+		if (region_in(x,y))
+			inRegion = true;
+		end;
+		
+		//Comprobamos si sale de la region
+		if (!region_in(x,y))
+			outRegion = true;
+		end;
+			
 		frame;
 	end;
 end;
@@ -193,7 +196,7 @@ begin
 		updateVelPos(id,grounded);
 		
 		//actualizamos el monstruo padre
-		updateMonster(id);
+		updateMonster(id,father);
 		
 		//alineacion del eje X del grafico
 		alignAxis(id);
@@ -340,7 +343,7 @@ begin
 		updateVelPos(id,grounded);
 		
 		//actualizamos el monstruo padre
-		updateMonster(id);
+		updateMonster(id,father);
 		
 		//alineacion del eje X del grafico
 		alignAxis(id);
@@ -416,7 +419,7 @@ begin
 		updateVelPos(id,grounded);
 		
 		//actualizamos el monstruo padre
-		updateMonster(id);
+		updateMonster(id,father);
 		
 		//alineacion del eje X del grafico
 		alignAxis(id);
@@ -458,24 +461,21 @@ begin
 
 end;
 
-//funcion que actualiza las propiedades del monstruo padre
-function updateMonster(entity monsterSon)
-private
-	monster idFather;	//id del monstruo padre
+//funcion que actualiza las propiedades de un monstruo sobre otro
+function updateMonster(entity monsterA,monsterB)
 begin
-	//aseguramos que el padre es un monstruo
-	if (isType(monsterSon.father,TYPE monster))
-		//asociamos al padre
-		idFather = 	monsterSon.father;
-		
-		//copiamos las propiedades
-		idFather.ancho = monsterSon.ancho;
-		idFather.alto = monsterSon.alto;
-		idFather.axisAlign = monsterSon.axisAlign;
-		idFather.fX = monsterSon.fX;
-		idFather.fY = monsterSon.fY;
-		idFather.x  = monsterSon.x;
-		idFather.y  = monsterSon.y;
-		idFather.props = monsterSon.props;
-	end;
+	
+	//copiamos las propiedades
+	monsterB.ancho 		= monsterA.ancho;
+	monsterB.alto 		= monsterA.alto;
+	monsterB.axisAlign	= monsterA.axisAlign;
+	monsterB.fX 		= monsterA.fX;
+	monsterB.fY 		= monsterA.fY;
+	monsterB.x  		= monsterA.x;
+	monsterB.y  		= monsterA.y;
+	monsterB.vX 		= monsterA.vX;
+	monsterB.vY 		= monsterA.vY;
+	monsterB.props 		= monsterA.props;
+	monsterB.state      = monsterA.state;
+	
 end;

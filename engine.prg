@@ -895,10 +895,10 @@ Begin
 	
 	object(T_SOLIDITEM,1,610,300,16,16,PICKABLE | BREAKABLE);
 	
-	/*monster(T_CYCLECLOWN,1250,100);
+	monster(T_CYCLECLOWN,1250,100);
 	monster(T_TOYPLANE,526,300);
 	monster(T_TOYPLANECONTROL,526,320);
-	*/
+	
 	//creamos los objetos del nivel
 	//for (i=0;i<level.numObjects;i++) 
 		//crea_objeto(i,1);
