@@ -170,8 +170,12 @@ begin
 				//eliminamos el objeto
 				signal(idObject,s_kill);	
 				log("Se elimina el objeto "+idObject,DEBUG_OBJECTS);
-				
+				//bajamos flags
 				inRegion = false;
+				outRegion = false;
+				//la region se comprueba con las coordenadas iniciales
+				x = _x0;
+				y = _y0;
 			end;
 
 		else
