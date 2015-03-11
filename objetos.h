@@ -167,7 +167,7 @@ end
 end
 
 //declaracion de objeto plataforma
-Declare Process autoPlatform(int startX,int startY,int _ancho,int _alto,int graph,int rango)
+Declare Process linearPlatform(int graph,int startX,int startY,int _ancho,int _alto,float _vX)
 public
 	float vX			= 0;     	//Velocidad X
 	float vY			= 0;     	//Velocidad Y

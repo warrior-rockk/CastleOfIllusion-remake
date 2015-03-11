@@ -210,7 +210,11 @@ begin
 				//variables de reinicio de nivel
 				game.playerLife = game.playerMaxLife;
 				game.levelTime  = 300; //TEMPORAL: esto lo leera del archivo nivel	
-	
+				
+				//se despiertan los procesos
+				gameSignal(s_wakeup_tree);
+				WGE_Wait(100);
+				
 				game.state = PLAYLEVEL;
 				
 			end;

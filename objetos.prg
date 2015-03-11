@@ -68,7 +68,7 @@ begin
 				switch (_platformType)
 					case P_AUTO_PLATFORM:
 						//debug;
-						idPlatform = autoPlatform(_x0,_y0,_ancho,_alto,_graph,0);
+						idPlatform = linearPlatform(_graph,_x0,_y0,_ancho,_alto,0.5);
 					end;
 				end;	
 				log("Se crea la plataforma "+idPlatform,DEBUG_OBJECTS);
@@ -96,9 +96,12 @@ end;
 //x inicial
 //y inicial
 //rango de movimiento
-process autoPlatform(int startX,int startY,int _ancho,int _alto,int graph,int rango)
+process linearPlatform(int graph,int startX,int startY,int _ancho,int _alto,float _vX)
 private
-	int prevX;
+	int prevX;		//posicion X previa
+
+	int dirX;		//direccion X
+	
 begin
 	region = cGameRegion;
 	ctype = c_scroll;
@@ -106,8 +109,9 @@ begin
 	file = level.fpgObjects;
 		
 	//igualamos la propiedades publicas a las de parametros
-	ancho = _ancho;
-	alto = _alto;
+	ancho 	= _ancho;
+	alto 	= _alto;
+	vX  	= _vX;
 	
 	//modo debug sin graficos
 	if (file<0)
@@ -134,8 +138,6 @@ begin
 	
 	state = IDLE_STATE;
 		
-	vX = 0.5;
-	vY = 1;
 	
 	//bucle principal
 	loop
@@ -146,61 +148,22 @@ begin
 		switch (state)
 			case IDLE_STATE:
 				//estado por defecto
-				state = MOVE_RIGHT_STATE; 
+				state = MOVE_STATE; 
+				//direccion por defecto
+				dirX = 1;
 			end;
-			case MOVE_RIGHT_STATE: //movimiento a derecha
-				//movimiento lineal
-				fx+=vX; 
-				
+			case MOVE_STATE:
 				//cambio de estado al colisionar
 				if (getTileCode(id,RIGHT_UP_POINT) <> NO_SOLID)
-					state = MOVE_LEFT_STATE;
+					dirX = -1;
 				end;
-			end;
-			case MOVE_LEFT_STATE: //movimiento a izquierda
-				//movimiento lineal
-				fx-=vX; 
-				
-				//cambio de estado al colisionar
 				if (getTileCode(id,LEFT_UP_POINT) <> NO_SOLID)
-					state = MOVE_RIGHT_STATE;
+					dirX = 1;
 				end;
-			end;
-			case MOVE_DOWN_STATE: //movimiento a abajo
+				
 				//movimiento lineal
-				fY+=vY; 
-				//si el player esta en plataforma
-				if (idPlatform == ID)
-					//movemos el player
-					idPlayer.fY +=vY;
-				end;
-				//cambio de estado
-				if (fY > startY + rango)
-					state = MOVE_UP_STATE;
-				end;
-			end;
-			case MOVE_UP_STATE: //movimiento a arriba
-				//movimiento lineal
-				fY-=vY; 
-				//si el player esta en plataforma
-				if (idPlatform == ID)
-					//movemos el player
-					idPlayer.fY -=vY;
-				end;
-				//cambio de estado
-				if (fY < startY - rango)
-					state = MOVE_DOWN_STATE;
-				end;
-			end;
-			case MOVE_FREE_STATE: //movimiento dos ejes
-				//movimiento lineal
-				fX+=vX;
-				fY-=vY;
-				//si el player esta en plataforma
-				if (idPlatform == ID)
-					//movemos el player
-					idPlayer.fY -=vY;
-				end;
+				fX+=vX*dirX;
+				fY+=vY;
 			end;
 		end;
 		
