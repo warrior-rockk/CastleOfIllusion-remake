@@ -6,22 +6,104 @@
 //  Procesos Objetos
 // ========================================================================
 
+//Proceso plataforma generica
+//Sera el padre de las plataformas concretas para tratarlo como unico para colisiones,etc..
+Process platform(int _platformType,int _graph,int _x0,int _y0,int _ancho,int _alto)
+private
+	platform idPlatform;	//id de la plataforma hija
+	
+	byte    inRegion;		//flag de plataforma en region
+	byte    outRegion;		//flag de plataforma fuera de region
+begin
+	priority = cPlatformPrior;
+	
+	state = INITIAL_STATE;
+	
+	loop
+			
+		//si se reinicia, se actualiza flags region
+		if (state == INITIAL_STATE)
+			inRegion  = region_in(_x0,_y0,ancho,alto);
+			outRegion = true;
+		end;
+		
+		//si existe el monstruo
+		if (exists(idPlatform))
+			
+			//si el proceso tiene la prioridad del player
+			if (priority == cPlayerPrior)
+				//cambio la del hijo
+				idPlatform.priority = cPlatformPrior;
+			else
+				idPlatform.priority = cPlatformChildPrior;
+			end;
+		
+			//actualizamos el hijo
+			updateObject(id,idPlatform);
+			
+			//desaparece al salir de la region del juego
+			if (outRegion) 
+				//eliminamos el mosntruo
+				signal(idPlatform,s_kill);
+				log("Se elimina la plataforma "+idPlatform,DEBUG_OBJECTS);
+				//bajamos flags
+				inRegion = false;
+				outRegion = false;
+				//la region se comprueba con las coordenadas iniciales
+				x = _x0;
+				y = _y0;
+			end;
+			
+		else
+			//si no existe objeto, el padre no es colisionable
+			setBit(props,NO_COLLISION);
+			
+			//la region se comprueba con las coordenadas iniciales
+			x = _x0;
+			y = _y0;
+			
+			//creamos el monstruo si entra en la region
+			if (inRegion && outRegion) 
+				//creamos el tipo de plataforma
+				switch (_platformType)
+					case P_AUTO_PLATFORM:
+						//debug;
+						idPlatform = autoPlatform(_x0,_y0,_ancho,_alto,_graph,0);
+					end;
+				end;	
+				log("Se crea la plataforma "+idPlatform,DEBUG_OBJECTS);
+				
+				outRegion = false;
+			end;
+		end;
+		
+		//Comprobamos si entra en la region
+		if (region_in(x,y,ancho,alto))
+			inRegion = true;
+		end;
+		
+		//Comprobamos si sale de la region
+		if (!region_in(x,y,ancho,alto))
+			outRegion = true;
+		end;
+			
+		frame;
+	end;
+end;
 
 //Proceso plataforma movil
 //x inicial
 //y inicial
 //rango de movimiento
-process plataforma(int x,int y,int _ancho,int _alto,int graph,int rango)
+process autoPlatform(int startX,int startY,int _ancho,int _alto,int graph,int rango)
 private
-	int startX;
-	int startY;
 	int prevX;
 begin
 	region = cGameRegion;
 	ctype = c_scroll;
 	z = cZObject;
 	file = level.fpgObjects;
-	
+		
 	//igualamos la propiedades publicas a las de parametros
 	ancho = _ancho;
 	alto = _alto;
@@ -43,19 +125,20 @@ begin
 	colPoint[RIGHT_UP_POINT].colCode = COLDER;
 	colPoint[RIGHT_UP_POINT].enabled = 1;
 	
+	x = startX;
+	y = startY;
+	
 	fx = x;
 	fy = y;
 	
 	state = IDLE_STATE;
-	
-	startX = x;
-	startY = y;
-	
+		
 	vX = 0.5;
 	vY = 1;
 	
 	//bucle principal
 	loop
+		
 		//guardamos estado actual
 		prevState = state;
 		
@@ -126,8 +209,11 @@ begin
 		//actualizamos posicion
 		positionToInt(id);
 		
+		//actualizamos el objeto padre
+		updateObject(id,father);		
+				
 		//si el player esta en plataforma
-		if (idPlatform == ID)
+		if (idPlatform == father)
 			//actualizamos la posicion del player lo que se movio la plataforma
 			idPlayer.fX += x - prevX;
 		end;

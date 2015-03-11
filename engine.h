@@ -78,13 +78,14 @@ const
 	cTimeInterval    = 1; 					//Intervalo reloj: cTimeInterval*16ms
 	cFadeTime		 = 16;					//Velocidad de los fundidos de pantalla (1..64)
 	//Prioridades (orden ejecucion)
-	cMainPrior	 	 = 5;
-	cPlayerPrior	 = 4;
-	cPlatformPrior   = 3;
-	cObjectPrior     = 2;
-	cMonsterPrior    = 1;
-	cScrollPrior 	 =-1;
-	cTilePrior		 =-2;
+	cMainPrior	 	 	= 6;
+	cPlayerPrior	 	= 5;
+	cPlatformPrior   	= 4;
+	cPlatformChildPrior = 3;
+	cObjectPrior     	= 2;
+	cMonsterPrior    	= 1;
+	cScrollPrior 	 	=-1;
+	cTilePrior		 	=-2;
 
 	//Profundidades
 	cZCursor    	 =-4; 		     		//Profundidad del cursor de Debug

@@ -402,7 +402,7 @@ BEGIN
 		//lanzamos comprobacion con procesos plataforma
 		repeat
 			//obtenemos siguiente colision
-			colID = get_id(TYPE plataforma);
+			colID = get_id(TYPE platform);
 			//comprobamos colision en ambos ejes
 			dir = colCheckProcess(id,colID,BOTHAXIS);
 			
@@ -416,7 +416,7 @@ BEGIN
 					//seteamos idPlatform
 					idPlatform = colID;
 					//cambiamos prioridades
-					priority = cPlatformPrior;
+					priority = cPlatformChildPrior;
 					colID.priority = cPlayerPrior;
 				else
 					colID.priority = cPlatformPrior;

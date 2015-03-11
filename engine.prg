@@ -880,9 +880,9 @@ Begin
 	level.fpgObjects = fpg_load("test\objetos.fpg");
 	level.fpgMonsters = fpg_load("test\monsters.fpg");
 	
-	plataforma(800,696,32,16,8,25);
-	plataforma(620,729,32,16,8,25);
-	plataforma(458,729,32,16,8,25);
+	platform(0,8,800,696,32,16);
+	platform(0,8,620,729,32,16);
+	platform(0,8,458,729,32,16);
 	
 	object(T_SOLIDITEM,5,218,712,16,16,PICKABLE | BREAKABLE);
 	object(T_SOLIDITEM,5,1210,136,16,16,PICKABLE);
@@ -924,7 +924,7 @@ Begin
 		signal(idPlayer,s_kill_tree);
 	end;
 	idPlayer = 0;
-	signal(type plataforma,s_kill_tree);
+	
 		
 	//arrancamos el control de scroll
 	WGE_ControlScroll();
@@ -934,14 +934,10 @@ Begin
 	//creamos al player
 	player();
 	
-	//creamos los proceso del nivel (esto tiene que ser generico)
-	plataforma(800,696,32,16,8,25);
-	plataforma(620,729,32,16,8,25);
-	plataforma(458,729,32,16,8,25);
-	
 	//Reiniciamos los procesos del nivel
 	restartEntityType(TYPE object);
 	restartEntityType(TYPE monster);
+	restartEntityType(TYPE platform);	
 	
 End;
 
@@ -1110,7 +1106,7 @@ begin
 	
 	signal(type object,_signal);
 	signal(type monster,_signal);
-	signal(type plataforma,_signal);
+	signal(type platform,_signal);
 	
 	
 end;
@@ -1237,7 +1233,7 @@ begin
 		entityID = get_id(entityType);
 		//reiniciamos la entidad
 		if (entityID <> 0) 
-     		entityID.state = INITIAL_STATE;
+			entityID.state = INITIAL_STATE;
 		end;
 	until (entityID == 0);
 end;
