@@ -72,7 +72,7 @@ process WGE_Loop()
 private
 	int i; 									//Variables auxiliares
 	byte clockTickMem;						//Memoria Flanco Reloj
-	int pauseText;
+	int pauseText;							//Id texto de pausa
 	int idDeadPlayer;						//id del proceso muerte del player
 begin
 	priority = cMainPrior;
@@ -102,9 +102,6 @@ begin
 				WGE_LoadMapLevel(levelFiles[game.numLevel].MapFile,levelFiles[game.numLevel].TileFile);
 				game.levelTime      = 300; //TEMPORAL: esto lo leera del archivo nivel
 				
-				//variables de reinicio de nivel
-				game.playerLife = game.playerMaxLife;
-				
 				//Iniciamos Scroll
 				WGE_InitScroll();
 				//Dibujamos el mapeado
@@ -121,6 +118,9 @@ begin
 				//procesos congelados
 				gameSignal(s_freeze_tree);
 				
+				//variables de reinicio de nivel
+				game.playerLife = game.playerMaxLife;
+				
 				//encendemos pantalla
 				fade(100,100,100,cFadeTime);
 				while(fading) frame; end;
@@ -134,7 +134,7 @@ begin
 			end;
 			case PLAYLEVEL:
 				
-				//cronometro nivels		
+				//cronometro nivel	
 				if ((clockCounter % cNumFps) == 0 && clockTick && !game.paused)
 					game.levelTime--;
 				end;
@@ -233,20 +233,16 @@ begin
 				WGE_Wait(100);
 				
 				//cargamos el siguiente nivel				
-				game.numLevel++;
-				
+				game.numLevel++;		
 				game.state = LOADLEVEL;
+				
 			end;
 			case GAMEOVER:
 				//apagamos pantalla
 				fade(0,0,0,cFadeTime);
 				while(fading) frame; end;
-				//matamos los procesos
-				gameSignal(s_kill_tree);
-				//quitamos el HUD
-				signal(TYPE HUD,s_kill);
-				//quitamos todos los textos
-				delete_text(all_text);
+				//limpiamos el nivel
+				clearLevel();
 				//encendemos pantalla
 				fade(100,100,100,cFadeTime);
 				while(fading) frame; end;
@@ -260,7 +256,7 @@ begin
 			end;
 			case CONTINUEGAME:
 				delete_text(all_text);
-				clearLevel();
+				//cargamos nivel inicial
 				game.numLevel=0;
 				game.playerLife = game.playerMaxLife;
 				game.playerTries = 3;
@@ -929,9 +925,7 @@ Begin
 	end;
 	idPlayer = 0;
 	signal(type plataforma,s_kill_tree);
-	signal(type item,s_kill_tree);
-
-	
+		
 	//arrancamos el control de scroll
 	WGE_ControlScroll();
 	//dibujamos el mapa
@@ -940,7 +934,7 @@ Begin
 	//creamos al player
 	player();
 	
-	//creamos los proceso del nivel
+	//creamos los proceso del nivel (esto tiene que ser generico)
 	plataforma(800,696,32,16,8,25);
 	plataforma(620,729,32,16,8,25);
 	plataforma(458,729,32,16,8,25);
@@ -948,16 +942,6 @@ Begin
 	//Reiniciamos los procesos del nivel
 	restartEntityType(TYPE object);
 	restartEntityType(TYPE monster);
-
-	//creamos los objetos del nivel
-	//for (i=0;i<level.numObjects;i++) 
-		//crea_objeto(i,1);
-	//end;
-			
-	//creamos los enemigos del nivel
-	//crea_enemigo(x);
-	
-	//if (C_AHORRO_OBJETOS)control_sectores();end;
 	
 End;
 
