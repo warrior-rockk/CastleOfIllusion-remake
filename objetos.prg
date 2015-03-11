@@ -66,9 +66,11 @@ begin
 			if (inRegion && outRegion) 
 				//creamos el tipo de plataforma
 				switch (_platformType)
-					case P_AUTO_PLATFORM:
-						//debug;
+					case P_LINEARPLATFORM:
 						idPlatform = linearPlatform(_graph,_x0,_y0,_ancho,_alto,0.5);
+					end;
+					case P_TRIGGERPLATFORM:
+						idPlatform = triggerPlatform(_graph,_x0,_y0,_ancho,_alto,0.5);
 					end;
 				end;	
 				log("Se crea la plataforma "+idPlatform,DEBUG_OBJECTS);
@@ -92,10 +94,8 @@ begin
 	end;
 end;
 
-//Proceso plataforma movil
-//x inicial
-//y inicial
-//rango de movimiento
+//Proceso plataforma linear
+//se mueve linealmente a una velocidad dadas hasta que colisiona y cambia direccion
 process linearPlatform(int graph,int startX,int startY,int _ancho,int _alto,float _vX)
 private
 	int prevX;		//posicion X previa
@@ -151,6 +151,102 @@ begin
 				state = MOVE_STATE; 
 				//direccion por defecto
 				dirX = 1;
+			end;
+			case MOVE_STATE:
+				//cambio de estado al colisionar
+				if (getTileCode(id,RIGHT_UP_POINT) <> NO_SOLID)
+					dirX = -1;
+				end;
+				if (getTileCode(id,LEFT_UP_POINT) <> NO_SOLID)
+					dirX = 1;
+				end;
+				
+				//movimiento lineal
+				fX+=vX*dirX;
+				fY+=vY;
+			end;
+		end;
+		
+		//guardamos la posicion actual X
+		prevX = x;
+		
+		//actualizamos posicion
+		positionToInt(id);
+		
+		//actualizamos el objeto padre
+		updateObject(id,father);		
+				
+		//si el player esta en plataforma
+		if (idPlatform == father)
+			//actualizamos la posicion del player lo que se movio la plataforma
+			idPlayer.fX += x - prevX;
+		end;
+			
+		frame;
+	end;
+	
+end;
+
+//Proceso plataforma linear
+//se mueve linealmente a una velocidad dadas hasta que colisiona y cambia direccion
+process triggerPlatform(int graph,int startX,int startY,int _ancho,int _alto,float _vX)
+private
+	int prevX;		//posicion X previa
+
+	int dirX;		//direccion X
+	
+begin
+	region = cGameRegion;
+	ctype = c_scroll;
+	z = cZObject;
+	file = level.fpgObjects;
+		
+	//igualamos la propiedades publicas a las de parametros
+	ancho 	= _ancho;
+	alto 	= _alto;
+	vX  	= _vX;
+	
+	//modo debug sin graficos
+	if (file<0)
+		graph = map_new(ancho,alto,8,0);
+		map_clear(0,graph,310);
+	end;
+	
+	//puntos de colision del objeto
+	colPoint[LEFT_UP_POINT].x 		= -(ancho>>1);
+	colPoint[LEFT_UP_POINT].y 		= 0;
+	colPoint[LEFT_UP_POINT].colCode = COLIZQ;
+	colPoint[LEFT_UP_POINT].enabled = 1;
+	
+	colPoint[RIGHT_UP_POINT].x 		= (ancho>>1);
+	colPoint[RIGHT_UP_POINT].y 		= 0;
+	colPoint[RIGHT_UP_POINT].colCode = COLDER;
+	colPoint[RIGHT_UP_POINT].enabled = 1;
+	
+	x = startX;
+	y = startY;
+	
+	fx = x;
+	fy = y;
+	
+	state = IDLE_STATE;
+		
+	
+	//bucle principal
+	loop
+		
+		//guardamos estado actual
+		prevState = state;
+		
+		switch (state)
+			case IDLE_STATE:
+				//muevo cuando sube el player
+				if (idPlatform == father)
+					//estado por defecto
+					state = MOVE_STATE; 
+					//direccion por defecto
+					dirX = -1;
+				end;
 			end;
 			case MOVE_STATE:
 				//cambio de estado al colisionar

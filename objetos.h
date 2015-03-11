@@ -11,7 +11,8 @@
 #define T_ITEM                  1       //Objeto Item
 
 //tipos de plataformas
-#define P_AUTO_PLATFORM 		0       
+#define P_LINEARPLATFORM 		0       
+#define P_TRIGGERPLATFORM 		1       
 
 //propiedades de los objetos
 #define PICKABLE				1		//Puede ser recogido
@@ -168,6 +169,29 @@ end
 
 //declaracion de objeto plataforma
 Declare Process linearPlatform(int graph,int startX,int startY,int _ancho,int _alto,float _vX)
+public
+	float vX			= 0;     	//Velocidad X
+	float vY			= 0;     	//Velocidad Y
+	float fX			= 0;		//Posicion x coma flotante
+	float fY			= 0;		//Posicion y coma flotante
+	int   alto			= 0;   		//Altura en pixeles del proceso
+	int   ancho			= 0;   		//Ancho en pixeles del proceso
+	int   state 		= 0;   		//Estado de la entidad
+	int   axisAlign     = 0;		//Alineacion del eje del grafico respecto caja colision
+	int   prevState     = 0;		//Estado anterior
+	byte  props			= 0;		//Propiedades de la entidad
+	struct colPoint[cNumColPoints] 	//Puntos deteccion colision de un objeto
+		int x;						//Offset X a sumar a la posicion del objeto
+		int y;						//Offset Y a sumar a la posicion del objeto
+		int colCode;				//Codigo del punto de colision
+		int enabled;			//Habilitacion del punto de colision
+	end;
+	int frameCount;					//Contador frames animacion
+end
+end
+
+//declaracion de objeto plataforma
+Declare Process triggerPlatform(int graph,int startX,int startY,int _ancho,int _alto,float _vX)
 public
 	float vX			= 0;     	//Velocidad X
 	float vY			= 0;     	//Velocidad Y

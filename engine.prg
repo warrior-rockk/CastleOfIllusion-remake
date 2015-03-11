@@ -884,9 +884,9 @@ Begin
 	level.fpgObjects = fpg_load("test\objetos.fpg");
 	level.fpgMonsters = fpg_load("test\monsters.fpg");
 	
-	platform(0,8,800,696,32,16);
-	platform(0,8,620,729,32,16);
-	platform(0,8,458,729,32,16);
+	platform(P_TRIGGERPLATFORM,8,800,696,32,16);
+	platform(P_LINEARPLATFORM,8,620,729,32,16);
+	platform(P_LINEARPLATFORM,8,458,729,32,16);
 	
 	object(T_SOLIDITEM,5,218,712,16,16,PICKABLE | BREAKABLE);
 	object(T_SOLIDITEM,5,1210,136,16,16,PICKABLE);
