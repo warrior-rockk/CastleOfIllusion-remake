@@ -82,10 +82,11 @@ begin
 			inRegion = true;
 		end;
 		
+		//DE MOMENTO LAS PLATAFORMAS NO DESAPARECEN
 		//Comprobamos si sale de la region
-		if (!region_in(x,y,ancho,alto))
+		/*if (!region_in(x,y,ancho,alto))
 			outRegion = true;
-		end;
+		end;*/
 			
 		frame;
 	end;
