@@ -34,7 +34,7 @@
 #define PLAYLEVEL   	3
 #define RESTARTLEVEL	5
 #define LEVELENDED  	6
-#define GAME_OVER       7
+#define GAMEOVER        7
 #define CONTINUEGAME    8
 
 //Codigo del tile

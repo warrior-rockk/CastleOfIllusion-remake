@@ -104,7 +104,7 @@ begin
 				
 				//variables de reinicio de nivel
 				game.playerLife = game.playerMaxLife;
-								
+				
 				//Iniciamos Scroll
 				WGE_InitScroll();
 				//Dibujamos el mapeado
@@ -185,7 +185,7 @@ begin
 					
 					//GameOver por perdida de vidas
 					if (game.playerTries == 0 )
-						game.state = GAME_OVER;
+						game.state = GAMEOVER;
 					else
 						//reiniciamos el nivel
 						game.state = RESTARTLEVEL;
@@ -216,9 +216,9 @@ begin
 			end;
 			case LEVELENDED:
 				log("finalizando nivel",DEBUG_ENGINE);
-				
 				//bajamos el flag
 				game.endLevel = false;
+				
 				//congelamos durante la melodia de fin a los procesos
 				gameSignal(s_freeze_tree);
 				WGE_Wait(100);
@@ -227,13 +227,17 @@ begin
 				fade(0,0,0,cFadeTime);
 				while(fading) frame; end;
 				
+				//limpiamos el nivel
 				clearLevel();
+				//espera
+				WGE_Wait(100);
 				
+				//cargamos el siguiente nivel				
 				game.numLevel++;
 				
 				game.state = LOADLEVEL;
 			end;
-			case GAME_OVER:
+			case GAMEOVER:
 				//apagamos pantalla
 				fade(0,0,0,cFadeTime);
 				while(fading) frame; end;
@@ -1121,9 +1125,10 @@ begin
 	end;
 	
 	signal(type object,_signal);
-	signal(type plataforma,_signal);
 	signal(type monster,_signal);
-	signal(type item,_signal);
+	signal(type plataforma,_signal);
+	
+	
 end;
 
 //funcion para limpiar y descargar archivos del nivel actual
@@ -1135,6 +1140,9 @@ begin
 	
 	//quitamos el HUD
 	signal(TYPE HUD,s_kill);
+	
+	//eliminamos textos
+	delete_text(all_text);
 	
 	//Limpiamos la memoria dinamica
 	free(objetos);
