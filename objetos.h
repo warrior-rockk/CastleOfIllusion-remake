@@ -191,7 +191,7 @@ end
 end
 
 //declaracion de objeto plataforma
-Declare Process triggerPlatform(int graph,int startX,int startY,int _ancho,int _alto,float _vX)
+Declare Process triggerPlatform(int graph,int startX,int startY,int _ancho,int _alto,float _vX,int deadDir)
 public
 	float vX			= 0;     	//Velocidad X
 	float vY			= 0;     	//Velocidad Y

@@ -70,7 +70,7 @@ begin
 						idPlatform = linearPlatform(_graph,_x0,_y0,_ancho,_alto,0.5);
 					end;
 					case P_TRIGGERPLATFORM:
-						idPlatform = triggerPlatform(_graph,_x0,_y0,_ancho,_alto,0.5);
+						idPlatform = triggerPlatform(_graph,_x0,_y0,_ancho,_alto,0.5,1);
 					end;
 				end;	
 				log("Se crea la plataforma "+idPlatform,DEBUG_OBJECTS);
@@ -189,10 +189,10 @@ end;
 
 //Proceso plataforma linear
 //se mueve linealmente a una velocidad dadas hasta que colisiona y cambia direccion
-process triggerPlatform(int graph,int startX,int startY,int _ancho,int _alto,float _vX)
+process triggerPlatform(int graph,int startX,int startY,int _ancho,int _alto,float _vX,int deadDir)
 private
 	int prevX;		//posicion X previa
-
+	int prevY;		//posicion Y previa
 	int dirX;		//direccion X
 	
 begin
@@ -260,11 +260,22 @@ begin
 				//movimiento lineal
 				fX+=vX*dirX;
 				fY+=vY;
+				
+				if (dirX == deadDir)
+					state = DEAD_STATE;
+				end;
+			end;
+			case DEAD_STATE:
+				fY +=0.5;
+				if (region_out(id,cGameRegion))
+					signal(id,s_kill);
+				end;
 			end;
 		end;
 		
-		//guardamos la posicion actual X
+		//guardamos la posicion actual
 		prevX = x;
+		prevY = y;
 		
 		//actualizamos posicion
 		positionToInt(id);
@@ -276,6 +287,7 @@ begin
 		if (idPlatform == father)
 			//actualizamos la posicion del player lo que se movio la plataforma
 			idPlayer.fX += x - prevX;
+			idPlayer.fY += y - prevY;
 		end;
 			
 		frame;
