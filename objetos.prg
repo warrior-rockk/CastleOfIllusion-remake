@@ -192,7 +192,6 @@ end;
 process triggerPlatform(int graph,int startX,int startY,int _ancho,int _alto,float _vX,int deadDir)
 private
 	int prevX;		//posicion X previa
-	int prevY;		//posicion Y previa
 	int dirX;		//direccion X
 	
 begin
@@ -275,8 +274,7 @@ begin
 		
 		//guardamos la posicion actual
 		prevX = x;
-		prevY = y;
-		
+				
 		//actualizamos posicion
 		positionToInt(id);
 		
@@ -287,7 +285,7 @@ begin
 		if (idPlatform == father)
 			//actualizamos la posicion del player lo que se movio la plataforma
 			idPlayer.fX += x - prevX;
-			idPlayer.fY += y - prevY;
+			idPlayer.fY += 0.5;
 		end;
 			
 		frame;
