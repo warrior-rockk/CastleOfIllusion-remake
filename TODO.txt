@@ -11,3 +11,4 @@ ENGINE: -con screen_get puedo caputar la pantalla y hacer transiciones
 		
 OBJECTS:-el toyplanecontrol no muere si le lanzas objeto
 		-al salir de la region al saltar desaparece aunque lo lleves en la mano
+		-se caen por las escaleras
