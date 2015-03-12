@@ -307,7 +307,7 @@ begin
 	priority = cObjectPrior;
 	
 	state = INITIAL_STATE;
-			
+	
 	loop
 		//si se reinicia, se actualiza flags region
 		if (state == INITIAL_STATE)
@@ -395,7 +395,6 @@ begin
 	alto = _alto;
 	props = _props;
 	
-		
 	//modo debug sin graficos
 	if (file<0)
 		graph = map_new(ancho,alto,8,0);
@@ -412,7 +411,6 @@ begin
 	state = MOVE_STATE;
 	
 	loop
-		
 		//FISICAS	
 		collided = terrainPhysics(ID,friction,&grounded);
 		

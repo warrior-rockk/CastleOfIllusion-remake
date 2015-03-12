@@ -6,11 +6,8 @@ ENGINE (BUG):Tareas de inicializacion del engine:el mapa que esta en la posicion
 DEBUG:escribir el log a archivo??
 
 ENGINE: -con screen_get puedo caputar la pantalla y hacer transiciones
-		-hay un bug al finalizar el nivel
 		-los estados posibles deberian diferenciarse por tipo de proceso a pesar de tener estados globales que tengan el mismo numero
 		-lo mismo es aplicable a las propiedades, unas comunes y otras genéricas
 		
-OBJECTS:-la jarra no rebota
-		-plataformas como objetos?
-		-el toyplanecontrol no muere si le lanzas objeto
+OBJECTS:-el toyplanecontrol no muere si le lanzas objeto
 		-al salir de la region al saltar desaparece aunque lo lleves en la mano

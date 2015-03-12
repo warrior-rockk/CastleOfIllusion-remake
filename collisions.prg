@@ -566,27 +566,20 @@ begin
 	if (colDir == COLIZQ || colDir == COLDER) 
 		idObject.vX = 0;
 	elseif (colDir == COLDOWN) 
-		//si es un objeto o un item, rebota al tocar suelo
-		if (isType(idObject,TYPE object) || isType(idObject,TYPE item))
-			//comprobacion si no es rompible
-			if (!isBitSet(idObject.props,BREAKABLE))
-				//rebote en suelo
-				if (isType(idObject,TYPE object))
-					idObject.vY *= -cBouncyObjectVel;
-					//cantidad de rebote
-					if ( abs(idObject.vY) < cBouncyObjectVel )
-						*objGrounded = true;		
-					end;
-				else
-					idObject.vY *= -cBouncyItemVel;
-					//cantidad de rebote
-					if ( abs(idObject.vY) < cBouncyItemVel )
-						*objGrounded = true;		
-					end;
-				end;
-			else
-				*objGrounded = true;
+		//si tiene propiedad BOUNCY_LOW, rebota al tocar suelo
+		if (isBitSet(idObject.props,BOUNCY_LOW))
+			idObject.vY *= -cBouncyObjectVel;
+			//cantidad de rebote
+			if ( abs(idObject.vY) < cBouncyObjectVel )
+				*objGrounded = true;		
 			end;
+		//si tiene propiedad BOUNCY_HIGH, rebota al tocar suelo
+		elseif (isBitSet(idObject.props,BOUNCY_HIGH))
+			idObject.vY *= -cBouncyItemVel;
+			//cantidad de rebote
+			if ( abs(idObject.vY) < cBouncyItemVel )
+				*objGrounded = true;		
+			end;			
 		else
 			*objGrounded = true;
 		end;

@@ -23,7 +23,8 @@
 #define ITEM_BIG_COIN          32		//Contiene item moneda grande
 #define ITEM_STAR	           64		//Estrella energia extra
 #define ITEM_GEM			  128		//Gema fin de nivel
-
+#define BOUNCY_LOW            256       //Objeto tiene rebote bajo
+#define BOUNCY_HIGH           512       //Objeto tiene rebote bajo
 
 //constantes de objetos
 const
@@ -64,7 +65,7 @@ public
 	int   axisAlign     = 0;		//Alineacion del eje del grafico respecto caja colision
 	int   state 		= 0;   		//Estado de la entidad
 	int   prevState     = 0;		//Estado anterior
-	byte  props			= 0;		//Propiedades de la entidad
+	int  props			= 0;		//Propiedades de la entidad
 	struct colPoint[cNumColPoints] 	//Puntos deteccion colision de un objeto
 		int x;						//Offset X a sumar a la posicion del objeto
 		int y;						//Offset Y a sumar a la posicion del objeto
@@ -87,7 +88,7 @@ public
 	int   axisAlign     = 0;		//Alineacion del eje del grafico respecto caja colision
 	int   state 		= 0;   		//Estado de la entidad
 	int   prevState     = 0;		//Estado anterior
-	byte  props			= 0;		//Propiedades de la entidad
+	int  props			= 0;		//Propiedades de la entidad
 	struct colPoint[cNumColPoints] 	//Puntos deteccion colision de un objeto
 		int x;						//Offset X a sumar a la posicion del objeto
 		int y;						//Offset Y a sumar a la posicion del objeto
@@ -110,7 +111,7 @@ public
 	int   axisAlign     = 0;		//Alineacion del eje del grafico respecto caja colision
 	int   state 		= 0;   		//Estado de la entidad
 	int   prevState     = 0;		//Estado anterior
-	byte  props			= 0;		//Propiedades de la entidad
+	int  props			= 0;		//Propiedades de la entidad
 	struct colPoint[cNumColPoints] 	//Puntos deteccion colision de un objeto
 		int x;						//Offset X a sumar a la posicion del objeto
 		int y;						//Offset Y a sumar a la posicion del objeto
@@ -133,7 +134,7 @@ public
 	int   axisAlign     = 0;		//Alineacion del eje del grafico respecto caja colision
 	int   state 		= 0;   		//Estado de la entidad
 	int   prevState     = 0;		//Estado anterior
-	byte  props			= 0;		//Propiedades de la entidad
+	int  props			= 0;		//Propiedades de la entidad
 	struct colPoint[cNumColPoints] 	//Puntos deteccion colision de un objeto
 		int x;						//Offset X a sumar a la posicion del objeto
 		int y;						//Offset Y a sumar a la posicion del objeto
@@ -156,7 +157,7 @@ public
 	int   axisAlign     = 0;		//Alineacion del eje del grafico respecto caja colision
 	int   state 		= 0;   		//Estado de la entidad
 	int   prevState     = 0;		//Estado anterior
-	byte  props			= 0;		//Propiedades de la entidad
+	int  props			= 0;		//Propiedades de la entidad
 	struct colPoint[cNumColPoints] 	//Puntos deteccion colision de un objeto
 		int x;						//Offset X a sumar a la posicion del objeto
 		int y;						//Offset Y a sumar a la posicion del objeto
@@ -179,7 +180,7 @@ public
 	int   state 		= 0;   		//Estado de la entidad
 	int   axisAlign     = 0;		//Alineacion del eje del grafico respecto caja colision
 	int   prevState     = 0;		//Estado anterior
-	byte  props			= 0;		//Propiedades de la entidad
+	int  props			= 0;		//Propiedades de la entidad
 	struct colPoint[cNumColPoints] 	//Puntos deteccion colision de un objeto
 		int x;						//Offset X a sumar a la posicion del objeto
 		int y;						//Offset Y a sumar a la posicion del objeto
@@ -202,7 +203,7 @@ public
 	int   state 		= 0;   		//Estado de la entidad
 	int   axisAlign     = 0;		//Alineacion del eje del grafico respecto caja colision
 	int   prevState     = 0;		//Estado anterior
-	byte  props			= 0;		//Propiedades de la entidad
+	int  props			= 0;		//Propiedades de la entidad
 	struct colPoint[cNumColPoints] 	//Puntos deteccion colision de un objeto
 		int x;						//Offset X a sumar a la posicion del objeto
 		int y;						//Offset Y a sumar a la posicion del objeto
@@ -225,7 +226,7 @@ public
 	int   axisAlign     = 0;		//Alineacion del eje del grafico respecto caja colision
 	int   state 		= 0;   		//Estado de la entidad
 	int   prevState     = 0;		//Estado anterior
-	byte  props			= 0;		//Propiedades de la entidad
+	int  props			= 0;		//Propiedades de la entidad
 	struct colPoint[cNumColPoints] 	//Puntos deteccion colision de un objeto
 		int x;						//Offset X a sumar a la posicion del objeto
 		int y;						//Offset Y a sumar a la posicion del objeto

@@ -90,7 +90,7 @@ public
 	int   axisAlign     = 0;		//Alineacion del eje del grafico respecto caja colision
 	int   state 		= 0;   		//Estado de la entidad
 	int   prevState     = 0;		//Estado anterior
-	byte  props			= 0;		//Propiedades de la entidad
+	int  props			= 0;		//Propiedades de la entidad
 	struct colPoint[cNumColPoints] 	//Puntos deteccion colision de un objeto
 		int x;						//Offset X a sumar a la posicion del objeto
 		int y;						//Offset Y a sumar a la posicion del objeto
@@ -113,7 +113,7 @@ public
 	int   axisAlign     = 0;		//Alineacion del eje del grafico respecto caja colision
 	int   state 		= 0;   		//Estado de la entidad
 	int   prevState     = 0;		//Estado anterior
-	byte  props			= 0;		//Propiedades de la entidad
+	int  props			= 0;		//Propiedades de la entidad
 	struct colPoint[cNumColPoints] 	//Puntos deteccion colision de un objeto
 		int x;						//Offset X a sumar a la posicion del objeto
 		int y;						//Offset Y a sumar a la posicion del objeto
