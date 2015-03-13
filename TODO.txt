@@ -10,5 +10,5 @@ ENGINE: -con screen_get puedo caputar la pantalla y hacer transiciones
 		-lo mismo es aplicable a las propiedades, unas comunes y otras genéricas
 		
 OBJECTS:-al salir de la region al saltar desaparece aunque lo lleves en la mano
-		-se caen por las escaleras
+
 		

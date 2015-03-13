@@ -1020,8 +1020,8 @@ begin
 			return tileMap[posY][posX].tileCode == SOLID     ||
 				   tileMap[posY][posX].tileCode == SLOPE_135 ||
 				   tileMap[posY][posX].tileCode == SLOPE_45  ||
-			      (tileMap[posY][posX].tileCode == SOLID_ON_FALL && idObject.vY>0) ||
-				  (tileMap[posY][posX].tileCode == TOP_STAIRS && idObject.vY>0);
+			      (tileMap[posY][posX].tileCode == SOLID_ON_FALL && ( idObject.vY>0 || isType(idObject,TYPE player)) )||
+				  (tileMap[posY][posX].tileCode == TOP_STAIRS && (idObject.vY>0 || isType(idObject,TYPE player)) );
 		end;
 		//Colisiones lateral izquierdas
 		case COLIZQ:
