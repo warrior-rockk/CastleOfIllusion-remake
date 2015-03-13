@@ -418,6 +418,7 @@ begin
 				repeat
 					idToyPlane = get_id(TYPE toyPlane);
 					if (idToyPlane <> 0 )
+						idToyPlane = idToyPlane.father;
 						idToyPlane.state = DEAD_STATE;
 					end;
 				until (idToyPlane == 0);
