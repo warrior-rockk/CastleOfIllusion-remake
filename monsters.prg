@@ -29,10 +29,7 @@ begin
 		
 		//si existe el monstruo
 		if (exists(idMonster))
-			
-			//actualizamos el hijo
-			updateMonster(id,idMonster);
-			
+						
 			//desaparece al salir de la region del juego
 			if (outRegion) 
 				//eliminamos el mosntruo
@@ -138,7 +135,12 @@ begin
 	
 	state = MOVE_STATE;
 	
+	//actualizamos al padre con los datos de creacion
+	updateMonster(id,father);
+		
 	loop
+		//nos actualizamos del padre
+		updateMonster(father,id);
 		
 		//FISICAS	
 		collided = terrainPhysics(ID,friction,&grounded);
@@ -278,7 +280,13 @@ begin
 	
 	state = MOVE_STATE;
 	
+	//actualizamos el padre con los datos de creación
+	updateMonster(id,father);
+	
 	loop
+		//nos actualizamos del padre
+		updateMonster(father,id);
+		
 		//FISICAS	
 		collided = terrainPhysics(ID,friction,&grounded);
 		
@@ -386,7 +394,13 @@ begin
 	
 	state = IDLE_STATE;
 	
+	//actualizamos el padre con los datos de creación
+	updateMonster(id,father);
+	
 	loop
+		//nos actualizamos del padre
+		updateMonster(father,id);
+			
 		//FISICAS	
 		terrainPhysics(ID,1,&grounded);
 		

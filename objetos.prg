@@ -27,7 +27,7 @@ begin
 			outRegion = true;
 		end;
 		
-		//si existe el monstruo
+		//si existe el hijo
 		if (exists(idPlatform))
 			
 			//si el proceso tiene la prioridad del player
@@ -38,9 +38,6 @@ begin
 				idPlatform.priority = cPlatformChildPrior;
 			end;
 		
-			//actualizamos el hijo
-			updateObject(id,idPlatform);
-			
 			//desaparece al salir de la region del juego
 			if (outRegion) 
 				//eliminamos el mosntruo
@@ -137,10 +134,14 @@ begin
 	fy = y;
 	
 	state = IDLE_STATE;
-		
+	
+	//actualizamos al padre con los datos de creacion
+	updateObject(id,father);	
 	
 	//bucle principal
 	loop
+		//nos actualizamos del padre
+		updateObject(father,id);
 		
 		//guardamos estado actual
 		prevState = state;
@@ -230,9 +231,13 @@ begin
 	
 	state = IDLE_STATE;
 		
-	
+	//actualizamos al padre con los datos de creacion
+	updateObject(id,father);
+		
 	//bucle principal
 	loop
+		//nos actualizamos del padre
+		updateObject(father,id);
 		
 		//guardamos estado actual
 		prevState = state;
@@ -318,9 +323,6 @@ begin
 		//si existe el objeto
 		if (exists(idObject))
 			
-			//actualizamos el hijo
-			updateObject(id,idObject);
-					
 			//desaparece al salir de la region del juego
 			if (outRegion) 
 				//eliminamos el objeto
@@ -410,7 +412,13 @@ begin
 	
 	state = MOVE_STATE;
 	
+	//actualizamos al padre con los datos de creacion
+	updateObject(id,father);
+	
 	loop
+		//nos actualizamos del padre
+		updateObject(father,id);
+		
 		//FISICAS	
 		collided = terrainPhysics(ID,friction,&grounded);
 		
@@ -613,7 +621,12 @@ begin
 	unSetBit(props,NO_PHYSICS);
 	setBit(props,NO_COLLISION);
 	
+	//actualizamos al padre con los datos de creacion
+	updateObject(id,father);
+	
 	loop
+		//nos actualizamos del padre
+		updateObject(father,id);
 		
 		//FISICAS	
 		collided = terrainPhysics(ID,friction,&grounded);
