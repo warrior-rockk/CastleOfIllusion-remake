@@ -3,7 +3,7 @@ PLAYER:Poder Salto distinto desde escalera
 ENGINE (BUG):Tareas de inicializacion del engine:el mapa que esta en la posicion de mapStairs, se borra¿¿¿ ¿es por culpa de tener id 0 el 	sistema y el primer fpg?
             -paleta del juego??
 
-DEBUG:escribir el log a archivo??
+DEBUG:escribir el log a archivo??. Se puede hacer en una bat que diriga la salida del ejectuable a archivo >
 
 ENGINE: -con screen_get puedo caputar la pantalla y hacer transiciones
 		-los estados posibles deberian diferenciarse por tipo de proceso a pesar de tener estados globales que tengan el mismo numero
