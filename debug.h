@@ -16,6 +16,11 @@
 #define DEBUG_MONSTERS      3
 #define DEBUG_OBJECTS       4
 
+//Colores Cajas Colision
+#define DEBUG_PLAYER_COLOR  	300
+#define DEBUG_MONSTER_COLOR  	5
+#define DEBUG_OBJECT_COLOR  	255
+
 //Constantes del motor
 const
 	//Debug		

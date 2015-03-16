@@ -391,11 +391,20 @@ begin
 		z = -100;
 		setBit(flags,B_ABLEND);
 		
-		graph = map_new(idObject.ancho,idObject.alto,8);
+		graph = map_new(idObject.ancho+1,idObject.alto+1,8);
 		drawing_map(0,graph);
 		
-		drawing_color(300);
-		draw_box(0,0,idObject.ancho,idObject.alto);
+		if (isType(idObject,TYPE Player))
+			drawing_color(DEBUG_PLAYER_COLOR);
+		end;
+		if (isType(idObject,TYPE Monster))
+			drawing_color(DEBUG_MONSTER_COLOR);
+		end;
+		if (isType(idObject,TYPE Object))
+			drawing_color(DEBUG_OBJECT_COLOR);
+		end;
+		
+		draw_rect(0,0,idObject.ancho,idObject.alto);
 		
 		x = idObject.x;
 		y = idObject.y;
