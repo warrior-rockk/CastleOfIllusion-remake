@@ -33,7 +33,7 @@ begin
 			//si el proceso tiene la prioridad del player
 			if (priority == cPlayerPrior)
 				//cambio la del hijo
-				idPlatform.priority = cPlatformPrior;
+				idPlatform.priority = cPlatformPrior;		
 			else
 				idPlatform.priority = cPlatformChildPrior;
 			end;
@@ -292,7 +292,7 @@ begin
 			idPlayer.this.fX += x - prevX;
 			idPlayer.this.fY += 0.5;
 		end;
-			
+	
 		frame;
 	end;
 	

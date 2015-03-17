@@ -11,7 +11,6 @@ ENGINE: -con screen_get puedo caputar la pantalla y hacer transiciones
 		-lo mismo es aplicable a las propiedades, unas comunes y otras genéricas
 		-keylogger que guarde las teclas para reproducir una partida grabada?
 		-implementar sistema de "rooms" para scroll vertical (para otros juegos tambien usaría uno horizontal)
-		-implementar scroll con movimiento que te aplasta si no te mueves
 		
 OBJECTS:-al salir de la region al saltar desaparece aunque lo lleves en la mano
 

@@ -984,10 +984,12 @@ begin
 		//Limite izquierdo
 		if (scroll[cGameScroll].x0 < 0 )
 			scroll[cGameScroll].x0 = 0;
+			scrollfX = 	scroll[cGameScroll].x0;
 		end;
 		//Limite derecho
 		if ((scroll[cGameScroll].x0+cGameRegionW) > (level.numTilesX*cTileSize))
 			scroll[cGameScroll].x0 = (level.numTilesX*cTileSize)-cGameRegionW;
+			scrollfX = 	scroll[cGameScroll].x0;
 		end;
 		//Limite inferior
 		if (scroll[cGameScroll].y0 < 0 )
