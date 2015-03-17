@@ -111,7 +111,7 @@ const
 	cGameRegionX 	= 0;					//Region Horizontal Pantalla de juego (Representacion Mapeado) 
 	cGameRegionY 	= 0;					//Region Vertical Pantalla de juego (Representacion Mapeado)
 	cGameRegionW 	= cResX;				//Region Horizontal Pantalla de juego (Representacion Mapeado) 
-	cGameRegionH 	= 200;					//Region Vertical Pantalla de juego (Representacion Mapeado)	
+	cGameRegionH 	= 160;					//Region Vertical Pantalla de juego (Representacion Mapeado)	
 	//HUD
 	cHUDRegion  	= 2;    				//Numero Region informacion juego
 	cHUDRegionX 	= 0;					//Region Horizontal informacion juego HUD
