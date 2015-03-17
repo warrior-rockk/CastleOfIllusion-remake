@@ -110,13 +110,13 @@ const
 	cGameRegion 	= 1;    				//Numero Region Pantalla Juego
 	cGameRegionX 	= 0;					//Region Horizontal Pantalla de juego (Representacion Mapeado) 
 	cGameRegionY 	= 0;					//Region Vertical Pantalla de juego (Representacion Mapeado)
-	cGameRegionW 	= cResX;				//Region Horizontal Pantalla de juego (Representacion Mapeado) 
+	cGameRegionW 	= 256;					//Region Horizontal Pantalla de juego (Representacion Mapeado) 
 	cGameRegionH 	= 160;					//Region Vertical Pantalla de juego (Representacion Mapeado)	
 	//HUD
 	cHUDRegion  	= 2;    				//Numero Region informacion juego
 	cHUDRegionX 	= 0;					//Region Horizontal informacion juego HUD
 	cHUDRegionY 	= cGameRegionH;			//Region Vertical informacion juego HUD
-	cHUDRegionW 	= cResX;				//Region Horizontal informacion juego HUD
+	cHUDRegionW 	= cGameRegionW;			//Region Horizontal informacion juego HUD
 	cHUDRegionH 	= 100;					//Region Vertical informacion juego HUD
 	cHUDscoreX      = 48;					//Posicion X del score en el HUD
 	cHUDScoreY      = 18;					//Posicion Y del score en el HUD
