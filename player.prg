@@ -24,6 +24,7 @@ byte  throwing;				//Flag de lanzando
 byte  canMove;				//Flag de movimiento permitido
 byte  hurt;					//Flag de daño
 byte  hurtDisabled;			//Flag de invencible
+byte  dead; 				//Flag de muerto
 float velMaxX;				//Velocidad Maxima Horizontal
 float accelX;				//Aceleracion Maxima Horizontal
 float accelY;				//Aceleracion Maxima Vertical
@@ -485,10 +486,12 @@ BEGIN
 			scroll[cGameScroll].x0 += scrollfX - scroll[cGameScroll].x0;
 			
 			//lanzamos comprobacion de colision con el scroll vertical
-			dir = colCheckAABB(id,scroll[cGameScroll].x0 + cGameRegionW,scroll[cGameScroll].y0+ cGameRegionH,1,cGameRegionH,HORIZONTALAXIS);
+			dir = colCheckAABB(id,scroll[cGameScroll].x0 + cGameRegionW,scroll[cGameScroll].y0 + (cGameRegionH>>1),1,cGameRegionH,HORIZONTALAXIS);
 
-			//aplicamos la direccion de la colision
-			applyDirCollision(ID,dir,&grounded);
+			//si colisionamos con el scroll y el terreno, morimos aplastados
+			if (dir <> NOCOL && getTileCode(id,CENTER_POINT) <> NO_SOLID)
+				dead = true;
+			end;
 		end;
 		
 		//Fin colisiones ==============================
@@ -660,6 +663,9 @@ BEGIN
 				game.playerLife--;
 			end;	
 		end;
+		if (dead)
+			this.state = DEAD_STATE;
+		end;
 		
 		//si hay cambio de estado, resetamos contador animacion
 		if (this.prevState <> this.state)
@@ -821,6 +827,9 @@ BEGIN
 					this.state = IDLE_STATE;
 					hurt = false;
 				end;
+			end;
+			case DEAD_STATE:
+				
 			end;
 			default:
 				WGE_Animate(1,2,40,ANIM_LOOP);

@@ -161,8 +161,9 @@ begin
 				if ( 
 				   //por perdida energia
 				   (game.playerLife == 0 && idPlayer.this.state != HURT_STATE) ||
+				   (idPlayer.this.state == DEAD_STATE)                         ||
 				    //por tiempo a 0
-				   (game.levelTime == 0)                                  ||
+				   (game.levelTime == 0)                                       ||
 				   //por salir de la region
 				   out_region(idPlayer,cGameRegion)
 				   )									
@@ -944,19 +945,6 @@ Begin
 	restartEntityType(TYPE platform);	
 	
 End;
-
-/*function autoscroll()
-private
-	float scrollfX;		//posicion X flaot
-	float scrollfY;		//posicion Y float
-begin
-	//incrementamos posicion a la velocidad del nivel
-	scrollfX += level.levelflags.velAutoScrollX;
-	
-	if (clockCounter % level.levelflags.velAutoScrollX == 0 && clockTick)
-		scroll[cGameScroll].x0 --;
-	end;
-end;*/
 
 //Proceso que controla el movimiento del scroll
 process WGE_ControlScroll()
