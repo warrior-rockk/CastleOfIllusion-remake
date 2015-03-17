@@ -69,7 +69,7 @@ begin
 			idDebugText[0] = write_int(0,cDebugInfoX,cDebugInfoY,0,&fps);
 			idDebugText[1] = write_int(0,cDebugInfoX,cDebugInfoY+10,0,&idCursor.x);
 			idDebugText[2] = write_int(0,cDebugInfoX,cDebugInfoY+20,0,&idCursor.y);
-			idDebugText[3] = write_float(0,cDebugInfoX,cDebugInfoY+30,0,&idPlayer.vX);
+			idDebugText[3] = write_float(0,cDebugInfoX,cDebugInfoY+30,0,&idPlayer.this.vX);
 			//idDebugText[4] = write_float(0,cDebugInfoX,cDebugInfoY+40,0,&friction);
 			//Hacemos al player un blend aditivo para ver las colisiones
 			if (idPlayer<>0) idPlayer.flags |= B_ABLEND; end;
@@ -99,7 +99,7 @@ begin
 			
 			//Pintamos los puntos de deteccion del jugador
 			for (i=0;i<cNumColPoints;i++)			
-				//debugColPoint(idPlayer.fx+idPlayer.colPoint[i].x,idPlayer.fy+idPlayer.colPoint[i].y);
+				//debugColPoint(idPlayer.this.fX+idPlayer.this.colPoint[i].x,idPlayer.this.fY+idPlayer.this.colPoint[i].y);
 				debugColPoint(idPlayer,i);
 			end;
 			
@@ -217,16 +217,16 @@ begin
 		if (mouse.right)
 			
 			idObj = object(T_SOLIDITEM,1,x,y,16,16,BREAKABLE);
-			idObj.vX = 2;
-			idObj.vY = -2;
+			idObj.this.vX = 2;
+			idObj.this.vY = -2;
 			
 			WGE_Wait(20);
 		end;
 		
 		//posicionar personaje en cursor
 		if (key(_p))
-			idPlayer.fx = x;
-			idPlayer.fy = y;
+			idPlayer.this.fX = x;
+			idPlayer.this.fY = y;
 			WGE_Wait(20);
 		end;
 		
@@ -273,7 +273,7 @@ begin
 		
 		graph = map_new(1,1,8);
 		drawing_map(0,graph);
-		if (idObject.colPoint[numPoint].enabled)
+		if (idObject.this.colPoint[numPoint].enabled)
 			drawing_color(100);
 		else
 			drawing_color(30);
@@ -281,8 +281,8 @@ begin
 		
 		draw_box(0,0,1,1);
 		
-		x = idObject.fx+idObject.colPoint[numPoint].x;
-		y = idObject.fy+idObject.colPoint[numPoint].y;
+		x = idObject.this.fX+idObject.this.colPoint[numPoint].x;
+		y = idObject.this.fY+idObject.this.colPoint[numPoint].y;
 		
 		frame;
 		
@@ -363,7 +363,7 @@ begin
 		elseif (tileMap[i][j].tileCode == TOP_STAIRS) 
 			map_put(idTile.file,idTile.graph,mapStairs,cTileSize>>1,cTileSize>>1);
 		else
-			draw_box(idTile.file,0,idTile.alto,idTile.ancho);
+			draw_box(idTile.file,0,idTile.this.alto,idTile.this.ancho);
 		end;
 	end;
 end;
@@ -372,17 +372,17 @@ end;
 function DebugDrawPlayer()
 begin
 	map_del(0,idPlayer.graph);
-	idPlayer.graph = map_new(idPlayer.ancho,idPlayer.alto,8);
+	idPlayer.graph = map_new(idPlayer.this.ancho,idPlayer.this.alto,8);
 	drawing_map(0,idPlayer.graph);
 	drawing_color(300);
-	draw_box(0,0,idPlayer.ancho,idPlayer.alto);
+	draw_box(0,0,idPlayer.this.ancho,idPlayer.this.alto);
 	//dibujamos la nariz para diferenciar hacia donde mira
 	drawing_color(200);
-	draw_fcircle((idPlayer.ancho>>1)+(idPlayer.ancho>>2),(idPlayer.alto>>2),4);
+	draw_fcircle((idPlayer.this.ancho>>1)+(idPlayer.this.ancho>>2),(idPlayer.this.alto>>2),4);
 end;
 
 //Funcion para pintar la caja de colision 
-//de un proceso segun su alto/ancho
+//de un proceso segun su this.alto/this.ancho
 process debugColBox(entity idObject)
 begin
 	if (idObject <> 0 )
@@ -391,7 +391,7 @@ begin
 		z = -100;
 		setBit(flags,B_ABLEND);
 		
-		graph = map_new(idObject.ancho+1,idObject.alto+1,8);
+		graph = map_new(idObject.this.ancho+1,idObject.this.alto+1,8);
 		drawing_map(0,graph);
 		
 		if (isType(idObject,TYPE Player))
@@ -404,7 +404,7 @@ begin
 			drawing_color(DEBUG_OBJECT_COLOR);
 		end;
 		
-		draw_rect(0,0,idObject.ancho,idObject.alto);
+		draw_rect(0,0,idObject.this.ancho,idObject.this.alto);
 		
 		x = idObject.x;
 		y = idObject.y;

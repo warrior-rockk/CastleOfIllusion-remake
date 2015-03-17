@@ -17,13 +17,13 @@ private
 begin
 	priority = cPlatformPrior;
 	
-	state = INITIAL_STATE;
+	this.state = INITIAL_STATE;
 	
 	loop
 			
 		//si se reinicia, se actualiza flags region
-		if (state == INITIAL_STATE)
-			inRegion  = region_in(_x0,_y0,ancho,alto);
+		if (this.state == INITIAL_STATE)
+			inRegion  = region_in(_x0,_y0,this.ancho,this.alto);
 			outRegion = true;
 		end;
 		
@@ -53,7 +53,7 @@ begin
 			
 		else
 			//si no existe objeto, el padre no es colisionable
-			setBit(props,NO_COLLISION);
+			setBit(this.props,NO_COLLISION);
 			
 			//la region se comprueba con las coordenadas iniciales
 			x = _x0;
@@ -77,13 +77,13 @@ begin
 		end;
 		
 		//Comprobamos si entra en la region
-		if (region_in(x,y,ancho,alto))
+		if (region_in(x,y,this.ancho,this.alto))
 			inRegion = true;
 		end;
 		
 		//DE MOMENTO LAS PLATAFORMAS NO DESAPARECEN
 		//Comprobamos si sale de la region
-		/*if (!region_in(x,y,ancho,alto))
+		/*if (!region_in(x,y,this.ancho,this.alto))
 			outRegion = true;
 		end;*/
 			
@@ -106,34 +106,34 @@ begin
 	file = level.fpgObjects;
 		
 	//igualamos la propiedades publicas a las de parametros
-	ancho 	= _ancho;
-	alto 	= _alto;
-	vX  	= _vX;
+	this.ancho 	= _ancho;
+	this.alto 	= _alto;
+	this.vX  	= _vX;
 	
 	//modo debug sin graficos
 	if (file<0)
-		graph = map_new(ancho,alto,8,0);
+		graph = map_new(this.ancho,this.alto,8,0);
 		map_clear(0,graph,310);
 	end;
 	
 	//puntos de colision del objeto
-	colPoint[LEFT_UP_POINT].x 		= -(ancho>>1);
-	colPoint[LEFT_UP_POINT].y 		= 0;
-	colPoint[LEFT_UP_POINT].colCode = COLIZQ;
-	colPoint[LEFT_UP_POINT].enabled = 1;
+	this.colPoint[LEFT_UP_POINT].x 		= -(this.ancho>>1);
+	this.colPoint[LEFT_UP_POINT].y 		= 0;
+	this.colPoint[LEFT_UP_POINT].colCode = COLIZQ;
+	this.colPoint[LEFT_UP_POINT].enabled = 1;
 	
-	colPoint[RIGHT_UP_POINT].x 		= (ancho>>1);
-	colPoint[RIGHT_UP_POINT].y 		= 0;
-	colPoint[RIGHT_UP_POINT].colCode = COLDER;
-	colPoint[RIGHT_UP_POINT].enabled = 1;
+	this.colPoint[RIGHT_UP_POINT].x 		= (this.ancho>>1);
+	this.colPoint[RIGHT_UP_POINT].y 		= 0;
+	this.colPoint[RIGHT_UP_POINT].colCode = COLDER;
+	this.colPoint[RIGHT_UP_POINT].enabled = 1;
 	
 	x = startX;
 	y = startY;
 	
-	fx = x;
-	fy = y;
+	this.fX = x;
+	this.fY = y;
 	
-	state = IDLE_STATE;
+	this.state = IDLE_STATE;
 	
 	//actualizamos al padre con los datos de creacion
 	updateObject(id,father);	
@@ -144,12 +144,12 @@ begin
 		updateObject(father,id);
 		
 		//guardamos estado actual
-		prevState = state;
+		this.prevState = this.state;
 		
-		switch (state)
+		switch (this.state)
 			case IDLE_STATE:
 				//estado por defecto
-				state = MOVE_STATE; 
+				this.state = MOVE_STATE; 
 				//direccion por defecto
 				dirX = 1;
 			end;
@@ -163,8 +163,8 @@ begin
 				end;
 				
 				//movimiento lineal
-				fX+=vX*dirX;
-				fY+=vY;
+				this.fX+=this.vX*dirX;
+				this.fY+=this.vY;
 			end;
 		end;
 		
@@ -180,7 +180,7 @@ begin
 		//si el player esta en plataforma
 		if (idPlatform == father)
 			//actualizamos la posicion del player lo que se movio la plataforma
-			idPlayer.fX += x - prevX;
+			idPlayer.this.fX += x - prevX;
 		end;
 			
 		frame;
@@ -202,34 +202,34 @@ begin
 	file = level.fpgObjects;
 		
 	//igualamos la propiedades publicas a las de parametros
-	ancho 	= _ancho;
-	alto 	= _alto;
-	vX  	= _vX;
+	this.ancho 	= _ancho;
+	this.alto 	= _alto;
+	this.vX  	= _vX;
 	
 	//modo debug sin graficos
 	if (file<0)
-		graph = map_new(ancho,alto,8,0);
+		graph = map_new(this.ancho,this.alto,8,0);
 		map_clear(0,graph,310);
 	end;
 	
 	//puntos de colision del objeto
-	colPoint[LEFT_UP_POINT].x 		= -(ancho>>1);
-	colPoint[LEFT_UP_POINT].y 		= 0;
-	colPoint[LEFT_UP_POINT].colCode = COLIZQ;
-	colPoint[LEFT_UP_POINT].enabled = 1;
+	this.colPoint[LEFT_UP_POINT].x 		= -(this.ancho>>1);
+	this.colPoint[LEFT_UP_POINT].y 		= 0;
+	this.colPoint[LEFT_UP_POINT].colCode = COLIZQ;
+	this.colPoint[LEFT_UP_POINT].enabled = 1;
 	
-	colPoint[RIGHT_UP_POINT].x 		= (ancho>>1);
-	colPoint[RIGHT_UP_POINT].y 		= 0;
-	colPoint[RIGHT_UP_POINT].colCode = COLDER;
-	colPoint[RIGHT_UP_POINT].enabled = 1;
+	this.colPoint[RIGHT_UP_POINT].x 		= (this.ancho>>1);
+	this.colPoint[RIGHT_UP_POINT].y 		= 0;
+	this.colPoint[RIGHT_UP_POINT].colCode = COLDER;
+	this.colPoint[RIGHT_UP_POINT].enabled = 1;
 	
 	x = startX;
 	y = startY;
 	
-	fx = x;
-	fy = y;
+	this.fX = x;
+	this.fY = y;
 	
-	state = IDLE_STATE;
+	this.state = IDLE_STATE;
 		
 	//actualizamos al padre con los datos de creacion
 	updateObject(id,father);
@@ -240,14 +240,14 @@ begin
 		updateObject(father,id);
 		
 		//guardamos estado actual
-		prevState = state;
+		this.prevState = this.state;
 		
-		switch (state)
+		switch (this.state)
 			case IDLE_STATE:
 				//muevo cuando sube el player
 				if (idPlatform == father)
 					//estado por defecto
-					state = MOVE_STATE; 
+					this.state = MOVE_STATE; 
 					//direccion por defecto
 					dirX = -1;
 				end;
@@ -262,15 +262,15 @@ begin
 				end;
 				
 				//movimiento lineal
-				fX+=vX*dirX;
-				fY+=vY;
+				this.fX+=this.vX*dirX;
+				this.fY+=this.vY;
 				
 				if (dirX == deadDir)
-					state = DEAD_STATE;
+					this.state = DEAD_STATE;
 				end;
 			end;
 			case DEAD_STATE:
-				fY +=0.5;
+				this.fY +=0.5;
 				if (region_out(id,cGameRegion))
 					signal(id,s_kill);
 				end;
@@ -289,8 +289,8 @@ begin
 		//si el player esta en plataforma
 		if (idPlatform == father)
 			//actualizamos la posicion del player lo que se movio la plataforma
-			idPlayer.fX += x - prevX;
-			idPlayer.fY += 0.5;
+			idPlayer.this.fX += x - prevX;
+			idPlayer.this.fY += 0.5;
 		end;
 			
 		frame;
@@ -311,12 +311,12 @@ begin
 	//el objeto padre tiene prioridad superior a los hijos
 	priority = cObjectPrior;
 	
-	state = INITIAL_STATE;
+	this.state = INITIAL_STATE;
 	
 	loop
 		//si se reinicia, se actualiza flags region
-		if (state == INITIAL_STATE)
-			inRegion  = region_in(_x0,_y0,ancho,alto);
+		if (this.state == INITIAL_STATE)
+			inRegion  = region_in(_x0,_y0,this.ancho,this.alto);
 			outRegion = true;
 		end;
 		
@@ -338,7 +338,7 @@ begin
 
 		else
 			//si no existe objeto, el padre no es colisionable
-			setBit(props,NO_COLLISION);
+			setBit(this.props,NO_COLLISION);
 			
 			//la region se comprueba con las coordenadas iniciales
 			x = _x0;
@@ -362,12 +362,12 @@ begin
 		end;
 		
 		//Comprobamos si entra en la region
-		if (region_in(x,y,ancho,alto) && !inRegion)
+		if (region_in(x,y,this.ancho,this.alto) && !inRegion)
 			inRegion = true;
 		end;
 		
 		//Comprobamos si sale de la region
-		if (!region_in(x,y,ancho,alto))
+		if (!region_in(x,y,this.ancho,this.alto))
 			outRegion = true;
 		end;
 			
@@ -393,24 +393,24 @@ begin
 	file = level.fpgObjects;
 	
 	//igualamos la propiedades publicas a las de parametros
-	ancho = _ancho;
-	alto = _alto;
-	props = _props;
+	this.ancho = _ancho;
+	this.alto = _alto;
+	this.props = _props;
 	
 	//modo debug sin graficos
 	if (file<0)
-		graph = map_new(ancho,alto,8,0);
+		graph = map_new(this.ancho,this.alto,8,0);
 		map_clear(0,graph,rand(200,300));
 	end;
 	
-	fx = x;
-	fy = y;
+	this.fX = x;
+	this.fY = y;
 	
 	WGE_CreateObjectColPoints(id);
 	
 	friction = floorFriction;
 	
-	state = MOVE_STATE;
+	this.state = MOVE_STATE;
 	
 	//actualizamos al padre con los datos de creacion
 	updateObject(id,father);
@@ -423,29 +423,29 @@ begin
 		collided = terrainPhysics(ID,friction,&grounded);
 		
 		//guardamos estado actual
-		prevState = state;		
+		this.prevState = this.state;		
 		//maquina de estados
-		switch (state)
+		switch (this.state)
 			case IDLE_STATE:
 				//normalizamos la posicion Y para evitar problemas de colision 
-				fY = y;
+				this.fY = y;
 				//podemos centrar los objetos en rejilla del tamaño del mapa de tiles
 				//menos real pero mas parecido a master system
-				//fx = x+(cTileSize>>1)-(x%cTileSize);
+				//this.fX = x+(cTileSize>>1)-(x%cTileSize);
 				//en estado reposo se desactivan las fisicas
-				setBit(props,NO_PHYSICS);
-				vX = 0;
-				vY = 0;
+				setBit(this.props,NO_PHYSICS);
+				this.vX = 0;
+				this.vY = 0;
 				//vuelver a ser colisionable por procesos
-				unSetBit(props,NO_COLLISION);
+				unSetBit(this.props,NO_COLLISION);
 				
 			end;
 			case MOVE_STATE:
 								
 				//mientras se mueve, no es solido
-				SetBit(props,NO_COLLISION);
+				SetBit(this.props,NO_COLLISION);
 				//fisicas activadas
-				unSetBit(props,NO_PHYSICS);				
+				unSetBit(this.props,NO_PHYSICS);				
 				
 				//lanzamos comprobacion con procesos objeto
 				repeat
@@ -459,33 +459,33 @@ begin
 				until (colID == 0);
 				
 				//cambio de estado		
-				if (grounded && abs(vX) < cMinVelXToIdle) 
-					state = IDLE_STATE;
+				if (grounded && abs(this.vX) < cMinVelXToIdle) 
+					this.state = IDLE_STATE;
 					//desactivamos las fisicas al objeto
-					setBit(props,NO_PHYSICS);
+					setBit(this.props,NO_PHYSICS);
 				end;
 				
 			end;
 			case PICKING_STATE:
 				//ponemos el objeto en posicion de recogida
-				isBitSet(idPlayer.flags,B_HMIRROR)? fx = idPlayer.x-(idPlayer.ancho>>1) : fx = idPlayer.x+(idPlayer.ancho>>1);
-				fy = idPlayer.y;
+				isBitSet(idPlayer.flags,B_HMIRROR)? this.fX = idPlayer.x-(idPlayer.this.ancho>>1) : this.fX = idPlayer.x+(idPlayer.this.ancho>>1);
+				this.fY = idPlayer.y;
 				//no es colisionable
-				setBit(props,NO_COLLISION);
+				setBit(this.props,NO_COLLISION);
 				//tiempo en posicion recogiendolo
 				if (WGE_Animate(graph,graph,10,ANIM_ONCE))
-					state = PICKED_STATE;
+					this.state = PICKED_STATE;
 				end;
 			end;
 			case PICKED_STATE:
-				isBitSet(idPlayer.flags,B_HMIRROR) ? fx = idPlayer.x-cObjectPickedPosX : fx = idPlayer.x+cObjectPickedPosX;
-				fy = idPlayer.y+cObjectPickedPosY;
+				isBitSet(idPlayer.flags,B_HMIRROR) ? this.fX = idPlayer.x-cObjectPickedPosX : this.fX = idPlayer.x+cObjectPickedPosX;
+				this.fY = idPlayer.y+cObjectPickedPosY;
 			end;
 			case THROWING_STATE:	
 				//mientras se mueve, no es solido
-				setBit(props,NO_COLLISION);
+				setBit(this.props,NO_COLLISION);
 				//fisicas activadas
-				unSetBit(props,NO_PHYSICS);
+				unSetBit(this.props,NO_PHYSICS);
 				
 				//lanzamos comprobacion con procesos objeto
 				repeat
@@ -512,9 +512,9 @@ begin
 					colDir = colCheckProcess(id,colID,INFOONLY);
 					
 					//seteamos flag de colisionado
-					if (colDir <> NOCOL && colID.state <> DEAD_STATE)
+					if (colDir <> NOCOL && colID.this.state <> DEAD_STATE)
 						collided = true;
-						colID.state = HURT_STATE;
+						colID.this.state = HURT_STATE;
 					end;
 					
 				until (colID == 0);
@@ -522,36 +522,36 @@ begin
 				//cambio de estado
 				
 				//si es rompible
-				if (isBitSet(props,BREAKABLE))
+				if (isBitSet(this.props,BREAKABLE))
 					//si colisiona con algo o toca suelo
 					if (collided || grounded )
 						//actualizamos la posicion para ver la explosion en el sitio
-						vY = 0;
-						fx += vX;
-						fy += vY;
+						this.vY = 0;
+						this.fX += this.vX;
+						this.fY += this.vY;
 						positionToInt(id);
 						
 						//cambiamos de estado
-						state = DEAD_STATE;
+						this.state = DEAD_STATE;
 					end;
 				else
 					//si no ha colisionado y toca suelo, cambiamos de estado
-					if (grounded && abs(vX) < cMinVelXToIdle) 
-						state = IDLE_STATE;
+					if (grounded && abs(this.vX) < cMinVelXToIdle) 
+						this.state = IDLE_STATE;
 					end;
 				end;
 				
 			end;
 			case DEAD_STATE:
 				//si el objeto tiene item dentro, lo lanzamos
-				if (isBitSet(props,ITEM_BIG_COIN) || isBitSet(props,ITEM_STAR))
-					//item(x,y,ancho,alto,props);
+				if (isBitSet(this.props,ITEM_BIG_COIN) || isBitSet(this.props,ITEM_STAR))
+					//item(x,y,this.ancho,this.alto,this.props);
 					object(T_ITEM,0,x,y,16,16,ITEM_BIG_COIN);
 				end;
 				//lanzamos animacion explosion objeto
 				WGE_Animation(file,2,3,x,y,10,ANIM_ONCE);
 				//si el objeto no es persistente
-				if (isBitSet(props,NO_PERSISTENT))
+				if (isBitSet(this.props,NO_PERSISTENT))
 					//matamos al padre
 					signal(father,s_kill);
 				end;
@@ -594,32 +594,32 @@ begin
 	file = level.fpgObjects;
 	
 	//igualamos la propiedades publicas a las de parametros
-	ancho = _ancho;
-	alto = _alto;
-	props = _props;
+	this.ancho = _ancho;
+	this.alto = _alto;
+	this.props = _props;
 	
 	//modo debug sin graficos
 	if (file<0)
-		graph = map_new(ancho,alto,8,0);
+		graph = map_new(this.ancho,this.alto,8,0);
 		map_clear(0,graph,rand(200,300));
 	end;
 	
 	//establecemos posicion y velocidad
-	fx = x;
-	fy = y;
-	vY = cItemVelY;
+	this.fX = x;
+	this.fY = y;
+	this.vY = cItemVelY;
 	
 	WGE_CreateObjectColPoints(id);
 	
 	friction = floorFriction;
 	
-	state = IDLE_STATE;
+	this.state = IDLE_STATE;
 	
 	//ajustamos propiedades fijas de un item
-	unSetBit(props,BREAKABLE);
-	unSetBit(props,PICKABLE);
-	unSetBit(props,NO_PHYSICS);
-	setBit(props,NO_COLLISION);
+	unSetBit(this.props,BREAKABLE);
+	unSetBit(this.props,PICKABLE);
+	unSetBit(this.props,NO_PHYSICS);
+	setBit(this.props,NO_COLLISION);
 	
 	//actualizamos al padre con los datos de creacion
 	updateObject(id,father);
@@ -632,12 +632,12 @@ begin
 		collided = terrainPhysics(ID,friction,&grounded);
 		
 		//guardamos estado actual
-		prevState = state;
+		this.prevState = this.state;
 		
 		//comportamiento item
-		switch (state)
+		switch (this.state)
 			case IDLE_STATE:
-				if (!isBitSet(props,ITEM_GEM) || !isBitSet(props,ITEM_STAR))
+				if (!isBitSet(this.props,ITEM_GEM) || !isBitSet(this.props,ITEM_STAR))
 					//tiempo item
 					if ((clockCounter % cNumFps) == 0 && clockTick)
 						itemTime++;
@@ -653,7 +653,7 @@ begin
 					end;
 					//timeout
 					if (itemTime >= cItemTimeOut)
-						state = DEAD_STATE;
+						this.state = DEAD_STATE;
 					end;
 				end;
 				
@@ -661,18 +661,18 @@ begin
 				colDir = colCheckProcess(id,idPlayer,INFOONLY);
 				//si colisiona, eliminamos el item
 				if (colDir <> NOCOL)
-					state = DEAD_STATE;
+					this.state = DEAD_STATE;
 					picked = true;
 				end;
 				
 				//animacion del item
-				if (isBitSet(props,ITEM_BIG_COIN))
+				if (isBitSet(this.props,ITEM_BIG_COIN))
 					WGE_Animate(6,7,20,ANIM_LOOP);
 				end;
-				if (isBitSet(props,ITEM_STAR))
+				if (isBitSet(this.props,ITEM_STAR))
 					WGE_Animate(11,12,20,ANIM_LOOP);
 				end;
-				if (isBitSet(props,ITEM_GEM))
+				if (isBitSet(this.props,ITEM_GEM))
 					WGE_Animate(13,13,10,ANIM_LOOP);
 				end;
 			end;
@@ -681,16 +681,16 @@ begin
 				//si ha sido recodido el item
 				if (picked)
 					//segun el item,realizamos una accion determinada
-					if (isBitSet(props,ITEM_BIG_COIN))
+					if (isBitSet(this.props,ITEM_BIG_COIN))
 						//incrementa puntuacion
 						game.score += cBigCoinScore;
 					end;
-					if (isBitSet(props,ITEM_STAR))
+					if (isBitSet(this.props,ITEM_STAR))
 						//añade una estrella a la vida
 						game.playerMaxLife += 1;
 						game.playerLife = game.playerMaxLife;
 					end;
-					if (isBitSet(props,ITEM_GEM))
+					if (isBitSet(this.props,ITEM_GEM))
 						//fin del nivel actual
 						game.endLevel = true;
 					end;
@@ -721,16 +721,16 @@ function updateObject(entity objectA,objectB)
 begin
 		
 	//copiamos las propiedades
-	objectB.ancho 		= objectA.ancho;
-	objectB.alto 		= objectA.alto;
-	objectB.axisAlign	= objectA.axisAlign;
-	objectB.fX 			= objectA.fX;
-	objectB.fY 			= objectA.fY;
+	objectB.this.ancho 		= objectA.this.ancho;
+	objectB.this.alto 		= objectA.this.alto;
+	objectB.this.axisAlign	= objectA.this.axisAlign;
+	objectB.this.fX 			= objectA.this.fX;
+	objectB.this.fY 			= objectA.this.fY;
 	objectB.x  			= objectA.x;
 	objectB.y  			= objectA.y;
-	objectB.vX 			= objectA.vX;
-	objectB.vY 			= objectA.vY;
-	objectB.props 		= objectA.props;
-	objectB.state       = objectA.state;
+	objectB.this.vX 			= objectA.this.vX;
+	objectB.this.vY 			= objectA.this.vY;
+	objectB.this.props 		= objectA.this.props;
+	objectB.this.state       = objectA.this.state;
 	
 end;

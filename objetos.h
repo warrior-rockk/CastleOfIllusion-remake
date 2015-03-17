@@ -56,183 +56,55 @@ end;
 //declaracion de proceso objeto
 Declare Process object(int objectType,int _graph,int _x0,int _y0,int _ancho,int _alto,int _props)
 public
-	float vX			= 0;     	//Velocidad X
-	float vY			= 0;     	//Velocidad Y
-	float fX			= 0;		//Posicion x coma flotante
-	float fY			= 0;		//Posicion y coma flotante
-	int   alto			= 0;   		//Altura en pixeles del proceso
-	int   ancho			= 0;   		//Ancho en pixeles del proceso
-	int   axisAlign     = 0;		//Alineacion del eje del grafico respecto caja colision
-	int   state 		= 0;   		//Estado de la entidad
-	int   prevState     = 0;		//Estado anterior
-	int  props			= 0;		//Propiedades de la entidad
-	struct colPoint[cNumColPoints] 	//Puntos deteccion colision de un objeto
-		int x;						//Offset X a sumar a la posicion del objeto
-		int y;						//Offset Y a sumar a la posicion del objeto
-		int colCode;				//Codigo del punto de colision
-		int enabled;			//Habilitacion del punto de colision
-	end;
-	int frameCount;					//Contador frames animacion
+	_entityPublicData this;			//datos publicos de entidad
 end
 end
 
 //declaracion de proceso bloque
 Declare Process solidItem(int graph,int x,int y,int _ancho,int _alto,int _props)
 public
-	float vX			= 0;     	//Velocidad X
-	float vY			= 0;     	//Velocidad Y
-	float fX			= 0;		//Posicion x coma flotante
-	float fY			= 0;		//Posicion y coma flotante
-	int   alto			= 0;   		//Altura en pixeles del proceso
-	int   ancho			= 0;   		//Ancho en pixeles del proceso
-	int   axisAlign     = 0;		//Alineacion del eje del grafico respecto caja colision
-	int   state 		= 0;   		//Estado de la entidad
-	int   prevState     = 0;		//Estado anterior
-	int  props			= 0;		//Propiedades de la entidad
-	struct colPoint[cNumColPoints] 	//Puntos deteccion colision de un objeto
-		int x;						//Offset X a sumar a la posicion del objeto
-		int y;						//Offset Y a sumar a la posicion del objeto
-		int colCode;				//Codigo del punto de colision
-		int enabled;			//Habilitacion del punto de colision
-	end;
-	int frameCount;					//Contador frames animacion
+	_entityPublicData this;			//datos publicos de entidad
 end
 end
 
 //declaracion de proceso pickedObject
 Declare Process pickedObject(int file,int graph,int _ancho,int _alto, int _props)
 public
-	float vX			= 0;     	//Velocidad X
-	float vY			= 0;     	//Velocidad Y
-	float fX			= 0;		//Posicion x coma flotante
-	float fY			= 0;		//Posicion y coma flotante
-	int   alto			= 0;   		//Altura en pixeles del proceso
-	int   ancho			= 0;   		//Ancho en pixeles del proceso
-	int   axisAlign     = 0;		//Alineacion del eje del grafico respecto caja colision
-	int   state 		= 0;   		//Estado de la entidad
-	int   prevState     = 0;		//Estado anterior
-	int  props			= 0;		//Propiedades de la entidad
-	struct colPoint[cNumColPoints] 	//Puntos deteccion colision de un objeto
-		int x;						//Offset X a sumar a la posicion del objeto
-		int y;						//Offset Y a sumar a la posicion del objeto
-		int colCode;				//Codigo del punto de colision
-		int enabled;			//Habilitacion del punto de colision
-	end;
-	int frameCount;					//Contador frames animacion
+	_entityPublicData this;			//datos publicos de entidad
 end
 end
 
 //declaracion de objeto caja
 Declare Process caja(int x,int y,float _vX,float _vY)
 public
-	float vX			= 0;     	//Velocidad X
-	float vY			= 0;     	//Velocidad Y
-	float fX			= 0;		//Posicion x coma flotante
-	float fY			= 0;		//Posicion y coma flotante
-	int   alto			= 0;   		//Altura en pixeles del proceso
-	int   ancho			= 0;   		//Ancho en pixeles del proceso
-	int   axisAlign     = 0;		//Alineacion del eje del grafico respecto caja colision
-	int   state 		= 0;   		//Estado de la entidad
-	int   prevState     = 0;		//Estado anterior
-	int  props			= 0;		//Propiedades de la entidad
-	struct colPoint[cNumColPoints] 	//Puntos deteccion colision de un objeto
-		int x;						//Offset X a sumar a la posicion del objeto
-		int y;						//Offset Y a sumar a la posicion del objeto
-		int colCode;				//Codigo del punto de colision
-		int enabled;			//Habilitacion del punto de colision
-	end;
-	int frameCount;					//Contador frames animacion
+	_entityPublicData this;			//datos publicos de entidad
 end
 end
 
 //declaracion de plataforma generica
 Declare Process platform(int _platformType,int _graph,int _x0,int _y0,int _ancho,int _alto)
 public
-	float vX			= 0;     	//Velocidad X
-	float vY			= 0;     	//Velocidad Y
-	float fX			= 0;		//Posicion x coma flotante
-	float fY			= 0;		//Posicion y coma flotante
-	int   alto			= 0;   		//Altura en pixeles del proceso
-	int   ancho			= 0;   		//Ancho en pixeles del proceso
-	int   axisAlign     = 0;		//Alineacion del eje del grafico respecto caja colision
-	int   state 		= 0;   		//Estado de la entidad
-	int   prevState     = 0;		//Estado anterior
-	int  props			= 0;		//Propiedades de la entidad
-	struct colPoint[cNumColPoints] 	//Puntos deteccion colision de un objeto
-		int x;						//Offset X a sumar a la posicion del objeto
-		int y;						//Offset Y a sumar a la posicion del objeto
-		int colCode;				//Codigo del punto de colision
-		int enabled;			//Habilitacion del punto de colision
-	end;
-	int frameCount;					//Contador frames animacion
+	_entityPublicData this;			//datos publicos de entidad
 end
 end
 
 //declaracion de objeto plataforma
 Declare Process linearPlatform(int graph,int startX,int startY,int _ancho,int _alto,float _vX)
 public
-	float vX			= 0;     	//Velocidad X
-	float vY			= 0;     	//Velocidad Y
-	float fX			= 0;		//Posicion x coma flotante
-	float fY			= 0;		//Posicion y coma flotante
-	int   alto			= 0;   		//Altura en pixeles del proceso
-	int   ancho			= 0;   		//Ancho en pixeles del proceso
-	int   state 		= 0;   		//Estado de la entidad
-	int   axisAlign     = 0;		//Alineacion del eje del grafico respecto caja colision
-	int   prevState     = 0;		//Estado anterior
-	int  props			= 0;		//Propiedades de la entidad
-	struct colPoint[cNumColPoints] 	//Puntos deteccion colision de un objeto
-		int x;						//Offset X a sumar a la posicion del objeto
-		int y;						//Offset Y a sumar a la posicion del objeto
-		int colCode;				//Codigo del punto de colision
-		int enabled;			//Habilitacion del punto de colision
-	end;
-	int frameCount;					//Contador frames animacion
+	_entityPublicData this;			//datos publicos de entidad
 end
 end
 
 //declaracion de objeto plataforma
 Declare Process triggerPlatform(int graph,int startX,int startY,int _ancho,int _alto,float _vX,int deadDir)
 public
-	float vX			= 0;     	//Velocidad X
-	float vY			= 0;     	//Velocidad Y
-	float fX			= 0;		//Posicion x coma flotante
-	float fY			= 0;		//Posicion y coma flotante
-	int   alto			= 0;   		//Altura en pixeles del proceso
-	int   ancho			= 0;   		//Ancho en pixeles del proceso
-	int   state 		= 0;   		//Estado de la entidad
-	int   axisAlign     = 0;		//Alineacion del eje del grafico respecto caja colision
-	int   prevState     = 0;		//Estado anterior
-	int  props			= 0;		//Propiedades de la entidad
-	struct colPoint[cNumColPoints] 	//Puntos deteccion colision de un objeto
-		int x;						//Offset X a sumar a la posicion del objeto
-		int y;						//Offset Y a sumar a la posicion del objeto
-		int colCode;				//Codigo del punto de colision
-		int enabled;			//Habilitacion del punto de colision
-	end;
-	int frameCount;					//Contador frames animacion
+	_entityPublicData this;			//datos publicos de entidad
 end
 end
 
 //declaracion de objeto item
 Declare Process item(int x,int y,int _ancho,int _alto,int _props)
 public
-	float vX			= 0;     	//Velocidad X
-	float vY			= 0;     	//Velocidad Y
-	float fX			= 0;		//Posicion x coma flotante
-	float fY			= 0;		//Posicion y coma flotante
-	int   alto			= 0;   		//Altura en pixeles del proceso
-	int   ancho			= 0;   		//Ancho en pixeles del proceso
-	int   axisAlign     = 0;		//Alineacion del eje del grafico respecto caja colision
-	int   state 		= 0;   		//Estado de la entidad
-	int   prevState     = 0;		//Estado anterior
-	int  props			= 0;		//Propiedades de la entidad
-	struct colPoint[cNumColPoints] 	//Puntos deteccion colision de un objeto
-		int x;						//Offset X a sumar a la posicion del objeto
-		int y;						//Offset Y a sumar a la posicion del objeto
-		int colCode;				//Codigo del punto de colision
-		int enabled;			//Habilitacion del punto de colision
-	end;
-	int frameCount;					//Contador frames animacion
+	_entityPublicData this;			//datos publicos de entidad
 end
 end

@@ -18,12 +18,12 @@ begin
 	//el objeto padre tiene que tener prioridad superior a los hijos
 	priority = cMonsterPrior;
 	
-	state = INITIAL_STATE;
+	this.state = INITIAL_STATE;
 	
 	loop
 		//si se reinicia, se actualiza flags region
-		if (state == INITIAL_STATE)
-			inRegion  = region_in(_x0,_y0,ancho,alto);
+		if (this.state == INITIAL_STATE)
+			inRegion  = region_in(_x0,_y0,this.ancho,this.alto);
 			outRegion = true;
 		end;
 		
@@ -45,7 +45,7 @@ begin
 			
 		else
 			//si no existe objeto, el padre no es colisionable
-			setBit(props,NO_COLLISION);
+			setBit(this.props,NO_COLLISION);
 			
 			//la region se comprueba con las coordenadas iniciales
 			x = _x0;
@@ -72,12 +72,12 @@ begin
 		end;
 		
 		//Comprobamos si entra en la region
-		if (region_in(x,y,ancho,alto))
+		if (region_in(x,y,this.ancho,this.alto))
 			inRegion = true;
 		end;
 		
 		//Comprobamos si sale de la region
-		if (!region_in(x,y,ancho,alto))
+		if (!region_in(x,y,this.ancho,this.alto))
 			outRegion = true;
 		end;
 			
@@ -110,19 +110,19 @@ begin
 	file = level.fpgMonsters;
 	
 	//igualamos la propiedades publicas a las de parametros
-	ancho = _ancho;
-	alto = _alto;
-	axisAlign = DOWN_AXIS;
-	props = _props;
+	this.ancho = _ancho;
+	this.alto = _alto;
+	this.axisAlign = DOWN_AXIS;
+	this.props = _props;
 	
 	//modo debug sin graficos
 	if (file<0)
-		graph = map_new(ancho,alto,8,0);
+		graph = map_new(this.ancho,this.alto,8,0);
 		map_clear(0,graph,rand(200,300));
 	end;
 	
-	fx = x;
-	fy = y;
+	this.fX = x;
+	this.fY = y;
 	
 	_x0 = x;
 	xRange = 10;
@@ -133,7 +133,7 @@ begin
 	
 	friction = floorFriction;
 	
-	state = MOVE_STATE;
+	this.state = MOVE_STATE;
 	
 	//actualizamos al padre con los datos de creacion
 	updateMonster(id,father);
@@ -146,21 +146,21 @@ begin
 		collided = terrainPhysics(ID,friction,&grounded);
 		
 		//guardamos estado actual
-		prevState = state;
+		this.prevState = this.state;
 		
 		//maquina de estados
-		switch (state)
+		switch (this.state)
 			case IDLE_STATE:
 				;
 			end;
 			case MOVE_STATE: //movimiento en rango
 				//cambio de direccion al superar rango
-				if (abs(fx - _x0) > xRange)
+				if (abs(this.fX - _x0) > xRange)
 					xVel *= -1;
 				end;
 				
 				//movimiento lineal
-				vX = xVel;
+				this.vX = xVel;
 				
 				//animacion movimiento
 				WGE_Animate(1,6,5,ANIM_LOOP);	
@@ -168,13 +168,13 @@ begin
 				//si existe el player
 				if (idPlayer <> 0 )
 					//miramos a su direccion
-					if (idPlayer.fX > fX)
+					if (idPlayer.this.fX > this.fX)
 						flags &=~ B_HMIRROR; 
 					else
 						flags |= B_HMIRROR; 
 					end;
 					//player en rango ataque
-					if (abs(idPlayer.fX - fX) < atackRangeX && !atack)
+					if (abs(idPlayer.this.fX - this.fX) < atackRangeX && !atack)
 						atack = true;
 						isBitSet(flags,B_HMIRROR) ? monsterFire(7,x,y-16,-2,-4) : monsterFire(7,x,y-16,2,-4);		
 					end;
@@ -185,7 +185,7 @@ begin
 				end;
 			end;
 			case HURT_STATE:   
-				state = DEAD_STATE;
+				this.state = DEAD_STATE;
 			end;
 			case DEAD_STATE:
 				graph = 8;
@@ -217,18 +217,18 @@ begin
 	file = level.fpgMonsters;
 	
 	//igualamos la propiedades publicas a las de parametros
-	vX = _vX;
-	vY = _vY;
+	this.vX = _vX;
+	this.vY = _vY;
 	
-	fX = x;
-	fY = y;
+	this.fX = x;
+	this.fY = y;
 	
 	repeat	
 			//fisicas
-			vY += gravity;
+			this.vY += gravity;
 			
-			fx += vX;
-			fy += vY;
+			this.fX += this.vX;
+			this.fY += this.vY;
 			positionToInt(id);
 			
 			frame;
@@ -259,18 +259,18 @@ begin
 	file = level.fpgMonsters;
 	
 	//igualamos la propiedades publicas a las de parametros
-	ancho = _ancho;
-	alto = _alto;
-	props = _props;
+	this.ancho = _ancho;
+	this.alto = _alto;
+	this.props = _props;
 	
 	//modo debug sin graficos
 	if (file<0)
-		graph = map_new(ancho,alto,8,0);
+		graph = map_new(this.ancho,this.alto,8,0);
 		map_clear(0,graph,rand(200,300));
 	end;
 	
-	fx = x;
-	fy = y;
+	this.fX = x;
+	this.fY = y;
 	
 	xVel   = -2;
 	
@@ -278,7 +278,7 @@ begin
 	
 	friction = floorFriction;
 	
-	state = MOVE_STATE;
+	this.state = MOVE_STATE;
 	
 	//actualizamos el padre con los datos de creación
 	updateMonster(id,father);
@@ -291,31 +291,31 @@ begin
 		collided = terrainPhysics(ID,friction,&grounded);
 		
 		//guardamos estado actual
-		prevState = state;
+		this.prevState = this.state;
 		
 		//maquina de estados
-		switch (state)
+		switch (this.state)
 			case IDLE_STATE: //mirando al frente para cambiar de direcccion
 				//detenemos movimiento
-				vX = 0;
+				this.vX = 0;
 				//pausa con animacion mirando al frente
 				if (WGE_Animate(11,11,5,ANIM_ONCE))
 					collided = false;
-					state = MOVE_STATE;
-					vX = xVel;
+					this.state = MOVE_STATE;
+					this.vX = xVel;
 				end;
 			end;
 			case MOVE_STATE: //movimiento de pared a pared
 				//dañamos al player
-				setBit(props,HURTPLAYER);
+				setBit(this.props,HURTPLAYER);
 				//si toca pared, invierte movimiento
 				if (collided)
 					xVel = xVel * -1;
 					collided = false;
-					state = IDLE_STATE;
+					this.state = IDLE_STATE;
 				end;
 				//actualizamos movimiento
-				vX = xVel;
+				this.vX = xVel;
 				//animacion movimiento
 				WGE_Animate(9,10,5,ANIM_LOOP);
 				//sentido del grafico
@@ -323,9 +323,9 @@ begin
 			end;
 			case HURT_STATE: //toque
 				//detenemos el movimiento
-				vX = 0;
+				this.vX = 0;
 				//no dañamos en este estado
-				unsetBit(props,HURTPLAYER);
+				unsetBit(this.props,HURTPLAYER);
 				//animacion toque durante 8 animaciones
 				if (hurtedCounter < 8)
 					if (WGE_Animate(12,14,5,ANIM_LOOP))
@@ -334,8 +334,8 @@ begin
 				else
 					//pasado el tiempo, volvemos a movernos
 					hurtedCounter = 0;
-					state = MOVE_STATE;
-					vX = xVel;
+					this.state = MOVE_STATE;
+					this.vX = xVel;
 				end;
 			end;
 			case DEAD_STATE:
@@ -345,7 +345,7 @@ begin
 		end;
 		
 		//no tiene gravedad
-		vY = 0;
+		this.vY = 0;
 		
 		//actualizamos velocidad y posicion
 		updateVelPos(id,grounded);
@@ -376,23 +376,23 @@ begin
 	file = level.fpgMonsters;
 	
 	//igualamos la propiedades publicas a las de parametros
-	ancho = _ancho;
-	alto = _alto;
-	axisAlign = DOWN_AXIS;
-	props = _props;
+	this.ancho = _ancho;
+	this.alto = _alto;
+	this.axisAlign = DOWN_AXIS;
+	this.props = _props;
 	
 	//modo debug sin graficos
 	if (file<0)
-		graph = map_new(ancho,alto,8,0);
+		graph = map_new(this.ancho,this.alto,8,0);
 		map_clear(0,graph,rand(200,300));
 	end;
 	
-	fx = x;
-	fy = y;
+	this.fX = x;
+	this.fY = y;
 	
 	WGE_CreateObjectColPoints(id);
 	
-	state = IDLE_STATE;
+	this.state = IDLE_STATE;
 	
 	//actualizamos el padre con los datos de creación
 	updateMonster(id,father);
@@ -405,21 +405,21 @@ begin
 		terrainPhysics(ID,1,&grounded);
 		
 		//guardamos estado actual
-		prevState = state;
+		this.prevState = this.state;
 		
 		//maquina de estados
-		switch (state)
+		switch (this.state)
 			case IDLE_STATE: 
 				WGE_Animate(15,16,30,ANIM_LOOP);
 			end;
 			case HURT_STATE: //toque
-				state = DEAD_STATE;
+				this.state = DEAD_STATE;
 				//matamos todo toyPlane que esté activo
 				repeat
 					idToyPlane = get_id(TYPE toyPlane);
 					if (idToyPlane <> 0 )
 						idToyPlane = idToyPlane.father;
-						idToyPlane.state = DEAD_STATE;
+						idToyPlane.this.state = DEAD_STATE;
 					end;
 				until (idToyPlane == 0);
 			end;
@@ -452,20 +452,20 @@ begin
 	z = cZMonster;
 	file = level.fpgMonsters;
 	
-	fX = father.x;
-	fY = father.y;
+	this.fX = father.x;
+	this.fY = father.y;
 	graph = father.graph;
 	flags = father.flags;
 	
-	vX = 0;
-	vY = -4;
+	this.vX = 0;
+	this.vY = -4;
 	
 	repeat	
 			//fisicas
-			vY += gravity;
+			this.vY += gravity;
 			
-			fx += vX;
-			fy += vY;
+			this.fX += this.vX;
+			this.fY += this.vY;
 			positionToInt(id);
 			
 			WGE_Animate(graph,graph,1,ANIM_LOOP);
@@ -481,16 +481,16 @@ function updateMonster(entity monsterA,monsterB)
 begin
 	
 	//copiamos las propiedades
-	monsterB.ancho 		= monsterA.ancho;
-	monsterB.alto 		= monsterA.alto;
-	monsterB.axisAlign	= monsterA.axisAlign;
-	monsterB.fX 		= monsterA.fX;
-	monsterB.fY 		= monsterA.fY;
+	monsterB.this.ancho 		= monsterA.this.ancho;
+	monsterB.this.alto 		= monsterA.this.alto;
+	monsterB.this.axisAlign	= monsterA.this.axisAlign;
+	monsterB.this.fX 		= monsterA.this.fX;
+	monsterB.this.fY 		= monsterA.this.fY;
 	monsterB.x  		= monsterA.x;
 	monsterB.y  		= monsterA.y;
-	monsterB.vX 		= monsterA.vX;
-	monsterB.vY 		= monsterA.vY;
-	monsterB.props 		= monsterA.props;
-	monsterB.state      = monsterA.state;
+	monsterB.this.vX 		= monsterA.this.vX;
+	monsterB.this.vY 		= monsterA.this.vY;
+	monsterB.this.props 		= monsterA.this.props;
+	monsterB.this.state      = monsterA.this.state;
 	
 end;

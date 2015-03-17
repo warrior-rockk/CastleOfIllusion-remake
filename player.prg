@@ -10,7 +10,7 @@
 process player()
 private 
 
-byte  jumping,				//Flag salto
+byte  jumping,				//Flag sthis.alto
 byte  grounded; 			//Flag en suelo
 byte  onStairs;				//Flag de en escaleras
 byte  crouched;				//Flag de agachado
@@ -39,15 +39,15 @@ struct tiles_comprobar[8]   //Matriz comprobacion colision tiles
 	int posx;
 	int posy;
 end;
-int jumpPower;				//Contador incremento salto
+int jumpPower;				//Contador incremento sthis.alto
 
 int i,j;					//Variables auxiliares
 byte trace;     			//Variable debug
 
 BEGIN
-	ancho = cPlayerAncho;
-	alto =  cPlayerAlto;
-	axisAlign = DOWN_AXIS;
+	this.ancho = cPlayerAncho;
+	this.alto =  cPlayerAlto;
+	this.axisAlign = DOWN_AXIS;
 	
 	velMaxX = cPlayerVelMaxX;
 	accelx 	= cPlayerAccelX;
@@ -73,8 +73,8 @@ BEGIN
 	x = level.playerx0;
 	y = level.playery0;
 	
-	fx = x;
-	fy = y;
+	this.fX = x;
+	this.fY = y;
 	
 	canMove = true;
 	
@@ -85,38 +85,38 @@ BEGIN
 			
 			//direccion derecha
 			if (key(K_RIGHT)) 
-				if (vX < velMaxX) 
-					vX+=accelx*(1-friction);
+				if (this.vX < velMaxX) 
+					this.vX+=accelx*(1-friction);
 				end;
 				onStairs = false;
 			end;
 			
 			//direccion izquierda
 			if (key(K_LEFT)) 
-				if (vX > -velMaxX) 
-					vX-=accelx*(1-friction);
+				if (this.vX > -velMaxX) 
+					this.vX-=accelx*(1-friction);
 				end;
 				onStairs = false;
 			end;
 			
-			//boton salto
+			//boton sthis.alto
 			if (WGE_Key(K_JUMP,KEY_PRESSED))
-				//salto con key_down
+				//sthis.alto con key_down
 				if (WGE_Key(K_JUMP,KEY_DOWN)) 
 					if(!jumping && (grounded || onStairs)) 
 						jumping = true;
 						grounded = false;
-						vY = -accelY;
+						this.vY = -accelY;
 						onStairs = false;
 					end;
 				end;
-				//incremento del poder del salto con pulsacion larga
+				//incremento del poder del sthis.alto con pulsacion larga
 				if (jumpPower <= cPlayerMaxPowerJump && clockTick)
-					vY -= cPlayerPowerJumpFactor;
+					this.vY -= cPlayerPowerJumpFactor;
 					jumpPower++;					
 				end;
 			else
-				//reinicio del incremento de poder de salto
+				//reinicio del incremento de poder de sthis.alto
 				jumpPower = 0;
 			end;
 
@@ -133,7 +133,7 @@ BEGIN
 				picked = true;
 				//cambiamos el estado del objeto a recogiendo
 				idObjectPicked = memObjectforPickID;
-				idObjectPicked.state = PICKING_STATE;
+				idObjectPicked.this.state = PICKING_STATE;
 				memObjectforPickID = 0;
 			end;
 			//lanzar objeto
@@ -154,20 +154,20 @@ BEGIN
 				//si el centro del objeto esta en tile escaleras
 				if (getTileCode(id,CENTER_POINT) == STAIRS || getTileCode(id,CENTER_POINT) == TOP_STAIRS)
 					//quitamos velocidades
-					vY = 0;
-					vX = 0;
+					this.vY = 0;
+					this.vX = 0;
 					//centramos el objeto en el tile escalera
-					fx = x+(cTileSize>>1)-(x%cTileSize);
+					this.fX = x+(cTileSize>>1)-(x%cTileSize);
 					//subimos las escaleras
-					fY -= cPlayerVelYStairs;
+					this.fY -= cPlayerVelYStairs;
 					//Establecemos el flag de escalera
 					onStairs = true;
-					//desactivamos flag salto
+					//desactivamos flag sthis.alto
 					jumping = false;
 				//en caso contrario, si el pie derecho esta en el TOP escalera, sales de ella
 				elseif (getTileCode(id,CENTER_DOWN_POINT) == TOP_STAIRS)
 					//subimos a la plataforma (tile superior a la escalera)
-					fy = (((y/cTileSize)*cTileSize)+cTileSize)-(alto>>1);
+					this.fY = (((y/cTileSize)*cTileSize)+cTileSize)-(this.alto>>1);
 					//Quitamos el flag de escalera				
 					onStairs = false;
 				end;				
@@ -183,20 +183,20 @@ BEGIN
 					//si el centro del objeto esta en tile escaleras
 					if (getTileCode(id,CENTER_POINT) == TOP_STAIRS || getTileCode(id,CENTER_POINT) == STAIRS)	
 						//centramos el objeto en el tile escalera
-						fx = x+(cTileSize>>1)-(x%cTileSize);
+						this.fX = x+(cTileSize>>1)-(x%cTileSize);
 						//bajamos las escaleras
-						fY += cPlayerVelYStairs;
+						this.fY += cPlayerVelYStairs;
 					//en caso contrario, estamos en la base de la escalera
 					else
 						//bajamos el objeto a la escalera
-						fy += (alto>>1);
+						this.fY += (this.alto>>1);
 					end;
 					//quitamos velocidades
-					vY = 0;
-					vX = 0;
+					this.vY = 0;
+					this.vX = 0;
 					//Establecemos el flag de escalera
 					onStairs = true;
-					//desactivamos flag salto
+					//desactivamos flag sthis.alto
 					jumping = false;
 					//desactivamos flag agachado
 					crouched = false;
@@ -227,14 +227,14 @@ BEGIN
 		
 		//friccion: La friccion actua cuando no se mueve o esta agachado o dañado
 		if ((!key(K_LEFT) && !key(K_RIGHT)) || crouched || hurt)
-			vX *= friction;
+			this.vX *= friction;
 		end;
 						
 		//gravedad
 		if (!onStairs)
 			//limitamos la velocidad Y maxima
-			if (abs(vY) < cPlayerVelMaxY) 
-				vY += gravity;
+			if (abs(this.vY) < cPlayerVelMaxY) 
+				this.vY += gravity;
 			end;
 		end;
 		
@@ -255,8 +255,8 @@ BEGIN
 				if (!isBitSet(flags,B_HMIRROR))	
 					velMaxX = cPlayerVelMaxXSlopeUp;
 					accelx 	= cPlayerAccelXSlopeUp;
-					if (vX > velMaxX)
-						vX -= cPlayerDecelXSlopeUp;
+					if (this.vX > velMaxX)
+						this.vX -= cPlayerDecelXSlopeUp;
 					end;
 				//Bajandola, cambio consignas velocidades
 				elseif (isBitSet(flags,B_HMIRROR))
@@ -267,7 +267,7 @@ BEGIN
 						friction = 1;
 						velMaxX = cPlayerVelMaxXSloping;
 						accelx  = cPlayerAccelXSloping;
-						vX-=accelx;
+						this.vX-=accelx;
 					else
 						velMaxX = cPlayerVelMaxXSlopeDown;
 						accelx 	= cPlayerAccelXSlopeDown;
@@ -279,8 +279,8 @@ BEGIN
 				if (isBitSet(flags,B_HMIRROR))	
 					velMaxX = cPlayerVelMaxXSlopeUp;
 					accelx 	= cPlayerAccelXSlopeUp;
-					if (vX < -velMaxX)
-						vX += cPlayerDecelXSlopeUp;
+					if (this.vX < -velMaxX)
+						this.vX += cPlayerDecelXSlopeUp;
 					end;
 				//Bajandola, cambio consignas velocidades
 				elseif (!isBitSet(flags,B_HMIRROR))
@@ -291,7 +291,7 @@ BEGIN
 						friction = 1;
 						velMaxX = cPlayerVelMaxXSloping;
 						accelx  = cPlayerAccelXSloping;
-						vX+=accelx;
+						this.vX+=accelx;
 					else
 						velMaxX = cPlayerVelMaxXSlopeDown;
 						accelx  = cPlayerAccelXSlopeDown;
@@ -308,24 +308,24 @@ BEGIN
 		//CONTROL DIMENSIONES
 		
 		//cambio a agachado
-		if (crouched && alto == cPlayerAlto)
+		if (crouched && this.alto == cPlayeralto)
 			//establecemos altura agachado
-			alto = cPlayerAltoCrouch;
+			this.alto = cPlayeraltoCrouch;
 			//redibujamos el player (provisional)
 			//debugDrawPlayer();
 			//actualizamos sus puntos de colision
 			WGE_CreatePlayerColPoints(id);
 			//corregimos la coordenada Y
-			fy = fy+((cPlayerAlto-cPlayerAltoCrouch)>>1);
-		elseif (not crouched && alto == cPlayerAltoCrouch)
+			this.fY = this.fY+((cPlayeralto-cPlayeraltoCrouch)>>1);
+		elseif (not crouched && this.alto == cPlayeraltoCrouch)
 			//establecemos altura normal
-			alto = cPlayerAlto;
+			this.alto = cPlayeralto;
 			//redibujamos el player (provisional)
 			//debugDrawPlayer();
 			//actualizamos sus puntos de colision
 			WGE_CreatePlayerColPoints(id);
 			//corregimos la coordenada Y
-			fy = fy-((cPlayerAlto-cPlayerAltoCrouch)>>1);
+			this.fY = this.fY-((cPlayeralto-cPlayeraltoCrouch)>>1);
 		end;
 		//si agachado, no puedes moverte
 		if (crouched) canMove = false; end;
@@ -366,20 +366,20 @@ BEGIN
 			//si la colision es inferior
 			if (dir == COLDOWN )
 				//si estamos atacando y el objeto es rompible
-				if ( state == ATACK_STATE && isBitSet(colID.props,BREAKABLE))
+				if ( this.state == ATACK_STATE && isBitSet(colID.this.props,BREAKABLE))
 					//rebote al atacar
-					vY = -cPlayerAtackBounce;
+					this.vY = -cPlayerAtackBounce;
 					//si se pulsa ataque se añade incremento en rebote
 					if (WGE_Key(K_ACTION_ATACK,KEY_PRESSED))
-						vY -= cPlayerPowerAtackBounce;
+						this.vY -= cPlayerPowerAtackBounce;
 					end;
 					grounded = false;
 					//matamos al objeto
-					colID.state = DEAD_STATE;
+					colID.this.state = DEAD_STATE;
 				else
-					//corregimos la Y truncamos fY
-					y = fY;
-					fY = y;
+					//corregimos la Y truncamos this.fY
+					y = this.fY;
+					this.fY = y;
 				end;
 			end;
 			
@@ -388,7 +388,7 @@ BEGIN
 			
 			//comprobamos si colisionamos con un objeto recogible
 			if (!picked && (dir == COLDER || dir == COLIZQ)) 
-				if (isBitSet(colID.props,PICKABLE))
+				if (isBitSet(colID.this.props,PICKABLE))
 					objectforPickID = colID; 
 				end;
 			end;
@@ -436,27 +436,27 @@ BEGIN
 				
 			//si la colision es inferior y el monster no esta muerto
 			
-			if (dir == COLDOWN && colID.state != DEAD_STATE )
+			if (dir == COLDOWN && colID.this.state != DEAD_STATE )
 				//si estamos atacando 
-				if ( state == ATACK_STATE)
+				if ( this.state == ATACK_STATE)
 					//rebote al atacar
-					vY = -cPlayerAtackBounce;
+					this.vY = -cPlayerAtackBounce;
 					//si se pulsa ataque se añade incremento en rebote
 					if (WGE_Key(K_ACTION_ATACK,KEY_PRESSED))
-						vY -= cPlayerPowerAtackBounce;
+						this.vY -= cPlayerPowerAtackBounce;
 					end;
 					grounded = false;
 					//enviamos señal de daño
-					colID.state = HURT_STATE;
+					colID.this.state = HURT_STATE;
 				else
 					//el monstruo te daña si no soy invencible y tiene propiedad de dañar
-					if (!hurtDisabled && isBitSet(colID.props,HURTPLAYER)) 
+					if (!hurtDisabled && isBitSet(colID.this.props,HURTPLAYER)) 
 						hurt = true;
 					end;
 				end;
-			elseif ( dir != NOCOL && colID.state != DEAD_STATE) //cualquier otra colision
+			elseif ( dir != NOCOL && colID.this.state != DEAD_STATE) //cualquier otra colision
 				//el monstruo te daña si no soy invencible y tiene propiedad de dañar
-				if (!hurtDisabled && isBitSet(colID.props,HURTPLAYER)) 
+				if (!hurtDisabled && isBitSet(colID.this.props,HURTPLAYER)) 
 					hurt = true;
 				end;
 			end;
@@ -483,13 +483,13 @@ BEGIN
 		
 		//Actualizar velocidades
 		if (grounded)
-			vY = 0;
+			this.vY = 0;
 			jumping = false;
 			atacking = false;
 		end;
 		
-		fX += vX;
-		fY += vY;
+		this.fX += this.vX;
+		this.fY += this.vY;
 		
 		//actualizar posicion float-int
 		positionToInt(id);
@@ -512,20 +512,20 @@ BEGIN
 			pickingCounter = 0;
 		end;
 		//desactivacion picking
-		if (picking && (vX <> 0 || jumping || crouched) && !picked)
-			//si me muevo o salto o me agacho,salgo del picking
+		if (picking && (this.vX <> 0 || jumping || crouched) && !picked)
+			//si me muevo o sthis.alto o me agacho,salgo del picking
 			picking = false;
 			memObjectforPickID = 0;
 		end;
 		//Mientras recoje, no puede mover
 		if (picking && picked)
 			canMove = false;
-			vX = 0;
+			this.vX = 0;
 		end;
 		//mientras lanza, no puede mover
 		if (throwing)
 			canMove = false;
-			vX = 0;
+			this.vX = 0;
 		end;
 		
 		//invencibilidad
@@ -553,89 +553,89 @@ BEGIN
 		//CONTROL ESTADO GRAFICO		
 		
 		//guardamos estado actual
-		prevState = state;
+		this.prevState = this.state;
 		
 		//frenada en ataque
-		if (!atacking && state == ATACK_STATE)
-			state = BREAK_ATACK_STATE;
+		if (!atacking && this.state == ATACK_STATE)
+			this.state = BREAK_ATACK_STATE;
 		end;
 		//resto de frenadas
-		if (state <> BREAK_ATACK_STATE && state <> BREAK_SLOPING_STATE)
+		if (this.state <> BREAK_ATACK_STATE && this.state <> BREAK_SLOPING_STATE)
 			//estado parado
-			if (abs(vX) < cPlayerMinVelToIdle && abs(vY) < cPlayerMinVelToIdle)
-				state = IDLE_STATE;
+			if (abs(this.vX) < cPlayerMinVelToIdle && abs(this.vY) < cPlayerMinVelToIdle)
+				this.state = IDLE_STATE;
 			end;
 			//estados de frenadas al no pulsar movimiento
-			if ( abs(vX) > cPlayerMinVelToIdle && !key(K_RIGHT) && !key(K_LEFT)) 
+			if ( abs(this.vX) > cPlayerMinVelToIdle && !key(K_RIGHT) && !key(K_LEFT)) 
 				//si no esta en rampas o con objeto cogido
 				if (!on135Slope && !on45Slope && !picked)
 					//frenada cayendo
-					if (state == FALL_STATE || state == BREAK_FALL_STATE || state == JUMP_STATE)
-						state = BREAK_FALL_STATE;
-					elseif (state == SLOPING_STATE)
+					if (this.state == FALL_STATE || this.state == BREAK_FALL_STATE || this.state == JUMP_STATE)
+						this.state = BREAK_FALL_STATE;
+					elseif (this.state == SLOPING_STATE)
 					//frenada resbalando
-						state = BREAK_SLOPING_STATE;
+						this.state = BREAK_SLOPING_STATE;
 					else
 					//frenada normal
-						state = BREAK_STATE;
+						this.state = BREAK_STATE;
 					end;
 				else
 					//sin estado de frenada
-					state = MOVE_STATE;
+					this.state = MOVE_STATE;
 				end;
 			end;
 		end;
 		
 		if (key(K_LEFT))
-			state = MOVE_STATE;
+			this.state = MOVE_STATE;
 			//miramos hacia la izquierda
 			flags |= B_HMIRROR;
 		end;
 		if (key(K_RIGHT))
-			state = MOVE_STATE;
+			this.state = MOVE_STATE;
 			//miramos hacia la derecha
 			flags &=~ B_HMIRROR;
 		end;
 		
 		if (!grounded && !jumping)
-			state = FALL_STATE;
+			this.state = FALL_STATE;
 		end;
 		if (jumping)
-			state = JUMP_STATE;
+			this.state = JUMP_STATE;
 		end;
 		if (crouched)
-			state = CROUCH_STATE;
+			this.state = CROUCH_STATE;
 		end;
 		if (onStairs)
-			state = ON_STAIRS_STATE;
+			this.state = ON_STAIRS_STATE;
 		end;
 		if (onStairs && (key(K_UP) || key(K_DOWN)) )
-			state = MOVE_ON_STAIRS_STATE;
+			this.state = MOVE_ON_STAIRS_STATE;
 		end;
 		if (atacking)
-			state = ATACK_STATE;
+			this.state = ATACK_STATE;
 		end;
 		if (sloping)
-			state = SLOPING_STATE;
+			this.state = SLOPING_STATE;
 		end;
 		if (picking && !picked)
-			state = PICKING_STATE;
+			this.state = PICKING_STATE;
 		end;
 		if (picked && picking)
-			state = PICKED_STATE;
+			this.state = PICKED_STATE;
 		end;
 		if (throwing)
-			state = THROWING_STATE;
+			this.state = THROWING_STATE;
 		end;
 		if (hurt)
-			state = HURT_STATE;
+			this.state = HURT_STATE;
 			
 			//si no somos invencibles
 			if (!hurtDisabled)
-				//salto hacia atrás
+				//sthis.alto hacia atrás
 				hurtDisabled = true;				
-				isBitSet(flags,B_HMIRROR) ? vX = cHurtVelX : vX = -cHurtVelX;
-				vY = -cHurtVelY;
+				isBitSet(flags,B_HMIRROR) ? this.vX = cHurtVelX : this.vX = -cHurtVelX;
+				this.vY = -cHurtVelY;
 				grounded = false;
 				//si teniamos objeto, lo perdemos
 				if (picked)
@@ -650,12 +650,12 @@ BEGIN
 		end;
 		
 		//si hay cambio de estado, resetamos contador animacion
-		if (prevState <> state)
-			log("Proceso: " + id + " pasa de estado " + prevState + " a " + state,DEBUG_PLAYER);
+		if (this.prevState <> this.state)
+			log("Proceso: " + id + " pasa de estado " + this.prevState + " a " + this.state,DEBUG_PLAYER);
 		end;
 		
 		//gestion del estado
-		switch (state)
+		switch (this.state)
 			case IDLE_STATE:
 				if ((on45Slope && !isBitSet(flags,B_HMIRROR)) ||
 				    (on135Slope && isBitSet(flags,B_HMIRROR)) )
@@ -719,7 +719,7 @@ BEGIN
 				end;
 			end;
 			case JUMP_STATE:
-				if (vY < 0)
+				if (this.vY < 0)
 					if (picked)
 						WGE_Animate(30,30,1,ANIM_LOOP);
 					else
@@ -752,13 +752,13 @@ BEGIN
 			end;
 			case BREAK_ATACK_STATE:
 				if (WGE_Animate(14,15,10,ANIM_LOOP))
-					state = IDLE_STATE;
+					this.state = IDLE_STATE;
 				end;
 			end;
 			case BREAK_SLOPING_STATE:
-				if (abs(vX) < 0.5)
+				if (abs(this.vX) < 0.5)
 					if (WGE_Animate(14,15,10,ANIM_ONCE))
-						state = IDLE_STATE;
+						this.state = IDLE_STATE;
 					end;
 				else
 					WGE_Animate(13,13,1,ANIM_LOOP);
@@ -774,9 +774,9 @@ BEGIN
 				WGE_Animate(13,13,1,ANIM_LOOP);
 			end
 			case SLOPING_STATE:
-				if (abs(vX) < 0.5)
+				if (abs(this.vX) < 0.5)
 					if (WGE_Animate(14,15,10,ANIM_ONCE))
-						state = IDLE_STATE;
+						this.state = IDLE_STATE;
 					end;
 				else
 					WGE_Animate(13,13,1,ANIM_LOOP);
@@ -787,26 +787,26 @@ BEGIN
 			end;
 			case PICKED_STATE:
 				if (WGE_Animate(21,21,10,ANIM_ONCE))
-					state = IDLE_STATE;
+					this.state = IDLE_STATE;
 					picking = false;
 				end;
 			end;
 			case THROWING_STATE:
 				if (jumping)
 					if (WGE_Animate(24,24,10,ANIM_ONCE))
-						state = IDLE_STATE;
+						this.state = IDLE_STATE;
 						throwing = false;
 					end;
 				else
 					if (WGE_Animate(23,23,10,ANIM_ONCE))
-						state = IDLE_STATE;
+						this.state = IDLE_STATE;
 						throwing = false;
 					end;
 				end;
 			end;
 			case HURT_STATE:
 				if (WGE_Animate(32,33,15,ANIM_ONCE))					
-					state = IDLE_STATE;
+					this.state = IDLE_STATE;
 					hurt = false;
 				end;
 			end;
@@ -835,8 +835,8 @@ begin
 	isBitSet(idProcess.flags,B_HMIRROR) ? dir =  -1 : dir = 1;
 	
 	//definimos posicion del objeto a crear segun velocidad X del player y propiedad objeto
-	if (abs(idProcess.vX) < cPlayerMinVelToIdle && !isBitSet(idObjectPicked.props,BREAKABLE))
-	    objectX = idObjectPicked.x+((idProcess.ancho)*dir);
+	if (abs(idProcess.this.vX) < cPlayerMinVelToIdle && !isBitSet(idObjectPicked.this.props,BREAKABLE))
+	    objectX = idObjectPicked.x+((idProcess.this.ancho)*dir);
 		objectY = idObjectPicked.y;
 	else
 		objectX = idObjectPicked.x;
@@ -844,26 +844,26 @@ begin
 	end;
 	
 	//Actualizamos su posicion para lanzarlo
-	idObjectPicked.fX = objectX;
-	idObjectPicked.fY = objectY;
+	idObjectPicked.this.fX = objectX;
+	idObjectPicked.this.fY = objectY;
 		
 		
 	idObjectThrowed = idObjectPicked.id;
 	
 	//asignamos velocidades al objeto para lanzarlo
-	if (abs(idProcess.vX) < cPlayerMinVelToIdle && !isBitSet(idObjectPicked.props,BREAKABLE))
+	if (abs(idProcess.this.vX) < cPlayerMinVelToIdle && !isBitSet(idObjectPicked.this.props,BREAKABLE))
 		//lo dejamos caer
-		idObjectThrowed.vX = 0;
-		idObjectThrowed.vY = 0;
+		idObjectThrowed.this.vX = 0;
+		idObjectThrowed.this.vY = 0;
 	else
-		idObjectThrowed.vX = cThrowObjectVelX * dir;
-		idObjectThrowed.vY = cThrowObjectVelY;
+		idObjectThrowed.this.vX = cThrowObjectVelX * dir;
+		idObjectThrowed.this.vY = cThrowObjectVelY;
 	end;
 	
 	//cambiamos el estado del objeto para lanzarlo
-	idObjectThrowed.state = THROWING_STATE;
-	unsetBit(idObjectThrowed.props,NO_PHYSICS);
-	setBit(idObjectThrowed.props,NO_COLLISION);
+	idObjectThrowed.this.state = THROWING_STATE;
+	unsetBit(idObjectThrowed.this.props,NO_PHYSICS);
+	setBit(idObjectThrowed.this.props,NO_COLLISION);
 	idObjectThrowed = 0;
 end;
 
@@ -875,22 +875,22 @@ begin
 	z = cZPlayer;
 	file = fpgPlayer;
 	
-	fX = idPlayer.x;
-	fY = idPlayer.y;
+	this.fX = idPlayer.x;
+	this.fY = idPlayer.y;
 	
 	flags = idPlayer.flags;
 	
-	vX = 0;
-	vY = -4;
+	this.vX = 0;
+	this.vY = -4;
 	
 	graph = 34;
 	
 	repeat	
 			//fisicas
-			vY += gravity;
+			this.vY += gravity;
 			
-			fx += vX;
-			fy += vY;
+			this.fX += this.vX;
+			this.fY += this.vY;
 			positionToInt(id);
 			
 			WGE_Animate(34,36,10,ANIM_ONCE);
@@ -903,17 +903,17 @@ end;
 /*
 process player_no_gravity()
 begin
-	ancho = 32;
-	alto = 32;
+	this.ancho = 32;
+	this.alto = 32;
 	
 	region = cGameRegion;
 	ctype = c_scroll;
 	z = cZPlayer;
 	
-	graph = map_new(ancho,ancho,8);
+	graph = map_new(this.ancho,this.ancho,8);
 	drawing_map(0,graph);
 	drawing_color(300);
-	draw_box(0,0,ancho,alto);
+	draw_box(0,0,this.ancho,this.alto);
 	
 	x = level.playerx0;
 	y = level.playery0;

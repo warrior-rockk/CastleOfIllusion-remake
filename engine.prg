@@ -160,7 +160,7 @@ begin
 				//muerte del jugador 
 				if ( 
 				   //por perdida energia
-				   (game.playerLife == 0 && idPlayer.state != HURT_STATE) ||
+				   (game.playerLife == 0 && idPlayer.this.state != HURT_STATE) ||
 				    //por tiempo a 0
 				   (game.levelTime == 0)                                  ||
 				   //por salir de la region
@@ -755,8 +755,8 @@ private
 	
 BEGIN
 	//definimos propiedades iniciales
-	alto = cTileSize;
-	ancho = cTileSize;
+	this.alto = cTileSize;
+	this.ancho = cTileSize;
 	ctype = c_scroll;
 	region = cGameRegion;
 	priority = cTilePrior;
@@ -764,7 +764,7 @@ BEGIN
 	
 	//modo sin graficos
 	if (file<0)
-		graph = map_new(alto,ancho,8);
+		graph = map_new(this.alto,this.ancho,8);
 	end;
 	
 	//establecemos su posicion inicial
@@ -863,8 +863,8 @@ BEGIN
 			//en modo debug, escribimos su posicion
 			if (debugMode)
 				set_text_color((255-TileColor)+1);
-				map_put(file,graph,write_in_map(0,i,3),ancho>>1,0);
-				map_put(file,graph,write_in_map(0,j,3),ancho>>1,8);
+				map_put(file,graph,write_in_map(0,i,3),this.ancho>>1,0);
+				map_put(file,graph,write_in_map(0,j,3),this.ancho>>1,8);
 			end;
 			
 			redraw = 0;
@@ -1020,8 +1020,8 @@ begin
 			return tileMap[posY][posX].tileCode == SOLID     ||
 				   tileMap[posY][posX].tileCode == SLOPE_135 ||
 				   tileMap[posY][posX].tileCode == SLOPE_45  ||
-			      (tileMap[posY][posX].tileCode == SOLID_ON_FALL && ( idObject.vY>0 || isType(idObject,TYPE player)) )||
-				  (tileMap[posY][posX].tileCode == TOP_STAIRS && (idObject.vY>0 || isType(idObject,TYPE player)) );
+			      (tileMap[posY][posX].tileCode == SOLID_ON_FALL && ( idObject.this.vY>0 || isType(idObject,TYPE player)) )||
+				  (tileMap[posY][posX].tileCode == TOP_STAIRS && (idObject.this.vY>0 || isType(idObject,TYPE player)) );
 		end;
 		//Colisiones lateral izquierdas
 		case COLIZQ:
@@ -1040,8 +1040,8 @@ end;
 function int getTileCode(entity idObject,int pointType)
 begin
 	//sumamos la posicion del objeto al punto de colision
-	x = idObject.x + idObject.colPoint[pointType].x;
-	y = idObject.y + idObject.colPoint[pointType].y;
+	x = idObject.x + idObject.this.colPoint[pointType].x;
+	y = idObject.y + idObject.this.colPoint[pointType].y;
 	
 	//comprobamos si existe en el mapeado
 	if (!tileExists(y/cTileSize,x/cTileSize))
@@ -1069,10 +1069,10 @@ end;
 function positionToInt(entity idObject)
 begin
 	//movemos si la posicion a cambiado partes enteras
-	idObject.x+= idObject.fX - idObject.x;
+	idObject.x+= idObject.this.fX - idObject.x;
 		
 	//en vertical,la asignacion es directa	
-	idObject.y = idObject.fY;
+	idObject.y = idObject.this.fY;
 end;
 
 //Funcion que devuelve el estado de la tecla solicitado
@@ -1089,12 +1089,12 @@ function updateVelPos(entity idObject,byte grounded)
 begin
 	//Actualizar velocidades
 	if (grounded)
-		idObject.vY = 0;
+		idObject.this.vY = 0;
 	end;
 	
 	//actualizar posiciones
-	idObject.fx += idObject.vX;
-	idObject.fy += idObject.vY;
+	idObject.this.fX += idObject.this.vX;
+	idObject.this.fY += idObject.this.vY;
 	
 	positionToInt(idObject);
 end;
@@ -1237,7 +1237,7 @@ begin
 		entityID = get_id(entityType);
 		//reiniciamos la entidad
 		if (entityID <> 0) 
-			entityID.state = INITIAL_STATE;
+			entityID.this.state = INITIAL_STATE;
 		end;
 	until (entityID == 0);
 end;

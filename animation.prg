@@ -18,8 +18,8 @@ begin
 	idFather = father.id;
 	
 	//si el proceso cambia de estado, se reseta cuenta
-	if ( idFather.prevState <> idFather.state )
-		idFather.frameCount = 0;
+	if ( idFather.this.prevState <> idFather.this.state )
+		idFather.this.frameCount = 0;
 	end;
 	
 	//si el proceso no tiene grafico aun, se le asigna el startFrame
@@ -28,9 +28,9 @@ begin
 	end;
 	
 	//evitamos el primer frame
-	if (idfather.frameCount <> 0)
+	if (idfather.this.frameCount <> 0)
 	    //si toca animar en el frame correspondiente
-		if ( (idfather.frameCount % animationSpeed ) == 0  && clockTick)	
+		if ( (idfather.this.frameCount % animationSpeed ) == 0  && clockTick)	
 			//incrementamos frame si estamos en el rango
 			if (idfather.graph < endFrame && idfather.graph >= startFrame)
 				idfather.graph++;
@@ -50,7 +50,7 @@ begin
 	end;
 	
 	//incrementamos contador local 
-	idfather.frameCount+=clockTick;
+	idfather.this.frameCount+=clockTick;
 	
 	//devolvemos finalizado
 	return animFinished;
