@@ -450,18 +450,32 @@ end;
 
 //Funcion de chequeo de colision entre proceso y AABB
 //Posiciona el objeto al borde del tile y devuelve un int con el sentido de la colision o 0 si no hay
-function int colCheckAABB(entity idObject, int shapeBx,int shapeBy,int shapeBW,int shapeBH)
+function int colCheckAABB(entity idObject,int shapeBx,int shapeBy,int shapeBW,int shapeBH,int axis)
 private
 float vcX,vcY,hW,hH,oX,oY;
 int ColDir;
 
 begin
-    //Obtiene los vectores de los centros para comparar
-	vcX = (idObject.this.fX) - (shapeBx );
-	vcY = (idObject.this.fY) - (shapeBy );
+    //comprobamos los id de los procesos
+	if (idObject == 0) return 0; end;
+	
+	//Obtiene los vectores de los centros para comparar
+	//teniendo en cuenta la velocidad del objeto principal
+	//y el eje seleccionado en parametro axis
+	if (axis==BOTHAXIS || axis==HORIZONTALAXIS || axis==INFOONLY )
+		vcX = (idObject.this.fX+idObject.this.vX) - (shapeBx);
+	else
+		vcX = (idObject.this.fX) - (shapeBx);
+	end;
+	if (axis==BOTHAXIS || axis==VERTICALAXIS || axis==INFOONLY )
+		vcY = (idObject.this.fY+idObject.this.vY) - (shapeBy);
+	else
+		vcY = (idObject.this.fY) - (shapeBy);
+	end;
+	
 	// suma las mitades de los this.anchos y los this.altos
-	hW =  (idObject.this.ancho / 2) + (shapeBW / 2);
-	hH = (idObject.this.alto / 2) + (shapeBH / 2);
+	hW =  (idObject.this.ancho>>1) + (shapeBW>>1);
+	hH = (idObject.this.alto>>1) + (shapeBH>>1);
 	
 	colDir = 0;
 
@@ -473,21 +487,33 @@ begin
         oY = hH - abs(vcY);
         
 		if (oX >= oY) 
-            if (vcY > 0) 			//Arriba
-				colDir = COLUP;
-                idObject.this.fY += oY;
-             else 
-                colDir = COLDOWN;	//Abajo
-                idObject.this.fY -= oY;
-             end;
-        else 
-            if (vcX > 0) 
-                colDir = COLIZQ;	//Izquierda
-                idObject.this.fX += oX;
-             else 
-                colDir = COLDER;	//Derecha
-                idObject.this.fX -= oX;
-             end;
+            if (axis==BOTHAXIS || axis==VERTICALAXIS || axis==INFOONLY )
+				if (vcY > 0) 			//Arriba
+					colDir = COLUP;
+					if (axis != INFOONLY)
+						idObject.this.fY += oY+idObject.this.vY;
+					end;
+				else 
+					colDir = COLDOWN;	//Abajo
+					if (axis != INFOONLY)
+					idObject.this.fY -= oY-idObject.this.vY;
+					end;
+				end;
+			end;
+        else
+			if (axis==BOTHAXIS || axis==HORIZONTALAXIS || axis==INFOONLY)
+				if (vcX > 0) 
+					colDir = COLIZQ;	//Izquierda
+					if (axis != INFOONLY)
+					idObject.this.fX += oX+idObject.this.vX;
+					end;
+				else 
+					colDir = COLDER;	//Derecha
+					if (axis != INFOONLY)
+						idObject.this.fX -= oX-idObject.this.vX;
+					end;
+				end;
+			end;
 	     end;
 	end;
         

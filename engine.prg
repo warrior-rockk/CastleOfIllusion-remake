@@ -945,9 +945,22 @@ Begin
 	
 End;
 
+/*function autoscroll()
+private
+	float scrollfX;		//posicion X flaot
+	float scrollfY;		//posicion Y float
+begin
+	//incrementamos posicion a la velocidad del nivel
+	scrollfX += level.levelflags.velAutoScrollX;
+	
+	if (clockCounter % level.levelflags.velAutoScrollX == 0 && clockTick)
+		scroll[cGameScroll].x0 --;
+	end;
+end;*/
+
 //Proceso que controla el movimiento del scroll
 process WGE_ControlScroll()
-	
+
 begin
 	priority = cScrollPrior;
 	
@@ -955,14 +968,27 @@ begin
 	scroll[cGameScroll].x0 = level.playerX0 - (cGameRegionW>>1);
 	scroll[cGameScroll].y0 = level.playerY0 - (cGameRegionH>>1);	
 	
+	//inicializamos la parte float
+	scrollfX = 	scroll[cGameScroll].x0;
+	
+	//test
+	level.levelflags.autoScrollX = 1;
+	level.levelflags.velAutoScrollX = -0.5;
+		
 	loop
 		
 		//movimiento del scroll
 		
-		//Si el jugador ya está en ejecución, lo enfocamos
-		if (idPlayer <> 0 )
-			scroll[cGameScroll].x0 = idPlayer.x - (cGameRegionW>>1);
-			scroll[cGameScroll].y0 = idPlayer.y - (cGameRegionH>>1);				
+		//movimiento automatico si está activo
+		if (level.levelflags.autoScrollX)
+			//incrementamos la posicion float
+			scrollfX += level.levelflags.velAutoScrollX;
+		else
+			//Si el jugador ya está en ejecución, lo enfocamos
+			if (idPlayer <> 0 )
+				scroll[cGameScroll].x0 = idPlayer.x - (cGameRegionW>>1);
+				scroll[cGameScroll].y0 = idPlayer.y - (cGameRegionH>>1);				
+			end;
 		end;
 		
 		//Ajustamos limites pantalla

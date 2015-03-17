@@ -196,6 +196,7 @@ Global
 	int minFPS; 				//FPS Mínimo
 	byte ClockTick;				//Flanco Tiempo
 	int clockCounter;			//Contador Reloj
+	float scrollfX;				//Posicion X Float del scroll
 	//juego
 	struct game
 		int state;              //estado del juego
@@ -214,16 +215,20 @@ Global
 	byte debugMode;				//Modo debug del engine
 	//nivel y mapeado
 	struct level        		//Estructura de un nivel
-		int playerX0;			//Posicion inicial X
-		int playerY0;			//Posicion inicial Y
-		int numObjects; 		//Numero objetos
-		int numPaths;			//Numero de trackings (paths de objetos)
-		byte numTiles;       	//Numero de tiles que componen el mapa del nivel
-		byte numTilesX;      	//Tamaño horizontal en tiles del mapa 
-		byte numTilesY;			//Tamaño vertical en tiles del mapa
-		int fpgTiles;			//Identificador del archivo de graficos del tile
-		int fpgObjects;			//Identificador del archivo de graficos de los objetos del nivel
-		int fpgMonsters;		//Identificador del archivo de graficos de los monstruos del nivel
+		int playerX0;				//Posicion inicial X
+		int playerY0;				//Posicion inicial Y
+		int numObjects; 			//Numero objetos
+		int numPaths;				//Numero de trackings (paths de objetos)
+		byte numTiles;       		//Numero de tiles que componen el mapa del nivel
+		byte numTilesX;      		//Tamaño horizontal en tiles del mapa 
+		byte numTilesY;				//Tamaño vertical en tiles del mapa
+		int fpgTiles;				//Identificador del archivo de graficos del tile
+		int fpgObjects;				//Identificador del archivo de graficos de los objetos del nivel
+		int fpgMonsters;			//Identificador del archivo de graficos de los monstruos del nivel
+		struct levelFlags			//Flags de nivel
+			byte  autoScrollX;   		//Scroll con movimiento X automático
+			float velAutoScrollX; 		//Velocidad autoscroll X automático
+		end;
 	End;
 	//archivos de los niveles
 	struct levelFiles[10]

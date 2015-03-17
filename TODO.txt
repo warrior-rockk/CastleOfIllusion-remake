@@ -1,4 +1,5 @@
 PLAYER:Poder Salto distinto desde escalera
+       Colision con disparomonster no puede ser una separada. Integrarlo en monsters??
 
 ENGINE (BUG):Tareas de inicializacion del engine:el mapa que esta en la posicion de mapStairs, se borra¿¿¿ ¿es por culpa de tener id 0 el 	sistema y el primer fpg?
             -paleta del juego??
@@ -14,4 +15,5 @@ ENGINE: -con screen_get puedo caputar la pantalla y hacer transiciones
 		
 OBJECTS:-al salir de la region al saltar desaparece aunque lo lleves en la mano
 
+COLLISIONS:generalizar los calculos de colision para utilizarlo segun los tipos de colision de manera global
 		

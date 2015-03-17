@@ -479,6 +479,18 @@ BEGIN
 					
 		until (colID == 0);
 		
+		//colision con scroll automático
+		if (level.levelflags.autoScrollX)
+			//actualizamos la posicion de autoScroll antes de la colision
+			scroll[cGameScroll].x0 += scrollfX - scroll[cGameScroll].x0;
+			
+			//lanzamos comprobacion de colision con el scroll vertical
+			dir = colCheckAABB(id,scroll[cGameScroll].x0 + cGameRegionW,scroll[cGameScroll].y0+ cGameRegionH,1,cGameRegionH,HORIZONTALAXIS);
+
+			//aplicamos la direccion de la colision
+			applyDirCollision(ID,dir,&grounded);
+		end;
+		
 		//Fin colisiones ==============================
 		
 		//Actualizar velocidades
