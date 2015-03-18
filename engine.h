@@ -13,6 +13,7 @@
 #define unsetBit(a,b)   ( a &=~ b )								//Quitar un bit
 #define isType(a,b)     (a.reserved.process_type == b) 			//Funcion para comprobar tipo proceso
 #define tickClock(a)    ((clockCounter % a) == 0 && clockTick)	//Funcion que devuelve flanco de numero de frames especificados
+
 //Teclas 
 #define	K_UP 	  		_UP 
 #define	K_DOWN	  		_DOWN 
@@ -250,8 +251,13 @@ Global
 	int mapStairs;
 	int mapSolidOnFall;
 	//teclas
-	byte keyUse = 0;             //Seleccion Flanco
-    byte keyState[127][1];       //Mapa estados en flanco anterior y actual
+	byte keyUse = 0;            //Seleccion Flanco
+    byte keyState[127][1];      //Mapa estados en flanco anterior y actual
+	byte keyLogger[127];		//Array de teclas del keylogger
+	struct keyLoggerRecord
+		int frameTime[500];
+		byte keyCode[500];
+	end;
 End;
 
 //Variables locales

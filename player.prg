@@ -10,7 +10,7 @@
 process player()
 private 
 
-byte  jumping,				//Flag sthis.alto
+byte  jumping,				//Flag salto
 byte  grounded; 			//Flag en suelo
 byte  onStairs;				//Flag de en escaleras
 byte  crouched;				//Flag de agachado
@@ -40,7 +40,7 @@ struct tiles_comprobar[8]   //Matriz comprobacion colision tiles
 	int posx;
 	int posy;
 end;
-int jumpPower;				//Contador incremento sthis.alto
+int jumpPower;				//Contador incremento salto
 
 int i,j;					//Variables auxiliares
 byte trace;     			//Variable debug
@@ -85,7 +85,7 @@ BEGIN
 		if (canMove)
 			
 			//direccion derecha
-			if (key(K_RIGHT)) 
+			if (WGE_Key(K_RIGHT,KEY_PRESSED)) 
 				if (this.vX < velMaxX) 
 					this.vX+=accelx*(1-friction);
 				end;
@@ -93,16 +93,16 @@ BEGIN
 			end;
 			
 			//direccion izquierda
-			if (key(K_LEFT)) 
+			if (WGE_Key(K_LEFT,KEY_PRESSED)) 
 				if (this.vX > -velMaxX) 
 					this.vX-=accelx*(1-friction);
 				end;
 				onStairs = false;
 			end;
 			
-			//boton sthis.alto
+			//boton salto
 			if (WGE_Key(K_JUMP,KEY_PRESSED))
-				//sthis.alto con key_down
+				//salto con key_down
 				if (WGE_Key(K_JUMP,KEY_DOWN)) 
 					if(!jumping && (grounded || onStairs)) 
 						jumping = true;
@@ -149,7 +149,7 @@ BEGIN
 		end;
 		
 		//direccion arriba/subir escaleras
-		if (key(K_UP))			
+		if (WGE_Key(K_UP,KEY_PRESSED))			
 			//si objeto cogido y permiso mover, no podemos subir escaleras
 			if (!picked && canMove)
 				//si el centro del objeto esta en tile escaleras
@@ -176,7 +176,7 @@ BEGIN
 		end;
 		
 		//direccion abajo/agacharse/bajar escalera
-		if (key(K_DOWN))
+		if (WGE_key(K_DOWN,KEY_PRESSED))
 			//si objeto cogido y permiso movimiento, no podemos ni agacharnos y bajar escaleras
 			if (!picked && canMove)
 				//si el centro inferior del objeto esta en tile escaleras
@@ -227,7 +227,7 @@ BEGIN
 		
 		
 		//friccion: La friccion actua cuando no se mueve o esta agachado o dañado
-		if ((!key(K_LEFT) && !key(K_RIGHT)) || crouched || hurt)
+		if ((!WGE_Key(K_LEFT,KEY_PRESSED) && !WGE_Key(K_RIGHT,KEY_PRESSED)) || crouched || hurt)
 			this.vX *= friction;
 		end;
 						
@@ -262,7 +262,7 @@ BEGIN
 				//Bajandola, cambio consignas velocidades
 				elseif (isBitSet(flags,B_HMIRROR))
 					//si esta atacando,resbala por la rampa
-					if ((atacking && key(K_LEFT)) || sloping)
+					if ((atacking && WGE_Key(K_LEFT,KEY_PRESSED)) || sloping)
 						sloping = true;
 						canMove = false;
 						friction = 1;
@@ -286,7 +286,7 @@ BEGIN
 				//Bajandola, cambio consignas velocidades
 				elseif (!isBitSet(flags,B_HMIRROR))
 					//si esta atacando,resbala por la rampa
-					if ((atacking && key(K_RIGHT)) || sloping)
+					if ((atacking && WGE_Key(K_RIGHT,KEY_PRESSED)) || sloping)
 						sloping = true;
 						canMove = false;
 						friction = 1;
@@ -581,7 +581,7 @@ BEGIN
 				this.state = IDLE_STATE;
 			end;
 			//estados de frenadas al no pulsar movimiento
-			if ( abs(this.vX) > cPlayerMinVelToIdle && !key(K_RIGHT) && !key(K_LEFT)) 
+			if ( abs(this.vX) > cPlayerMinVelToIdle && !WGE_Key(K_RIGHT,KEY_PRESSED) && !WGE_Key(K_LEFT,KEY_PRESSED)) 
 				//si no esta en rampas o con objeto cogido
 				if (!on135Slope && !on45Slope && !picked)
 					//frenada cayendo
@@ -601,12 +601,12 @@ BEGIN
 			end;
 		end;
 		
-		if (key(K_LEFT))
+		if (WGE_Key(K_LEFT,KEY_PRESSED))
 			this.state = MOVE_STATE;
 			//miramos hacia la izquierda
 			flags |= B_HMIRROR;
 		end;
-		if (key(K_RIGHT))
+		if (WGE_Key(K_RIGHT,KEY_PRESSED))
 			this.state = MOVE_STATE;
 			//miramos hacia la derecha
 			flags &=~ B_HMIRROR;
@@ -624,7 +624,7 @@ BEGIN
 		if (onStairs)
 			this.state = ON_STAIRS_STATE;
 		end;
-		if (onStairs && (key(K_UP) || key(K_DOWN)) )
+		if (onStairs && (WGE_Key(K_UP,KEY_PRESSED) || WGE_Key(K_DOWN,KEY_PRESSED)) )
 			this.state = MOVE_ON_STAIRS_STATE;
 		end;
 		if (atacking)

@@ -286,7 +286,7 @@ begin
 		//Control estado de teclas
 		keyUse ^= 1;
         for ( i = 0; i < 127; i++ )
-            keyState[ i ][ keyUse ] = key( i );
+            keyState[ i ][ keyUse ] = key( i ) || keyLogger[ i ];
         end;
 		
 		frame;
@@ -960,8 +960,8 @@ begin
 	scrollfX = 	scroll[cGameScroll].x0;
 	
 	//test
-	level.levelflags.autoScrollX = 1;
-	level.levelflags.velAutoScrollX = -0.5;
+	//level.levelflags.autoScrollX = 1;
+	//level.levelflags.velAutoScrollX = -0.5;
 		
 	loop
 		
@@ -1256,4 +1256,43 @@ begin
 			entityID.this.state = INITIAL_STATE;
 		end;
 	until (entityID == 0);
+end;
+
+process keyLoggerRecorder()
+private
+	int keyFrameCounter;		//contador frames grabación
+	int i;
+begin 
+	log("Grabacion iniciada",DEBUG_ENGINE);
+	repeat
+		if (scan_code <> 0)
+			keyLoggerRecord.frameTime[i] = keyFrameCounter;
+			keyLoggerRecord.keyCode[i]   = scan_code;
+			i++;
+			log("Grabada tecla "+scan_code+" en frame: "+keyFrameCounter,DEBUG_ENGINE);
+		end;
+		
+		keyFrameCounter ++;
+		
+		frame;
+	
+	until(WGE_Key(_control,KEY_PRESSED) && WGE_Key(_s,KEY_DOWN));
+	
+	log("Grabacion Finalizada",DEBUG_ENGINE);
+end;
+
+process keyLoggerPlayer()
+private
+	int keyFrameCounter;		//contador frames reproducción
+begin 
+	repeat
+	
+		keyLogger[K_JUMP] = (keyFrameCounter == 50);
+		keyLogger[K_LEFT] = (keyFrameCounter >= 60);
+		
+		keyFrameCounter ++;
+		
+		frame;
+	
+	until (keyFrameCounter >= 100);
 end;
