@@ -1284,15 +1284,25 @@ end;
 process keyLoggerPlayer()
 private
 	int keyFrameCounter;		//contador frames reproducción
+	int i;
 begin 
-	repeat
+	log("Reproduccion iniciada",DEBUG_ENGINE);
 	
-		keyLogger[K_JUMP] = (keyFrameCounter == 50);
-		keyLogger[K_LEFT] = (keyFrameCounter >= 60);
+	repeat
+		keyLogger[K_JUMP] = 0;
+		keyLogger[K_RIGHT] = 0;
+		keyLogger[K_LEFT] = 0;
 		
+		if ( keyLoggerRecord.frameTime[i] == keyFrameCounter )
+			keyLogger[keyLoggerRecord.keyCode[i]] = 1;
+			i++;
+		end;
+			
 		keyFrameCounter ++;
 		
 		frame;
 	
-	until (keyFrameCounter >= 100);
+	until (keyFrameCounter >= 500);
+	
+	log("Reproduccion detenida",DEBUG_ENGINE);
 end;
