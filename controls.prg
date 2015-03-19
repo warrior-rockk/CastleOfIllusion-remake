@@ -31,11 +31,12 @@ return ((event==KEY_DOWN)?(  keyState[ k ][ keyUse ] && !keyState[ k ][ keyUse ^
 end;
 
 //Funcion que registra las pulsaciones de tecla para grabar partida
-process keyLoggerRecorder()
+process keyLoggerRecorder(string _file)
 private
 	int keyFrameCounter;		//contador frames grabación
 	int index;					//indice de registro
 	
+	int recordFile;				//archivo de grabacion
 	int i;						//variable aux
 begin 
 	keyLoggerRecording = true;
@@ -74,15 +75,46 @@ begin
 	keyLoggerRecording = false;
 	
 	log("Grabacion Finalizada",DEBUG_ENGINE);
+	
+	//guardamos la grabacion a archivo
+	if (_file <> "" )
+		recordFile = fopen(_file,O_WRITE);
+		//escribimos los registros grabados
+		for (i=0;i<ckeyLoggerMaxFrames;i++)
+			fwrite(recordFile,keyLoggerRecord.frameTime[i]);
+			fwrite(recordFile,keyLoggerRecord.keyCode[i]);
+		end;
+		//cerramos el archivo
+		fclose(recordFile);
+		log("Archivo "+_file+" guardado con éxito",DEBUG_ENGINE);
+	else
+		log("Grabacion se guarda en memoria",DEBUG_ENGINE);
+	end;
 end;
 
-process keyLoggerPlayer()
+process keyLoggerPlayer(string _file)
 private
 	int keyFrameCounter;		//contador frames reproducción
 	int index;					//indice del registro
 	
+	int playerFile;				//archivo de reproduccion
 	int i;						//variable aux
 begin 
+	//abrimos la reproduccion de archivo
+	if (_file <> "" && fexists(_file) )
+		playerFile = fopen(_file,O_READ);
+		//leemos los registros grabados
+		for (i=0;i<ckeyLoggerMaxFrames;i++)
+			fread(playerFile,keyLoggerRecord.frameTime[i]);
+			fread(playerFile,keyLoggerRecord.keyCode[i]);
+		end;
+		//cerramos el archivo
+		fclose(playerFile);
+		log("Archivo "+_file+" leído con éxito",DEBUG_ENGINE);
+	else
+		log("Grabacion se lee de memoria",DEBUG_ENGINE);
+	end;
+	
 	keyLoggerPlaying = true;
 	
 	log("Reproduccion iniciada",DEBUG_ENGINE);
@@ -110,7 +142,8 @@ begin
 		
 		frame;
 	
-	until (index == ckeyLoggerMaxFrames || WGE_Key(_control,KEY_PRESSED) && WGE_Key(_s,KEY_DOWN));
+	//se comprueba con key porque WGE_Key esta deshabilitado en reproduccion
+	until (index == ckeyLoggerMaxFrames ||key(_control) && key(_s)); 
 	
 	//limpiamos el buffer de reproduccion
 	for (i=0;i<ckeyCheckNumber;i++)

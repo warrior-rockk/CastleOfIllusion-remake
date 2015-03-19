@@ -119,12 +119,12 @@ begin
 	
 		//test: grabar keylogger
 		if (WGE_Key(_control,KEY_PRESSED) && WGE_Key(_g,KEY_DOWN))
-			keyLoggerRecorder();
+			keyLoggerRecorder("partida.rec");
 		end;
 		
 		//test: reproducir keylogger
 		if (WGE_Key(_control,KEY_PRESSED) && WGE_Key(_p,KEY_DOWN))
-			keyLoggerPlayer();
+			keyLoggerPlayer("partida.rec");
 		end;
 		
 		frame;
