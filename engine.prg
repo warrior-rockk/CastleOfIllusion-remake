@@ -39,9 +39,9 @@ begin
 	
 	//Archivos de los niveles
 	//level 0
-	levelFiles[0].MapFile 	= "test\ToyLand.bin";
+	levelFiles[0].MapFile 	= "testRoom\testRoom.bin";
 	levelFiles[0].DataFile 	= "test\random.dat";
-	levelFiles[0].TileFile 	= "test\tiles.fpg";
+	levelFiles[0].TileFile 	= "testRoom\tiles.fpg";
 	//level 1
 	levelFiles[1].MapFile 	= "test\ToyLand.bin";
 	levelFiles[1].DataFile 	= "test\random.dat";
@@ -882,35 +882,41 @@ Begin
 	level.fpgObjects = fpg_load("test\objetos.fpg");
 	level.fpgMonsters = fpg_load("test\monsters.fpg");
 	
-	platform(P_TRIGGERPLATFORM,8,800,696,32,16);
-	platform(P_LINEARPLATFORM,8,620,729,32,16);
-	platform(P_LINEARPLATFORM,8,458,729,32,16);
+	//test
+	if ( game.numLevel == 1)
 	
-	object(T_SOLIDITEM,5,218,712,16,16,PICKABLE | BREAKABLE);
-	object(T_SOLIDITEM,5,1210,136,16,16,PICKABLE | BOUNCY_LOW );
+		platform(P_TRIGGERPLATFORM,8,800,696,32,16);
+		platform(P_LINEARPLATFORM,8,620,729,32,16);
+		platform(P_LINEARPLATFORM,8,458,729,32,16);
+		
+		object(T_SOLIDITEM,5,218,712,16,16,PICKABLE | BREAKABLE);
+		object(T_SOLIDITEM,5,1210,136,16,16,PICKABLE | BOUNCY_LOW );
+		
+		object(T_SOLIDITEM,4,550,300,16,16,ITEM_BIG_COIN | PICKABLE | BREAKABLE | NO_PERSISTENT );
+		object(T_SOLIDITEM,4,570,300,16,16,ITEM_BIG_COIN | PICKABLE | BREAKABLE | NO_PERSISTENT );
+		
+		object(T_ITEM,0,590,300,16,16,ITEM_STAR | NO_PERSISTENT);
+		object(T_ITEM,0,1996,257,16,16,ITEM_GEM);
+		
+		object(T_SOLIDITEM,1,610,300,16,16,PICKABLE | BREAKABLE);
+		
+		monster(T_CYCLECLOWN,1250,100);
+		monster(T_TOYPLANE,526,300);
+		monster(T_TOYPLANECONTROL,526,320);
+		
+		//creamos los objetos del nivel
+		//for (i=0;i<level.numObjects;i++) 
+			//crea_objeto(i,1);
+		//end;
+				
+		//creamos los enemigos del nivel
+		//crea_enemigo(x);
+		
+		//if (C_AHORRO_OBJETOS)control_sectores();end;
+	else
+		object(T_ITEM,0,200,50,16,16,ITEM_GEM);
+	end;
 	
-	object(T_SOLIDITEM,4,550,300,16,16,ITEM_BIG_COIN | PICKABLE | BREAKABLE | NO_PERSISTENT );
-	object(T_SOLIDITEM,4,570,300,16,16,ITEM_BIG_COIN | PICKABLE | BREAKABLE | NO_PERSISTENT );
-	
-	object(T_ITEM,0,590,300,16,16,ITEM_STAR | NO_PERSISTENT);
-	object(T_ITEM,0,1996,257,16,16,ITEM_GEM);
-	
-	object(T_SOLIDITEM,1,610,300,16,16,PICKABLE | BREAKABLE);
-	
-	monster(T_CYCLECLOWN,1250,100);
-	monster(T_TOYPLANE,526,300);
-	monster(T_TOYPLANECONTROL,526,320);
-	
-	//creamos los objetos del nivel
-	//for (i=0;i<level.numObjects;i++) 
-		//crea_objeto(i,1);
-	//end;
-			
-	//creamos los enemigos del nivel
-	//crea_enemigo(x);
-	
-	//if (C_AHORRO_OBJETOS)control_sectores();end;
-	          
 End;
 
 //Funcion que reinicia un nivel ya creado

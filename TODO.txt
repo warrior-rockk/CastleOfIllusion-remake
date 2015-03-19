@@ -10,6 +10,8 @@ ENGINE: -con screen_get puedo caputar la pantalla y hacer transiciones
 		-los estados posibles deberian diferenciarse por tipo de proceso a pesar de tener estados globales que tengan el mismo numero
 		-lo mismo es aplicable a las propiedades, unas comunes y otras genéricas
 		-implementar sistema de "rooms" para scroll vertical (para otros juegos tambien usaría uno horizontal)
+		-atractt mode que se vea jugar un nivel
+		-grabacion de como jugar en testrom
 		
 OBJECTS:-al salir de la region al saltar desaparece aunque lo lleves en la mano
 
