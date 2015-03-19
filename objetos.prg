@@ -637,7 +637,7 @@ begin
 		//comportamiento item
 		switch (this.state)
 			case IDLE_STATE:
-				if (!isBitSet(this.props,ITEM_GEM) || !isBitSet(this.props,ITEM_STAR))
+				if (!isBitSet(this.props,ITEM_GEM) && !isBitSet(this.props,ITEM_STAR))
 					//tiempo item
 					if ((clockCounter % cNumFps) == 0 && clockTick)
 						itemTime++;
