@@ -23,7 +23,7 @@
 //Constantes
 const
 	ckeyCheckNumber 	= 6;		//Numero de teclas a comprobar
-	ckeyLoggerMaxFrames = 100;		//Numero maximo de frames a grabar
+	ckeyLoggerMaxFrames = 1000;		//Numero maximo de frames a grabar
 End;
 
 //Data Types
@@ -45,6 +45,8 @@ Global
 										K_DOWN,
 										K_JUMP,
 										K_ACTION_ATACK;		//Array de teclas a comprobar
+	byte keyLoggerRecording;				//flag de grabando teclas
+	byte keyLoggerPlaying;					//flag de reproduciendo teclas
 End;
 
 //Variables locales

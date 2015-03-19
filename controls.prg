@@ -13,9 +13,12 @@ function keyStateUpdate()
 private
 	int i;		//variable aux
 begin
+	//intercambiamos el flanco
 	keyUse ^= 1;
+	//recorremos el array de estados tecla
 	for ( i = 0; i < 127; i++ )
-		keyState[ i ][ keyUse ] = key( i ) || keyLogger[ i ];
+		keyState[ i ][ keyUse ] = ( key( i ) && !keyLoggerPlaying ) || 
+								  ( keyLogger[ i ] && keyLoggerPlaying );
 	end;
 end;	
 
@@ -35,6 +38,8 @@ private
 	
 	int i;						//variable aux
 begin 
+	keyLoggerRecording = true;
+	
 	log("Grabacion iniciada",DEBUG_ENGINE);
 	
 	//limpiamos el buffer de grabacion
@@ -56,7 +61,7 @@ begin
 				if (index == ckeyLoggerMaxFrames)
 					break;
 				end;
-				log("Grabada tecla "+keysCheck[i]+" en frame: "+keyFrameCounter,DEBUG_ENGINE);
+				log("Grabada tecla "+keysCheck[i]+" en frame: "+keyFrameCounter+" e indice: "+index,DEBUG_ENGINE);
 			end;
 		end;
 		
@@ -64,7 +69,9 @@ begin
 		
 		frame;
 	
-	until(WGE_Key(_control,KEY_PRESSED) && WGE_Key(_s,KEY_DOWN) || index == ckeyLoggerMaxFrames);
+	until(index == ckeyLoggerMaxFrames || WGE_Key(_control,KEY_PRESSED) && WGE_Key(_s,KEY_DOWN));
+	
+	keyLoggerRecording = false;
 	
 	log("Grabacion Finalizada",DEBUG_ENGINE);
 end;
@@ -76,6 +83,8 @@ private
 	
 	int i;						//variable aux
 begin 
+	keyLoggerPlaying = true;
+	
 	log("Reproduccion iniciada",DEBUG_ENGINE);
 	
 	repeat
@@ -93,7 +102,7 @@ begin
 				if (index == ckeyLoggerMaxFrames)
 					break;
 				end;
-				log("Reproducida tecla "+keysCheck[i]+" en frame: "+keyFrameCounter,DEBUG_ENGINE);
+				log("Reproducida tecla "+keysCheck[i]+" en frame: "+keyFrameCounter+" e indice: "+index,DEBUG_ENGINE);
 			end;
 		end;
 		
@@ -101,12 +110,14 @@ begin
 		
 		frame;
 	
-	until (index == ckeyLoggerMaxFrames);
+	until (index == ckeyLoggerMaxFrames || WGE_Key(_control,KEY_PRESSED) && WGE_Key(_s,KEY_DOWN));
 	
 	//limpiamos el buffer de reproduccion
 	for (i=0;i<ckeyCheckNumber;i++)
 		keyLogger[keysCheck[i]] = false;
 	end;
+	
+	keyLoggerPlaying = false;
 	
 	log("Reproduccion detenida",DEBUG_ENGINE);
 end;
