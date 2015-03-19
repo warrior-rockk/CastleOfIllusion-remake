@@ -14,20 +14,6 @@
 #define isType(a,b)     (a.reserved.process_type == b) 			//Funcion para comprobar tipo proceso
 #define tickClock(a)    ((clockCounter % a) == 0 && clockTick)	//Funcion que devuelve flanco de numero de frames especificados
 
-//Teclas 
-#define	K_UP 	  		_UP 
-#define	K_DOWN	  		_DOWN 
-#define	K_LEFT    		_LEFT 
-#define	K_RIGHT	  		_RIGHT 
-#define	K_JUMP	  		_R_SHIFT
-#define	K_ACTION_ATACK	_SPACE
-#define K_PAUSE         _ENTER
-
-//Estados de tecla
-#define KEY_PRESSED    0
-#define KEY_DOWN       1
-#define KEY_UP         2
-
 //Estado del juego
 #define	SPLASH			0
 #define MENU			1
@@ -250,14 +236,7 @@ Global
 	int mapTriangle45;
 	int mapStairs;
 	int mapSolidOnFall;
-	//teclas
-	byte keyUse = 0;            //Seleccion Flanco
-    byte keyState[127][1];      //Mapa estados en flanco anterior y actual
-	byte keyLogger[127];		//Array de teclas del keylogger
-	struct keyLoggerRecord
-		int frameTime[500];
-		byte keyCode[500];
-	end;
+
 End;
 
 //Variables locales
@@ -282,6 +261,7 @@ end
 end
 
 //definiciones del engine
+include "controls.h";		//funciones controles
 include "debug.h";			//funciones debug
 include "player.h";       	//Proceso jugador
 include "collisions.h"      //Funciones de colision
@@ -291,6 +271,7 @@ include "monsters.h"		//Funciones de monstruos
 
 //Codigo del engine
 include "engine.prg";		//Core principal de engine
+include "controls.prg";		//funciones de control
 include "debug.prg";		//Funciones de debug
 include "player.prg";       //Proceso jugador
 include "collisions.prg";	//Funciones de colision
