@@ -20,10 +20,12 @@
 #define KEY_DOWN       1
 #define KEY_UP         2
 
+
 //Constantes
 const
 	ckeyCheckNumber 	= 6;		//Numero de teclas a comprobar
 	ckeyLoggerMaxFrames = 1000;		//Numero maximo de frames a grabar
+	cendRecordCode      = 128;      //Valor no asociado a tecla que indica fin de grabacion
 End;
 
 //Data Types

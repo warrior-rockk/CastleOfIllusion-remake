@@ -50,19 +50,22 @@ begin
 	end;
 	
 	repeat
-		//recorremos el array de teclas a registrar
-		for (i=0;i<ckeyCheckNumber;i++)
-			//si se ha pulsado la tecla del array
-			if (key(keysCheck[i]))
-				//registramos la tecla con el frametimestamp
-				keyLoggerRecord.frameTime[index] = keyFrameCounter;
-				keyLoggerRecord.keyCode[index]   = keysCheck[i];
-				//incrementamos el indice
-				index ++;
-				if (index == ckeyLoggerMaxFrames)
-					break;
+		//si se ha pulsado alguna tecla
+		if (scan_code)
+			//recorremos el array de teclas a registrar
+			for (i=0;i<ckeyCheckNumber;i++)
+				//si se ha pulsado la tecla del array
+				if (key(keysCheck[i]))
+					//registramos la tecla con el frametimestamp
+					keyLoggerRecord.frameTime[index] = keyFrameCounter;
+					keyLoggerRecord.keyCode[index]   = keysCheck[i];
+					//incrementamos el indice
+					index ++;
+					if (index == ckeyLoggerMaxFrames)
+						break;
+					end;
+					log("Grabada tecla "+keysCheck[i]+" en frame: "+keyFrameCounter+" e indice: "+index,DEBUG_ENGINE);
 				end;
-				log("Grabada tecla "+keysCheck[i]+" en frame: "+keyFrameCounter+" e indice: "+index,DEBUG_ENGINE);
 			end;
 		end;
 		
@@ -71,6 +74,12 @@ begin
 		frame;
 	
 	until(index == ckeyLoggerMaxFrames || WGE_Key(_control,KEY_PRESSED) && WGE_Key(_s,KEY_DOWN));
+	
+	//marcamos fin de grabacion si no llegó al maximo
+	if (index < ckeyLoggerMaxFrames)
+		keyLoggerRecord.frameTime[index] = keyFrameCounter;
+		keyLoggerRecord.keyCode[index]   = cendRecordCode; 	
+	end;
 	
 	keyLoggerRecording = false;
 	
@@ -124,9 +133,9 @@ begin
 		for (i=0;i<ckeyCheckNumber;i++)
 			//limpiamos la tecla
 			keyLogger[keysCheck[i]] = false;
-			//si el timestamp actual coincide con el registro y el codigo de la tecla
-			if ( keyLoggerRecord.frameTime[index] == keyFrameCounter &&
-      			 keyLoggerRecord.keyCode[index]   == keysCheck[i] )
+			//si el timestamp actual coincide con el registro y la tecla es una del array a comprobar
+			if ( keyLoggerRecord.frameTime[index] == keyFrameCounter && 
+				 keyLoggerRecord.keyCode[index]  == keysCheck[i] )
 				//seteamos la tecla en el keylogger
 				keyLogger[keyLoggerRecord.keyCode[index]] = true;
 				//incrementamos indice
@@ -139,11 +148,11 @@ begin
 		end;
 		
 		keyFrameCounter ++;
-		
+
 		frame;
 	
 	//se comprueba con key porque WGE_Key esta deshabilitado en reproduccion
-	until (index == ckeyLoggerMaxFrames ||key(_control) && key(_s)); 
+	until (index == ckeyLoggerMaxFrames || keyLoggerRecord.keyCode[index]  == cendRecordCode || key(_control) && key(_s)); 
 	
 	//limpiamos el buffer de reproduccion
 	for (i=0;i<ckeyCheckNumber;i++)
