@@ -282,12 +282,9 @@ begin
 			clockTick = false;
 			clockTickMem = false;
 		end;
-		
-		//Control estado de teclas
-		keyUse ^= 1;
-        for ( i = 0; i < 127; i++ )
-            keyState[ i ][ keyUse ] = key( i ) || keyLogger[ i ];
-        end;
+
+		//actualizamos el estado de las teclas
+		keyStateUpdate();
 		
 		frame;
 	end;
@@ -1090,15 +1087,6 @@ begin
 	//en vertical,la asignacion es directa	
 	idObject.y = idObject.this.fY;
 end;
-
-//Funcion que devuelve el estado de la tecla solicitado
-function WGE_Key(int k,int event)
-begin
-return ((event==KEY_DOWN)?(  keyState[ k ][ keyUse ] && !keyState[ k ][ keyUse ^ 1 ] ): \
-		(event==KEY_UP  )?( !keyState[ k ][ keyUse ] &&  keyState[ k ][ keyUse ^ 1 ] ): \
-		( keyState[ k ][ keyUse ]));
-end;
-
 
 //funcion que actualiza las velocidades y la posicion de un proceso
 function updateVelPos(entity idObject,byte grounded)

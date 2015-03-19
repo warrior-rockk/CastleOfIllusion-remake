@@ -4,7 +4,28 @@
 //  19/03/15
 //
 //  Funciones controles
+//
+//  Funcion estado de tecla basado en código de SplinterGU
 // ========================================================================
+
+//Funcion actualizacion estado de teclas
+function keyStateUpdate()
+private
+	int i;		//variable aux
+begin
+	keyUse ^= 1;
+	for ( i = 0; i < 127; i++ )
+		keyState[ i ][ keyUse ] = key( i ) || keyLogger[ i ];
+	end;
+end;	
+
+//Funcion que devuelve el estado de la tecla solicitado
+function WGE_Key(int k,int event)
+begin
+return ((event==KEY_DOWN)?(  keyState[ k ][ keyUse ] && !keyState[ k ][ keyUse ^ 1 ] ): \
+		(event==KEY_UP  )?( !keyState[ k ][ keyUse ] &&  keyState[ k ][ keyUse ^ 1 ] ): \
+		( keyState[ k ][ keyUse ]));
+end;
 
 //Funcion que registra las pulsaciones de tecla para grabar partida
 process keyLoggerRecorder()
