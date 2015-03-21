@@ -40,7 +40,7 @@ begin
 	//Archivos de los niveles
 	//level 0
 	levelFiles[0].MapFile 	= "testRoom\testRoom.bin";
-	levelFiles[0].DataFile 	= "test\random.dat";
+	levelFiles[0].DataFile 	= "testRoom\testRoom.dat";
 	levelFiles[0].TileFile 	= "testRoom\tiles.fpg";
 	//level 1
 	levelFiles[1].MapFile 	= "test\ToyLand.bin";
@@ -98,8 +98,12 @@ begin
 				//WGE_GenRandomMapFile("test\random.bin",12,8);
 				//Creamos un mapa con matriz definida
 				//WGE_GenMatrixMapFile("test\random.bin");
+				
 				//Cargamos el mapeado del nivel
 				WGE_LoadMapLevel(levelFiles[game.numLevel].MapFile,levelFiles[game.numLevel].TileFile);
+				//Cargamos el archivo de datos del nivel
+				WGE_LoadLevelData(levelFiles[game.numLevel].DataFile);
+				
 				game.levelTime      = 300; //TEMPORAL: esto lo leera del archivo nivel
 				
 				//Iniciamos Scroll
@@ -872,6 +876,40 @@ BEGIN
 	
 	end;
 end;
+
+//Cargamos datos del nivel
+Function WGE_LoadLevelData(string file_)
+private 
+	int levelDataFile;		//Archivo del nivel
+	int i,j;				//Indices auxiliares
+	
+Begin
+	
+	//Comprobamos si existe el archivo de datos del nivel
+	if (not fexists(file_))
+		log("No existe el fichero de datos nivel: " + file_,DEBUG_ENGINE);
+		WGE_Quit();
+	end;
+	
+	//leemos el archivo de mapa
+	levelDataFile = fopen(file_,O_READ);
+			
+	//Nos situamos al principio del archivo
+	fseek(levelDataFile,0,SEEK_SET);  
+		
+	//Leemos datos del nivel
+	log("Leyendo datos archivo de datos del nivel",DEBUG_ENGINE);
+	
+	//posicion inicial del jugador
+	fread(levelDataFile,level.playerX0); 
+	fread(levelDataFile,level.playerY0);  
+	
+	//cerramos el archivo
+	fclose(levelDataFile);
+	
+	log("Fichero datos nivel leído correctamente",DEBUG_ENGINE);   
+	
+End;
 
 //Creacion de los elementos del nivel
 function WGE_CreateLevel()
