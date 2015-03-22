@@ -82,9 +82,9 @@ begin
 		switch (game.state)
 			case SPLASH:
 				//apagamos pantalla
-				/*fade(0,0,0,cFadeTime);
+				fade(0,0,0,cFadeTime);
 				while(fading) frame; end;
-				*/
+				
 				game.state = LOADLEVEL;
 			end;
 			case MENU:
@@ -516,7 +516,8 @@ Begin
 	
 	//Creamos la matriz dinamica del tileMap
 	//Primera dimension
-	tileMap = calloc(level.numTilesY,sizeof(_tile*));
+	tileMap = calloc(level.numTilesY,sizeof(_tile));
+	
 	//comprobamos el direccionamiento
 	if ( tileMap == NULL )
 		log("Fallo alocando memoria dinámica (tileMap)",DEBUG_ENGINE);
@@ -907,7 +908,7 @@ Begin
 	fread(levelDataFile,level.numObjects);
 	
 	//Creamos el array dinamico de objetos
-	objects = calloc(level.numObjects,sizeof(_object*));
+	objects = calloc(level.numObjects,sizeof(_object));
 	
 	//comprobamos el direccionamiento
 	if ( objects == NULL )
