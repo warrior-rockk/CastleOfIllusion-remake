@@ -39,18 +39,18 @@ const
 end;
 
 //Objeto
-Type _objeto         			//Tipo de Dato de objeto
-	byte tipo;      			//Tipo del objeto
-	int grafico;    			//Grafico
-	int x0;         			//Posicion X
-	int y0;         			//Posicion Y
-	int angulo;     			//Angulo
-	int param[cMaxObjParams];	//Parametros del objeto
-	byte dibujado;				//Flag de si ha sido dibujado (sectorizacion)
+Type _object         			//Tipo de Dato de objeto
+	int objectType;      		//Tipo del objeto
+	int objectGraph;    		//Grafico
+	int objectX0;      			//Posicion X
+	int objectY0;     			//Posicion Y
+	int objectAncho;
+	int objectAlto;
+	int objectProps;
 End;
 
 Global
-	_objeto* objetos;			//Array Dinamico de objetos
+	_object* objects;			//Array Dinamico de objetos
 end;
 
 //declaracion de proceso objeto

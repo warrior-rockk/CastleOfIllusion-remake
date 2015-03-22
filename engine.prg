@@ -82,9 +82,9 @@ begin
 		switch (game.state)
 			case SPLASH:
 				//apagamos pantalla
-				fade(0,0,0,cFadeTime);
+				/*fade(0,0,0,cFadeTime);
 				while(fading) frame; end;
-				
+				*/
 				game.state = LOADLEVEL;
 			end;
 			case MENU:
@@ -393,24 +393,24 @@ begin
 	fread(levelFile,level.numObjects);
 	
 	//Asignamos tamaño dinamico al array de objetos
-	objetos = calloc(level.numObjects ,sizeof(_objeto));
+//	objects = calloc(level.numObjects ,sizeof(_object));
 	//comprobamos el direccionamiento dinamico
-	if ( objetos == NULL )
+/*	if ( objects == NULL )
 		log("Fallo alocando memoria dinámica (objetos)",DEBUG_ENGINE);
 		WGE_Quit();
 	end;
-	
+	*/
 	//Leemos los datos de los objetos
-	for (i=0;i<level.numObjects;i++)
-			fread(levelFile,objetos[i].tipo);
-			fread(levelFile,objetos[i].grafico);
-			fread(levelFile,objetos[i].x0);
-			fread(levelFile,objetos[i].y0); 
-			fread(levelFile,objetos[i].angulo);
+	/*for (i=0;i<level.numObjects;i++)
+			fread(levelFile,objects[i].tipo);
+			fread(levelFile,objects[i].grafico);
+			fread(levelFile,objects[i].x0);
+			fread(levelFile,objects[i].y0); 
+			fread(levelFile,objects[i].angulo);
 			for (j=0;j<cMaxObjParams;j++)
 				fread(levelFile,objetos[i].param[j]);
 			end;
-	end; 
+	end;*/ 
 	
 	//Leemos numero de paths
 	log("Leyendo Paths Nivel",DEBUG_ENGINE);
@@ -882,7 +882,6 @@ Function WGE_LoadLevelData(string file_)
 private 
 	int levelDataFile;		//Archivo del nivel
 	int i,j;				//Indices auxiliares
-	
 Begin
 	
 	//Comprobamos si existe el archivo de datos del nivel
@@ -903,6 +902,36 @@ Begin
 	//posicion inicial del jugador
 	fread(levelDataFile,level.playerX0); 
 	fread(levelDataFile,level.playerY0);  
+	
+	//numero de objetos
+	fread(levelDataFile,level.numObjects);
+	
+	//Creamos el array dinamico de objetos
+	objects = calloc(level.numObjects,sizeof(_object*));
+	
+	//comprobamos el direccionamiento
+	if ( objects == NULL )
+		log("Fallo alocando memoria dinámica (objects)",DEBUG_ENGINE);
+		WGE_Quit();
+	end;
+
+	//leemos los objetos
+	from i=0 to level.numObjects-1;
+		fread(levelDataFile,objects[i].objectType);
+		say(objects[i].objectType);
+		fread(levelDataFile,objects[i].objectGraph);
+		say(objects[i].objectgraph);
+		fread(levelDataFile,objects[i].objectX0);
+		say(objects[i].objectx0);
+		fread(levelDataFile,objects[i].objectY0);
+		say(objects[i].objecty0);
+		fread(levelDataFile,objects[i].objectAncho);
+		say(objects[i].objectancho);
+		fread(levelDataFile,objects[i].objectAlto);
+		say(objects[i].objectalto);
+		fread(levelDataFile,objects[i].objectProps);
+		say(objects[i].objectprops);
+	end;
 	
 	//cerramos el archivo
 	fclose(levelDataFile);
@@ -952,7 +981,10 @@ Begin
 		
 		//if (C_AHORRO_OBJETOS)control_sectores();end;
 	else
-		object(T_ITEM,0,200,50,16,16,ITEM_GEM);
+		//object(T_ITEM,0,200,50,16,16,ITEM_GEM);
+		from i=0 to level.numObjects-1;
+			object(objects[i].objectType,objects[i].objectGraph,objects[i].objectX0,objects[i].objectY0,objects[i].objectAncho,objects[i].objectAlto,objects[i].objectProps);
+		end;
 	end;
 	
 End;
@@ -1177,7 +1209,7 @@ begin
 	delete_text(all_text);
 	
 	//Limpiamos la memoria dinamica
-	free(objetos);
+	free(objects);
 	free(paths);
 	free(tileMap);
 	
