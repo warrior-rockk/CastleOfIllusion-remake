@@ -984,8 +984,8 @@ Begin
 	else
 		//object(T_ITEM,0,200,50,16,16,ITEM_GEM);
 		from i=0 to level.numObjects-1;
-			object(objects[i].objectType,objects[i].objectGraph,objects[i].objectX0,objects[i].objectY0,objects[i].objectAncho,objects[i].objectAlto,objects[i].objectProps);
-		end;
+			object(objects[i].objectType,objects[i].objectGraph,objects[i].objectX0,objects[i].objectY0,objects[i].objectAncho,objects[i].objectAlto,objects[i].objectProps);	
+		end;*/
 	end;
 	
 End;
