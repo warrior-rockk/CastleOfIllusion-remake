@@ -104,8 +104,6 @@ begin
 				//Cargamos el archivo de datos del nivel
 				WGE_LoadLevelData(levelFiles[game.numLevel].DataFile);
 				
-				game.levelTime      = 300; //TEMPORAL: esto lo leera del archivo nivel
-				
 				//Iniciamos Scroll
 				WGE_InitScroll();
 				//Dibujamos el mapeado
@@ -124,6 +122,7 @@ begin
 				
 				//variables de reinicio de nivel
 				game.playerLife = game.playerMaxLife;
+				game.actualLevelTime = level.levelTime;
 				
 				//encendemos pantalla
 				fade(100,100,100,cFadeTime);
@@ -140,7 +139,7 @@ begin
 				
 				//cronometro nivel	
 				if ((clockCounter % cNumFps) == 0 && clockTick && !game.paused)
-					game.levelTime--;
+					game.actualLevelTime--;
 				end;
 				
 				//pausa del juego
@@ -167,7 +166,7 @@ begin
 				   (game.playerLife == 0 && idPlayer.this.state != HURT_STATE) ||
 				   (idPlayer.this.state == DEAD_STATE)                         ||
 				    //por tiempo a 0
-				   (game.levelTime == 0)                                       ||
+				   (game.actualLevelTime == 0)                                       ||
 				   //por salir de la region
 				   out_region(idPlayer,cGameRegion)
 				   )									
@@ -214,7 +213,7 @@ begin
 				
 				//variables de reinicio de nivel
 				game.playerLife = game.playerMaxLife;
-				game.levelTime  = 300; //TEMPORAL: esto lo leera del archivo nivel	
+				game.actualLevelTime = level.levelTime;
 				
 				//se despiertan los procesos
 				gameSignal(s_wakeup_tree);
@@ -904,6 +903,9 @@ Begin
 	fread(levelDataFile,level.playerX0); 
 	fread(levelDataFile,level.playerY0);  
 	
+	//tiempo del nivel
+	fread(levelDataFile,level.levelTime);
+	
 	//numero de objetos
 	fread(levelDataFile,level.numObjects);
 	
@@ -1258,7 +1260,7 @@ begin
 		int2String(game.playerTries,&strTries,2);
 		
 		//Convertimos el tiempo a string formato de 3 digitos
-		int2String(game.levelTime,&strTime,3);
+		int2String(game.actualLevelTime,&strTime,3);
 		
 		//comprobamos si ha cambiado la vida del player para redibujar
 		if (prevPlayerLife <> game.playerLife)

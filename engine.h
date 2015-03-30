@@ -194,7 +194,7 @@ Global
 		int playerMaxLife;      //vida maxima del jugador
 		int playerTries;		//vidas del jugador
 		int score;				//puntuación
-		int levelTime;			//tiempo actual nivel
+		int actualLevelTime;    //tiempo actual del nivel
 	end;
 	int fpgGame;				//archivo de graficos globales
 	int fntGame;				//fuente general del juego
@@ -204,6 +204,7 @@ Global
 	struct level        		//Estructura de un nivel
 		int playerX0;				//Posicion inicial X
 		int playerY0;				//Posicion inicial Y
+		int levelTime;				//Tiempo del nivel
 		int numObjects; 			//Numero objetos
 		int numPaths;				//Numero de trackings (paths de objetos)
 		byte numTiles;       		//Numero de tiles que componen el mapa del nivel
