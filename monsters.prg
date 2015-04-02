@@ -56,7 +56,7 @@ begin
 				//creamos el tipo de monstruo
 				switch (monsterType)
 					case T_CYCLECLOWN:
-						idMonster = cycleClown(1,_x0,_y0,26,40,HURTPLAYER);
+						idMonster = cycleClown(1,_x0,_y0,26,40,HURTPLAYER);				
 					end;
 					case T_TOYPLANE:
 						idMonster = toyPlane(9,_x0,_y0,16,16,HURTPLAYER);
