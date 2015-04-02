@@ -206,6 +206,7 @@ Global
 		int playerY0;				//Posicion inicial Y
 		int levelTime;				//Tiempo del nivel
 		int numObjects; 			//Numero objetos
+		int numMonsters; 			//Numero enemigos
 		int numPaths;				//Numero de trackings (paths de objetos)
 		byte numTiles;       		//Numero de tiles que componen el mapa del nivel
 		byte numTilesX;      		//Tamaño horizontal en tiles del mapa 

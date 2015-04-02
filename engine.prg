@@ -936,6 +936,36 @@ Begin
 		say(objects[i].objectprops);
 	end;
 	
+	//numero de enemigos
+	fread(levelDataFile,level.numMonsters);
+	
+	//Creamos el array dinamico de enemigos
+	monsters = calloc(level.numMonsters,sizeof(_monster));
+	
+	//comprobamos el direccionamiento
+	if ( monsters == NULL )
+		log("Fallo alocando memoria dinámica (monsters)",DEBUG_ENGINE);
+		WGE_Quit();
+	end;
+
+	//leemos los enemigos
+	from i=0 to level.numMonsters-1;
+		fread(levelDataFile,monsters[i].monsterType);
+		say(monsters[i].monsterType);
+		fread(levelDataFile,monsters[i].monsterGraph);
+		say(monsters[i].monstergraph);
+		fread(levelDataFile,monsters[i].monsterX0);
+		say(monsters[i].monsterx0);
+		fread(levelDataFile,monsters[i].monsterY0);
+		say(monsters[i].monstery0);
+		fread(levelDataFile,monsters[i].monsterAncho);
+		say(monsters[i].monsterancho);
+		fread(levelDataFile,monsters[i].monsterAlto);
+		say(monsters[i].monsteralto);
+		fread(levelDataFile,monsters[i].monsterProps);
+		say(monsters[i].monsterprops);
+	end;
+	
 	//cerramos el archivo
 	fclose(levelDataFile);
 	
@@ -987,6 +1017,10 @@ Begin
 		//object(T_ITEM,0,200,50,16,16,ITEM_GEM);
 		from i=0 to level.numObjects-1;
 			object(objects[i].objectType,objects[i].objectGraph,objects[i].objectX0,objects[i].objectY0,objects[i].objectAncho,objects[i].objectAlto,objects[i].objectProps);	
+		end;
+		
+		from i=0 to level.numMonsters-1;
+			monster(monsters[i].monsterType,monsters[i].monsterX0,monsters[i].monsterY0);	
 		end;
 	end;
 	

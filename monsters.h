@@ -15,6 +15,20 @@
 #define T_TOYPLANE   			1 		//Monstruo ToyPlane
 #define T_TOYPLANECONTROL   	2 		//Monstruo ToyPlaneControl
 
+//enemigo
+Type _monster         			//Tipo de Dato de enemigo
+	int monsterType;      		//Tipo del enemigo
+	int monsterGraph;    		//Grafico
+	int monsterX0;    			//Posicion X
+	int monsterY0;     			//Posicion Y
+	int monsterAncho;
+	int monsterAlto;
+	int monsterProps;
+End;
+
+Global
+	_monster* monsters;			//Array Dinamico de enemigos
+end;
 
 //declaracion de proceso monstruo generico
 Declare Process monster(int monsterType,int _x0,int _y0)
