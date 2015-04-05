@@ -921,19 +921,13 @@ Begin
 	//leemos los objetos
 	from i=0 to level.numObjects-1;
 		fread(levelDataFile,objects[i].objectType);
-		say(objects[i].objectType);
 		fread(levelDataFile,objects[i].objectGraph);
-		say(objects[i].objectgraph);
 		fread(levelDataFile,objects[i].objectX0);
-		say(objects[i].objectx0);
 		fread(levelDataFile,objects[i].objectY0);
-		say(objects[i].objecty0);
 		fread(levelDataFile,objects[i].objectAncho);
-		say(objects[i].objectancho);
 		fread(levelDataFile,objects[i].objectAlto);
-		say(objects[i].objectalto);
+		fread(levelDataFile,objects[i].objectFlags);
 		fread(levelDataFile,objects[i].objectProps);
-		say(objects[i].objectprops);
 	end;
 	
 	//numero de enemigos
@@ -951,19 +945,13 @@ Begin
 	//leemos los enemigos
 	from i=0 to level.numMonsters-1;
 		fread(levelDataFile,monsters[i].monsterType);
-		say(monsters[i].monsterType);
 		fread(levelDataFile,monsters[i].monsterGraph);
-		say(monsters[i].monstergraph);
 		fread(levelDataFile,monsters[i].monsterX0);
-		say(monsters[i].monsterx0);
 		fread(levelDataFile,monsters[i].monsterY0);
-		say(monsters[i].monstery0);
 		fread(levelDataFile,monsters[i].monsterAncho);
-		say(monsters[i].monsterancho);
 		fread(levelDataFile,monsters[i].monsterAlto);
-		say(monsters[i].monsteralto);
+		fread(levelDataFile,monsters[i].monsterFlags);
 		fread(levelDataFile,monsters[i].monsterProps);
-		say(monsters[i].monsterprops);
 	end;
 	
 	//cerramos el archivo
@@ -985,7 +973,7 @@ Begin
 	//test
 	if ( game.numLevel == 1)
 	
-		platform(P_TRIGGERPLATFORM,8,800,696,32,16);
+		/*platform(P_TRIGGERPLATFORM,8,800,696,32,16);
 		platform(P_LINEARPLATFORM,8,620,729,32,16);
 		platform(P_LINEARPLATFORM,8,458,729,32,16);
 		
@@ -1003,7 +991,7 @@ Begin
 		monster(T_CYCLECLOWN,1250,100);
 		monster(T_TOYPLANE,526,300);
 		monster(T_TOYPLANECONTROL,526,320);
-		
+		*/
 		//creamos los objetos del nivel
 		//for (i=0;i<level.numObjects;i++) 
 			//crea_objeto(i,1);
@@ -1016,11 +1004,11 @@ Begin
 	else
 		//object(T_ITEM,0,200,50,16,16,ITEM_GEM);
 		from i=0 to level.numObjects-1;
-			object(objects[i].objectType,objects[i].objectGraph,objects[i].objectX0,objects[i].objectY0,objects[i].objectAncho,objects[i].objectAlto,objects[i].objectProps);	
+			object(objects[i].objectType,objects[i].objectGraph,objects[i].objectX0,objects[i].objectY0,objects[i].objectAncho,objects[i].objectAlto,objects[i].objectFlags,objects[i].objectProps);	
 		end;
 		
 		from i=0 to level.numMonsters-1;
-			monster(monsters[i].monsterType,monsters[i].monsterX0,monsters[i].monsterY0);	
+			monster(monsters[i].monsterType,monsters[i].monsterX0,monsters[i].monsterY0,monsters[i].monsterFlags,monsters[i].monsterProps);	
 		end;
 	end;
 	

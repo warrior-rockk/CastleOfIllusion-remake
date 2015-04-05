@@ -44,9 +44,10 @@ Type _object         			//Tipo de Dato de objeto
 	int objectGraph;    		//Grafico
 	int objectX0;      			//Posicion X
 	int objectY0;     			//Posicion Y
-	int objectAncho;
-	int objectAlto;
-	int objectProps;
+	int objectAncho;			//Ancho
+	int objectAlto;				//Alto
+	int objectFlags;			//flags
+	int objectProps;			//Propiedades
 End;
 
 Global
@@ -54,14 +55,14 @@ Global
 end;
 
 //declaracion de proceso objeto
-Declare Process object(int objectType,int _graph,int _x0,int _y0,int _ancho,int _alto,int _props)
+Declare Process object(int objectType,int _graph,int _x0,int _y0,int _ancho,int _alto,int _flags,int _props)
 public
 	_entityPublicData this;			//datos publicos de entidad
 end
 end
 
 //declaracion de proceso bloque
-Declare Process solidItem(int graph,int x,int y,int _ancho,int _alto,int _props)
+Declare Process solidItem(int graph,int x,int y,int _ancho,int _alto,int _flags,int _props)
 public
 	_entityPublicData this;			//datos publicos de entidad
 end
@@ -103,7 +104,7 @@ end
 end
 
 //declaracion de objeto item
-Declare Process item(int x,int y,int _ancho,int _alto,int _props)
+Declare Process item(int x,int y,int _ancho,int _alto,int _flags,int _props)
 public
 	_entityPublicData this;			//datos publicos de entidad
 end
