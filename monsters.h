@@ -32,7 +32,7 @@ Global
 end;
 
 //declaracion de proceso monstruo generico
-Declare Process monster(int monsterType,int _x0,int _y0,int _flags,int _props)
+Declare Process monster(int monsterType,int _x0,int _y0,int _ancho,int _alto,int _flags,int _props)
 public
 	_entityPublicData this;			//datos publicos de entidad
 end

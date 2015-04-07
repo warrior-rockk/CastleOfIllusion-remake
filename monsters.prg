@@ -8,7 +8,7 @@
 
 //Proceso monstruo generico
 //Sera el padre del monstruo concreto para tratarlo como unico para colisiones,etc..
-Process monster(int monsterType,int _x0,int _y0,int _flags,int _props)
+Process monster(int monsterType,int _x0,int _y0,int _ancho,int _alto,int _flags,int _props)
 private
 	monster idMonster;		//id del mosntruo que se crea
 	
@@ -23,7 +23,7 @@ begin
 	loop
 		//si se reinicia, se actualiza flags region
 		if (this.state == INITIAL_STATE)
-			inRegion  = region_in(_x0,_y0,this.ancho,this.alto);
+			inRegion  = region_in(_x0,_y0,_ancho,_alto);
 			outRegion = true;
 		end;
 		
@@ -56,13 +56,13 @@ begin
 				//creamos el tipo de monstruo
 				switch (monsterType)
 					case T_CYCLECLOWN:
-						idMonster = cycleClown(1,_x0,_y0,26,40,_flags,HURTPLAYER);				
+						idMonster = cycleClown(1,_x0,_y0,_ancho,_alto,_flags,HURTPLAYER);				
 					end;
 					case T_TOYPLANE:
-						idMonster = toyPlane(9,_x0,_y0,16,16,_flags,HURTPLAYER);
+						idMonster = toyPlane(9,_x0,_y0,_ancho,_alto,_flags,HURTPLAYER);
 					end;
 					case T_TOYPLANECONTROL:
-						idMonster = toyPlaneControl(15,_x0,_y0,16,16,_flags,HURTPLAYER);
+						idMonster = toyPlaneControl(15,_x0,_y0,_ancho,_alto,_flags,HURTPLAYER);
 					end;
 				end;	
 				log("Se crea el monstruo "+idMonster,DEBUG_MONSTERS);

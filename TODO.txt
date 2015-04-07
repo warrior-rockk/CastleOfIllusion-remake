@@ -12,6 +12,7 @@ ENGINE: -con screen_get puedo caputar la pantalla y hacer transiciones
 		-implementar sistema de "rooms" para scroll vertical (para otros juegos tambien usaría uno horizontal)
 		-atractt mode que se vea jugar un nivel
 		-grabacion de como jugar en testrom
+		-AL MATAR A OBJECTS CUANDO LIMPIAS NIVEL, LOS HIJOS SE QUEDAN??
 		
 OBJECTS:-al salir de la region al saltar desaparece aunque lo lleves en la mano
 

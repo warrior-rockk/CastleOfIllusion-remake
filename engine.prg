@@ -1008,7 +1008,7 @@ Begin
 		end;
 		
 		from i=0 to level.numMonsters-1;
-			monster(monsters[i].monsterType,monsters[i].monsterX0,monsters[i].monsterY0,monsters[i].monsterFlags,monsters[i].monsterProps);	
+			monster(monsters[i].monsterType,monsters[i].monsterX0,monsters[i].monsterY0,monsters[i].monsterAncho,monsters[i].monsterAlto,monsters[i].monsterFlags,monsters[i].monsterProps);	
 		end;
 	end;
 	
