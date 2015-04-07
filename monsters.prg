@@ -8,7 +8,7 @@
 
 //Proceso monstruo generico
 //Sera el padre del monstruo concreto para tratarlo como unico para colisiones,etc..
-Process monster(int monsterType,int _x0,int _y0,int _ancho,int _alto,int _flags,int _props)
+Process monster(int monsterType,int _x0,int _y0,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
 private
 	monster idMonster;		//id del mosntruo que se crea
 	
@@ -56,13 +56,13 @@ begin
 				//creamos el tipo de monstruo
 				switch (monsterType)
 					case T_CYCLECLOWN:
-						idMonster = cycleClown(1,_x0,_y0,_ancho,_alto,_flags,HURTPLAYER);				
+						idMonster = cycleClown(1,_x0,_y0,_ancho,_alto,_axisAlign,_flags,HURTPLAYER);				
 					end;
 					case T_TOYPLANE:
-						idMonster = toyPlane(9,_x0,_y0,_ancho,_alto,_flags,HURTPLAYER);
+						idMonster = toyPlane(9,_x0,_y0,_ancho,_alto,_axisAlign,_flags,HURTPLAYER);
 					end;
 					case T_TOYPLANECONTROL:
-						idMonster = toyPlaneControl(15,_x0,_y0,_ancho,_alto,_flags,HURTPLAYER);
+						idMonster = toyPlaneControl(15,_x0,_y0,_ancho,_alto,_axisAlign,_flags,HURTPLAYER);
 					end;
 				end;	
 				log("Se crea el monstruo "+idMonster,DEBUG_MONSTERS);
@@ -87,7 +87,7 @@ end;
 
 //Proceso enemigo cycleClown
 //Se mueve izquierda a derecha en un rango y dispara cuando el player está cerca
-process cycleClown(int graph,int x,int y,int _ancho,int _alto,int _flags,int _props)
+process cycleClown(int graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
 private
 byte grounded;		//flag de en suelo
 float friction;		//friccion local
@@ -113,7 +113,7 @@ begin
 	//igualamos la propiedades publicas a las de parametros
 	this.ancho = _ancho;
 	this.alto = _alto;
-	this.axisAlign = DOWN_AXIS;
+	this.axisAlign = _axisAlign;
 	this.props = _props;
 	
 	//modo debug sin graficos
@@ -240,7 +240,7 @@ end;
 
 //Proceso enemigo toyPlane
 //Se mueve izquierda a derecha hasta tocar pared y no muerte hasta matar el mando a distancia
-process toyPlane(int graph,int x,int y,int _ancho,int _alto,int _flags,int _props)
+process toyPlane(int graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
 private
 float friction;		//friccion local
 byte grounded;		//flag de en suelo
@@ -264,6 +264,7 @@ begin
 	this.ancho = _ancho;
 	this.alto = _alto;
 	this.props = _props;
+	this.axisAlign = _axisAlign;
 	
 	//modo debug sin graficos
 	if (file<0)
@@ -365,7 +366,7 @@ end;
 
 //Proceso enemigo toyPlaneControl
 //Cuando muere, mata a los toyPlane
-process toyPlaneControl(int graph,int x,int y,int _ancho,int _alto,int _flags,int _props)
+process toyPlaneControl(int graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
 private
 byte grounded;		//flag de en suelo
 monster idToyPlane;	//id de toyPlane activo
@@ -381,7 +382,7 @@ begin
 	//igualamos la propiedades publicas a las de parametros
 	this.ancho = _ancho;
 	this.alto = _alto;
-	this.axisAlign = DOWN_AXIS;
+	this.axisAlign = _axisAlign;
 	this.props = _props;
 	
 	//modo debug sin graficos

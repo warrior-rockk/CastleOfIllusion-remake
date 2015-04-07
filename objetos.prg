@@ -300,7 +300,7 @@ end;
 
 //Proceso objeto generico
 //Sera el padre del objeto concreto para tratarlo como unico para colisiones,etc..
-Process object(int objectType,int _graph,int _x0,int _y0,int _ancho,int _alto,int _flags,int _props)
+Process object(int objectType,int _graph,int _x0,int _y0,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
 private
 	object idObject;		//id del objeto que se crea
 	
@@ -349,10 +349,10 @@ begin
 				//creamos el tipo de objeto
 				switch (objectType)
 					case T_SOLIDITEM:
-						idObject = solidItem(_graph,_x0,_y0,_ancho,_alto,_flags,_props);
+						idObject = solidItem(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
 					end;
 					case T_ITEM:
-						idObject = item(_x0,_y0,_ancho,_alto,_flags,_props);
+						idObject = item(_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
 					end;
 				end;
 				log("Se crea el objeto "+idObject,DEBUG_OBJECTS);
@@ -376,7 +376,7 @@ begin
 end;
 
 //Proceso solidItem
-process solidItem(int graph,int x,int y,int _ancho,int _alto,int _flags,int _props)
+process solidItem(int graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
 private
 	byte grounded;		//Flag de en suelo
 	float friction;		//Friccion local
@@ -398,6 +398,7 @@ begin
 	this.ancho = _ancho;
 	this.alto = _alto;
 	this.props = _props;
+	this.axisAlign = _axisAlign;
 	
 	//modo debug sin graficos
 	if (file<0)
@@ -548,7 +549,7 @@ begin
 				//si el objeto tiene item dentro, lo lanzamos
 				if (isBitSet(this.props,ITEM_BIG_COIN) || isBitSet(this.props,ITEM_STAR))
 					//item(x,y,this.ancho,this.alto,this.props);
-					object(T_ITEM,0,x,y,16,16,0,ITEM_BIG_COIN);
+					object(T_ITEM,0,x,y,16,16,CENTER_AXIS,0,ITEM_BIG_COIN);
 				end;
 				//lanzamos animacion explosion objeto
 				WGE_Animation(file,2,3,x,y,10,ANIM_ONCE);
@@ -570,13 +571,16 @@ begin
 			updateObject(id,father);		
 		end;
 		
+		//alineacion del eje X del grafico
+		alignAxis(id);
+		
 		frame;
 	end;
 	
 end;
 
 //proceso item
-process item(int x,int y,int _ancho,int _alto,int _flags,int _props)
+process item(int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
 private
 	byte grounded;			//flag de en suelo
 	float friction;			//friccion local
@@ -600,6 +604,7 @@ begin
 	this.ancho = _ancho;
 	this.alto = _alto;
 	this.props = _props;
+	this.axisAlign = _axisAlign;
 	
 	//modo debug sin graficos
 	if (file<0)
@@ -712,6 +717,9 @@ begin
 		if (isType(father,TYPE object))
 			updateObject(id,father);		
 		end;
+		
+		//alineacion del eje X del grafico
+		alignAxis(id);
 		
 		frame;
 	end;

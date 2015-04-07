@@ -926,6 +926,7 @@ Begin
 		fread(levelDataFile,objects[i].objectY0);
 		fread(levelDataFile,objects[i].objectAncho);
 		fread(levelDataFile,objects[i].objectAlto);
+		fread(levelDataFile,objects[i].objectAxisAlign);
 		fread(levelDataFile,objects[i].objectFlags);
 		fread(levelDataFile,objects[i].objectProps);
 	end;
@@ -950,6 +951,7 @@ Begin
 		fread(levelDataFile,monsters[i].monsterY0);
 		fread(levelDataFile,monsters[i].monsterAncho);
 		fread(levelDataFile,monsters[i].monsterAlto);
+		fread(levelDataFile,monsters[i].monsterAxisAlign);
 		fread(levelDataFile,monsters[i].monsterFlags);
 		fread(levelDataFile,monsters[i].monsterProps);
 	end;
@@ -1004,11 +1006,11 @@ Begin
 	else
 		//object(T_ITEM,0,200,50,16,16,ITEM_GEM);
 		from i=0 to level.numObjects-1;
-			object(objects[i].objectType,objects[i].objectGraph,objects[i].objectX0,objects[i].objectY0,objects[i].objectAncho,objects[i].objectAlto,objects[i].objectFlags,objects[i].objectProps);	
+			object(objects[i].objectType,objects[i].objectGraph,objects[i].objectX0,objects[i].objectY0,objects[i].objectAncho,objects[i].objectAlto,objects[i].objectAxisAlign,objects[i].objectFlags,objects[i].objectProps);	
 		end;
 		
 		from i=0 to level.numMonsters-1;
-			monster(monsters[i].monsterType,monsters[i].monsterX0,monsters[i].monsterY0,monsters[i].monsterAncho,monsters[i].monsterAlto,monsters[i].monsterFlags,monsters[i].monsterProps);	
+			monster(monsters[i].monsterType,monsters[i].monsterX0,monsters[i].monsterY0,monsters[i].monsterAncho,monsters[i].monsterAlto,monsters[i].monsterAxisAlign,monsters[i].monsterFlags,monsters[i].monsterProps);	
 		end;
 	end;
 	

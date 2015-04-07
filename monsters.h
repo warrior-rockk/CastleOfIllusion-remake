@@ -23,6 +23,7 @@ Type _monster         			//Tipo de Dato de enemigo
 	int monsterY0;     			//Posicion Y
 	int monsterAncho;		    //Ancho
 	int monsterAlto;            //Alto
+	int monsterAxisAlign;		//Eje
 	int monsterFlags;           //flags
 	int monsterProps;           //Propiedades
 End;
@@ -32,14 +33,14 @@ Global
 end;
 
 //declaracion de proceso monstruo generico
-Declare Process monster(int monsterType,int _x0,int _y0,int _ancho,int _alto,int _flags,int _props)
+Declare Process monster(int monsterType,int _x0,int _y0,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
 public
 	_entityPublicData this;			//datos publicos de entidad
 end
 end
 
 //declaracion de proceso monstruo cycleClown
-Declare Process cycleClown(int graph,int x,int y,int _ancho,int _alto,int _flags,int _props)
+Declare Process cycleClown(int graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
 public
 	_entityPublicData this;			//datos publicos de entidad
 end
@@ -53,14 +54,14 @@ end
 end
 
 //Declaracion de enemigo ToyPlane
-Declare process toyPlane(int graph,int x,int y,int _ancho,int _alto,int _flags,int _props)
+Declare process toyPlane(int graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
 public
 	_entityPublicData this;			//datos publicos de entidad
 end
 end
 
 //Declaracion de enemigo ToyPlaneControl
-Declare process toyPlaneControl(int graph,int x,int y,int _ancho,int _alto,int _flags,int _props)
+Declare process toyPlaneControl(int graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
 public
 	_entityPublicData this;			//datos publicos de entidad
 end
