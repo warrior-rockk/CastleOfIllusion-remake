@@ -204,6 +204,7 @@ Global
 	struct level        		//Estructura de un nivel
 		int playerX0;				//Posicion inicial X
 		int playerY0;				//Posicion inicial Y
+		int playerFlags;			//Orientacion inicial player
 		int levelTime;				//Tiempo del nivel
 		int numObjects; 			//Numero objetos
 		int numMonsters; 			//Numero enemigos

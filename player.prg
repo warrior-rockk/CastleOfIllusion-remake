@@ -70,12 +70,15 @@ BEGIN
 	//respecto al centro del personaje
 	WGE_CreatePlayerColPoints(id);
 	
-	//Posicion actual del nivel actual
+	//Posicion inicial del nivel actual
 	x = level.playerx0;
 	y = level.playery0;
 	
 	this.fX = x;
 	this.fY = y;
+	
+	//Orientacion del nivel actual
+	flags = level.playerFlags;
 	
 	canMove = true;
 	

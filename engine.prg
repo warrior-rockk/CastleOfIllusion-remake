@@ -903,6 +903,9 @@ Begin
 	fread(levelDataFile,level.playerX0); 
 	fread(levelDataFile,level.playerY0);  
 	
+	//orientacion inicial del jugador
+	fread(levelDataFile,level.playerFlags); 
+	
 	//tiempo del nivel
 	fread(levelDataFile,level.levelTime);
 	
