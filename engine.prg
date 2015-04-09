@@ -44,7 +44,7 @@ begin
 	levelFiles[0].TileFile 	= "testRoom\tiles.fpg";
 	//level 1
 	levelFiles[1].MapFile 	= "test\ToyLand.bin";
-	levelFiles[1].DataFile 	= "test\random.dat";
+	levelFiles[1].DataFile 	= "test\ToyLand.dat";
 	levelFiles[1].TileFile 	= "test\tiles.fpg";
 	
 	//archivo graficos generales
@@ -976,7 +976,7 @@ Begin
 	level.fpgMonsters = fpg_load("test\monsters.fpg");
 	
 	//test
-	if ( game.numLevel == 1)
+	//if ( game.numLevel == 1)
 	
 		/*platform(P_TRIGGERPLATFORM,8,800,696,32,16);
 		platform(P_LINEARPLATFORM,8,620,729,32,16);
@@ -1006,7 +1006,7 @@ Begin
 		//crea_enemigo(x);
 		
 		//if (C_AHORRO_OBJETOS)control_sectores();end;
-	else
+	//else
 		//object(T_ITEM,0,200,50,16,16,ITEM_GEM);
 		from i=0 to level.numObjects-1;
 			object(objects[i].objectType,objects[i].objectGraph,objects[i].objectX0,objects[i].objectY0,objects[i].objectAncho,objects[i].objectAlto,objects[i].objectAxisAlign,objects[i].objectFlags,objects[i].objectProps);	
@@ -1015,7 +1015,7 @@ Begin
 		from i=0 to level.numMonsters-1;
 			monster(monsters[i].monsterType,monsters[i].monsterX0,monsters[i].monsterY0,monsters[i].monsterAncho,monsters[i].monsterAlto,monsters[i].monsterAxisAlign,monsters[i].monsterFlags,monsters[i].monsterProps);	
 		end;
-	end;
+	//end;
 	
 End;
 
