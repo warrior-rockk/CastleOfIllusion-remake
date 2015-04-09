@@ -63,10 +63,10 @@ begin
 			if (inRegion && outRegion) 
 				//creamos el tipo de plataforma
 				switch (_platformType)
-					case P_LINEARPLATFORM:
+					case PLATF_LINEAR:
 						idPlatform = linearPlatform(_graph,_x0,_y0,_ancho,_alto,0.5);
 					end;
-					case P_TRIGGERPLATFORM:
+					case PLATF_TRIGGER:
 						idPlatform = triggerPlatform(_graph,_x0,_y0,_ancho,_alto,0.5,1);
 					end;
 				end;	
@@ -348,10 +348,10 @@ begin
 			if (inRegion && outRegion )
 				//creamos el tipo de objeto
 				switch (objectType)
-					case T_SOLIDITEM:
+					case OBJ_SOLIDITEM:
 						idObject = solidItem(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
 					end;
-					case T_ITEM:
+					case OBJ_ITEM:
 						idObject = item(_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
 					end;
 				end;
@@ -549,7 +549,7 @@ begin
 				//si el objeto tiene item dentro, lo lanzamos
 				if (isBitSet(this.props,ITEM_BIG_COIN) || isBitSet(this.props,ITEM_STAR))
 					//item(x,y,this.ancho,this.alto,this.props);
-					object(T_ITEM,0,x,y,16,16,CENTER_AXIS,0,ITEM_BIG_COIN);
+					object(OBJ_ITEM,0,x,y,16,16,CENTER_AXIS,0,ITEM_BIG_COIN);
 				end;
 				//lanzamos animacion explosion objeto
 				WGE_Animation(file,2,3,x,y,10,ANIM_ONCE);

@@ -7,12 +7,16 @@
 // ========================================================================
 
 //tipos de objetos
-#define T_SOLIDITEM				0       //Objeto solido (cofre,piedra...)
-#define T_ITEM                  1       //Objeto Item
+#define OBJ_SOLIDITEM			  0       //Objeto solido (cofre,piedra...)
+#define OBJ_ITEM                  1       //Objeto Item
+#define OBJ_BUTTON                2       //Objeto boton
+#define OBJ_DOORBUTTON            3       //Objeto puerta con boton
+#define OBJ_KEY					  4       //Objeto llave
+#define OBJ_DOORKEY               5       //Objeto puerta con llave
 
 //tipos de plataformas
-#define P_LINEARPLATFORM 		0       
-#define P_TRIGGERPLATFORM 		1       
+#define PLATF_LINEAR 		0       
+#define PLATF_TRIGGER 		1       
 
 //propiedades de los objetos
 #define PICKABLE				1		//Puede ser recogido

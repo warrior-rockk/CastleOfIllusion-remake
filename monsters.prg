@@ -55,13 +55,13 @@ begin
 			if (inRegion && outRegion) 
 				//creamos el tipo de monstruo
 				switch (monsterType)
-					case T_CYCLECLOWN:
+					case MONS_CYCLECLOWN:
 						idMonster = cycleClown(1,_x0,_y0,_ancho,_alto,_axisAlign,_flags,HURTPLAYER);				
 					end;
-					case T_TOYPLANE:
+					case MONS_TOYPLANE:
 						idMonster = toyPlane(9,_x0,_y0,_ancho,_alto,_axisAlign,_flags,HURTPLAYER);
 					end;
-					case T_TOYPLANECONTROL:
+					case MONS_TOYPLANECONTROL:
 						idMonster = toyPlaneControl(15,_x0,_y0,_ancho,_alto,_axisAlign,_flags,HURTPLAYER);
 					end;
 				end;	

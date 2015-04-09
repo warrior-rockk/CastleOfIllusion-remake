@@ -11,9 +11,9 @@
 
 
 //Tipos de monstruo
-#define T_CYCLECLOWN			0 		//Monstruo CycleClown
-#define T_TOYPLANE   			1 		//Monstruo ToyPlane
-#define T_TOYPLANECONTROL   	2 		//Monstruo ToyPlaneControl
+#define MONS_CYCLECLOWN			0 		//Monstruo CycleClown
+#define MONS_TOYPLANE   		1 		//Monstruo ToyPlane
+#define MONS_TOYPLANECONTROL   	2 		//Monstruo ToyPlaneControl
 
 //enemigo
 Type _monster         			//Tipo de Dato de enemigo
