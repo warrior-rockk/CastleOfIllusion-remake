@@ -15,10 +15,14 @@ ENGINE: -con screen_get puedo caputar la pantalla y hacer transiciones
 		-AL MATAR A OBJECTS CUANDO LIMPIAS NIVEL, LOS HIJOS SE QUEDAN??
 		
 OBJECTS:-al salir de la region al saltar desaparece aunque lo lleves en la mano
-		-llave
+		-key / doorkey
 		-item con small icon
 		-small food
 		-big food
+		-fall on touch
+		-button / doorbutton
+		-boxspring
+		
 
 COLLISIONS:generalizar los calculos de colision para utilizarlo segun los tipos de colision de manera global
 		
