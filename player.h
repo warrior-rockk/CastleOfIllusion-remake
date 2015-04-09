@@ -32,6 +32,7 @@
 #define HURT_STATE              22
 #define INVISIBLE_STATE         23
 #define INITIAL_STATE           24
+#define PUSHED_STATE            25
 
 Const
 	//Fisicas
@@ -76,6 +77,7 @@ Global
 	int fpgPlayer;					//Archivo grafico del player
 	entity idPlayer;				//Identificador del proceso del jugador
 	int idPlatform;				    //Identificador de plataforma sobre la que esta el player
+	int idButton;					//Identificador de boton sobre el que esta el player
 end;
 
 //declaracion de proceso player

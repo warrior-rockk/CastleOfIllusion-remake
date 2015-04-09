@@ -339,6 +339,7 @@ BEGIN
 		//condiciones iniciales pre-colision
 		grounded = false;
 		idPlatform = 0;
+		idButton = 0;
 		objectforPickID = 0;
 		priority = cPlayerPrior;		
 		
@@ -384,6 +385,9 @@ BEGIN
 					//corregimos la Y truncamos this.fY
 					y = this.fY;
 					this.fY = y;
+					if (grounded)
+						idButton = colID;
+					end;
 				end;
 			end;
 			

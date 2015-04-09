@@ -102,3 +102,10 @@ public
 	_entityPublicData this;			//datos publicos de entidad
 end
 end
+
+//declaracion de objeto boton
+Declare Process button(int _graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
+public
+	_entityPublicData this;			//datos publicos de entidad
+end
+end

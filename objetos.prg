@@ -354,6 +354,9 @@ begin
 					case OBJ_ITEM:
 						idObject = item(_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
 					end;
+					case OBJ_BUTTON:
+						idObject = button(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
+					end;
 				end;
 				log("Se crea el objeto "+idObject,DEBUG_OBJECTS);
 				
@@ -726,6 +729,101 @@ begin
 	
 end;
 
+//proceso boton
+process button(int _graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
+private
+	byte grounded;			//flag de en suelo
+	float friction;			//friccion local
+	
+	entity colID;			//entidad con al que colisiona
+	int colDir;				//direccion de la colision
+	byte collided;			//flag de colisionado
+	
+	
+	int i;					//Var aux
+begin
+	region = cGameRegion;
+	ctype = c_scroll;
+	z = cZObject;
+	file = level.fpgObjects;
+	flags = _flags;
+	
+	graph = _graph;
+	
+	//igualamos la propiedades publicas a las de parametros
+	this.ancho = _ancho;
+	this.alto = _alto;
+	this.props = _props;
+	this.axisAlign = _axisAlign;
+	
+	//modo debug sin graficos
+	if (file<0)
+		graph = map_new(this.ancho,this.alto,8,0);
+		map_clear(0,graph,rand(200,300));
+	end;
+	
+	//establecemos posicion y velocidad
+	this.fX = x;
+	this.fY = y;
+		
+	WGE_CreateObjectColPoints(id);
+	
+	friction = floorFriction;
+	
+	this.state = IDLE_STATE;
+	
+	//ajustamos propiedades fijas de un boton
+	unSetBit(this.props,BREAKABLE);
+	unSetBit(this.props,PICKABLE);
+	SetBit(this.props,NO_PHYSICS);
+	unSetBit(this.props,NO_COLLISION);
+	
+	//actualizamos al padre con los datos de creacion
+	updateObject(id,father);
+	
+	loop
+		//nos actualizamos del padre
+		updateObject(father,id);
+		
+		//FISICAS	
+		collided = terrainPhysics(ID,friction,&grounded);
+		
+		//guardamos estado actual
+		this.prevState = this.state;
+		
+		//comportamiento item
+		switch (this.state)
+			case IDLE_STATE:
+				if (idButton == father.id)
+					graph = _graph + 1;
+					
+					this.state = PUSHED_STATE;
+				end;
+			end;
+			case PUSHED_STATE:
+				if (idButton != father.id)
+					graph = _graph;
+					
+					this.state = IDLE_STATE;
+				end;				
+			end;
+		end;
+		
+		//actualizamos velocidad y posicion
+		updateVelPos(id,grounded);
+		
+		//actualizamos el objeto padre
+		if (isType(father,TYPE object))
+			updateObject(id,father);		
+		end;
+		
+		//alineacion del eje X del grafico
+		alignAxis(id);
+		
+		frame;
+	end;
+	
+end;
 
 //funcion que actualiza las propiedades de un objeto sobre otro
 function updateObject(entity objectA,objectB)
