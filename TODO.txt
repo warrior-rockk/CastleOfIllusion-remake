@@ -1,6 +1,6 @@
 PLAYER:Poder Salto distinto desde escalera
        Colision con disparomonster no puede ser una separada. Integrarlo en monsters??
-
+	   -la muerte por fuera de region tiene que tner un buen offset para no morir al saltar mucho
 ENGINE (BUG):Tareas de inicializacion del engine:el mapa que esta en la posicion de mapStairs, se borra¿¿¿ ¿es por culpa de tener id 0 el 	sistema y el primer fpg?
             -paleta del juego??
 
@@ -15,6 +15,10 @@ ENGINE: -con screen_get puedo caputar la pantalla y hacer transiciones
 		-AL MATAR A OBJECTS CUANDO LIMPIAS NIVEL, LOS HIJOS SE QUEDAN??
 		
 OBJECTS:-al salir de la region al saltar desaparece aunque lo lleves en la mano
+		-llave
+		-item con small icon
+		-small food
+		-big food
 
 COLLISIONS:generalizar los calculos de colision para utilizarlo segun los tipos de colision de manera global
 		

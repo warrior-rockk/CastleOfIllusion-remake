@@ -974,14 +974,23 @@ end
 Begin
 	level.fpgObjects = fpg_load("test\objetos.fpg");
 	level.fpgMonsters = fpg_load("test\monsters.fpg");
-	
+
+	//creamos los objetos del nivel
+	from i=0 to level.numObjects-1;
+		object(objects[i].objectType,objects[i].objectGraph,objects[i].objectX0,objects[i].objectY0,objects[i].objectAncho,objects[i].objectAlto,objects[i].objectAxisAlign,objects[i].objectFlags,objects[i].objectProps);	
+	end;
+		
+	//creamos los enemigos del nivel
+	from i=0 to level.numMonsters-1;
+		monster(monsters[i].monsterType,monsters[i].monsterX0,monsters[i].monsterY0,monsters[i].monsterAncho,monsters[i].monsterAlto,monsters[i].monsterAxisAlign,monsters[i].monsterFlags,monsters[i].monsterProps);	
+	end;
+		
 	//test
-	//if ( game.numLevel == 1)
-	
-		/*platform(P_TRIGGERPLATFORM,8,800,696,32,16);
+	if ( game.numLevel == 1)
+		platform(P_TRIGGERPLATFORM,8,800,696,32,16);
 		platform(P_LINEARPLATFORM,8,620,729,32,16);
 		platform(P_LINEARPLATFORM,8,458,729,32,16);
-		
+		/*		
 		object(T_SOLIDITEM,5,218,712,16,16,PICKABLE | BREAKABLE);
 		object(T_SOLIDITEM,5,1210,136,16,16,PICKABLE | BOUNCY_LOW );
 		
@@ -997,25 +1006,7 @@ Begin
 		monster(T_TOYPLANE,526,300);
 		monster(T_TOYPLANECONTROL,526,320);
 		*/
-		//creamos los objetos del nivel
-		//for (i=0;i<level.numObjects;i++) 
-			//crea_objeto(i,1);
-		//end;
-				
-		//creamos los enemigos del nivel
-		//crea_enemigo(x);
-		
-		//if (C_AHORRO_OBJETOS)control_sectores();end;
-	//else
-		//object(T_ITEM,0,200,50,16,16,ITEM_GEM);
-		from i=0 to level.numObjects-1;
-			object(objects[i].objectType,objects[i].objectGraph,objects[i].objectX0,objects[i].objectY0,objects[i].objectAncho,objects[i].objectAlto,objects[i].objectAxisAlign,objects[i].objectFlags,objects[i].objectProps);	
-		end;
-		
-		from i=0 to level.numMonsters-1;
-			monster(monsters[i].monsterType,monsters[i].monsterX0,monsters[i].monsterY0,monsters[i].monsterAncho,monsters[i].monsterAlto,monsters[i].monsterAxisAlign,monsters[i].monsterFlags,monsters[i].monsterProps);	
-		end;
-	//end;
+	end;
 	
 End;
 
