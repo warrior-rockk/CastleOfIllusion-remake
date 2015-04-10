@@ -509,8 +509,9 @@ begin
 						//seteamos flag de colisionado
 						if (colDir <> NOCOL)
 							collided = true;
-							if (colDir == COLDOWN)
-								idbutton = colID;
+							//pruebas colision boton
+							if (colDir == COLDOWN && isType(colID.son,TYPE button))
+								idbutton = id;
 							end;
 						end;
 					end;
@@ -800,14 +801,14 @@ begin
 		//comportamiento item
 		switch (this.state)
 			case IDLE_STATE:
-				if (idButton == father.id)
+				if (idButton <> 0)
 					graph = _graph + 1;
 					
 					this.state = PUSHED_STATE;
 				end;
 			end;
 			case PUSHED_STATE:
-				if (idButton != father.id)
+				if (idButton == 0)
 					graph = _graph;
 					
 					this.state = IDLE_STATE;
