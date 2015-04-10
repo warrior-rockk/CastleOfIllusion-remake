@@ -840,6 +840,7 @@ private
 	
 	int openTime;			//Tiempo de apertura
 	int doorID;
+	byte openDoor;
 	int i;					//Var aux
 begin
 	region = cGameRegion;
@@ -894,17 +895,22 @@ begin
 				unSetBit(this.props,NO_COLLISION);
 				graph = _graph;
 				if (idButton <> 0 )
+					openDoor = true;
 					repeat
 						doorID = get_id(TYPE doorButton);
-						//if (doorID
+						if (doorID.y > y && doorID.this.state <> PUSHED_STATE)
+							openDoor = false;
+						end;
 					until (doorID == 0);
-					//tiempo apertura
-					if ((clockCounter % cNumFps) == 0 && clockTick)
-						openTime++;
-					end;
-					//tiempo cumplido
-					if (openTime >= 1)
-						this.state = PUSHED_STATE;
+					if (openDoor)
+						//tiempo apertura
+						if ((clockCounter % cNumFps) == 0 && clockTick)
+							openTime++;
+						end;
+						//tiempo cumplido
+						if (openTime >= 1)
+							this.state = PUSHED_STATE;
+						end;
 					end;
 				end;
 			end;
