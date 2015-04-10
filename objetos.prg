@@ -838,9 +838,9 @@ private
 	int colDir;				//direccion de la colision
 	byte collided;			//flag de colisionado
 	
-	int openTime;			//Tiempo de apertura
-	int doorID;
-	byte openDoor;
+	int doorTime;			//Tiempo de apertura/cierre
+	entity doorID;			//Id de los objetos puerta que puedan existir
+	byte openDoor;			//Flag de abrir
 	int i;					//Var aux
 begin
 	region = cGameRegion;
@@ -850,7 +850,7 @@ begin
 	flags = _flags;
 	
 	graph = _graph;
-	say(graph);
+	
 	//igualamos la propiedades publicas a las de parametros
 	this.ancho = _ancho;
 	this.alto = _alto;
@@ -892,33 +892,65 @@ begin
 		//comportamiento item
 		switch (this.state)
 			case IDLE_STATE:
+				//la puerta es solida
 				unSetBit(this.props,NO_COLLISION);
 				graph = _graph;
+				//si se pulsa boton
 				if (idButton <> 0 )
+					//seteamos flag de apertura
 					openDoor = true;
+					//comprobamos las demas puertas para abrir secuencial segun altura
 					repeat
 						doorID = get_id(TYPE doorButton);
-						if (doorID.y > y && doorID.this.state <> PUSHED_STATE)
-							openDoor = false;
+						if (doorID <> 0)
+							//si hay alguna puerta inferior que no se ha abierto, reseteamos apertura
+							if (doorID.y > y && doorID.this.state <> PUSHED_STATE)
+								openDoor = false;
+							end;
 						end;
 					until (doorID == 0);
+					//si tenemos apertura
 					if (openDoor)
 						//tiempo apertura
-						if ((clockCounter % cNumFps) == 0 && clockTick)
-							openTime++;
+						if (clockTick)
+							doorTime++;
 						end;
 						//tiempo cumplido
-						if (openTime >= 1)
+						if (doorTime >= cDoorTime)
 							this.state = PUSHED_STATE;
 						end;
 					end;
 				end;
 			end;
 			case PUSHED_STATE:
+				//hacemos la puerta no solida
 				SetBit(this.props,NO_COLLISION);
 				graph = 0;
+				//si se suelta el boton
 				if (idButton == 0 )
-					this.state = IDLE_STATE;
+					//reseteamos el flag de apertura
+					openDoor = false;
+					//comprobamos las demas puertas para abrir en secuencia segun altura
+					repeat
+						doorID = get_id(TYPE doorButton);
+						if (doorID <> 0)
+							//si hay alguna puerta por debajo que no se ha cerrado, reseteamos el cierre
+							if (doorID.y < y && doorID.this.state <> IDLE_STATE)
+								openDoor = true;
+							end;
+						end;
+					until (doorID == 0);
+					//flag de cerrar
+					if (!openDoor)
+						//tiempo apertura
+						if (clockTick)
+							doorTime--;
+						end;
+						//tiempo cumplido
+						if (doorTime <= 0)
+							this.state = IDLE_STATE;
+						end;
+					end;
 				end;
 			end;
 		end;

@@ -40,6 +40,7 @@ const
 	cItemTimeOut        =           8;          //Timeout Item
 	cItemTimeToBlink    =           4;			//Tiempo parpadeo antes de timeout
 	cItemBlinkTime      =           3;			//Velocidad parpadeo
+	cDoorTime			=           10;         //Velocidad Puerta
 end;
 
 //Objeto
