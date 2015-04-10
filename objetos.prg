@@ -489,6 +489,10 @@ begin
 			case PICKED_STATE:
 				isBitSet(idPlayer.flags,B_HMIRROR) ? this.fX = idPlayer.x-cObjectPickedPosX : this.fX = idPlayer.x+cObjectPickedPosX;
 				this.fY = idPlayer.y+cObjectPickedPosY;
+				//resteamos flag boton?
+				if (idButton == ID) 
+					idButton = 0;
+				end;
 			end;
 			case THROWING_STATE:	
 				//mientras se mueve, no es solido
@@ -512,6 +516,8 @@ begin
 							//pruebas colision boton
 							if (colDir == COLDOWN && isType(colID.son,TYPE button))
 								idbutton = id;
+								//centramos el objeto en el boton para que no te puedas subir?
+								this.fX = colId.this.fX;
 							end;
 						end;
 					end;
