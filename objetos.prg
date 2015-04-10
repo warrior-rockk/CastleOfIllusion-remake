@@ -462,7 +462,7 @@ begin
 					colID = get_id(TYPE object);
 					//si no soy yo mismo (mi padre)
 					if (colID <> father.ID) 
-						//aplicamos la direccion de la colision
+						 //aplicamos la direccion de la colision
 						applyDirCollision(ID,colCheckProcess(id,colID,BOTHAXIS),&grounded);
 					end;
 				until (colID == 0);
@@ -509,6 +509,9 @@ begin
 						//seteamos flag de colisionado
 						if (colDir <> NOCOL)
 							collided = true;
+							if (colDir == COLDOWN)
+								idbutton = colID;
+							end;
 						end;
 					end;
 				until (colID == 0);

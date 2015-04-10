@@ -339,7 +339,7 @@ BEGIN
 		//condiciones iniciales pre-colision
 		grounded = false;
 		idPlatform = 0;
-		idButton = 0;
+		//idButton = 0;
 		objectforPickID = 0;
 		priority = cPlayerPrior;		
 		
