@@ -1111,10 +1111,10 @@ begin
 				end;
 			end;
 			case PUSHED_STATE:
-				//hacemos la puerta no solida
-				SetBit(this.props,NO_COLLISION);
-				//le quitamos grafico
-				graph = 0;
+				//eliminamos la puerta
+				signal(father,s_kill);
+				signal(id,s_kill);
+				
 			end;
 		end;
 		
