@@ -120,7 +120,7 @@ BEGIN
 					jumpPower++;					
 				end;
 			else
-				//reinicio del incremento de poder de sthis.alto
+				//reinicio del incremento de poder de salto
 				jumpPower = 0;
 			end;
 
@@ -339,11 +339,12 @@ BEGIN
 		//condiciones iniciales pre-colision
 		grounded = false;
 		idPlatform = 0;
+		objectforPickID = 0;
+		priority = cPlayerPrior;		
+		//si habiamos seteado un boton, lo reiniciamos
 		if (idButton == ID) 
 			idButton = 0;
 		end;
-		objectforPickID = 0;
-		priority = cPlayerPrior;		
 		
 		//Recorremos la lista de puntos a comprobar
 		for (i=0;i<cNumColPoints;i++)
@@ -387,6 +388,7 @@ BEGIN
 					//corregimos la Y truncamos this.fY
 					y = this.fY;
 					this.fY = y;
+					//seteamos flag idButton si la colision es con un boton
 					if (grounded && isType(colID.son,TYPE button))
 						idButton = ID;
 					end;

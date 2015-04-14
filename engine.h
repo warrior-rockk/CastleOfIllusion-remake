@@ -233,6 +233,9 @@ Global
 	float gravity 			= 0.3;		//Aceleracion gravedad
 	float floorFriction 	= 0.85;		//Friccion suelo
 	float airFriction 		= 0.85;		//Friccion aire
+	//generales
+	int idButton;					//Identificador de proceso pulsando boton
+	int idKey;						//Identificar de proceso abriendo puerta
 	//Borrar
 	int mapBox; 
 	int mapTriangle135;

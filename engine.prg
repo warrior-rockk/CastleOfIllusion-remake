@@ -44,7 +44,7 @@ begin
 	levelFiles[0].TileFile 	= "testRoom\tiles.fpg";
 	//level 1
 	levelFiles[1].MapFile 	= "test\ToyLand.bin";
-	levelFiles[1].DataFile 	= "test\ToyLand.dat";
+	levelFiles[1].DataFile 	= "test\ToyLand2.dat";
 	levelFiles[1].TileFile 	= "test\tiles.fpg";
 	
 	//archivo graficos generales
@@ -138,7 +138,7 @@ begin
 			case PLAYLEVEL:
 				
 				//cronometro nivel	
-				if ((clockCounter % cNumFps) == 0 && clockTick && !game.paused)
+				if ((clockCounter % cNumFps) == 0 && clockTick && !game.paused && level.levelTime <> 0)
 					game.actualLevelTime--;
 				end;
 				
@@ -166,7 +166,7 @@ begin
 				   (game.playerLife == 0 && idPlayer.this.state != HURT_STATE) ||
 				   (idPlayer.this.state == DEAD_STATE)                         ||
 				    //por tiempo a 0
-				   (game.actualLevelTime == 0)                                       ||
+				   (game.actualLevelTime == 0 && level.levelTime <> 0)         ||
 				   //por salir de la region
 				   out_region(idPlayer,cGameRegion)
 				   )									

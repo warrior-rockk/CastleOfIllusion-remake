@@ -1,6 +1,8 @@
 PLAYER:Poder Salto distinto desde escalera
        Colision con disparomonster no puede ser una separada. Integrarlo en monsters??
 	   -la muerte por fuera de region tiene que tner un buen offset para no morir al saltar mucho
+	   -parece que con las flechas de direccion no cae de escalera
+
 ENGINE (BUG):Tareas de inicializacion del engine:el mapa que esta en la posicion de mapStairs, se borra¿¿¿ ¿es por culpa de tener id 0 el 	sistema y el primer fpg?
             -paleta del juego??
 
@@ -9,18 +11,15 @@ DEBUG:escribir el log a archivo??. Se puede hacer en una bat que diriga la salid
 ENGINE: -con screen_get puedo caputar la pantalla y hacer transiciones
 		-los estados posibles deberian diferenciarse por tipo de proceso a pesar de tener estados globales que tengan el mismo numero
 		-lo mismo es aplicable a las propiedades, unas comunes y otras genéricas
-		-implementar sistema de "rooms" para scroll vertical (para otros juegos tambien usaría uno horizontal)
+		-implementar sistema de "rooms" para scroll vertical (para otros juegos tambien usaría uno horizontal). SOlo se puede salir de la room por pasarela, (tiles concretos, no salir de toda la region)
 		-atractt mode que se vea jugar un nivel
 		-grabacion de como jugar en testrom
-		-AL MATAR A OBJECTS CUANDO LIMPIAS NIVEL, LOS HIJOS SE QUEDAN??
 		
 OBJECTS:-al salir de la region al saltar desaparece aunque lo lleves en la mano
-		-key / doorkey
-		-item con small icon
+		-item con small coin
 		-small food
 		-big food
 		-fall on touch
-		-button / doorbutton
 		-boxspring
 		
 

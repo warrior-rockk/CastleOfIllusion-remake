@@ -6,7 +6,7 @@
 //  Definiciones del player
 // ========================================================================
 
-//estados
+//estados del player
 #define IDLE_STATE				0
 #define MOVE_STATE          	1
 #define MOVE_RIGHT_STATE 		2
@@ -77,7 +77,6 @@ Global
 	int fpgPlayer;					//Archivo grafico del player
 	entity idPlayer;				//Identificador del proceso del jugador
 	int idPlatform;				    //Identificador de plataforma sobre la que esta el player
-	int idButton;					//Identificador de boton sobre el que esta el player
 end;
 
 //declaracion de proceso player

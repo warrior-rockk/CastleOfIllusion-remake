@@ -28,7 +28,8 @@
 #define ITEM_STAR	           64		//Estrella energia extra
 #define ITEM_GEM			  128		//Gema fin de nivel
 #define BOUNCY_LOW            256       //Objeto tiene rebote bajo
-#define BOUNCY_HIGH           512       //Objeto tiene rebote bajo
+#define BOUNCY_HIGH           512       //Objeto tiene rebote alto
+#define IS_KEY               1024       //Objeto es llave
 
 //constantes de objetos
 const
@@ -113,6 +114,13 @@ end
 
 //declaracion de objeto puerta con boton
 Declare Process doorButton(int _graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
+public
+	_entityPublicData this;			//datos publicos de entidad
+end
+end
+
+//declaracion de objeto puerta de llave
+Declare Process keyDoor(int _graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
 public
 	_entityPublicData this;			//datos publicos de entidad
 end

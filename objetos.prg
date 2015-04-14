@@ -360,6 +360,12 @@ begin
 					case OBJ_DOORBUTTON:
 						idObject = doorButton(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
 					end;
+					case OBJ_KEY:
+						idObject = solidItem(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props | IS_KEY | NO_PERSISTENT | PICKABLE);
+					end;
+					case OBJ_DOORKEY:
+						idObject = keyDoor(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
+					end;
 				end;
 				log("Se crea el objeto "+idObject,DEBUG_OBJECTS);
 				
@@ -455,6 +461,10 @@ begin
 				SetBit(this.props,NO_COLLISION);
 				//fisicas activadas
 				unSetBit(this.props,NO_PHYSICS);				
+				//reseteamos flag boton si lo hubiera seteado el proceso
+				if (idButton == father) 
+					idButton = 0;
+				end;
 				
 				//lanzamos comprobacion con procesos objeto
 				repeat
@@ -489,8 +499,8 @@ begin
 			case PICKED_STATE:
 				isBitSet(idPlayer.flags,B_HMIRROR) ? this.fX = idPlayer.x-cObjectPickedPosX : this.fX = idPlayer.x+cObjectPickedPosX;
 				this.fY = idPlayer.y+cObjectPickedPosY;
-				//resteamos flag boton?
-				if (idButton == ID) 
+				//reseteamos flag boton si lo hubiera seteado el proceso
+				if (idButton == father) 
 					idButton = 0;
 				end;
 			end;
@@ -513,12 +523,20 @@ begin
 						//seteamos flag de colisionado
 						if (colDir <> NOCOL)
 							collided = true;
-							//pruebas colision boton
-							if (colDir == COLDOWN && isType(colID.son,TYPE button))
-								idbutton = id;
-								//centramos el objeto en el boton para que no te puedas subir?
-								this.fX = colId.this.fX;
-							end;
+						end;
+						//Comprobacion de colision con botón para pulsarlo
+						if (colDir == COLDOWN && isType(colID.son,TYPE button))
+							//seteamos el idbutton al objeto padre nuestro
+							idbutton = father;
+							//centramos el objeto en el boton para que no te puedas subir
+							this.fX = colId.this.fX;
+						end;
+						//Comprobacion de colision con keyDoor para abrirla
+						if (colDir <> NOCOL && isType(colID.son,TYPE keyDoor))
+							//seteamos el idKey al objeto padre nuestro
+							idKey = father;
+							//rompemos la llave
+							this.state = DEAD_STATE;
 						end;
 					end;
 				until (colID == 0);
@@ -573,6 +591,10 @@ begin
 				if (isBitSet(this.props,NO_PERSISTENT))
 					//matamos al padre
 					signal(father,s_kill);
+				end;
+				//reseteamos flag boton si lo hubiera seteado el proceso
+				if (idButton == father) 
+					idButton = 0;
 				end;
 				//matamos el objeto
 				signal(id,s_kill);
@@ -742,7 +764,7 @@ begin
 	
 end;
 
-//proceso boton
+//proceso boton: cuando alguien setea idButton a distinto de 0, cambiamos de grafico y de estado
 process button(int _graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
 private
 	byte grounded;			//flag de en suelo
@@ -807,16 +829,20 @@ begin
 		//comportamiento item
 		switch (this.state)
 			case IDLE_STATE:
+				//si alguien activa el boton
 				if (idButton <> 0)
+					//cambiamos su grafico
 					graph = _graph + 1;
-					
+					//pasamos a estado pulsado
 					this.state = PUSHED_STATE;
 				end;
 			end;
 			case PUSHED_STATE:
+				//si alguien libera el boton
 				if (idButton == 0)
+					//grafico inicial
 					graph = _graph;
-					
+					//pasamos a reposo
 					this.state = IDLE_STATE;
 				end;				
 			end;
@@ -838,7 +864,8 @@ begin
 	
 end;
 
-//proceso puerta con boton
+//proceso puerta con boton: cuando alguien setea idbutton distinto de 0, ocultamos los bloques de 
+//puerta en orden de posicion Y y temporizado. Operacion inversa para cerrarla.
 process doorButton(int _graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
 private
 	byte grounded;			//flag de en suelo
@@ -883,7 +910,7 @@ begin
 	
 	this.state = IDLE_STATE;
 	
-	//ajustamos propiedades fijas de un boton
+	//ajustamos propiedades fijas de un doorbutton
 	unSetBit(this.props,BREAKABLE);
 	unSetBit(this.props,PICKABLE);
 	SetBit(this.props,NO_PHYSICS);
@@ -904,6 +931,7 @@ begin
 			case IDLE_STATE:
 				//la puerta es solida
 				unSetBit(this.props,NO_COLLISION);
+				//grafico inicial
 				graph = _graph;
 				//si se pulsa boton
 				if (idButton <> 0 )
@@ -935,6 +963,7 @@ begin
 			case PUSHED_STATE:
 				//hacemos la puerta no solida
 				SetBit(this.props,NO_COLLISION);
+				//le quitamos grafico
 				graph = 0;
 				//si se suelta el boton
 				if (idButton == 0 )
@@ -962,6 +991,130 @@ begin
 						end;
 					end;
 				end;
+			end;
+		end;
+		
+		//actualizamos velocidad y posicion
+		updateVelPos(id,grounded);
+		
+		//actualizamos el objeto padre
+		if (isType(father,TYPE object))
+			updateObject(id,father);		
+		end;
+		
+		//alineacion del eje X del grafico
+		alignAxis(id);
+		
+		frame;
+	end;
+	
+end;
+
+//proceso puerta con llave: cuando alguien setea idKey distinto de 0, ocultamos los bloques de 
+//puerta en orden de posicion Y y temporizado. 
+process keyDoor(int _graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
+private
+	byte grounded;			//flag de en suelo
+	float friction;			//friccion local
+	
+	entity colID;			//entidad con al que colisiona
+	int colDir;				//direccion de la colision
+	byte collided;			//flag de colisionado
+	
+	int doorTime;			//Tiempo de apertura/cierre
+	entity doorID;			//Id de los objetos puerta que puedan existir
+	byte openDoor;			//Flag de abrir
+	int i;					//Var aux
+begin
+	region = cGameRegion;
+	ctype = c_scroll;
+	z = cZObject;
+	file = level.fpgObjects;
+	flags = _flags;
+	
+	graph = _graph;
+	
+	//igualamos la propiedades publicas a las de parametros
+	this.ancho = _ancho;
+	this.alto = _alto;
+	this.props = _props;
+	this.axisAlign = _axisAlign;
+	
+	//modo debug sin graficos
+	if (file<0)
+		graph = map_new(this.ancho,this.alto,8,0);
+		map_clear(0,graph,rand(200,300));
+	end;
+	
+	//establecemos posicion y velocidad
+	this.fX = x;
+	this.fY = y;
+		
+	WGE_CreateObjectColPoints(id);
+	
+	friction = floorFriction;
+	
+	this.state = IDLE_STATE;
+	
+	//ajustamos propiedades fijas de un doorbutton
+	unSetBit(this.props,BREAKABLE);
+	unSetBit(this.props,PICKABLE);
+	SetBit(this.props,NO_PHYSICS);
+	unSetBit(this.props,NO_COLLISION);
+	setBit(this.props,NO_PERSISTENT);
+	
+	//actualizamos al padre con los datos de creacion
+	updateObject(id,father);
+	
+	//reseteamos el flag de idKey
+	idKey = 0;
+	
+	loop
+		//nos actualizamos del padre
+		updateObject(father,id);
+		
+		//guardamos estado actual
+		this.prevState = this.state;
+		
+		//comportamiento item
+		switch (this.state)
+			case IDLE_STATE:
+				//la puerta es solida
+				unSetBit(this.props,NO_COLLISION);
+				//grafico inicial
+				graph = _graph;
+				//si se activa la llave
+				if (idKey <> 0 )
+					//seteamos flag de apertura
+					openDoor = true;
+					//comprobamos las demas puertas para abrir secuencial segun altura
+					repeat
+						doorID = get_id(TYPE keyDoor);
+						if (doorID <> 0)
+							//si hay alguna puerta inferior que no se ha abierto, reseteamos apertura
+							if (doorID.y > y && doorID.this.state <> PUSHED_STATE)
+								openDoor = false;
+							end;
+						end;
+					until (doorID == 0);
+					//si tenemos apertura
+					if (openDoor)
+						//tiempo apertura
+						if (clockTick)
+							doorTime++;
+						end;
+						//tiempo cumplido
+						if (doorTime >= cDoorTime)
+							this.state = PUSHED_STATE;
+						end;
+					end;
+				end;
+			end;
+			case PUSHED_STATE:
+				//hacemos la puerta no solida
+				SetBit(this.props,NO_COLLISION);
+				//le quitamos grafico
+				graph = 0;
 			end;
 		end;
 		
