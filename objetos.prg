@@ -538,7 +538,7 @@ begin
 							//seteamos el idKey al objeto padre nuestro
 							idKey = father;
 							//rompemos la llave
-							this.state = DEAD_STATE;
+							setBit(this.props,BREAKABLE);
 						end;
 					end;
 				until (colID == 0);

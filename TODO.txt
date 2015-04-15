@@ -1,6 +1,6 @@
 PLAYER:Poder Salto distinto desde escalera
        Colision con disparomonster no puede ser una separada. Integrarlo en monsters??
-	   -la muerte por fuera de region tiene que tner un buen offset para no morir al saltar mucho
+	   -la muerte por fuera de region tiene que tner un buen offset para no morir al saltar mucho y solo deberia ser al bajar, no subir.
 	   -parece que con las flechas de direccion no cae de escalera
 
 ENGINE (BUG):Tareas de inicializacion del engine:el mapa que esta en la posicion de mapStairs, se borra¿¿¿ ¿es por culpa de tener id 0 el 	sistema y el primer fpg?
@@ -24,7 +24,6 @@ OBJECTS:-al salir de la region al saltar desaparece aunque lo lleves en la mano
 		-big food
 		-fall on touch
 		-boxspring
-		-que la llave no abra la puerta si no se destruye al colisionar con puerta
 
 PLATFORMS: las plataformas solo se regeneran si salen de su rango de movimiento?
 
