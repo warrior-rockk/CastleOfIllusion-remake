@@ -328,6 +328,8 @@ begin
 				//eliminamos el objeto
 				signal(idObject,s_kill);	
 				log("Se elimina el objeto "+idObject,DEBUG_OBJECTS);
+				say(x);
+				say(y);
 				//bajamos flags
 				inRegion = false;
 				outRegion = false;

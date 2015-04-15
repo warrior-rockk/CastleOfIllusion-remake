@@ -52,7 +52,7 @@
 #define NO_SCROLL_L   13
 #define SLOPE_135     14
 #define SLOPE_45      15
-
+#define NO_SCROLL_Y   16
 
 //Propiedades de tile
 //bit 7:Opacidad del tile.0:el tile es cuadrado 1:el tile tiene transparencia
@@ -61,6 +61,10 @@
 #define BIT_TILE_SHAPE 		128
 #define BIT_TILE_DELANTE 	64
 #define BIT_TILE_ALPHA      32
+
+//Direccion transicion entre Rooms
+#define ROOM_TRANSITION_DOWN 1
+#define ROOM_TRANSITION_UP   2
 
 //Constantes del motor
 const
@@ -86,11 +90,12 @@ const
 	cZObject         = 1;					//Profundidad de los objetos
 	cZMap1 	    	 = 2;					//Profundidad del mapeado tras el player
 	
+	//Parametros del engine
 	cMaxObjParams   = 9;					//Numero de parametros objetos
     cSlopesEnabled  = 1;                    //Flag que determina si se usan rampas en el engine
     cHillHeight		= 8;					//Altura maxima de una pendiente (para adaptar al terreno)
 	cNumColPoints 	= 10;					//Puntos de colision/deteccion
-	cTransLevel      = 128;					//Nivel transparencia Alpha
+	cTransLevel     = 128;					//Nivel transparencia Alpha
 		
 	//Pantalla
 	cNumFPS    	 	= 60;  					//Frames por segundo
@@ -103,6 +108,10 @@ const
 	cGameRegionY 	= 0;					//Region Vertical Pantalla de juego (Representacion Mapeado)
 	cGameRegionW 	= 256;					//Region Horizontal Pantalla de juego (Representacion Mapeado) 
 	cGameRegionH 	= 160;					//Region Vertical Pantalla de juego (Representacion Mapeado)	
+	cRoomScroll     = true;					//Flag para utilizar el scroll vertical como Master System (transiciones entre "rooms")
+	cTilesBetweenRooms = 2;					//Numero de tiles transicion entre rooms
+	cVelRoomTransition = 4;					//Velocidad transicion entre rooms
+	
 	//HUD
 	cHUDRegion  	= 2;    				//Numero Region informacion juego
 	cHUDRegionX 	= 0;					//Region Horizontal informacion juego HUD
@@ -242,6 +251,7 @@ Global
 	int idKey;						//Identificar de proceso abriendo puerta
 	byte stopScrollXL;				//Flag de detencion scroll horizonal derecho
 	byte stopScrollXR;				//Flag de detencion scroll horizonal derecho
+	byte stopScrollY;				//Flag de detencion scroll vertical
 	//Borrar?
 	int mapBox; 
 	int mapTriangle135;

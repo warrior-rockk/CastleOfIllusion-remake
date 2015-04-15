@@ -11,11 +11,11 @@ DEBUG:escribir el log a archivo??. Se puede hacer en una bat que diriga la salid
 ENGINE: -con screen_get puedo caputar la pantalla y hacer transiciones
 		-los estados posibles deberian diferenciarse por tipo de proceso a pesar de tener estados globales que tengan el mismo numero
 		-lo mismo es aplicable a las propiedades, unas comunes y otras genéricas
-		-implementar sistema de "rooms" para scroll vertical (para otros juegos tambien usaría uno horizontal). SOlo se puede salir de la room por pasarela, (tiles concretos, no salir de toda la region)
 		-atractt mode que se vea jugar un nivel
 		-grabacion de como jugar en testrom
 		-checkpoints. Debe empezar el nivel en sitios distintos cuando muere segun a avanzado en el mapa.
 		-Sustituir el escribir la posicion en el tile en debug con mostrar flotante la posicion o algo
+		-Los codigos de tile deberian ser bits para ser simultaneos?
 		
 OBJECTS:-al salir de la region al saltar desaparece aunque lo lleves en la mano
 		-item con small coin
@@ -23,7 +23,9 @@ OBJECTS:-al salir de la region al saltar desaparece aunque lo lleves en la mano
 		-big food
 		-fall on touch
 		-boxspring
-		
+		-que la llave no abra la puerta si no se destruye al colisionar con puerta
+
+PLATFORMS: las plataformas solo se regeneran si salen de su rango de movimiento?
 
 COLLISIONS:generalizar los calculos de colision para utilizarlo segun los tipos de colision de manera global
 		
