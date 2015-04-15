@@ -44,7 +44,7 @@ begin
 	levelFiles[0].TileFile 	= "testRoom\tiles.fpg";
 	//level 1
 	levelFiles[1].MapFile 	= "test\ToyLand.bin";
-	levelFiles[1].DataFile 	= "test\ToyLand2.dat";
+	levelFiles[1].DataFile 	= "test\ToyLand.dat";
 	levelFiles[1].TileFile 	= "test\tiles.fpg";
 	
 	//archivo graficos generales
@@ -1072,7 +1072,7 @@ begin
 		scroll[cGameScroll].y0 = level.playerY0 - (cGameRegionH>>1);	
 	else
 		//Posicion Y para enfoque de pantalla segun limite de region de pantalla
-		scroll[cGameScroll].y0 = (cGameRegionH + (cTilesBetweenRooms*cTileSize)) * (level.playerY0 / cGameRegionH);
+		scroll[cGameScroll].y0 = (cGameRegionH + (cTilesBetweenRooms*cTileSize)) * ((level.playerY0-(cTileSize*(level.playerY0 / cGameRegionH))) / cGameRegionH);
 	end;
 	
 	//inicializamos la parte float

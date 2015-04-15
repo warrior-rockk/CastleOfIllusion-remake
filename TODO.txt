@@ -23,7 +23,8 @@ OBJECTS:-al salir de la region al saltar desaparece aunque lo lleves en la mano
 		-big food
 		-fall on touch
 		-boxspring
-
+		-items invisibles
+		
 PLATFORMS: las plataformas solo se regeneran si salen de su rango de movimiento?
 
 COLLISIONS:generalizar los calculos de colision para utilizarlo segun los tipos de colision de manera global
