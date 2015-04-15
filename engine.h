@@ -48,8 +48,11 @@
 #define STAIRS        5
 #define TOP_STAIRS    6
 #define SOLID_ON_FALL 9
+#define NO_SCROLL_R   12
+#define NO_SCROLL_L   13
 #define SLOPE_135     14
 #define SLOPE_45      15
+
 
 //Propiedades de tile
 //bit 7:Opacidad del tile.0:el tile es cuadrado 1:el tile tiene transparencia
@@ -71,8 +74,9 @@ const
 	cPlatformChildPrior = 3;
 	cObjectPrior     	= 2;
 	cMonsterPrior    	= 1;
-	cScrollPrior 	 	=-1;
-	cTilePrior		 	=-2;
+	cTilePrior		 	=-1;
+	cScrollPrior 	 	=-2;
+	
 
 	//Profundidades
 	cZCursor    	 =-4; 		     		//Profundidad del cursor de Debug
@@ -236,7 +240,9 @@ Global
 	//generales
 	int idButton;					//Identificador de proceso pulsando boton
 	int idKey;						//Identificar de proceso abriendo puerta
-	//Borrar
+	byte stopScrollXL;				//Flag de detencion scroll horizonal derecho
+	byte stopScrollXR;				//Flag de detencion scroll horizonal derecho
+	//Borrar?
 	int mapBox; 
 	int mapTriangle135;
 	int mapTriangle45;

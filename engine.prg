@@ -862,16 +862,26 @@ BEGIN
 				debugDrawTile(id,tileColor,i,j);
 			end;
 			
-			//en modo debug, escribimos su posicion
-			if (debugMode)
+			//en modo debug, escribimos su posicion si no tiene grafico
+			if (debugMode && file<0)
 				set_text_color((255-TileColor)+1);
 				map_put(file,graph,write_in_map(0,i,3),this.ancho>>1,0);
 				map_put(file,graph,write_in_map(0,j,3),this.ancho>>1,8);
 			end;
 			
-			redraw = 0;
+			redraw = 0;		
 		end;
 		
+		//Flag de detencion de scroll
+		if (tileExists(i,j))
+			if (tileMap[i][j].tileCode == NO_SCROLL_R)
+				stopScrollXR = true;
+			end;
+			if (tileMap[i][j].tileCode == NO_SCROLL_L)
+				stopScrollXL = true;
+			end;
+		end;
+			
 		frame;
 	
 	end;
@@ -1042,7 +1052,9 @@ End;
 
 //Proceso que controla el movimiento del scroll
 process WGE_ControlScroll()
-
+private
+	int prevScrollX0;		//Posicion previa del scroll
+	
 begin
 	priority = cScrollPrior;
 	
@@ -1068,6 +1080,9 @@ begin
 		else
 			//Si el jugador ya está en ejecución, lo enfocamos
 			if (idPlayer <> 0 )
+				//guardamos la posicion previa
+				prevScrollX0 = scroll[cGameScroll].x0;
+				//ajustamos el scroll al personaje
 				scroll[cGameScroll].x0 = idPlayer.x - (cGameRegionW>>1);
 				scroll[cGameScroll].y0 = idPlayer.y - (cGameRegionH>>1);				
 			end;
@@ -1094,8 +1109,18 @@ begin
 			scroll[cGameScroll].y0 = (level.numTilesY*cTileSize)-cGameRegionH;
 		end;
 		
+		//comprobacion detencion scroll vertical ("room")
+		if (stopScrollXR && prevScrollX0 < scroll[cGameScroll].x0 || 
+		    stopScrollXL && prevScrollX0 > scroll[cGameScroll].x0 )
+			scroll[cGameScroll].x0 = prevScrollX0;
+		end;
+				
 		//Actualizamos el scroll
 		move_scroll(cGameScroll);
+		
+		//resteamos flags de detencion scroll
+		stopScrollXR = false;
+		stopScrollXL = false;
 		
 		frame;
 	

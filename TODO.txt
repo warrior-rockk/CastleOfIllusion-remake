@@ -15,6 +15,7 @@ ENGINE: -con screen_get puedo caputar la pantalla y hacer transiciones
 		-atractt mode que se vea jugar un nivel
 		-grabacion de como jugar en testrom
 		-checkpoints. Debe empezar el nivel en sitios distintos cuando muere segun a avanzado en el mapa.
+		-Sustituir el escribir la posicion en el tile en debug con mostrar flotante la posicion o algo
 		
 OBJECTS:-al salir de la region al saltar desaparece aunque lo lleves en la mano
 		-item con small coin

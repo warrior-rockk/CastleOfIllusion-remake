@@ -206,7 +206,7 @@ begin
 		
 		//Al hacer clic, mostramos informacion de tile
 		if (mouse.left)
-			
+			debug;
 			posTileX = x/cTileSize;
 			posTileY = y/cTileSize;
 			

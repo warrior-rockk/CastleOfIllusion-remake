@@ -114,7 +114,7 @@ BEGIN
 						onStairs = false;
 					end;
 				end;
-				//incremento del poder del sthis.alto con pulsacion larga
+				//incremento del poder del salto con pulsacion larga
 				if (jumpPower <= cPlayerMaxPowerJump && clockTick)
 					this.vY -= cPlayerPowerJumpFactor;
 					jumpPower++;					
