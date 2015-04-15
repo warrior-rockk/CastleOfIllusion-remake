@@ -16,6 +16,7 @@ ENGINE: -con screen_get puedo caputar la pantalla y hacer transiciones
 		-checkpoints. Debe empezar el nivel en sitios distintos cuando muere segun a avanzado en el mapa.
 		-Sustituir el escribir la posicion en el tile en debug con mostrar flotante la posicion o algo
 		-Los codigos de tile deberian ser bits para ser simultaneos?
+		-Al salir del modo debug pierdo los textos del HUD
 		
 OBJECTS:-al salir de la region al saltar desaparece aunque lo lleves en la mano
 		-item con small coin

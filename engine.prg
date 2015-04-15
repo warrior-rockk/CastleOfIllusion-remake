@@ -168,7 +168,7 @@ begin
 				    //por tiempo a 0
 				   (game.actualLevelTime == 0 && level.levelTime <> 0)         ||
 				   //por salir de la region
-				   out_region(idPlayer,cGameRegion)
+				   out_region(idPlayer,cGameRegion) 
 				   )									
 					//creamos el proceso/animacion muerte
 					idDeadPlayer = deadPlayer();
@@ -1126,15 +1126,19 @@ begin
 			scroll[cGameScroll].x0 = (level.numTilesX*cTileSize)-cGameRegionW;
 			scrollfX = 	scroll[cGameScroll].x0;
 		end;
-		//Limite inferior
-		if (scroll[cGameScroll].y0 < 0 )
-			scroll[cGameScroll].y0 = 0;
-			doTransition = 0;
-		end;
 		//Limite superior
+		if (scroll[cGameScroll].y0 <= 0 )
+			scroll[cGameScroll].y0 = 0;
+			if (doTransition == ROOM_TRANSITION_UP)
+				doTransition = 0;
+			end;
+		end;
+		//Limite inferior
 		if ((scroll[cGameScroll].y0+cGameRegionH) >= (level.numTilesY*cTileSize))
 			scroll[cGameScroll].y0 = (level.numTilesY*cTileSize)-cGameRegionH;
-			doTransition = 0;
+			if (doTransition == ROOM_TRANSITION_DOWN)
+				doTransition = 0;
+			end;
 		end;
 		
 		//comprobacion detencion scroll vertical ("room")
@@ -1217,6 +1221,8 @@ begin
 		if (animObject <> 0 )
 			animObject.y += dir;
 		end;
+		//actualizamos la posicion del player para no dar muerte por region
+		idPlayer.y  = animPlayer.y;
 		frame;
 	until( abs(scroll[0].y0 - scrollY0) >= cGameRegionH+(cTilesBetweenRooms*cTileSize) )
 		
