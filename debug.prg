@@ -114,7 +114,9 @@ begin
 		if (not debugMode && actDebugMode)
 			//limpiamos los textos
 			for (i=0;i<cMaxDebugInfo;i++)
-				delete_text(idDebugText[i]);
+				if (idDebugText[i] <> 0 )
+					delete_text(idDebugText[i]);
+				end;
 			end;
 			//Quitamos al player el blend aditivo para ver las colisiones
 			if (idPlayer<>0) idPlayer.flags &= ~ B_ABLEND; end;
