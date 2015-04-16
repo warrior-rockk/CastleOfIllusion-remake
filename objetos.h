@@ -14,10 +14,6 @@
 #define OBJ_KEY					  4       //Objeto llave
 #define OBJ_DOORKEY               5       //Objeto puerta con llave
 
-//tipos de plataformas
-#define PLATF_LINEAR 		0       
-#define PLATF_TRIGGER 		1       
-
 //propiedades de los objetos
 #define PICKABLE				1		//Puede ser recogido
 #define NO_COLLISION            2		//No colisiona con otros procesos
@@ -70,29 +66,6 @@ end
 
 //declaracion de proceso bloque
 Declare Process solidItem(int graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
-public
-	_entityPublicData this;			//datos publicos de entidad
-end
-end
-
-
-
-//declaracion de plataforma generica
-Declare Process platform(int _platformType,int _graph,int _x0,int _y0,int _ancho,int _alto)
-public
-	_entityPublicData this;			//datos publicos de entidad
-end
-end
-
-//declaracion de objeto plataforma
-Declare Process linearPlatform(int graph,int startX,int startY,int _ancho,int _alto,float _vX)
-public
-	_entityPublicData this;			//datos publicos de entidad
-end
-end
-
-//declaracion de objeto plataforma
-Declare Process triggerPlatform(int graph,int startX,int startY,int _ancho,int _alto,float _vX,int deadDir)
 public
 	_entityPublicData this;			//datos publicos de entidad
 end

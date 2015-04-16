@@ -1,0 +1,53 @@
+// ========================================================================
+//  Warcom Game Engine
+//  Motor para juegos plataformas 2D
+//  16/04/15
+//
+//  Definiciones de las funciones de plataformas
+// ========================================================================
+
+//tipos de plataformas
+#define PLATF_LINEAR 		0       
+#define PLATF_TRIGGER 		1       
+
+//constantes de plataformas
+const
+end;
+
+//Objeto
+Type _platform         			//Tipo de Dato de plataforma
+	int platformType;      		//Tipo del objeto
+	int platformGraph;    		//Grafico
+	int platformX0;      			//Posicion X
+	int platformY0;     			//Posicion Y
+	int platformAncho;			//Ancho
+	int platformAlto;				//Alto
+	int platformAxisAlign;		//Eje
+	int platformFlags;			//flags
+	int platformProps;			//Propiedades
+End;
+
+Global
+	_platform* platforms;			//Array Dinamico de objetos
+end;
+
+//declaracion de plataforma generica
+Declare Process platform(int _platformType,int _graph,int _x0,int _y0,int _ancho,int _alto)
+public
+	_entityPublicData this;			//datos publicos de entidad
+end
+end
+
+//declaracion de objeto plataforma
+Declare Process linearPlatform(int graph,int startX,int startY,int _ancho,int _alto,float _vX)
+public
+	_entityPublicData this;			//datos publicos de entidad
+end
+end
+
+//declaracion de objeto plataforma
+Declare Process triggerPlatform(int graph,int startX,int startY,int _ancho,int _alto,float _vX,int deadDir)
+public
+	_entityPublicData this;			//datos publicos de entidad
+end
+end

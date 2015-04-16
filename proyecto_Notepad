@@ -18,5 +18,7 @@
         <File name="debug.h" />
         <File name="controls.h" />
         <File name="controls.prg" />
+        <File name="platforms.h" />
+        <File name="platforms.prg" />
     </Project>
 </NotepadPlus>

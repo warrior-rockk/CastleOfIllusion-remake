@@ -20,6 +20,7 @@ ENGINE: -con screen_get puedo caputar la pantalla y hacer transiciones
 		-Sustituir el escribir la posicion en el tile en debug con mostrar flotante la posicion o algo
 		-Los codigos de tile deberian ser bits para ser simultaneos?
 		-igual fisicas a juego real
+		-UpdateObject generalizarlo a updateentity para todos en engine.prg
 		
 OBJECTS:-al salir de la region al saltar desaparece aunque lo lleves en la mano
 		-item con small coin
@@ -30,7 +31,11 @@ OBJECTS:-al salir de la region al saltar desaparece aunque lo lleves en la mano
 		-items invisibles
 		-la puerta deberia mover el grafico de borde inferior conforme abre y cierra
 		
+MONSTER: -estamos usando propiedad NOCOLISION de objetos pero tenemos una propiedad propia. Esto hay que organizarlo
+		
 PLATFORMS: las plataformas solo se regeneran si salen de su rango de movimiento?
 
 COLLISIONS:generalizar los calculos de colision para utilizarlo segun los tipos de colision de manera global
+
+EDITOR: COpiar y pegar varios tipos de entidades y varias a la vez
 		
