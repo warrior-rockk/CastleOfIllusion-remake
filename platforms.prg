@@ -8,7 +8,7 @@
 
 //Proceso plataforma generica
 //Sera el padre de las plataformas concretas para tratarlo como unico para colisiones,etc..
-Process platform(int _platformType,int _graph,int _x0,int _y0,int _ancho,int _alto)
+Process platform(int _platformType,int _graph,int _x0,int _y0,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
 private
 	platform idPlatform;	//id de la plataforma hija
 	
@@ -64,10 +64,7 @@ begin
 				//creamos el tipo de plataforma
 				switch (_platformType)
 					case PLATF_LINEAR:
-						idPlatform = linearPlatform(_graph,_x0,_y0,_ancho,_alto,0.5);
-					end;
-					case PLATF_TRIGGER:
-						idPlatform = triggerPlatform(_graph,_x0,_y0,_ancho,_alto,0.5,1);
+						idPlatform = linearPlatform(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props,0.5);
 					end;
 				end;	
 				log("Se crea la plataforma "+idPlatform,DEBUG_OBJECTS);
@@ -93,7 +90,7 @@ end;
 
 //Proceso plataforma linear
 //se mueve linealmente a una velocidad dadas hasta que colisiona y cambia direccion
-process linearPlatform(int graph,int startX,int startY,int _ancho,int _alto,float _vX)
+process linearPlatform(int graph,int startX,int startY,int _ancho,int _alto,int _axisAlign,int _flags,int _props,float _vX)
 private
 	int prevX;		//posicion X previa
 
@@ -104,11 +101,14 @@ begin
 	ctype = c_scroll;
 	z = cZObject;
 	file = level.fpgObjects;
-		
+	flags = _flags;
+	
 	//igualamos la propiedades publicas a las de parametros
-	this.ancho 	= _ancho;
-	this.alto 	= _alto;
-	this.vX  	= _vX;
+	this.ancho 		= _ancho;
+	this.alto 		= _alto;
+	this.vX  		= _vX;
+	this.props  	= _props;
+	this.axisAlign 	= _axisAlign;
 	
 	//modo debug sin graficos
 	if (file<0)
@@ -148,23 +148,57 @@ begin
 		
 		switch (this.state)
 			case IDLE_STATE:
-				//estado por defecto
-				this.state = MOVE_STATE; 
-				//direccion por defecto
-				dirX = 1;
+				//si esta activada la propiedad de esperar al player para mover
+				if (isBitSet(this.props,WAIT_PLAYER))			
+					//muevo cuando sube el player
+					if (idPlatform == father)
+						//si esta activada la propiedad de caer al subir el player
+						if (isBitSet(this.props,FALL_PLAYER))
+							this.state = DEAD_STATE;
+						else
+							//estado mover
+							this.state = MOVE_STATE; 
+							//direccion segun sentido
+							isBitSet(flags,B_HMIRROR) ? dirX = -1 : dirX = 1;
+						end;
+					end;
+				else
+					//estado mover
+					this.state = MOVE_STATE; 
+					//direccion segun sentido
+					isBitSet(flags,B_HMIRROR) ? dirX = -1 : dirX = 1;
+				end;
 			end;
 			case MOVE_STATE:
 				//cambio de estado al colisionar
 				if (getTileCode(id,RIGHT_UP_POINT) <> NO_SOLID)
-					dirX = -1;
+					//si esta activada la propiedad de caer al colisionar
+					if (isBitSet(this.props,FALL_COLLISION))
+						this.state = DEAD_STATE;
+					else
+						//cambio sentido
+						dirX = -1;
+					end;
 				end;
 				if (getTileCode(id,LEFT_UP_POINT) <> NO_SOLID)
-					dirX = 1;
+					//si esta activada la propiedad de caer al colisionar
+					if (isBitSet(this.props,FALL_COLLISION))
+						this.state = DEAD_STATE;
+					else
+						//cambio sentido
+						dirX = 1;
+					end;
 				end;
 				
 				//movimiento lineal
 				this.fX+=this.vX*dirX;
 				this.fY+=this.vY;
+			end;
+			case DEAD_STATE:
+				this.fY +=0.5;
+				if (region_out(id,cGameRegion))
+					signal(id,s_kill);
+				end;
 			end;
 		end;
 		
@@ -181,6 +215,7 @@ begin
 		if (idPlatform == father)
 			//actualizamos la posicion del player lo que se movio la plataforma
 			idPlayer.this.fX += x - prevX;
+			idPlayer.this.fY += this.vX;
 		end;
 			
 		frame;

@@ -7,8 +7,12 @@
 // ========================================================================
 
 //tipos de plataformas
-#define PLATF_LINEAR 		0       
-#define PLATF_TRIGGER 		1       
+#define PLATF_LINEAR 		0        
+
+//propiedades plataformas
+#define WAIT_PLAYER          4
+#define FALL_PLAYER          8
+#define FALL_COLLISION       16
 
 //constantes de plataformas
 const
@@ -18,10 +22,10 @@ end;
 Type _platform         			//Tipo de Dato de plataforma
 	int platformType;      		//Tipo del objeto
 	int platformGraph;    		//Grafico
-	int platformX0;      			//Posicion X
-	int platformY0;     			//Posicion Y
+	int platformX0;      		//Posicion X
+	int platformY0;     		//Posicion Y
 	int platformAncho;			//Ancho
-	int platformAlto;				//Alto
+	int platformAlto;			//Alto
 	int platformAxisAlign;		//Eje
 	int platformFlags;			//flags
 	int platformProps;			//Propiedades
@@ -32,14 +36,14 @@ Global
 end;
 
 //declaracion de plataforma generica
-Declare Process platform(int _platformType,int _graph,int _x0,int _y0,int _ancho,int _alto)
+Declare Process platform(int _platformType,int _graph,int _x0,int _y0,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
 public
 	_entityPublicData this;			//datos publicos de entidad
 end
 end
 
 //declaracion de objeto plataforma
-Declare Process linearPlatform(int graph,int startX,int startY,int _ancho,int _alto,float _vX)
+Declare Process linearPlatform(int graph,int startX,int startY,int _ancho,int _alto,int _axisAlign,int _flags,int _props,float _vX)
 public
 	_entityPublicData this;			//datos publicos de entidad
 end

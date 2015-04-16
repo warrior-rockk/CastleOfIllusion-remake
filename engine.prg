@@ -972,6 +972,31 @@ Begin
 		fread(levelDataFile,monsters[i].monsterProps);
 	end;
 	
+	//numero de plataformas
+	fread(levelDataFile,level.numPlatforms);
+	
+	//Creamos el array dinamico de enemigos
+	platforms = calloc(level.numPlatforms,sizeof(_platform));
+	
+	//comprobamos el direccionamiento
+	if ( platforms == NULL )
+		log("Fallo alocando memoria dinámica (platforms)",DEBUG_ENGINE);
+		WGE_Quit();
+	end;
+
+	//leemos los enemigos
+	from i=0 to level.numPlatforms-1;
+		fread(levelDataFile,Platforms[i].PlatformType);
+		fread(levelDataFile,Platforms[i].PlatformGraph);
+		fread(levelDataFile,Platforms[i].PlatformX0);
+		fread(levelDataFile,Platforms[i].PlatformY0);
+		fread(levelDataFile,Platforms[i].PlatformAncho);
+		fread(levelDataFile,Platforms[i].PlatformAlto);
+		fread(levelDataFile,Platforms[i].PlatformAxisAlign);
+		fread(levelDataFile,Platforms[i].PlatformFlags);
+		fread(levelDataFile,Platforms[i].PlatformProps);
+	end;
+	
 	//cerramos el archivo
 	fclose(levelDataFile);
 	
@@ -997,12 +1022,18 @@ Begin
 	from i=0 to level.numMonsters-1;
 		monster(monsters[i].monsterType,monsters[i].monsterX0,monsters[i].monsterY0,monsters[i].monsterAncho,monsters[i].monsterAlto,monsters[i].monsterAxisAlign,monsters[i].monsterFlags,monsters[i].monsterProps);	
 	end;
-		
+	
+	//creamos las plataformas del nivel
+	from i=0 to level.numPlatforms-1;
+		platform(platforms[i].platformType,platforms[i].platformGraph,platforms[i].platformX0,platforms[i].platformY0,platforms[i].platformAncho,platforms[i].platformAlto,platforms[i].platformAxisAlign,platforms[i].platformFlags,platforms[i].platformProps);		
+	end;
+	
 	//test
 	if ( game.numLevel == 1)
-		platform(PLATF_TRIGGER,8,800,696,32,16);
+		/*platform(PLATF_TRIGGER,8,800,696,32,16);
 		platform(PLATF_LINEAR,8,620,729,32,16);
 		platform(PLATF_LINEAR,8,458,729,32,16);
+		*/
 		/*		
 		object(OBJ_SOLIDITEM,5,218,712,16,16,PICKABLE | BREAKABLE);
 		object(OBJ_SOLIDITEM,5,1210,136,16,16,PICKABLE | BOUNCY_LOW );
@@ -1395,7 +1426,9 @@ begin
 	
 	//Limpiamos la memoria dinamica
 	free(objects);
-	free(paths);
+	free(monsters);
+	free(platforms);
+	//free(paths);
 	free(tileMap);
 	
 	//liberamos archivos cargados
