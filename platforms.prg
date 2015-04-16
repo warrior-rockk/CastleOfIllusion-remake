@@ -171,7 +171,7 @@ begin
 			end;
 			case MOVE_STATE:
 				//cambio de estado al colisionar
-				if (getTileCode(id,RIGHT_UP_POINT) <> NO_SOLID)
+				if (getTileCode(id,RIGHT_UP_POINT) <> NO_SOLID && dirX == 1)
 					//si esta activada la propiedad de caer al colisionar
 					if (isBitSet(this.props,FALL_COLLISION))
 						this.state = DEAD_STATE;
@@ -180,7 +180,7 @@ begin
 						dirX = -1;
 					end;
 				end;
-				if (getTileCode(id,LEFT_UP_POINT) <> NO_SOLID)
+				if (getTileCode(id,LEFT_UP_POINT) <> NO_SOLID && dirX == -1)
 					//si esta activada la propiedad de caer al colisionar
 					if (isBitSet(this.props,FALL_COLLISION))
 						this.state = DEAD_STATE;
