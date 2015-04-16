@@ -48,10 +48,3 @@ public
 	_entityPublicData this;			//datos publicos de entidad
 end
 end
-
-//declaracion de objeto plataforma
-Declare Process triggerPlatform(int graph,int startX,int startY,int _ancho,int _alto,float _vX,int deadDir)
-public
-	_entityPublicData this;			//datos publicos de entidad
-end
-end
