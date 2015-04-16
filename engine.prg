@@ -1072,7 +1072,7 @@ begin
 		scroll[cGameScroll].y0 = level.playerY0 - (cGameRegionH>>1);	
 	else
 		//Posicion Y para enfoque de pantalla segun limite de region de pantalla
-		scroll[cGameScroll].y0 = (cGameRegionH + (cTilesBetweenRooms*cTileSize)) * ((level.playerY0-(cTileSize*(level.playerY0 / cGameRegionH))) / cGameRegionH);
+		scroll[cGameScroll].y0 = (cGameRegionH + (cTilesBetweenRooms*cTileSize)) * (level.playerY0 / (cGameRegionH + (cTilesBetweenRooms*cTileSize)));
 	end;
 	
 	//inicializamos la parte float

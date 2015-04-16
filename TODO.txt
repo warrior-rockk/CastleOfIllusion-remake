@@ -2,12 +2,15 @@ PLAYER:Poder Salto distinto desde escalera
        Colision con disparomonster no puede ser una separada. Integrarlo en monsters??
 	   -la muerte por fuera de region tiene que tner un buen offset para no morir al saltar mucho y solo deberia ser al bajar, no subir.
 	   -parece que con las flechas de direccion no cae de escalera
-
+	   -si objeto encima de un pickable, no recojer ninguno
+	   -comportamiento erratico al manter pulsado salto. si sueltas la tecla no deberia sumar poder despues
+	   -al caer con objeto da error el soliditem por referencia idplayer = 0
 ENGINE (BUG):Tareas de inicializacion del engine:el mapa que esta en la posicion de mapStairs, se borra¿¿¿ ¿es por culpa de tener id 0 el 	sistema y el primer fpg?
             -paleta del juego??
 
 DEBUG:escribir el log a archivo??. Se puede hacer en una bat que diriga la salida del ejectuable a archivo >
-
+         -moverse por el mapeado con boton central raton y poder depositar al player
+		 
 ENGINE: -con screen_get puedo caputar la pantalla y hacer transiciones
 		-los estados posibles deberian diferenciarse por tipo de proceso a pesar de tener estados globales que tengan el mismo numero
 		-lo mismo es aplicable a las propiedades, unas comunes y otras genéricas
@@ -16,6 +19,7 @@ ENGINE: -con screen_get puedo caputar la pantalla y hacer transiciones
 		-checkpoints. Debe empezar el nivel en sitios distintos cuando muere segun a avanzado en el mapa.
 		-Sustituir el escribir la posicion en el tile en debug con mostrar flotante la posicion o algo
 		-Los codigos de tile deberian ser bits para ser simultaneos?
+		-igual fisicas a juego real
 		
 OBJECTS:-al salir de la region al saltar desaparece aunque lo lleves en la mano
 		-item con small coin
@@ -24,6 +28,7 @@ OBJECTS:-al salir de la region al saltar desaparece aunque lo lleves en la mano
 		-fall on touch
 		-boxspring
 		-items invisibles
+		-la puerta deberia mover el grafico de borde inferior conforme abre y cierra
 		
 PLATFORMS: las plataformas solo se regeneran si salen de su rango de movimiento?
 
