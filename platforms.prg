@@ -23,7 +23,9 @@ begin
 			
 		//si se reinicia, se actualiza flags region
 		if (this.state == INITIAL_STATE)
-			inRegion  = region_in(_x0,_y0,this.ancho,this.alto);
+			//DE MOMENTO LAS PLATAFORMAS SE CREAN SIEMPRE?
+			inRegion = true;
+			//inRegion  = region_in(_x0,_y0,this.ancho,this.alto);
 			outRegion = true;
 		end;
 		
@@ -40,7 +42,7 @@ begin
 		
 			//desaparece al salir de la region del juego
 			if (outRegion) 
-				//eliminamos el mosntruo
+				//eliminamos la plataforma
 				signal(idPlatform,s_kill);
 				log("Se elimina la plataforma "+idPlatform,DEBUG_OBJECTS);
 				//bajamos flags
@@ -52,14 +54,14 @@ begin
 			end;
 			
 		else
-			//si no existe objeto, el padre no es colisionable
+			//si no existe plataforma, el padre no es colisionable
 			setBit(this.props,NO_COLLISION);
 			
 			//la region se comprueba con las coordenadas iniciales
 			x = _x0;
 			y = _y0;
 			
-			//creamos el monstruo si entra en la region
+			//creamos la plataforma si entra en la region
 			if (inRegion && outRegion) 
 				//creamos el tipo de plataforma
 				switch (_platformType)
@@ -72,6 +74,7 @@ begin
 				outRegion = false;
 			end;
 		end;
+		
 		
 		//Comprobamos si entra en la region
 		if (region_in(x,y,this.ancho,this.alto))
