@@ -95,9 +95,12 @@ end;
 //se mueve linealmente a una velocidad dadas hasta que colisiona y cambia direccion
 process linearPlatform(int graph,int startX,int startY,int _ancho,int _alto,int _axisAlign,int _flags,int _props,float _vX)
 private
-	int prevX;		//posicion X previa
-
-	int dirX;		//direccion X
+	int prevX;			//posicion X previa
+	int prevY;			//posicion Y previa
+	int dirX;			//direccion X
+	
+	int waitTime;		//tiempo espera
+	byte memIdPlatform; 	//memoria de que el player esta en plataforma
 	
 begin
 	region = cGameRegion;
@@ -120,6 +123,7 @@ begin
 	end;
 	
 	//puntos de colision del objeto
+	
 	this.colPoint[LEFT_UP_POINT].x 		= -(this.ancho>>1);
 	this.colPoint[LEFT_UP_POINT].y 		= 0;
 	this.colPoint[LEFT_UP_POINT].colCode = COLIZQ;
@@ -155,14 +159,25 @@ begin
 				if (isBitSet(this.props,WAIT_PLAYER))			
 					//muevo cuando sube el player
 					if (idPlatform == father)
+						memIdPlatform = true;
 						//si esta activada la propiedad de caer al subir el player
-						if (isBitSet(this.props,FALL_PLAYER))
-							this.state = DEAD_STATE;
-						else
+						if (!isBitSet(this.props,FALL_PLAYER))
 							//estado mover
 							this.state = MOVE_STATE; 
 							//direccion segun sentido
 							isBitSet(flags,B_HMIRROR) ? dirX = -1 : dirX = 1;
+						end;
+					end;
+					//si esta activada la propiedad de caer al subir el player
+					if (isBitSet(this.props,FALL_PLAYER) && memIdPlatform)
+						//tiempo espera
+						if (clockTick)
+							waitTime++;
+						end;
+						//tiempo cumplido
+						if (waitTime >= cPlatformWaitTime)
+							this.state = DEAD_STATE;
+							memIdPlatform = false;
 						end;
 					end;
 				else
@@ -198,15 +213,22 @@ begin
 				this.fY+=this.vY;
 			end;
 			case DEAD_STATE:
-				this.fY +=this.vX;
+				//movemos en caida
+				this.fY += cPlatformFallVel;
+				//si el player esta en plataforma, cae tambien
+				if (idPlatform == father)
+					idPlayer.this.fY += cPlatformFallVel;
+				end;
+				//matamos la plataforma cuando se salga de la region
 				if (!region_in(x,y,this.ancho,this.alto<<1))
 					signal(id,s_kill);
 				end;
 			end;
 		end;
 		
-		//guardamos la posicion actual X
+		//guardamos la posicion anterior
 		prevX = x;
+		prevY = y;
 		
 		//actualizamos posicion
 		positionToInt(id);
@@ -218,7 +240,6 @@ begin
 		if (idPlatform == father)
 			//actualizamos la posicion del player lo que se movio la plataforma
 			idPlayer.this.fX += x - prevX;
-			idPlayer.this.fY += this.vX;
 		end;
 			
 		frame;

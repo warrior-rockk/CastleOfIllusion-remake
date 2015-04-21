@@ -415,12 +415,15 @@ BEGIN
 		repeat
 			//obtenemos siguiente colision
 			colID = get_id(TYPE platform);
-			//comprobamos colision en ambos ejes
-			dir = colCheckProcess(id,colID,BOTHAXIS);
 			
+			//tratamos las colisiones separadas por ejes
+			//para poder andar sobre varios procesos corrigiendo la y
+			
+			//colisiones verticales con procesos
+			dir = colCheckProcess(id,colID,VERTICALAXIS);
 			//aplicamos la direccion de la colision
 			applyDirCollision(ID,dir,&grounded);
-			
+						
 			//si existe plataforma
 			if (colID <> 0)
 				//y estoy encima de ella
@@ -433,6 +436,13 @@ BEGIN
 				else
 					colID.priority = cPlatformPrior;
 				end;
+			end;
+					
+			//colisiones horizontales con procesos
+			dir = colCheckProcess(id,colID,HORIZONTALAXIS);
+			//aplicamos la direccion de la colision si esta en la plataforma
+			if (idPlatform == 0)
+				applyDirCollision(ID,dir,&grounded);
 			end;
 			
 		until (colID == 0);

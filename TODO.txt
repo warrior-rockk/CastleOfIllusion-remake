@@ -39,5 +39,8 @@ PLATFORMS: las plataformas solo se regeneran si salen de su rango de movimiento?
 
 COLLISIONS:generalizar los calculos de colision para utilizarlo segun los tipos de colision de manera global
 
-EDITOR: COpiar y pegar varios tipos de entidades y varias a la vez
+EDITOR: -bug en posicion entidades sin fisica con zoom editor aplicado
+		-COpiar y pegar varios tipos de entidades y varias a la vez
+        -que no se seleccione el siguiente objeto cuando borramos uno
+		-desactivar autoscroll cuando movemos objeto??
 		

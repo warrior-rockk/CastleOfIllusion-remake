@@ -16,6 +16,8 @@
 
 //constantes de plataformas
 const
+	cPlatformFallVel		= 1.5;	//Velocidad caida plataformas
+	cPlatformWaitTime       = 20;   //Tiempo espera plataformas
 end;
 
 //Objeto
