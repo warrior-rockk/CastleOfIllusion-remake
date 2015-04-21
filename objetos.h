@@ -15,17 +15,14 @@
 #define OBJ_DOORKEY               5       //Objeto puerta con llave
 
 //propiedades de los objetos
-#define PICKABLE				1		//Puede ser recogido
-#define NO_COLLISION            2		//No colisiona con otros procesos
-#define NO_PHYSICS              4       //No le afecta las fisicas
-#define BREAKABLE               8		//Se rompe al lanzarlo y colisionar
-#define NO_PERSISTENT          16       //No se vuelve a crear si desaparece
-#define ITEM_BIG_COIN          32		//Contiene item moneda grande
-#define ITEM_STAR	           64		//Estrella energia extra
-#define ITEM_GEM			  128		//Gema fin de nivel
-#define BOUNCY_LOW            256       //Objeto tiene rebote bajo
-#define BOUNCY_HIGH           512       //Objeto tiene rebote alto
-#define IS_KEY               1024       //Objeto es llave
+#define PICKABLE				  	8		//Puede ser recogido
+#define BREAKABLE             		16		//Se rompe al lanzarlo y colisionar
+#define ITEM_BIG_COIN           	32		//Contiene item moneda grande
+#define ITEM_STAR	          		64		//Estrella energia extra
+#define ITEM_GEM			 		128		//Gema fin de nivel
+#define BOUNCY_LOW           		512    	//Objeto tiene rebote bajo
+#define BOUNCY_HIGH          		1024    //Objeto tiene rebote alto
+#define IS_KEY               		2048    //Objeto es llave
 
 //constantes de objetos
 const

@@ -472,13 +472,13 @@ BEGIN
 					colID.this.state = HURT_STATE;
 				else
 					//el monstruo te daña si no soy invencible y tiene propiedad de dañar
-					if (!hurtDisabled && isBitSet(colID.this.props,HURTPLAYER)) 
+					if (!hurtDisabled && !isBitSet(colID.this.props,NO_HURT_PLAYER)) 
 						hurt = true;
 					end;
 				end;
 			elseif ( dir != NOCOL && colID.this.state != DEAD_STATE) //cualquier otra colision
 				//el monstruo te daña si no soy invencible y tiene propiedad de dañar
-				if (!hurtDisabled && isBitSet(colID.this.props,HURTPLAYER)) 
+				if (!hurtDisabled && !isBitSet(colID.this.props,NO_HURT_PLAYER)) 
 					hurt = true;
 				end;
 			end;

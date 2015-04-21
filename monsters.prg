@@ -56,13 +56,13 @@ begin
 				//creamos el tipo de monstruo
 				switch (monsterType)
 					case MONS_CYCLECLOWN:
-						idMonster = cycleClown(1,_x0,_y0,_ancho,_alto,_axisAlign,_flags,HURTPLAYER);				
+						idMonster = cycleClown(1,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);				
 					end;
 					case MONS_TOYPLANE:
-						idMonster = toyPlane(9,_x0,_y0,_ancho,_alto,_axisAlign,_flags,HURTPLAYER);
+						idMonster = toyPlane(9,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
 					end;
 					case MONS_TOYPLANECONTROL:
-						idMonster = toyPlaneControl(15,_x0,_y0,_ancho,_alto,_axisAlign,_flags,HURTPLAYER);
+						idMonster = toyPlaneControl(15,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
 					end;
 				end;	
 				log("Se crea el monstruo "+idMonster,DEBUG_MONSTERS);
@@ -310,7 +310,7 @@ begin
 			end;
 			case MOVE_STATE: //movimiento de pared a pared
 				//dañamos al player
-				setBit(this.props,HURTPLAYER);
+				unSetBit(this.props,NO_HURT_PLAYER);
 				//si toca pared, invierte movimiento
 				if (collided)
 					xVel = xVel * -1;
@@ -328,7 +328,7 @@ begin
 				//detenemos el movimiento
 				this.vX = 0;
 				//no dañamos en este estado
-				unsetBit(this.props,HURTPLAYER);
+				setBit(this.props,NO_HURT_PLAYER);
 				//animacion toque durante 8 animaciones
 				if (hurtedCounter < 8)
 					if (WGE_Animate(12,14,5,ANIM_LOOP))

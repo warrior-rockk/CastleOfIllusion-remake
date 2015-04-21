@@ -66,6 +66,11 @@
 #define ROOM_TRANSITION_DOWN 1
 #define ROOM_TRANSITION_UP   2
 
+//Propiedades globales de las entidades
+#define NO_COLLISION            1		//No colisiona con otros procesos
+#define NO_PHYSICS              2       //No le afecta las fisicas
+#define NO_PERSISTENT           4       //No se vuelve a crear si desaparece
+
 //Constantes del motor
 const
 	//Engine

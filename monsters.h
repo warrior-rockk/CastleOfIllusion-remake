@@ -7,8 +7,7 @@
 // ========================================================================
 
 //propiedades de los monstruos
-#define HURTPLAYER		1
-
+#define NO_HURT_PLAYER		8			//No Daña al jugador
 
 //Tipos de monstruo
 #define MONS_CYCLECLOWN			0 		//Monstruo CycleClown
