@@ -69,7 +69,7 @@ begin
 						idObject = doorButton(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
 					end;
 					case OBJ_KEY:
-						idObject = solidItem(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props | IS_KEY | NO_PERSISTENT | PICKABLE);
+						idObject = solidItem(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props | OBJ_IS_KEY | NO_PERSISTENT | OBJ_PICKABLE);
 					end;
 					case OBJ_DOORKEY:
 						idObject = keyDoor(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
@@ -244,7 +244,7 @@ begin
 							//seteamos el idKey al objeto padre nuestro
 							idKey = father;
 							//rompemos la llave
-							setBit(this.props,BREAKABLE);
+							setBit(this.props,OBJ_BREAKABLE);
 						end;
 					end;
 				until (colID == 0);
@@ -267,7 +267,7 @@ begin
 				//cambio de estado
 				
 				//si es rompible
-				if (isBitSet(this.props,BREAKABLE))
+				if (isBitSet(this.props,OBJ_BREAKABLE))
 					//si colisiona con algo o toca suelo
 					if (collided || grounded )
 						//actualizamos la posicion para ver la explosion en el sitio
@@ -289,9 +289,9 @@ begin
 			end;
 			case DEAD_STATE:
 				//si el objeto tiene item dentro, lo lanzamos
-				if (isBitSet(this.props,ITEM_BIG_COIN) || isBitSet(this.props,ITEM_STAR))
+				if (isBitSet(this.props,OBJ_ITEM_BIG_COIN) || isBitSet(this.props,OBJ_ITEM_STAR))
 					//item(x,y,this.ancho,this.alto,this.props);
-					object(OBJ_ITEM,0,x,y,16,16,CENTER_AXIS,0,ITEM_BIG_COIN);
+					object(OBJ_ITEM,0,x,y,16,16,CENTER_AXIS,0,OBJ_ITEM_BIG_COIN);
 				end;
 				//lanzamos animacion explosion objeto
 				WGE_Animation(file,2,3,x,y,10,ANIM_ONCE);
@@ -370,8 +370,8 @@ begin
 	this.state = IDLE_STATE;
 	
 	//ajustamos propiedades fijas de un item
-	unSetBit(this.props,BREAKABLE);
-	unSetBit(this.props,PICKABLE);
+	unSetBit(this.props,OBJ_BREAKABLE);
+	unSetBit(this.props,OBJ_PICKABLE);
 	unSetBit(this.props,NO_PHYSICS);
 	setBit(this.props,NO_COLLISION);
 	
@@ -391,7 +391,7 @@ begin
 		//comportamiento item
 		switch (this.state)
 			case IDLE_STATE:
-				if (!isBitSet(this.props,ITEM_GEM) && !isBitSet(this.props,ITEM_STAR))
+				if (!isBitSet(this.props,OBJ_ITEM_GEM) && !isBitSet(this.props,OBJ_ITEM_STAR))
 					//tiempo item
 					if ((clockCounter % cNumFps) == 0 && clockTick)
 						itemTime++;
@@ -420,13 +420,13 @@ begin
 				end;
 				
 				//animacion del item
-				if (isBitSet(this.props,ITEM_BIG_COIN))
+				if (isBitSet(this.props,OBJ_ITEM_BIG_COIN))
 					WGE_Animate(6,7,20,ANIM_LOOP);
 				end;
-				if (isBitSet(this.props,ITEM_STAR))
+				if (isBitSet(this.props,OBJ_ITEM_STAR))
 					WGE_Animate(11,12,20,ANIM_LOOP);
 				end;
-				if (isBitSet(this.props,ITEM_GEM))
+				if (isBitSet(this.props,OBJ_ITEM_GEM))
 					WGE_Animate(13,13,10,ANIM_LOOP);
 				end;
 			end;
@@ -435,16 +435,16 @@ begin
 				//si ha sido recodido el item
 				if (picked)
 					//segun el item,realizamos una accion determinada
-					if (isBitSet(this.props,ITEM_BIG_COIN))
+					if (isBitSet(this.props,OBJ_ITEM_BIG_COIN))
 						//incrementa puntuacion
 						game.score += cBigCoinScore;
 					end;
-					if (isBitSet(this.props,ITEM_STAR))
+					if (isBitSet(this.props,OBJ_ITEM_STAR))
 						//añade una estrella a la vida
 						game.playerMaxLife += 1;
 						game.playerLife = game.playerMaxLife;
 					end;
-					if (isBitSet(this.props,ITEM_GEM))
+					if (isBitSet(this.props,OBJ_ITEM_GEM))
 						//fin del nivel actual
 						game.endLevel = true;
 					end;
@@ -516,8 +516,8 @@ begin
 	this.state = IDLE_STATE;
 	
 	//ajustamos propiedades fijas de un boton
-	unSetBit(this.props,BREAKABLE);
-	unSetBit(this.props,PICKABLE);
+	unSetBit(this.props,OBJ_BREAKABLE);
+	unSetBit(this.props,OBJ_PICKABLE);
 	SetBit(this.props,NO_PHYSICS);
 	unSetBit(this.props,NO_COLLISION);
 	
@@ -619,8 +619,8 @@ begin
 	this.state = IDLE_STATE;
 	
 	//ajustamos propiedades fijas de un doorbutton
-	unSetBit(this.props,BREAKABLE);
-	unSetBit(this.props,PICKABLE);
+	unSetBit(this.props,OBJ_BREAKABLE);
+	unSetBit(this.props,OBJ_PICKABLE);
 	SetBit(this.props,NO_PHYSICS);
 	unSetBit(this.props,NO_COLLISION);
 	
@@ -765,8 +765,8 @@ begin
 	this.state = IDLE_STATE;
 	
 	//ajustamos propiedades fijas de un doorbutton
-	unSetBit(this.props,BREAKABLE);
-	unSetBit(this.props,PICKABLE);
+	unSetBit(this.props,OBJ_BREAKABLE);
+	unSetBit(this.props,OBJ_PICKABLE);
 	SetBit(this.props,NO_PHYSICS);
 	unSetBit(this.props,NO_COLLISION);
 	setBit(this.props,NO_PERSISTENT);

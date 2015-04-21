@@ -310,7 +310,7 @@ begin
 			end;
 			case MOVE_STATE: //movimiento de pared a pared
 				//dañamos al player
-				unSetBit(this.props,NO_HURT_PLAYER);
+				unSetBit(this.props,MONS_HARMLESS);
 				//si toca pared, invierte movimiento
 				if (collided)
 					xVel = xVel * -1;
@@ -328,7 +328,7 @@ begin
 				//detenemos el movimiento
 				this.vX = 0;
 				//no dañamos en este estado
-				setBit(this.props,NO_HURT_PLAYER);
+				setBit(this.props,MONS_HARMLESS);
 				//animacion toque durante 8 animaciones
 				if (hurtedCounter < 8)
 					if (WGE_Animate(12,14,5,ANIM_LOOP))

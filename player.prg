@@ -374,7 +374,7 @@ BEGIN
 			//si la colision es inferior
 			if (dir == COLDOWN )
 				//si estamos atacando y el objeto es rompible
-				if ( this.state == ATACK_STATE && isBitSet(colID.this.props,BREAKABLE))
+				if ( this.state == ATACK_STATE && isBitSet(colID.this.props,OBJ_BREAKABLE))
 					//rebote al atacar
 					this.vY = -cPlayerAtackBounce;
 					//si se pulsa ataque se añade incremento en rebote
@@ -400,7 +400,7 @@ BEGIN
 			
 			//comprobamos si colisionamos con un objeto recogible
 			if (!picked && (dir == COLDER || dir == COLIZQ)) 
-				if (isBitSet(colID.this.props,PICKABLE))
+				if (isBitSet(colID.this.props,OBJ_PICKABLE))
 					objectforPickID = colID; 
 				end;
 			end;
@@ -472,13 +472,13 @@ BEGIN
 					colID.this.state = HURT_STATE;
 				else
 					//el monstruo te daña si no soy invencible y tiene propiedad de dañar
-					if (!hurtDisabled && !isBitSet(colID.this.props,NO_HURT_PLAYER)) 
+					if (!hurtDisabled && !isBitSet(colID.this.props,MONS_HARMLESS)) 
 						hurt = true;
 					end;
 				end;
 			elseif ( dir != NOCOL && colID.this.state != DEAD_STATE) //cualquier otra colision
 				//el monstruo te daña si no soy invencible y tiene propiedad de dañar
-				if (!hurtDisabled && !isBitSet(colID.this.props,NO_HURT_PLAYER)) 
+				if (!hurtDisabled && !isBitSet(colID.this.props,MONS_HARMLESS)) 
 					hurt = true;
 				end;
 			end;
@@ -877,7 +877,7 @@ begin
 	isBitSet(idProcess.flags,B_HMIRROR) ? dir =  -1 : dir = 1;
 	
 	//definimos posicion del objeto a crear segun velocidad X del player y propiedad objeto
-	if (abs(idProcess.this.vX) < cPlayerMinVelToIdle && !isBitSet(idObjectPicked.this.props,BREAKABLE))
+	if (abs(idProcess.this.vX) < cPlayerMinVelToIdle && !isBitSet(idObjectPicked.this.props,OBJ_BREAKABLE))
 	    objectX = idObjectPicked.x+((idProcess.this.ancho)*dir);
 		objectY = idObjectPicked.y;
 	else
@@ -893,7 +893,7 @@ begin
 	idObjectThrowed = idObjectPicked.id;
 	
 	//asignamos velocidades al objeto para lanzarlo
-	if (abs(idProcess.this.vX) < cPlayerMinVelToIdle && !isBitSet(idObjectPicked.this.props,BREAKABLE))
+	if (abs(idProcess.this.vX) < cPlayerMinVelToIdle && !isBitSet(idObjectPicked.this.props,OBJ_BREAKABLE))
 		//lo dejamos caer
 		idObjectThrowed.this.vX = 0;
 		idObjectThrowed.this.vY = 0;

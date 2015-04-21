@@ -592,15 +592,15 @@ begin
 	if (colDir == COLIZQ || colDir == COLDER) 
 		idObject.this.vX = 0;
 	elseif (colDir == COLDOWN) 
-		//si tiene propiedad BOUNCY_LOW, rebota al tocar suelo
-		if (isBitSet(idObject.this.props,BOUNCY_LOW))
+		//si tiene propiedad OBJ_BOUNCY_LOW, rebota al tocar suelo
+		if (isBitSet(idObject.this.props,OBJ_BOUNCY_LOW))
 			idObject.this.vY *= -cBouncyObjectVel;
 			//cantidad de rebote
 			if ( abs(idObject.this.vY) < cBouncyObjectVel )
 				*objGrounded = true;		
 			end;
-		//si tiene propiedad BOUNCY_HIGH, rebota al tocar suelo
-		elseif (isBitSet(idObject.this.props,BOUNCY_HIGH))
+		//si tiene propiedad OBJ_BOUNCY_HIGH, rebota al tocar suelo
+		elseif (isBitSet(idObject.this.props,OBJ_BOUNCY_HIGH))
 			idObject.this.vY *= -cBouncyItemVel;
 			//cantidad de rebote
 			if ( abs(idObject.this.vY) < cBouncyItemVel )

@@ -10,9 +10,9 @@
 #define PLATF_LINEAR 		0        
 
 //propiedades plataformas
-#define WAIT_PLAYER          8		//Esta en espera a que suba el player
-#define FALL_PLAYER          16		//Se cae cuando sube el player
-#define FALL_COLLISION       32		//Se cae cuando colisiona con pared
+#define PLATF_WAIT_PLAYER          8		//Esta en espera a que suba el player
+#define PLATF_FALL_PLAYER          16		//Se cae cuando sube el player
+#define PLATF_FALL_COLLISION       32		//Se cae cuando colisiona con pared
 
 //constantes de plataformas
 const

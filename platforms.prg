@@ -156,12 +156,12 @@ begin
 		switch (this.state)
 			case IDLE_STATE:
 				//si esta activada la propiedad de esperar al player para mover
-				if (isBitSet(this.props,WAIT_PLAYER))			
+				if (isBitSet(this.props,PLATF_WAIT_PLAYER))			
 					//muevo cuando sube el player
 					if (idPlatform == father)
 						memIdPlatform = true;
 						//si esta activada la propiedad de caer al subir el player
-						if (!isBitSet(this.props,FALL_PLAYER))
+						if (!isBitSet(this.props,PLATF_FALL_PLAYER))
 							//estado mover
 							this.state = MOVE_STATE; 
 							//direccion segun sentido
@@ -169,7 +169,7 @@ begin
 						end;
 					end;
 					//si esta activada la propiedad de caer al subir el player
-					if (isBitSet(this.props,FALL_PLAYER) && memIdPlatform)
+					if (isBitSet(this.props,PLATF_FALL_PLAYER) && memIdPlatform)
 						//tiempo espera
 						if (clockTick)
 							waitTime++;
@@ -191,7 +191,7 @@ begin
 				//cambio de estado al colisionar
 				if (getTileCode(id,RIGHT_UP_POINT) <> NO_SOLID && dirX == 1)
 					//si esta activada la propiedad de caer al colisionar
-					if (isBitSet(this.props,FALL_COLLISION))
+					if (isBitSet(this.props,PLATF_FALL_COLLISION))
 						this.state = DEAD_STATE;
 					else
 						//cambio sentido
@@ -200,7 +200,7 @@ begin
 				end;
 				if (getTileCode(id,LEFT_UP_POINT) <> NO_SOLID && dirX == -1)
 					//si esta activada la propiedad de caer al colisionar
-					if (isBitSet(this.props,FALL_COLLISION))
+					if (isBitSet(this.props,PLATF_FALL_COLLISION))
 						this.state = DEAD_STATE;
 					else
 						//cambio sentido
