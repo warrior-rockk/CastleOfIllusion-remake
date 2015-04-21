@@ -196,7 +196,7 @@ begin
 			end;
 			case DEAD_STATE:
 				this.fY +=this.vX;
-				if (region_out(id,cGameRegion))
+				if (!region_in(x,y,this.ancho,this.alto<<1))
 					signal(id,s_kill);
 				end;
 			end;

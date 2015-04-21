@@ -39,13 +39,13 @@ begin
 	
 	//Archivos de los niveles
 	//level 0
-	levelFiles[0].MapFile 	= "testRoom\testRoom.bin";
-	levelFiles[0].DataFile 	= "testRoom\testRoom.dat";
-	levelFiles[0].TileFile 	= "testRoom\tiles.fpg";
+	levelFiles[0].MapFile 	= "test\ToyLand.bin";
+	levelFiles[0].DataFile 	= "test\ToyLand.dat";
+	levelFiles[0].TileFile 	= "test\tiles.fpg";
 	//level 1
-	levelFiles[1].MapFile 	= "test\ToyLand.bin";
-	levelFiles[1].DataFile 	= "test\ToyLand.dat";
-	levelFiles[1].TileFile 	= "test\tiles.fpg";
+	levelFiles[1].MapFile 	= "testRoom\testRoom.bin";
+	levelFiles[1].DataFile 	= "testRoom\testRoom.dat";
+	levelFiles[1].TileFile 	= "testRoom\tiles.fpg";
 	
 	//archivo graficos generales
 	fpgGame 	= fpg_load("test\game.fpg");	 

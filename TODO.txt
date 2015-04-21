@@ -21,6 +21,8 @@ ENGINE: -con screen_get puedo caputar la pantalla y hacer transiciones
 		-Los codigos de tile deberian ser bits para ser simultaneos?
 		-igual fisicas a juego real
 		-UpdateObject generalizarlo a updateentity para todos en engine.prg
+		-terremotos o colisiones sacudiendo el scroll
+		-efectos de paleta: relampagos,agua,etc..
 		
 OBJECTS:-al salir de la region al saltar desaparece aunque lo lleves en la mano
 		-item con small coin
