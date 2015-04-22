@@ -649,8 +649,8 @@ begin
 					repeat
 						doorID = get_id(TYPE doorButton);
 						if (doorID <> 0)
-							//si hay alguna puerta inferior que no se ha abierto, reseteamos apertura
-							if (doorID.y > y && doorID.this.state <> PUSHED_STATE)
+							//si hay alguna puerta superior que no se ha abierto, reseteamos apertura
+							if (doorID.y < y && doorID.this.state <> PUSHED_STATE)
 								openDoor = false;
 							end;
 						end;
@@ -663,6 +663,15 @@ begin
 						end;
 						//tiempo cumplido
 						if (doorTime >= cDoorTime)
+							//movemos los objetos puerta hacia arriba un tile
+							repeat
+								doorID = get_id(TYPE doorButton);
+								if (doorID <> 0 )
+									doorID = doorID.father;
+									doorID.this.fY -= cTileSize;
+								end;
+							until (doorID == 0);
+							//cambiamos estado
 							this.state = PUSHED_STATE;
 						end;
 					end;
@@ -673,6 +682,7 @@ begin
 				SetBit(this.props,NO_COLLISION);
 				//le quitamos grafico
 				graph = 0;
+				
 				//si se suelta el boton
 				if (idButton == 0 )
 					//reseteamos el flag de apertura
@@ -682,7 +692,7 @@ begin
 						doorID = get_id(TYPE doorButton);
 						if (doorID <> 0)
 							//si hay alguna puerta por debajo que no se ha cerrado, reseteamos el cierre
-							if (doorID.y < y && doorID.this.state <> IDLE_STATE)
+							if (doorID.y > y && doorID.this.state <> IDLE_STATE)
 								openDoor = true;
 							end;
 						end;
@@ -695,6 +705,17 @@ begin
 						end;
 						//tiempo cumplido
 						if (doorTime <= 0)
+							//movemos los objetos puerta hacia abajo un tile
+							repeat
+								doorID = get_id(TYPE doorButton);
+								if (doorID <> 0 )
+									doorID = doorID.father;
+									doorID.this.fY += cTileSize;
+								end;
+							until (doorID == 0);
+							//grafico inicial
+							graph = _graph;
+							//cambiamos de estado
 							this.state = IDLE_STATE;
 						end;
 					end;
@@ -799,8 +820,8 @@ begin
 					repeat
 						doorID = get_id(TYPE keyDoor);
 						if (doorID <> 0)
-							//si hay alguna puerta inferior que no se ha abierto, reseteamos apertura
-							if (doorID.y > y && doorID.this.state <> PUSHED_STATE)
+							//si hay alguna puerta superior que no se ha abierto, reseteamos apertura
+							if (doorID.y < y && doorID.this.state <> PUSHED_STATE)
 								openDoor = false;
 							end;
 						end;
@@ -813,6 +834,15 @@ begin
 						end;
 						//tiempo cumplido
 						if (doorTime >= cDoorTime)
+							//movemos los objetos puerta hacia arriba un tile
+							repeat
+								doorID = get_id(TYPE keyDoor);
+								if (doorID <> 0 )
+									doorID = doorID.father;
+									doorID.this.fY -= cTileSize;
+								end;
+							until (doorID == 0);
+							//cambiamos estado
 							this.state = PUSHED_STATE;
 						end;
 					end;
@@ -821,8 +851,7 @@ begin
 			case PUSHED_STATE:
 				//eliminamos la puerta
 				signal(father,s_kill);
-				signal(id,s_kill);
-				
+				signal(id,s_kill);				
 			end;
 		end;
 		
