@@ -168,7 +168,8 @@ begin
 				    //por tiempo a 0
 				   (game.actualLevelTime == 0 && level.levelTime <> 0)         ||
 				   //por salir de la region
-				   out_region(idPlayer,cGameRegion) 
+				   //out_region(idPlayer,cGameRegion) 
+				   !region_in(idPlayer.x,idPlayer.y,idPlayer.this.ancho,idPlayer.this.alto<<1)
 				   )									
 					//creamos el proceso/animacion muerte
 					idDeadPlayer = deadPlayer();

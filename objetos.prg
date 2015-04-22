@@ -205,11 +205,16 @@ begin
 				end;
 			end;
 			case PICKED_STATE:
-				isBitSet(idPlayer.flags,B_HMIRROR) ? this.fX = idPlayer.x-cObjectPickedPosX : this.fX = idPlayer.x+cObjectPickedPosX;
-				this.fY = idPlayer.y+cObjectPickedPosY;
-				//reseteamos flag boton si lo hubiera seteado el proceso
-				if (idButton == father) 
-					idButton = 0;
+				//comprobamos si el jugador no muere cuando nos lleva
+				if (exists(idPlayer))
+					isBitSet(idPlayer.flags,B_HMIRROR) ? this.fX = idPlayer.x-cObjectPickedPosX : this.fX = idPlayer.x+cObjectPickedPosX;
+					this.fY = idPlayer.y+cObjectPickedPosY;
+					//reseteamos flag boton si lo hubiera seteado el proceso
+					if (idButton == father) 
+						idButton = 0;
+					end;
+				else
+					this.state = THROWING_STATE;
 				end;
 			end;
 			case THROWING_STATE:	

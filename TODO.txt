@@ -1,10 +1,8 @@
-PLAYER:Poder Salto distinto desde escalera
-       Colision con disparomonster no puede ser una separada. Integrarlo en monsters??
-	   -la muerte por fuera de region tiene que tner un buen offset para no morir al saltar mucho y solo deberia ser al bajar, no subir.
+PLAYER:-Poder Salto distinto desde escalera
+       -Colision con disparomonster no puede ser una separada. Integrarlo en monsters??
 	   -parece que con las flechas de direccion no cae de escalera
 	   -si objeto encima de un pickable, no recojer ninguno
 	   -comportamiento erratico al manter pulsado salto. si sueltas la tecla no deberia sumar poder despues
-	   -al caer con objeto da error el soliditem por referencia idplayer = 0
 ENGINE (BUG):Tareas de inicializacion del engine:el mapa que esta en la posicion de mapStairs, se borra¿¿¿ ¿es por culpa de tener id 0 el 	sistema y el primer fpg?
             -paleta del juego??
 
@@ -32,10 +30,6 @@ OBJECTS:-al salir de la region al saltar desaparece aunque lo lleves en la mano
 		-items invisibles
 		-la puerta deberia mover el grafico de borde inferior conforme abre y cierra
 		
-MONSTER: -estamos usando propiedad NOCOLISION de objetos pero tenemos una propiedad propia. Esto hay que organizarlo
-		
-PLATFORMS: las plataformas solo se regeneran si salen de su rango de movimiento?
-
 COLLISIONS:generalizar los calculos de colision para utilizarlo segun los tipos de colision de manera global
 
 EDITOR: -bug en posicion entidades sin fisica con zoom editor aplicado
