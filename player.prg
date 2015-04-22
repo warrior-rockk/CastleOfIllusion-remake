@@ -416,18 +416,31 @@ BEGIN
 			//obtenemos siguiente colision
 			colID = get_id(TYPE platform);
 			
-			//tratamos las colisiones separadas por ejes
-			//para poder andar sobre varios procesos corrigiendo la y
-			
-			//colisiones verticales con procesos
-			dir = colCheckProcess(id,colID,VERTICALAXIS);
-			//aplicamos la direccion de la colision
-			applyDirCollision(ID,dir,&grounded);
-						
 			//si existe plataforma
 			if (colID <> 0)
+				
+				//tratamos las colisiones separadas por ejes
+				//para poder andar sobre varios procesos corrigiendo la y
+				
+				//colisiones verticales con procesos
+				if (!isBitSet(colID.this.props,PLATF_ONE_WAY_COLL))
+					dir = colCheckProcess(id,colID,VERTICALAXIS);
+					//aplicamos la direccion de la colision
+					applyDirCollision(ID,dir,&grounded);
+				else
+					//si tiene la propiedad ONE_WAY, comprobamos colision sin corregir
+					dir = colCheckProcess(id,colID,INFOONLY);
+					//si es inferior y estoy cayendo en ella
+					if (dir == COLDOWN && this.vY > 0)
+						//recalculamos corrigiendo
+						dir = colCheckProcess(id,colID,VERTICALAXIS);
+						//aplicamos la direccion de la colision
+						applyDirCollision(ID,dir,&grounded);
+					end;
+				end;
+
 				//y estoy encima de ella
-				if (dir<>NOCOL && grounded)
+				if (dir==COLDOWN && grounded)
 					//seteamos idPlatform
 					idPlatform = colID;
 					//cambiamos prioridades
@@ -436,15 +449,18 @@ BEGIN
 				else
 					colID.priority = cPlatformPrior;
 				end;
-			end;
-					
-			//colisiones horizontales con procesos
-			dir = colCheckProcess(id,colID,HORIZONTALAXIS);
-			//aplicamos la direccion de la colision si esta en la plataforma
-			if (idPlatform == 0)
-				applyDirCollision(ID,dir,&grounded);
-			end;
+				
+				//Comprobamos las colisiones horizontales si no tiene la propiedad ONE_WAY
+				if (!isBitSet(colID.this.props,PLATF_ONE_WAY_COLL))	
+					//colisiones horizontales con procesos
+					dir = colCheckProcess(id,colID,HORIZONTALAXIS);
+					//aplicamos la direccion de la colision si esta en la plataforma
+					if (idPlatform == 0)
+						applyDirCollision(ID,dir,&grounded);
+					end;
+				end;
 			
+			end;
 		until (colID == 0);
 		
 		//lanzamos comprobacion con procesos monstruos

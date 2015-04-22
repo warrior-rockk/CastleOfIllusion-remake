@@ -311,7 +311,6 @@ begin
 	//ajustamos retardo
 	stepTime = 30*numClouds;
 	
-	say(stepTime);
 	//bucle principal
 	loop
 		//nos actualizamos del padre

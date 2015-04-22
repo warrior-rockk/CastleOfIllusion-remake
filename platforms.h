@@ -14,6 +14,7 @@
 #define PLATF_WAIT_PLAYER          8		//Esta en espera a que suba el player
 #define PLATF_FALL_PLAYER          16		//Se cae cuando sube el player
 #define PLATF_FALL_COLLISION       32		//Se cae cuando colisiona con pared
+#define PLATF_ONE_WAY_COLL         64       //Se atraviesa y colisiona al caer
 
 //constantes de plataformas
 const
