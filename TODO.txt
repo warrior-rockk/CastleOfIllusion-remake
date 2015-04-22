@@ -28,9 +28,10 @@ OBJECTS:-al salir de la region al saltar desaparece aunque lo lleves en la mano
 		-fall on touch
 		-boxspring
 		-items invisibles
-		-la puerta deberia mover el grafico de borde inferior conforme abre y cierra
 		
 COLLISIONS:generalizar los calculos de colision para utilizarlo segun los tipos de colision de manera global
+
+PLATFORMS: -Hacer jump-trough
 
 EDITOR: -bug en posicion entidades sin fisica con zoom editor aplicado
 		-COpiar y pegar varios tipos de entidades y varias a la vez

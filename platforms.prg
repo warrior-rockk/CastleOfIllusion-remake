@@ -66,7 +66,10 @@ begin
 				//creamos el tipo de plataforma
 				switch (_platformType)
 					case PLATF_LINEAR:
-						idPlatform = linearPlatform(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props,0.5);
+						idPlatform = linearPlatform(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props,cPlatformDefaultVel);
+					end;
+					case PLATF_CLOUD:
+						idPlatform = cloudPlatform(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props,30);	 
 					end;
 				end;	
 				log("Se crea la plataforma "+idPlatform,DEBUG_OBJECTS);
@@ -245,4 +248,124 @@ begin
 		frame;
 	end;
 	
+end;
+
+//Proceso plataforma nube
+Process cloudPlatform(int _graph,int startX,int startY,int _ancho,int _alto,int _axisAlign,int _flags,int _props,int stepTime)
+private
+	int prevX;				//posicion X previa
+	int prevY;				//posicion Y previa
+		
+	int currentStepTime; 	//tiempo actual paso
+
+begin
+	region = cGameRegion;
+	ctype = c_scroll;
+	z = cZObject;
+	file = level.fpgObjects;
+	flags = _flags;
+	
+	//igualamos la propiedades publicas a las de parametros
+	this.ancho 		= _ancho;
+	this.alto 		= _alto;
+	this.vX  		= cPlatformDefaultVel;
+	this.props  	= _props;
+	this.axisAlign 	= _axisAlign;
+	
+	//modo debug sin graficos
+	if (file<0)
+		graph = map_new(this.ancho,this.alto,8,0);
+		map_clear(0,graph,310);
+	end;
+	
+	//puntos de colision del objeto
+	
+	this.colPoint[LEFT_UP_POINT].x 		= -(this.ancho>>1);
+	this.colPoint[LEFT_UP_POINT].y 		= 0;
+	this.colPoint[LEFT_UP_POINT].colCode = COLIZQ;
+	this.colPoint[LEFT_UP_POINT].enabled = 1;
+	
+	this.colPoint[RIGHT_UP_POINT].x 		= (this.ancho>>1);
+	this.colPoint[RIGHT_UP_POINT].y 		= 0;
+	this.colPoint[RIGHT_UP_POINT].colCode = COLDER;
+	this.colPoint[RIGHT_UP_POINT].enabled = 1;
+	
+	x = startX;
+	y = startY;
+	
+	this.fX = x;
+	this.fY = y;
+	
+	this.state = IDLE_STATE;
+	
+	//actualizamos al padre con los datos de creacion
+	updateObject(id,father);	
+	
+	//bucle principal
+	loop
+		//nos actualizamos del padre
+		updateObject(father,id);
+		
+		//guardamos estado actual
+		this.prevState = this.state;
+		
+		switch (this.state)
+			case IDLE_STATE:
+				graph = 0;
+				this.fX = startX;
+				this.fY = startY;
+				unSetBit(this.props,NO_COLLISION);
+				//cambio de paso por tiempo
+				if (currentStepTime >= stepTime)
+					this.state = MOVE_STATE;
+					currentStepTime = 0;
+				else
+					//contador paso
+					if (clockTick)
+						currentStepTime++;
+					end;
+				end;
+			end;
+			case MOVE_STATE:
+				//imagen inicial
+				graph = _graph;
+				this.vY = -this.vX;
+				//movimiento lineal
+				this.fX+=this.vX;
+				this.fY+=this.vY;
+				//cambio de paso al llegar a altura
+				if (this.fY <= startY - 50)
+					this.state = MOVE_RIGHT_STATE;
+				end;
+			end;
+			case MOVE_RIGHT_STATE:
+				graph = 24;
+				//movimiento lineal
+				this.fX+=this.vX;
+				//cambio de paso al llegar a posicion
+				if (this.fX >= startX + 200)
+					setBit(this.props,NO_COLLISION);
+					this.state = IDLE_STATE;
+				end;
+			end;
+		end;
+		
+		//guardamos la posicion anterior
+		prevX = x;
+		prevY = y;
+		
+		//actualizamos posicion
+		positionToInt(id);
+		
+		//actualizamos el objeto padre
+		updateObject(id,father);		
+				
+		//si el player esta en plataforma
+		if (idPlatform == father)
+			//actualizamos la posicion del player lo que se movio la plataforma
+			idPlayer.this.fX += x - prevX;
+		end;
+			
+		frame;
+	end;
 end;
