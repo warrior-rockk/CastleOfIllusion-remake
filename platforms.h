@@ -54,7 +54,7 @@ end
 end
 
 //declaracion de plataforma nubes
-Declare Process cloudPlatform(int _graph,int startX,int startY,int _ancho,int _alto,int _axisAlign,int _flags,int _props,int stepTime)
+Declare Process cloudPlatform(int _graph,int startX,int startY,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
 public
 	_entityPublicData this;			//datos publicos de entidad
 end

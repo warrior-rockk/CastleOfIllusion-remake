@@ -69,7 +69,7 @@ begin
 						idPlatform = linearPlatform(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props,cPlatformDefaultVel);
 					end;
 					case PLATF_CLOUD:
-						idPlatform = cloudPlatform(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props,30);	 
+						idPlatform = cloudPlatform(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
 					end;
 				end;	
 				log("Se crea la plataforma "+idPlatform,DEBUG_OBJECTS);
@@ -251,13 +251,15 @@ begin
 end;
 
 //Proceso plataforma nube
-Process cloudPlatform(int _graph,int startX,int startY,int _ancho,int _alto,int _axisAlign,int _flags,int _props,int stepTime)
+Process cloudPlatform(int _graph,int startX,int startY,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
 private
 	int prevX;				//posicion X previa
 	int prevY;				//posicion Y previa
-		
+	
+	int numClouds;				//Numero de procesos nube	
+	
 	int currentStepTime; 	//tiempo actual paso
-
+	int stepTime;
 begin
 	region = cGameRegion;
 	ctype = c_scroll;
@@ -301,6 +303,15 @@ begin
 	//actualizamos al padre con los datos de creacion
 	updateObject(id,father);	
 	
+	//contamos numero de nubes
+	repeat
+		numClouds++;
+	until( get_id(TYPE cloudPlatform) == 0)
+	
+	//ajustamos retardo
+	stepTime = 30*numClouds;
+	
+	say(stepTime);
 	//bucle principal
 	loop
 		//nos actualizamos del padre
@@ -314,7 +325,7 @@ begin
 				graph = 0;
 				this.fX = startX;
 				this.fY = startY;
-				unSetBit(this.props,NO_COLLISION);
+				setBit(this.props,NO_COLLISION);
 				//cambio de paso por tiempo
 				if (currentStepTime >= stepTime)
 					this.state = MOVE_STATE;
@@ -332,7 +343,12 @@ begin
 				this.vY = -this.vX;
 				//movimiento lineal
 				this.fX+=this.vX;
+				this.fX+=0.5*rand(-1,1);
 				this.fY+=this.vY;
+				//cambio de grafico a llegar a altura
+				if (this.fY <= startY - 20)
+					graph = 23;
+				end;
 				//cambio de paso al llegar a altura
 				if (this.fY <= startY - 50)
 					this.state = MOVE_RIGHT_STATE;
@@ -340,11 +356,27 @@ begin
 			end;
 			case MOVE_RIGHT_STATE:
 				graph = 24;
+				unSetBit(this.props,NO_COLLISION);
+				//movimiento lineal
+				this.fX+=this.vX;
+				//cambio de grafico y propiedades al llegar a posicion
+				if (this.fX >= startX + 195)
+					graph = 23;
+					setBit(this.props,NO_COLLISION);
+				end;
+				//cambio de paso al llegar a posicion
+				if (this.fX >= startX + 210)
+					graph = _graph;
+					this.state = DEAD_STATE;
+				end;
+			end;
+			case DEAD_STATE:
+				graph = _graph;
 				//movimiento lineal
 				this.fX+=this.vX;
 				//cambio de paso al llegar a posicion
-				if (this.fX >= startX + 200)
-					setBit(this.props,NO_COLLISION);
+				if (this.fX >= startX + 220)
+					graph = 0;
 					this.state = IDLE_STATE;
 				end;
 			end;
