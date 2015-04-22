@@ -64,6 +64,9 @@ begin
 					case MONS_TOYPLANECONTROL:
 						idMonster = toyPlaneControl(15,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
 					end;
+					case MONS_CHEESSHORSE:
+						idMonster = cheessHorse(22,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
+					end;
 				end;	
 				log("Se crea el monstruo "+idMonster,DEBUG_MONSTERS);
 				
@@ -434,6 +437,126 @@ begin
 			end;
 		end;
 		
+		//actualizamos velocidad y posicion
+		updateVelPos(id,grounded);
+		
+		//actualizamos el monstruo padre
+		updateMonster(id,father);
+		
+		//alineacion del eje X del grafico
+		alignAxis(id);
+		
+		frame;
+	end;
+	
+end;
+
+//Proceso enemigo cheessHorse
+//Se mueve en direccion al player a saltos y da un salto grande cuando está cerca de él
+process cheessHorse(int graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
+private
+byte grounded;		//flag de en suelo
+float friction;		//friccion local
+
+int colID;			//Id de colision
+int colDir;			//direccion de la colision
+byte collided;		//flag de colision
+
+int idleCount;
+int dir;
+
+int _x0;			//X inicial
+int xRange;			//Rango de movimiento X
+float xVel;			//Velocidad movimiento
+
+byte atack;			//Flag de atacar al enemigo
+int atackRangeX;		//Rango en el que ataca
+int i;				//Variable auxiliar
+begin
+	region = cGameRegion;
+	ctype = c_scroll;
+	z = cZMonster;
+	file = level.fpgMonsters;
+	flags = _flags;
+	
+	//igualamos la propiedades publicas a las de parametros
+	this.ancho = _ancho;
+	this.alto = _alto;
+	this.axisAlign = _axisAlign;
+	this.props = _props;
+	
+	//modo debug sin graficos
+	if (file<0)
+		graph = map_new(this.ancho,this.alto,8,0);
+		map_clear(0,graph,rand(200,300));
+	end;
+	
+	this.fX = x;
+	this.fY = y;
+	
+	_x0 = x;
+	xRange = 10;
+	xVel   = 0.2;
+	atackRangeX = 50;
+	
+	//direccion inicial del movimiento
+	isBitSet(flags,B_HMIRROR) ? dir = 1 : 	dir   = -1;
+	
+	WGE_CreateObjectColPoints(id);
+	
+	friction = floorFriction;
+	
+	this.state = IDLE_STATE;
+	
+	//actualizamos al padre con los datos de creacion
+	updateMonster(id,father);
+		
+	loop
+		//nos actualizamos del padre
+		updateMonster(father,id);
+		
+		//FISICAS	
+		collided = terrainPhysics(ID,friction,&grounded);
+		
+		//guardamos estado actual
+		this.prevState = this.state;
+		
+		//maquina de estados
+		switch (this.state)
+			case IDLE_STATE:
+				//animacion movimiento
+				if (WGE_Animate(22,23,20,ANIM_LOOP))
+					idleCount++;
+				end;
+				if (idleCount >= 2)
+					idleCount = 0;
+					this.state = MOVE_STATE;
+					this.vX = -2*dir;
+					this.vY = -4;
+					grounded = false;
+				end;
+			end;
+			case MOVE_STATE: //movimiento a saltos
+				graph = 22;
+				if (collided && !grounded)
+					dir *= -1;
+					isBitSet(flags,B_HMIRROR) ? unSetBit(flags,B_HMIRROR) : setBit(flags,B_HMIRROR);
+				end;
+				//pasamos a reposo cuando toca suelo
+				if (grounded)
+					this.state = IDLE_STATE;
+				end;
+			end;
+			case HURT_STATE:   
+				this.state = DEAD_STATE;
+			end;
+			case DEAD_STATE:
+				graph = 8;
+				deadMonster();
+				signal(id,s_kill);
+			end;
+		end;
+				
 		//actualizamos velocidad y posicion
 		updateVelPos(id,grounded);
 		

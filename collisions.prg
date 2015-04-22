@@ -590,7 +590,7 @@ function applyDirCollision(entity idObject,int colDir,byte *objGrounded)
 begin
 	//acciones segun colision
 	if (colDir == COLIZQ || colDir == COLDER) 
-		idObject.this.vX = 0;
+		idObject.this.vX = 0; //-idObject.this.vX; //rebota en la pared
 	elseif (colDir == COLDOWN) 
 		//si tiene propiedad OBJ_BOUNCY_LOW, rebota al tocar suelo
 		if (isBitSet(idObject.this.props,OBJ_BOUNCY_LOW))

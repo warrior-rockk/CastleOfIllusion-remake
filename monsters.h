@@ -13,6 +13,7 @@
 #define MONS_CYCLECLOWN			0 		//Monstruo CycleClown
 #define MONS_TOYPLANE   		1 		//Monstruo ToyPlane
 #define MONS_TOYPLANECONTROL   	2 		//Monstruo ToyPlaneControl
+#define MONS_CHEESSHORSE   	    3 		//Monstruo CheessHorse
 
 //enemigo
 Type _monster         			//Tipo de Dato de enemigo
@@ -66,6 +67,14 @@ public
 end
 end
 
+//Declaracion de enemigo cheessHorse
+Declare process cheessHorse(int graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
+public
+	_entityPublicData this;			//datos publicos de entidad
+end
+end
+
+//Proceso de muerte generico de enemigo
 Declare Process deadMonster()
 public
 	_entityPublicData this;			//datos publicos de entidad
