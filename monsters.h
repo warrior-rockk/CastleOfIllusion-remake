@@ -13,7 +13,7 @@
 #define MONS_CYCLECLOWN			0 		//Monstruo CycleClown
 #define MONS_TOYPLANE   		1 		//Monstruo ToyPlane
 #define MONS_TOYPLANECONTROL   	2 		//Monstruo ToyPlaneControl
-#define MONS_CHEESSHORSE   	    3 		//Monstruo CheessHorse
+#define MONS_CHESSHORSE   	    3 		//Monstruo CheessHorse
 
 //enemigo
 Type _monster         			//Tipo de Dato de enemigo
@@ -27,6 +27,18 @@ Type _monster         			//Tipo de Dato de enemigo
 	int monsterFlags;           //flags
 	int monsterProps;           //Propiedades
 End;
+
+//Constantes
+Const
+
+	//ChessHorse
+	cChessHorseIdleCycles 	= 2;	//Ciclos de reposo para salto pequeño
+	cChessHorseNumCycles    = 3;	//Ciclos de reposo para salto grande
+	cChessHorseSmallMove	= 1;	//Velocidad X movimiento pequeño
+	cChessHorseBigMove		= 2;	//Velocidad X movimiento grande
+	cChessHorseSmallJump	= 3;	//Velocidad Y movimiento pequeño
+	cChessHorseBigJump		= 4;	//Velocidad Y movimiento grande
+end;
 
 Global
 	_monster* monsters;			//Array Dinamico de enemigos
@@ -68,7 +80,7 @@ end
 end
 
 //Declaracion de enemigo cheessHorse
-Declare process cheessHorse(int graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
+Declare process chessHorse(int graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
 public
 	_entityPublicData this;			//datos publicos de entidad
 end

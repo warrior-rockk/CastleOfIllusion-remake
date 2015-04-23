@@ -31,7 +31,7 @@ OBJECTS:-al salir de la region al saltar desaparece aunque lo lleves en la mano
 		
 COLLISIONS:generalizar los calculos de colision para utilizarlo segun los tipos de colision de manera global
 
-PLATFORMS: -Hacer jump-trough
+MONSTERS: Limpiar privates de monstruos
 
 EDITOR: -bug en posicion entidades sin fisica con zoom editor aplicado
 		-COpiar y pegar varios tipos de entidades y varias a la vez

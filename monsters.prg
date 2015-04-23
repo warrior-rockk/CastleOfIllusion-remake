@@ -64,8 +64,8 @@ begin
 					case MONS_TOYPLANECONTROL:
 						idMonster = toyPlaneControl(15,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
 					end;
-					case MONS_CHEESSHORSE:
-						idMonster = cheessHorse(22,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
+					case MONS_CHESSHORSE:
+						idMonster = chessHorse(22,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
 					end;
 				end;	
 				log("Se crea el monstruo "+idMonster,DEBUG_MONSTERS);
@@ -451,26 +451,23 @@ begin
 	
 end;
 
-//Proceso enemigo cheessHorse
-//Se mueve en direccion al player a saltos y da un salto grande cuando está cerca de él
-process cheessHorse(int graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
+//Proceso enemigo chessHorse
+//dos saltos pequeños, 1 grande. Rebota en las paredes. Cambia de direccion hacia el player cuando toca suelo
+process chessHorse(int graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
 private
 byte grounded;		//flag de en suelo
 float friction;		//friccion local
+
+float prevVx;		//Velocidad X previa (para rebotar)
+int dir;			//Direccion movimiento
+float velX;		    //Velocidad Movimiento
 
 int colID;			//Id de colision
 int colDir;			//direccion de la colision
 byte collided;		//flag de colision
 
-int idleCount;
-int dir;
+int idleCount;	//contador de ciclos reposo
 
-int _x0;			//X inicial
-int xRange;			//Rango de movimiento X
-float xVel;			//Velocidad movimiento
-
-byte atack;			//Flag de atacar al enemigo
-int atackRangeX;		//Rango en el que ataca
 int i;				//Variable auxiliar
 begin
 	region = cGameRegion;
@@ -494,13 +491,8 @@ begin
 	this.fX = x;
 	this.fY = y;
 	
-	_x0 = x;
-	xRange = 10;
-	xVel   = 0.2;
-	atackRangeX = 50;
-	
 	//direccion inicial del movimiento
-	isBitSet(flags,B_HMIRROR) ? dir = 1 : 	dir   = -1;
+	isBitSet(flags,B_HMIRROR) ? dir = -1 : dir = 1;
 	
 	WGE_CreateObjectColPoints(id);
 	
@@ -515,9 +507,20 @@ begin
 		//nos actualizamos del padre
 		updateMonster(father,id);
 		
+		prevVx = this.vX;
+		
 		//FISICAS	
 		collided = terrainPhysics(ID,friction,&grounded);
+		if (collided && !grounded) this.vX = prevVx*-1; end;
 		
+		//lanzamos comprobacion colision con procesos objeto
+		repeat
+			//obtenemos siguiente colision
+			colID = get_id(TYPE object);
+			//aplicamos la direccion de la colision
+			applyDirCollision(ID,colCheckProcess(id,colID,BOTHAXIS),&grounded);		
+		until (colID == 0);
+				
 		//guardamos estado actual
 		this.prevState = this.state;
 		
@@ -527,21 +530,36 @@ begin
 				//animacion movimiento
 				if (WGE_Animate(22,23,20,ANIM_LOOP))
 					idleCount++;
+					//cada X ciclos de animacion, salto grande
+					if (idleCount >= cChessHorseIdleCycles*cChessHorseNumCycles)
+						idleCount = 0;
+						this.state = MOVE_STATE;
+						velX = cChessHorseBigMove*dir;
+						this.vY = -cChessHorseBigJump;
+						grounded = false;
+					elseif (idleCount % cChessHorseIdleCycles == 0)
+						this.state = MOVE_STATE;
+						velX = cChessHorseSmallMove*dir;
+						this.vY = -cChessHorseSmallJump;
+						grounded = false;
+					end;
 				end;
-				if (idleCount >= 2)
-					idleCount = 0;
-					this.state = MOVE_STATE;
-					this.vX = -2*dir;
-					this.vY = -4;
-					grounded = false;
+				//perseguir jugador
+				if (idPlayer <> 0 )
+					//corregimos direccion
+					if (idPlayer.this.fX > this.fX)
+						dir = 1; 
+					else
+						dir = -1; 
+					end;
 				end;
 			end;
-			case MOVE_STATE: //movimiento a saltos
-				graph = 22;
-				if (collided && !grounded)
-					dir *= -1;
-					isBitSet(flags,B_HMIRROR) ? unSetBit(flags,B_HMIRROR) : setBit(flags,B_HMIRROR);
-				end;
+			case MOVE_STATE: //movimiento salto
+				this.vX = velX;
+				
+				//grafico salto
+				this.vY < 0 ? graph = 22: graph = 23;
+								
 				//pasamos a reposo cuando toca suelo
 				if (grounded)
 					this.state = IDLE_STATE;
@@ -556,7 +574,10 @@ begin
 				signal(id,s_kill);
 			end;
 		end;
-				
+		
+		//ajuste flags segun direccion
+		this.vX<=0 ? setBit(flags,B_HMIRROR) : unSetBit(flags,B_HMIRROR);
+		
 		//actualizamos velocidad y posicion
 		updateVelPos(id,grounded);
 		
