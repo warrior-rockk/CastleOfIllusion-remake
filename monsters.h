@@ -14,6 +14,7 @@
 #define MONS_TOYPLANE   		1 		//Monstruo ToyPlane
 #define MONS_TOYPLANECONTROL   	2 		//Monstruo ToyPlaneControl
 #define MONS_CHESSHORSE   	    3 		//Monstruo CheessHorse
+#define MONS_BUBBLE				4		//Monstruo Burbuja
 
 //enemigo
 Type _monster         			//Tipo de Dato de enemigo
@@ -38,6 +39,10 @@ Const
 	cChessHorseBigMove		= 2;	//Velocidad X movimiento grande
 	cChessHorseSmallJump	= 3;	//Velocidad Y movimiento pequeño
 	cChessHorseBigJump		= 4;	//Velocidad Y movimiento grande
+	
+	//Bubble
+	cBubbleVel				= 0.5;	//Velocidad burbuja
+	cBubbleIdleTime         = 60;	//Velocidad reposo
 end;
 
 Global
@@ -81,6 +86,13 @@ end
 
 //Declaracion de enemigo cheessHorse
 Declare process chessHorse(int graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
+public
+	_entityPublicData this;			//datos publicos de entidad
+end
+end
+
+//Declaracion de enemigo bubble
+Declare process bubble(int graph,int startX,int startY,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
 public
 	_entityPublicData this;			//datos publicos de entidad
 end

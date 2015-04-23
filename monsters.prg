@@ -67,6 +67,9 @@ begin
 					case MONS_CHESSHORSE:
 						idMonster = chessHorse(22,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
 					end;
+					case MONS_BUBBLE:
+						idMonster = bubble(20,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
+					end;				
 				end;	
 				log("Se crea el monstruo "+idMonster,DEBUG_MONSTERS);
 				
@@ -577,6 +580,155 @@ begin
 		
 		//ajuste flags segun direccion
 		this.vX<=0 ? setBit(flags,B_HMIRROR) : unSetBit(flags,B_HMIRROR);
+		
+		//actualizamos velocidad y posicion
+		updateVelPos(id,grounded);
+		
+		//actualizamos el monstruo padre
+		updateMonster(id,father);
+		
+		//alineacion del eje X del grafico
+		alignAxis(id);
+		
+		frame;
+	end;
+	
+end;
+
+//Proceso enemigo bubble
+//Daña al jugador si lo toca cuando esta formado. Explota con objetos y terreno
+process bubble(int graph,int startX,int startY,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
+private
+float friction;			//friccion local
+byte grounded;			//flag de en suelo
+	
+int colID;				//Id de colision
+int colDir;				//direccion de la colision
+byte collided;			//flag de colision
+	
+int dir;				//Direccion movimiento
+int currentStepTime; 	//tiempo actual paso
+
+int i;				//Variable auxiliar
+
+begin
+	region = cGameRegion;
+	ctype = c_scroll;
+	z = cZMonster;
+	file = level.fpgMonsters;
+	flags = _flags;
+	x = startX;
+	y = startY;
+	
+	//igualamos la propiedades publicas a las de parametros
+	this.ancho = _ancho;
+	this.alto = _alto;
+	this.props = _props;
+	this.axisAlign = _axisAlign;
+	
+	//modo debug sin graficos
+	if (file<0)
+		graph = map_new(this.ancho,this.alto,8,0);
+		map_clear(0,graph,rand(200,300));
+	end;
+	
+	
+	this.fX = x;
+	this.fY = y;
+	
+	//direccion inicial del movimiento
+	isBitSet(flags,B_HMIRROR) ? dir = -1 : dir = 1;
+	
+	//puntos de colision del objeto
+	this.colPoint[LEFT_UP_POINT].x 		= -(this.ancho>>1);
+	this.colPoint[LEFT_UP_POINT].y 		= 0;
+	this.colPoint[LEFT_UP_POINT].colCode = COLIZQ;
+	this.colPoint[LEFT_UP_POINT].enabled = 1;
+	
+	this.colPoint[RIGHT_UP_POINT].x 		= (this.ancho>>1);
+	this.colPoint[RIGHT_UP_POINT].y 		= 0;
+	this.colPoint[RIGHT_UP_POINT].colCode = COLDER;
+	this.colPoint[RIGHT_UP_POINT].enabled = 1;
+	
+	friction = floorFriction;
+	
+	this.state = IDLE_STATE;
+	
+	//actualizamos el padre con los datos de creación
+	updateMonster(id,father);
+	
+	loop
+		//nos actualizamos del padre
+		updateMonster(father,id);
+		
+				
+		//guardamos estado actual
+		this.prevState = this.state;
+		
+		//maquina de estados
+		switch (this.state)
+			case IDLE_STATE: //creando burbuja
+				//imagen burbuja pequeña
+				graph = 20;
+				//no dañamos al player
+				SetBit(this.props,MONS_HARMLESS);
+				//posicion inicial
+				this.fX = startX;
+				this.fY = startY;
+				//movimiento oscilante
+				this.fY+=0.5*rand(-1,1);
+				//cambio de paso por tiempo
+				if (currentStepTime >= cBubbleIdleTime)
+					this.state = MOVE_STATE;
+					currentStepTime = 0;
+				else
+					//contador paso
+					if (clockTick)
+						currentStepTime++;
+					end;
+				end;
+			end;
+			case MOVE_STATE: //movimiento hasta colision
+				//imagen burbuja grande
+				graph = 19;
+				//dañamos al player
+				unSetBit(this.props,MONS_HARMLESS);
+				
+				//si toca pared, explota
+				if (getTileCode(id,RIGHT_UP_POINT) <> NO_SOLID && dir == 1)
+					this.state = DEAD_STATE;
+				end;
+				if (getTileCode(id,LEFT_UP_POINT) <> NO_SOLID && dir == -1)
+					this.state = DEAD_STATE;
+				end;
+				
+				//Si toca objeto, explota
+				repeat
+					//obtenemos siguiente colision
+					colID = get_id(TYPE object);
+					if (colCheckProcess(id,colID,INFOONLY) <> NOCOL)
+						this.state = DEAD_STATE;
+					end;
+				until (colID == 0);
+				
+				//si se sale de la region, explota antes de que lo elimine monster padre
+				if (region_out(id,cGameRegion))
+					this.state = DEAD_STATE;
+				end;
+				
+				//actualizamos movimiento
+				this.vX = cBubbleVel*dir;
+				this.fY = startY;
+			end;
+			case HURT_STATE:
+			end;
+			case DEAD_STATE:
+				this.vX = 0;
+				if (WGE_Animate(21,21,20,ANIM_ONCE))
+					this.state = IDLE_STATE;
+				end;
+			end;
+		end;
 		
 		//actualizamos velocidad y posicion
 		updateVelPos(id,grounded);

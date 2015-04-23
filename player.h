@@ -57,7 +57,7 @@ Const
 	//Personaje
 	cPlayerAncho			= 16;			//Ancho del jugador
 	cPlayerAlto				= 32;			//Alto del jugador
-	cPlayerAltoCrouch		= 22;			//Alto del jugador agachado
+	cPlayerAltoCrouch		= 16;			//Alto del jugador agachado
 	
 	cPickingTime			= 20;			//Tiempo retraso para recojer objeto
 	cHurtDisabledTime       = 100;			//Tiempo invencible
