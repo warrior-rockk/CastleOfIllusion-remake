@@ -8,6 +8,7 @@
 
 //propiedades de los monstruos
 #define MONS_HARMLESS		8			//No Daña al jugador
+#define MONS_HURTLESS       16          //No puede ser dañado
 
 //Tipos de monstruo
 #define MONS_CYCLECLOWN			0 		//Monstruo CycleClown
@@ -42,6 +43,7 @@ Const
 	
 	//Bubble
 	cBubbleVel				= 0.5;	//Velocidad burbuja
+	cBubbleInvisibleTime    = 5;	//Velocidad invisible
 	cBubbleIdleTime         = 60;	//Velocidad reposo
 end;
 

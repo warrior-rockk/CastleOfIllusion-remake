@@ -472,11 +472,10 @@ BEGIN
 			//colisiones ambos ejes con procesos
 			dir = colCheckProcess(id,colID,INFOONLY);
 				
-			//si la colision es inferior y el monster no esta muerto
-			
+			//si la colision es inferior y el monster no esta muerto 
 			if (dir == COLDOWN && colID.this.state != DEAD_STATE )
-				//si estamos atacando 
-				if ( this.state == ATACK_STATE)
+				//si estamos atacando y el monstruo se puede dañar
+				if ( this.state == ATACK_STATE && !isBitSet(colId.this.props,MONS_HURTLESS))
 					//rebote al atacar
 					this.vY = -cPlayerAtackBounce;
 					//si se pulsa ataque se añade incremento en rebote
@@ -492,7 +491,7 @@ BEGIN
 						hurt = true;
 					end;
 				end;
-			elseif ( dir != NOCOL && colID.this.state != DEAD_STATE) //cualquier otra colision
+			elseif ( dir != NOCOL && colID.this.state != DEAD_STATE ) //cualquier otra colision
 				//el monstruo te daña si no soy invencible y tiene propiedad de dañar
 				if (!hurtDisabled && !isBitSet(colID.this.props,MONS_HARMLESS)) 
 					hurt = true;

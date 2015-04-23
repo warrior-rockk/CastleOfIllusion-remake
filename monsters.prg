@@ -83,7 +83,7 @@ begin
 		end;
 		
 		//Comprobamos si sale de la region
-		if (!region_in(x,y,this.ancho,this.alto))
+		if (!region_in(x,y,this.ancho<<2,this.alto<<2))
 			outRegion = true;
 		end;
 			
@@ -602,12 +602,14 @@ private
 float friction;			//friccion local
 byte grounded;			//flag de en suelo
 	
-int colID;				//Id de colision
+entity colID;				//Id de colision
 int colDir;				//direccion de la colision
 byte collided;			//flag de colision
 	
 int dir;				//Direccion movimiento
 int currentStepTime; 	//tiempo actual paso
+
+int createBubble;		//Flag de crear burbuja
 
 int i;				//Variable auxiliar
 
@@ -652,7 +654,7 @@ begin
 	
 	friction = floorFriction;
 	
-	this.state = IDLE_STATE;
+	this.state = INVISIBLE_STATE;
 	
 	//actualizamos el padre con los datos de creación
 	updateMonster(id,father);
@@ -667,11 +669,37 @@ begin
 		
 		//maquina de estados
 		switch (this.state)
+			case INVISIBLE_STATE:
+				graph = 0;
+				//no dañamos al player
+				SetBit(this.props,MONS_HARMLESS);
+				//cambio de paso por tiempo
+				if (currentStepTime >= cBubbleIdleTime)
+					createBubble = true;
+					repeat
+						colID = get_id(TYPE bubble);
+						if (colID <> 0)
+							if (colID.y < y && colID.this.state <> MOVE_STATE)
+								createBubble = false;
+							end;
+						end;
+					until (colID == 0);
+				else
+					//contador paso
+					if (clockTick)
+						currentStepTime++;
+					end;
+				end;
+				
+				if (createBubble)
+					this.state = IDLE_STATE;
+					currentStepTime = 0;
+					createBubble = false;
+				end;
+			end;
 			case IDLE_STATE: //creando burbuja
 				//imagen burbuja pequeña
 				graph = 20;
-				//no dañamos al player
-				SetBit(this.props,MONS_HARMLESS);
 				//posicion inicial
 				this.fX = startX;
 				this.fY = startY;
@@ -694,6 +722,10 @@ begin
 				//dañamos al player
 				unSetBit(this.props,MONS_HARMLESS);
 				
+				//actualizamos movimiento
+				this.vX = cBubbleVel*dir;
+				this.fY = startY;
+				
 				//si toca pared, explota
 				if (getTileCode(id,RIGHT_UP_POINT) <> NO_SOLID && dir == 1)
 					this.state = DEAD_STATE;
@@ -714,18 +746,16 @@ begin
 				//si se sale de la region, explota antes de que lo elimine monster padre
 				if (region_out(id,cGameRegion))
 					this.state = DEAD_STATE;
-				end;
+				end;			
 				
-				//actualizamos movimiento
-				this.vX = cBubbleVel*dir;
-				this.fY = startY;
 			end;
 			case HURT_STATE:
+				this.state = DEAD_STATE;
 			end;
 			case DEAD_STATE:
 				this.vX = 0;
 				if (WGE_Animate(21,21,20,ANIM_ONCE))
-					this.state = IDLE_STATE;
+					this.state = INVISIBLE_STATE;
 				end;
 			end;
 		end;
