@@ -507,7 +507,7 @@ begin
 	friction = floorFriction;
 	
 	this.state = IDLE_STATE;
-	
+		
 	//actualizamos al padre con los datos de creacion
 	updateMonster(id,father);
 		
@@ -551,7 +551,7 @@ begin
 				this.state = DEAD_STATE;
 			end;
 			case DEAD_STATE:
-				graph = 8;
+				graph = 24;
 				deadMonster();
 				signal(id,s_kill);
 			end;

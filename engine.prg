@@ -11,7 +11,8 @@ function WGE_Init()
 begin
 	         
 	
-	//Dibujamos mapas para testeo (esto ira eliminado)
+	//Dibujamos mapas que componen las distintas figuras de tile
+	//que se usarán para comprobar las durezas de colision
 	mapBox = map_new(cTileSize,cTileSize,8);
 	drawing_map(0,mapBox);
 	drawing_color(300);

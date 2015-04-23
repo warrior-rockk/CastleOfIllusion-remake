@@ -125,7 +125,7 @@ end;
 
 //Funcion de colision con tile segun mapa de durezas segun su punto de colision
 //Posiciona el objeto en el borde del tile y devuelve un int con el sentido de la colision o 0 si no lo hay
-function int colCheckTileTerrain(entity idObject,int i)
+function int colCheckTileTerrain(entity idEntity,int i)
 private 
 
 _vector colVector;	//Vector de comprobacion colision
@@ -137,7 +137,7 @@ begin
 		colDir = 0;
 				
 		//comprobamos si el punto de control esta activo
-		if (!idObject.this.colPoint[i].enabled) return colDir; end;
+		if (!idEntity.this.colPoint[i].enabled) return colDir; end;
 		
 		//===============
 		//COLISIONES EN X
@@ -145,35 +145,35 @@ begin
 		
 		//desactivamos puntos de control inferiores si estamos en rampa
 		if (cSlopesEnabled)
-			idObject.this.colPoint[LEFT_DOWN_POINT].enabled  = getTileCode(idObject,CENTER_DOWN_POINT) <> SLOPE_135;
-			idObject.this.colPoint[RIGHT_DOWN_POINT].enabled = getTileCode(idObject,CENTER_DOWN_POINT) <> SLOPE_45;
+			idEntity.this.colPoint[LEFT_DOWN_POINT].enabled  = getTileCode(idEntity,CENTER_DOWN_POINT) <> SLOPE_135;
+			idEntity.this.colPoint[RIGHT_DOWN_POINT].enabled = getTileCode(idEntity,CENTER_DOWN_POINT) <> SLOPE_45;
 		end;
 		
 		//si el punto de deteccion es lateral (X)
-		if (idObject.this.colPoint[i].colCode == COLDER || idObject.this.colPoint[i].colCode == COLIZQ )
+		if (idEntity.this.colPoint[i].colCode == COLDER || idEntity.this.colPoint[i].colCode == COLIZQ )
 			
 			//Establecemos el vector a chequear
-			colVector.vStart.x = idObject.this.fX+idObject.this.colPoint[i].x;
-			colVector.vEnd.x   = colVector.vStart.x+idObject.this.vX;
-			colVector.vStart.y = idObject.this.fY+idObject.this.colPoint[i].y;
+			colVector.vStart.x = idEntity.this.fX+idEntity.this.colPoint[i].x;
+			colVector.vEnd.x   = colVector.vStart.x+idEntity.this.vX;
+			colVector.vStart.y = idEntity.this.fY+idEntity.this.colPoint[i].y;
 			colVector.vEnd.y   = colVector.vStart.y;
 				
 			//lanzamos la comprobacion de colision en X
-			distColX = colCheckVectorX(0,mapBox,&colVector,idObject.this.colPoint[i].colCode);
+			distColX = colCheckVectorX(idEntity,&colVector,idEntity.this.colPoint[i].colCode);
 			
 			//Si hay colision
 			If (distColX>=0)
 				//Colision Derecha
-				if (idObject.this.colPoint[i].colCode == COLDER) 
+				if (idEntity.this.colPoint[i].colCode == COLDER) 
 					//situamos el objeto al borde de la colision	
-					idObject.this.fX+= distColX-1;
+					idEntity.this.fX+= distColX-1;
 					colDir = COLDER;
 					
 				end;
 				//Colision Izquierda
-				if (idObject.this.colPoint[i].colCode == COLIZQ) 			
+				if (idEntity.this.colPoint[i].colCode == COLIZQ) 			
 					//situamos el objeto al borde de la colision
-					idObject.this.fX-= distColX-1;
+					idEntity.this.fX-= distColX-1;
 					colDir = COLIZQ;
 				end;
 			end;  
@@ -184,48 +184,48 @@ begin
 		//===============
 		
 		//Si el punto de deteccion es uno de los superiores/inferiores
-		if (idObject.this.colPoint[i].colCode == COLUP || idObject.this.colPoint[i].colCode == COLDOWN)
+		if (idEntity.this.colPoint[i].colCode == COLUP || idEntity.this.colPoint[i].colCode == COLDOWN)
 			
 			//Establecemos el vector a comparar
-			colVector.vStart.x = idObject.this.fX+idObject.this.colPoint[i].x;
+			colVector.vStart.x = idEntity.this.fX+idEntity.this.colPoint[i].x;
 			colVector.vEnd.x   = colVector.vStart.x;
-			colVector.vStart.y = idObject.this.fY+idObject.this.colPoint[i].y;
-			colVector.vEnd.y   = colVector.vStart.y+idObject.this.vY;
+			colVector.vStart.y = idEntity.this.fY+idEntity.this.colPoint[i].y;
+			colVector.vEnd.y   = colVector.vStart.y+idEntity.this.vY;
 			
 			//Lanzamos la comprobacion de colision en Y
-			distColY = colCheckVectorY(0,mapBox,&colVector,idObject.this.colPoint[i].colCode,TOCOLLISION);
+			distColY = colCheckVectorY(idEntity,&colVector,idEntity.this.colPoint[i].colCode,TOCOLLISION);
 			
 			//Si hay colision
 			If (distColY>=0) 
 				//Colision inferior
-				if (idObject.this.colPoint[i].colCode == COLDOWN && idObject.this.vY>=0)
+				if (idEntity.this.colPoint[i].colCode == COLDOWN && idEntity.this.vY>=0)
 					//Situamos al objeto en el borde de la colision
-					idObject.this.fY += distColY;
+					idEntity.this.fY += distColY;
 					colDir = COLDOWN;
 					
 					//Deteccion de pendiente,comprobamos si estamos enterrados
 					if (cSlopesEnabled)
 												
 						//Establecemos el vector a comparar (centro/inferior del objeto)
-						colVector.vStart.x = idObject.this.fX+idObject.this.colPoint[CENTER_DOWN_POINT].x;
+						colVector.vStart.x = idEntity.this.fX+idEntity.this.colPoint[CENTER_DOWN_POINT].x;
 						colVector.vEnd.x   = colVector.vStart.x;
-						colVector.vStart.y = idObject.this.fY+idObject.this.colPoint[CENTER_DOWN_POINT].y;
+						colVector.vStart.y = idEntity.this.fY+idEntity.this.colPoint[CENTER_DOWN_POINT].y;
 						colVector.vEnd.y   = colVector.vStart.y-cHillHeight; //altura maxima para considerar pendiente
 						
 						//Lanzamos la comprobacion de colision en Y
-						distColY = colCheckVectorY(0,mapBox,&colVector,COLCENTER,FROMCOLLISION);
+						distColY = colCheckVectorY(idEntity,&colVector,COLCENTER,FROMCOLLISION);
 						
 						//Subimos al objeto a la pendiente
 						if (distColY >0)
-							idObject.this.fY -= distColY-1;
+							idEntity.this.fY -= distColY-1;
 						end;
 					end;
 				End;                                 
 				
 				//Colision superior
-				if (idObject.this.colPoint[i].colCode == COLUP && idObject.this.vY<0)
+				if (idEntity.this.colPoint[i].colCode == COLUP && idEntity.this.vY<0)
 					//Situamos al objeto en el borde de la colision
-					idObject.this.fY -= distColY;
+					idEntity.this.fY -= distColY;
 					colDir = COLUP;
 				End;
 			
@@ -233,19 +233,19 @@ begin
 				//si no hay colision, comprobamos si pendiente hacia abajo
 				if (cSlopesEnabled)
 					//lo comprobamos si no estamos en escalera para despegarnos del suelo
-					if (idObject.this.vY > 0)
+					if (idEntity.this.vY > 0)
 						//Establecemos el vector a comparar (centro/inferior del objeto)
-						colVector.vStart.x = idObject.this.fX+idObject.this.colPoint[CENTER_DOWN_POINT].x;
+						colVector.vStart.x = idEntity.this.fX+idEntity.this.colPoint[CENTER_DOWN_POINT].x;
 						colVector.vEnd.x   = colVector.vStart.x;
-						colVector.vStart.y = idObject.this.fY+idObject.this.colPoint[CENTER_DOWN_POINT].y-1;
-						colVector.vEnd.y   = colVector.vStart.y+idObject.this.vY+cHillHeight; //altura maxima para considerar pendiente
+						colVector.vStart.y = idEntity.this.fY+idEntity.this.colPoint[CENTER_DOWN_POINT].y-1;
+						colVector.vEnd.y   = colVector.vStart.y+idEntity.this.vY+cHillHeight; //altura maxima para considerar pendiente
 						
 						//Lanzamos la comprobacion de colision en Y
-						distColY = colCheckVectorY(0,mapBox,&colVector,COLCENTER,TOCOLLISION);
+						distColY = colCheckVectorY(idEntity,&colVector,COLCENTER,TOCOLLISION);
 						
 						//Bajamos al objeto a la pendiente
 						if (distColY >0)
-							idObject.this.fY += distColY;
+							idEntity.this.fY += distColY;
 						end;	
 					end;
 				end;
@@ -259,7 +259,8 @@ end;
 
 
 //Funcion que devuelve,dado un vector, el numero de pixeles en x hasta la colision, o -1 si no hay
-function int colCheckVectorX(Int fich,Int graf,_vector *colVector, int colCode)
+//dado una entidad, un vector de comprobacion y el punto de colision a chequear
+function int colCheckVectorX(entity idEntity,_vector *colVector, int colCode)
 Private 
 int dist=0;		//distancia de colision
 int inc;		//Incremento
@@ -277,8 +278,8 @@ Begin
 			//si el tile es solido
 			if (tileMap[colVector.vStart.y/cTileSize][colVector.vStart.x/cTileSize].tileCode <> NO_SOLID)
 				//comprobar el codigo del tile para contarlo como colision o no
-				if (checkTileCode(idPlayer,colCode,colVector.vStart.y/cTileSize,colVector.vStart.x/cTileSize))
-					if(map_get_pixel(fich,mapBox,(colVector.vStart.x%cTileSize),(colVector.vStart.y%cTileSize)) <> 0)
+				if (checkTileCode(idEntity,colCode,colVector.vStart.y/cTileSize,colVector.vStart.x/cTileSize))
+					if(map_get_pixel(0,mapBox,(colVector.vStart.x%cTileSize),(colVector.vStart.y%cTileSize)) <> 0)
 						return dist;
 					end;
 				end;
@@ -298,10 +299,11 @@ Begin
 	
 End
 
-////Funcion que devuelve,dado un vector, el numero de pixeles en y hasta la colision, o -1 si no hay
+////Funcion que devuelve,dado una entidad,un vector y un punto de colision a comprobar, 
+//el numero de pixeles en y hasta la colision, o -1 si no hay
 //El byte "mode", determina si la comprobacion es el numero de pixeles hasta llegar a la colision (TOCOLLISION 1)
 //o numero de pixeles para salir de la colision (FROMCOLLISION 0)
-Function int colCheckVectorY(int fich,int graf,_vector *colVector,int colCode,byte mode)
+Function int colCheckVectorY(entity idEntity,_vector *colVector,int colCode,byte mode)
 Private 
 int dist=0;				//distancia de colision
 int inc;				//Incremento
@@ -325,7 +327,7 @@ Begin
 					colPixel = 0;
 				else
 					//comprobar el codigo del tile para contarlo como colision o no
-					if (checkTileCode(idPlayer,colCode,colVector.vStart.y/cTileSize,colVector.vStart.x/cTileSize))
+					if (checkTileCode(idEntity,colCode,colVector.vStart.y/cTileSize,colVector.vStart.x/cTileSize))
 						//Obtenemos el pixel de colision segun el tipo de tile
 						switch (tileMap[colVector.vStart.y/cTileSize][colVector.vStart.x/cTileSize].tileCode)
 							case SLOPE_135:
@@ -590,7 +592,7 @@ function applyDirCollision(entity idObject,int colDir,byte *objGrounded)
 begin
 	//acciones segun colision
 	if (colDir == COLIZQ || colDir == COLDER) 
-		idObject.this.vX = 0; //-idObject.this.vX; //rebota en la pared
+		idObject.this.vX = 0;
 	elseif (colDir == COLDOWN) 
 		//si tiene propiedad OBJ_BOUNCY_LOW, rebota al tocar suelo
 		if (isBitSet(idObject.this.props,OBJ_BOUNCY_LOW))
