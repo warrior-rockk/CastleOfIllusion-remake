@@ -7,117 +7,117 @@
 // ========================================================================
 
 //Funcion que crea puntos de colision del jugador
-function int WGE_CreatePlayerColPoints(entity idObject)
+function int WGE_CreatePlayerColPoints(entity idEntity)
 begin
 	
-	idObject.this.colPoint[RIGHT_UP_POINT].x 			= (idObject.this.ancho>>1)-1;
-	idObject.this.colPoint[RIGHT_UP_POINT].y 			= -(idObject.this.alto/4);
-	idObject.this.colPoint[RIGHT_UP_POINT].colCode 	= COLDER;
-	idObject.this.colPoint[RIGHT_UP_POINT].enabled 	= 1;
+	idEntity.this.colPoint[RIGHT_UP_POINT].x 			= (idEntity.this.ancho>>1)-1;
+	idEntity.this.colPoint[RIGHT_UP_POINT].y 			= -(idEntity.this.alto/4);
+	idEntity.this.colPoint[RIGHT_UP_POINT].colCode 	= COLDER;
+	idEntity.this.colPoint[RIGHT_UP_POINT].enabled 	= 1;
 	
-	idObject.this.colPoint[RIGHT_DOWN_POINT].x 		= (idObject.this.ancho>>1)-1;
-	idObject.this.colPoint[RIGHT_DOWN_POINT].y 		= (idObject.this.alto/4);
-	idObject.this.colPoint[RIGHT_DOWN_POINT].colCode = COLDER;
-	idObject.this.colPoint[RIGHT_DOWN_POINT].enabled = 1;
+	idEntity.this.colPoint[RIGHT_DOWN_POINT].x 		= (idEntity.this.ancho>>1)-1;
+	idEntity.this.colPoint[RIGHT_DOWN_POINT].y 		= (idEntity.this.alto/4);
+	idEntity.this.colPoint[RIGHT_DOWN_POINT].colCode = COLDER;
+	idEntity.this.colPoint[RIGHT_DOWN_POINT].enabled = 1;
 	
-	idObject.this.colPoint[LEFT_UP_POINT].x 		= -(idObject.this.ancho>>1);
-	idObject.this.colPoint[LEFT_UP_POINT].y 		= -(idObject.this.alto/4);
-	idObject.this.colPoint[LEFT_UP_POINT].colCode = COLIZQ;
-	idObject.this.colPoint[LEFT_UP_POINT].enabled = 1;
+	idEntity.this.colPoint[LEFT_UP_POINT].x 		= -(idEntity.this.ancho>>1);
+	idEntity.this.colPoint[LEFT_UP_POINT].y 		= -(idEntity.this.alto/4);
+	idEntity.this.colPoint[LEFT_UP_POINT].colCode = COLIZQ;
+	idEntity.this.colPoint[LEFT_UP_POINT].enabled = 1;
 	
-	idObject.this.colPoint[LEFT_DOWN_POINT].x 		= -(idObject.this.ancho>>1);
-	idObject.this.colPoint[LEFT_DOWN_POINT].y 		= (idObject.this.alto/4);
-	idObject.this.colPoint[LEFT_DOWN_POINT].colCode = COLIZQ;
-	idObject.this.colPoint[LEFT_DOWN_POINT].enabled = 1;
+	idEntity.this.colPoint[LEFT_DOWN_POINT].x 		= -(idEntity.this.ancho>>1);
+	idEntity.this.colPoint[LEFT_DOWN_POINT].y 		= (idEntity.this.alto/4);
+	idEntity.this.colPoint[LEFT_DOWN_POINT].colCode = COLIZQ;
+	idEntity.this.colPoint[LEFT_DOWN_POINT].enabled = 1;
 	
-	idObject.this.colPoint[DOWN_R_POINT].x 		= (idObject.this.ancho/4);
-	idObject.this.colPoint[DOWN_R_POINT].y 		= (idObject.this.alto>>1);
-	idObject.this.colPoint[DOWN_R_POINT].colCode = COLDOWN;
-	idObject.this.colPoint[DOWN_R_POINT].enabled = 1;
+	idEntity.this.colPoint[DOWN_R_POINT].x 		= (idEntity.this.ancho/4);
+	idEntity.this.colPoint[DOWN_R_POINT].y 		= (idEntity.this.alto>>1);
+	idEntity.this.colPoint[DOWN_R_POINT].colCode = COLDOWN;
+	idEntity.this.colPoint[DOWN_R_POINT].enabled = 1;
 	
-	idObject.this.colPoint[DOWN_L_POINT].x 		= -(idObject.this.ancho/4);
-	idObject.this.colPoint[DOWN_L_POINT].y 		= (idObject.this.alto>>1);
-	idObject.this.colPoint[DOWN_L_POINT].colCode = COLDOWN;
-	idObject.this.colPoint[DOWN_L_POINT].enabled = 1;
+	idEntity.this.colPoint[DOWN_L_POINT].x 		= -(idEntity.this.ancho/4);
+	idEntity.this.colPoint[DOWN_L_POINT].y 		= (idEntity.this.alto>>1);
+	idEntity.this.colPoint[DOWN_L_POINT].colCode = COLDOWN;
+	idEntity.this.colPoint[DOWN_L_POINT].enabled = 1;
 	
-	idObject.this.colPoint[UP_R_POINT].x 		= (idObject.this.ancho/4);
-	idObject.this.colPoint[UP_R_POINT].y 		= -(idObject.this.alto>>1);
-	idObject.this.colPoint[UP_R_POINT].colCode = COLUP;
-	idObject.this.colPoint[UP_R_POINT].enabled = 1;
+	idEntity.this.colPoint[UP_R_POINT].x 		= (idEntity.this.ancho/4);
+	idEntity.this.colPoint[UP_R_POINT].y 		= -(idEntity.this.alto>>1);
+	idEntity.this.colPoint[UP_R_POINT].colCode = COLUP;
+	idEntity.this.colPoint[UP_R_POINT].enabled = 1;
 	
-	idObject.this.colPoint[UP_L_POINT].x 		= -(idObject.this.ancho/4);
-	idObject.this.colPoint[UP_L_POINT].y 		= -(idObject.this.alto>>1);
-	idObject.this.colPoint[UP_L_POINT].colCode = COLUP;
-	idObject.this.colPoint[UP_L_POINT].enabled = 1;
+	idEntity.this.colPoint[UP_L_POINT].x 		= -(idEntity.this.ancho/4);
+	idEntity.this.colPoint[UP_L_POINT].y 		= -(idEntity.this.alto>>1);
+	idEntity.this.colPoint[UP_L_POINT].colCode = COLUP;
+	idEntity.this.colPoint[UP_L_POINT].enabled = 1;
 	
-	idObject.this.colPoint[CENTER_POINT].x 		= 0;
-	idObject.this.colPoint[CENTER_POINT].y 		= 0;
-	idObject.this.colPoint[CENTER_POINT].colCode = COLCENTER;
-	idObject.this.colPoint[CENTER_POINT].enabled = 0;
+	idEntity.this.colPoint[CENTER_POINT].x 		= 0;
+	idEntity.this.colPoint[CENTER_POINT].y 		= 0;
+	idEntity.this.colPoint[CENTER_POINT].colCode = COLCENTER;
+	idEntity.this.colPoint[CENTER_POINT].enabled = 0;
 	
-	idObject.this.colPoint[CENTER_DOWN_POINT].x 		= 0;
-	idObject.this.colPoint[CENTER_DOWN_POINT].y 		= (idObject.this.alto>>1);
-	idObject.this.colPoint[CENTER_DOWN_POINT].colCode = COLCENTER;
-	idObject.this.colPoint[CENTER_DOWN_POINT].enabled = 0;
+	idEntity.this.colPoint[CENTER_DOWN_POINT].x 		= 0;
+	idEntity.this.colPoint[CENTER_DOWN_POINT].y 		= (idEntity.this.alto>>1);
+	idEntity.this.colPoint[CENTER_DOWN_POINT].colCode = COLCENTER;
+	idEntity.this.colPoint[CENTER_DOWN_POINT].enabled = 0;
 	
 	return 1;
 	
 end;
 
 //Funcion que crea puntos de colision de un objeto
-function int WGE_CreateObjectColPoints(entity idObject)
+function int WGE_CreateObjectColPoints(entity idEntity)
 
 begin
 		
-	idObject.this.colPoint[RIGHT_UP_POINT].x 			= (idObject.this.ancho>>1)-1;
-	idObject.this.colPoint[RIGHT_UP_POINT].y 			= -(idObject.this.alto/4);
-	idObject.this.colPoint[RIGHT_UP_POINT].colCode 	= COLDER;
-	idObject.this.colPoint[RIGHT_UP_POINT].enabled 	= 1;
+	idEntity.this.colPoint[RIGHT_UP_POINT].x 			= (idEntity.this.ancho>>1)-1;
+	idEntity.this.colPoint[RIGHT_UP_POINT].y 			= -(idEntity.this.alto/4);
+	idEntity.this.colPoint[RIGHT_UP_POINT].colCode 	= COLDER;
+	idEntity.this.colPoint[RIGHT_UP_POINT].enabled 	= 1;
 	
-	idObject.this.colPoint[RIGHT_DOWN_POINT].x 		= (idObject.this.ancho>>1)-1;
-	idObject.this.colPoint[RIGHT_DOWN_POINT].y 		= (idObject.this.alto/4);
-	idObject.this.colPoint[RIGHT_DOWN_POINT].colCode = COLDER;
-	idObject.this.colPoint[RIGHT_DOWN_POINT].enabled = 1;
+	idEntity.this.colPoint[RIGHT_DOWN_POINT].x 		= (idEntity.this.ancho>>1)-1;
+	idEntity.this.colPoint[RIGHT_DOWN_POINT].y 		= (idEntity.this.alto/4);
+	idEntity.this.colPoint[RIGHT_DOWN_POINT].colCode = COLDER;
+	idEntity.this.colPoint[RIGHT_DOWN_POINT].enabled = 1;
 	
-	idObject.this.colPoint[LEFT_UP_POINT].x 		= -(idObject.this.ancho>>1);
-	idObject.this.colPoint[LEFT_UP_POINT].y 		= -(idObject.this.alto/4);
-	idObject.this.colPoint[LEFT_UP_POINT].colCode = COLIZQ;
-	idObject.this.colPoint[LEFT_UP_POINT].enabled = 1;
+	idEntity.this.colPoint[LEFT_UP_POINT].x 		= -(idEntity.this.ancho>>1);
+	idEntity.this.colPoint[LEFT_UP_POINT].y 		= -(idEntity.this.alto/4);
+	idEntity.this.colPoint[LEFT_UP_POINT].colCode = COLIZQ;
+	idEntity.this.colPoint[LEFT_UP_POINT].enabled = 1;
 	
-	idObject.this.colPoint[LEFT_DOWN_POINT].x 		= -(idObject.this.ancho>>1);
-	idObject.this.colPoint[LEFT_DOWN_POINT].y 		= (idObject.this.alto/4);
-	idObject.this.colPoint[LEFT_DOWN_POINT].colCode = COLIZQ;
-	idObject.this.colPoint[LEFT_DOWN_POINT].enabled = 1;
+	idEntity.this.colPoint[LEFT_DOWN_POINT].x 		= -(idEntity.this.ancho>>1);
+	idEntity.this.colPoint[LEFT_DOWN_POINT].y 		= (idEntity.this.alto/4);
+	idEntity.this.colPoint[LEFT_DOWN_POINT].colCode = COLIZQ;
+	idEntity.this.colPoint[LEFT_DOWN_POINT].enabled = 1;
 	
-	idObject.this.colPoint[DOWN_R_POINT].x 		= (idObject.this.ancho/4);
-	idObject.this.colPoint[DOWN_R_POINT].y 		= (idObject.this.alto>>1)-1;
-	idObject.this.colPoint[DOWN_R_POINT].colCode = COLDOWN;
-	idObject.this.colPoint[DOWN_R_POINT].enabled = 1;
+	idEntity.this.colPoint[DOWN_R_POINT].x 		= (idEntity.this.ancho/4);
+	idEntity.this.colPoint[DOWN_R_POINT].y 		= (idEntity.this.alto>>1)-1;
+	idEntity.this.colPoint[DOWN_R_POINT].colCode = COLDOWN;
+	idEntity.this.colPoint[DOWN_R_POINT].enabled = 1;
 	
-	idObject.this.colPoint[DOWN_L_POINT].x 		= -(idObject.this.ancho/4);
-	idObject.this.colPoint[DOWN_L_POINT].y 		= (idObject.this.alto>>1)-1;
-	idObject.this.colPoint[DOWN_L_POINT].colCode = COLDOWN;
-	idObject.this.colPoint[DOWN_L_POINT].enabled = 1;
+	idEntity.this.colPoint[DOWN_L_POINT].x 		= -(idEntity.this.ancho/4);
+	idEntity.this.colPoint[DOWN_L_POINT].y 		= (idEntity.this.alto>>1)-1;
+	idEntity.this.colPoint[DOWN_L_POINT].colCode = COLDOWN;
+	idEntity.this.colPoint[DOWN_L_POINT].enabled = 1;
 	
-	idObject.this.colPoint[UP_R_POINT].x 		= (idObject.this.ancho/4);
-	idObject.this.colPoint[UP_R_POINT].y 		= -(idObject.this.alto>>1);
-	idObject.this.colPoint[UP_R_POINT].colCode = COLUP;
-	idObject.this.colPoint[UP_R_POINT].enabled = 1;
+	idEntity.this.colPoint[UP_R_POINT].x 		= (idEntity.this.ancho/4);
+	idEntity.this.colPoint[UP_R_POINT].y 		= -(idEntity.this.alto>>1);
+	idEntity.this.colPoint[UP_R_POINT].colCode = COLUP;
+	idEntity.this.colPoint[UP_R_POINT].enabled = 1;
 	
-	idObject.this.colPoint[UP_L_POINT].x 		= -(idObject.this.ancho/4);
-	idObject.this.colPoint[UP_L_POINT].y 		= -(idObject.this.alto>>1);
-	idObject.this.colPoint[UP_L_POINT].colCode = COLUP;
-	idObject.this.colPoint[UP_L_POINT].enabled = 1;
+	idEntity.this.colPoint[UP_L_POINT].x 		= -(idEntity.this.ancho/4);
+	idEntity.this.colPoint[UP_L_POINT].y 		= -(idEntity.this.alto>>1);
+	idEntity.this.colPoint[UP_L_POINT].colCode = COLUP;
+	idEntity.this.colPoint[UP_L_POINT].enabled = 1;
 	
-	idObject.this.colPoint[CENTER_POINT].x 		= 0;
-	idObject.this.colPoint[CENTER_POINT].y 		= 0;
-	idObject.this.colPoint[CENTER_POINT].colCode = COLCENTER;
-	idObject.this.colPoint[CENTER_POINT].enabled = 0;
+	idEntity.this.colPoint[CENTER_POINT].x 		= 0;
+	idEntity.this.colPoint[CENTER_POINT].y 		= 0;
+	idEntity.this.colPoint[CENTER_POINT].colCode = COLCENTER;
+	idEntity.this.colPoint[CENTER_POINT].enabled = 0;
 	
-	idObject.this.colPoint[CENTER_DOWN_POINT].x 		= 0;
-	idObject.this.colPoint[CENTER_DOWN_POINT].y 		= (idObject.this.alto>>1)-1; //diferencia con player?
-	idObject.this.colPoint[CENTER_DOWN_POINT].colCode = COLCENTER;
-	idObject.this.colPoint[CENTER_DOWN_POINT].enabled = 0;
+	idEntity.this.colPoint[CENTER_DOWN_POINT].x 		= 0;
+	idEntity.this.colPoint[CENTER_DOWN_POINT].y 		= (idEntity.this.alto>>1)-1; //diferencia con player?
+	idEntity.this.colPoint[CENTER_DOWN_POINT].colCode = COLCENTER;
+	idEntity.this.colPoint[CENTER_DOWN_POINT].enabled = 0;
 	
 	return 1;
 	
@@ -375,35 +375,35 @@ End;
 
 //Funcion de chequeo de colision entre procesos elegiendo el eje
 //Posiciona el objeto al borde del tile y devuelve un int con el sentido de la colision o 0 si no hay
-function int colCheckProcess(entity idObject,idObjectB, int axis)
+function int colCheckProcess(entity idEntity,idEntityB, int axis)
 private
 float vcX,vcY,hW,hH,oX,oY;
 int ColDir;
 
 begin
     //comprobamos los id de los procesos
-	if (idObject == 0 || idObjectB == 0) return 0; end;
+	if (idEntity == 0 || idEntityB == 0) return 0; end;
 	
 	//comprobamos si el objeto es solido
-	if (isBitSet(idObjectB.this.props,NO_COLLISION)) return 0; end;
+	if (isBitSet(idEntityB.this.props,NO_COLLISION)) return 0; end;
 	
 	//Obtiene los vectores de los centros para comparar
 	//teniendo en cuenta la velocidad del objeto principal
 	//y el eje seleccionado en parametro axis
 	if (axis==BOTHAXIS || axis==HORIZONTALAXIS || axis==INFOONLY )
-		vcX = (idObject.this.fX+idObject.this.vX) - (idObjectB.this.fX );
+		vcX = (idEntity.this.fX+idEntity.this.vX) - (idEntityB.this.fX );
 	else
-		vcX = (idObject.this.fX) - (idObjectB.this.fX );
+		vcX = (idEntity.this.fX) - (idEntityB.this.fX );
 	end;
 	if (axis==BOTHAXIS || axis==VERTICALAXIS || axis==INFOONLY )
-		vcY = (idObject.this.fY+idObject.this.vY) - (idObjectB.this.fY );
+		vcY = (idEntity.this.fY+idEntity.this.vY) - (idEntityB.this.fY );
 	else
-		vcY = (idObject.this.fY) - (idObjectB.this.fY );
+		vcY = (idEntity.this.fY) - (idEntityB.this.fY );
 	end;
 	
 	// suma las mitades de los this.anchos y los this.altos
-	hW =  (idObject.this.ancho>>1) + (idObjectB.this.ancho>>1);
-	hH = (idObject.this.alto>>1) + (idObjectB.this.alto>>1);
+	hW =  (idEntity.this.ancho>>1) + (idEntityB.this.ancho>>1);
+	hH = (idEntity.this.alto>>1) + (idEntityB.this.alto>>1);
 	
 	colDir = 0;
 
@@ -419,12 +419,12 @@ begin
 				if (vcY > 0) 			//Arriba
 					colDir = COLUP;
 					if (axis != INFOONLY)
-						idObject.this.fY += oY+idObject.this.vY;
+						idEntity.this.fY += oY+idEntity.this.vY;
 					end;
 				else 
 					colDir = COLDOWN;	//Abajo
 					if (axis != INFOONLY)
-					idObject.this.fY -= oY-idObject.this.vY;
+					idEntity.this.fY -= oY-idEntity.this.vY;
 					end;
 				end;
 			end;
@@ -433,12 +433,12 @@ begin
 				if (vcX > 0) 
 					colDir = COLIZQ;	//Izquierda
 					if (axis != INFOONLY)
-					idObject.this.fX += oX+idObject.this.vX;
+					idEntity.this.fX += oX+idEntity.this.vX;
 					end;
 				else 
 					colDir = COLDER;	//Derecha
 					if (axis != INFOONLY)
-						idObject.this.fX -= oX-idObject.this.vX;
+						idEntity.this.fX -= oX-idEntity.this.vX;
 					end;
 				end;
 			end;
@@ -452,32 +452,32 @@ end;
 
 //Funcion de chequeo de colision entre proceso y AABB
 //Posiciona el objeto al borde del tile y devuelve un int con el sentido de la colision o 0 si no hay
-function int colCheckAABB(entity idObject,int shapeBx,int shapeBy,int shapeBW,int shapeBH,int axis)
+function int colCheckAABB(entity idEntity,int shapeBx,int shapeBy,int shapeBW,int shapeBH,int axis)
 private
 float vcX,vcY,hW,hH,oX,oY;
 int ColDir;
 
 begin
     //comprobamos los id de los procesos
-	if (idObject == 0) return 0; end;
+	if (idEntity == 0) return 0; end;
 	
 	//Obtiene los vectores de los centros para comparar
 	//teniendo en cuenta la velocidad del objeto principal
 	//y el eje seleccionado en parametro axis
 	if (axis==BOTHAXIS || axis==HORIZONTALAXIS || axis==INFOONLY )
-		vcX = (idObject.this.fX+idObject.this.vX) - (shapeBx);
+		vcX = (idEntity.this.fX+idEntity.this.vX) - (shapeBx);
 	else
-		vcX = (idObject.this.fX) - (shapeBx);
+		vcX = (idEntity.this.fX) - (shapeBx);
 	end;
 	if (axis==BOTHAXIS || axis==VERTICALAXIS || axis==INFOONLY )
-		vcY = (idObject.this.fY+idObject.this.vY) - (shapeBy);
+		vcY = (idEntity.this.fY+idEntity.this.vY) - (shapeBy);
 	else
-		vcY = (idObject.this.fY) - (shapeBy);
+		vcY = (idEntity.this.fY) - (shapeBy);
 	end;
 	
 	// suma las mitades de los this.anchos y los this.altos
-	hW =  (idObject.this.ancho>>1) + (shapeBW>>1);
-	hH = (idObject.this.alto>>1) + (shapeBH>>1);
+	hW =  (idEntity.this.ancho>>1) + (shapeBW>>1);
+	hH = (idEntity.this.alto>>1) + (shapeBH>>1);
 	
 	colDir = 0;
 
@@ -493,12 +493,12 @@ begin
 				if (vcY > 0) 			//Arriba
 					colDir = COLUP;
 					if (axis != INFOONLY)
-						idObject.this.fY += oY+idObject.this.vY;
+						idEntity.this.fY += oY+idEntity.this.vY;
 					end;
 				else 
 					colDir = COLDOWN;	//Abajo
 					if (axis != INFOONLY)
-					idObject.this.fY -= oY-idObject.this.vY;
+					idEntity.this.fY -= oY-idEntity.this.vY;
 					end;
 				end;
 			end;
@@ -507,12 +507,12 @@ begin
 				if (vcX > 0) 
 					colDir = COLIZQ;	//Izquierda
 					if (axis != INFOONLY)
-					idObject.this.fX += oX+idObject.this.vX;
+					idEntity.this.fX += oX+idEntity.this.vX;
 					end;
 				else 
 					colDir = COLDER;	//Derecha
 					if (axis != INFOONLY)
-						idObject.this.fX -= oX-idObject.this.vX;
+						idEntity.this.fX -= oX-idEntity.this.vX;
 					end;
 				end;
 			end;
@@ -526,7 +526,7 @@ end;
 
 //Funcion de chequeo de colision entre proceso y tile (dando sus coordenadas en mapa)
 //Posiciona el objeto al borde del tile y devuelve un int con el sentido de la colision o 0 si no hay
-function int colCheckTile(entity idObject,int posX,int posY)
+function int colCheckTile(entity idEntity,int posX,int posY)
 private
 float vcX,vcY,hW,hH,oX,oY;
 int ColDir;
@@ -540,11 +540,11 @@ begin
 	end;
 	
 	//Obtiene los vectores de los centros para comparar
-	vcX = (idObject.this.fX) - ((posX*cTileSize)+cHalfTSize);
-	vcY = (idObject.this.fY) - ((posY*cTileSize)+cHalfTSize);
+	vcX = (idEntity.this.fX) - ((posX*cTileSize)+cHalfTSize);
+	vcY = (idEntity.this.fY) - ((posY*cTileSize)+cHalfTSize);
 	// suma las mitades de los this.anchos y los this.altos
-	hW =  (idObject.this.ancho / 2) + chalfTSize;
-	hH =  (idObject.this.alto / 2) + chalfTSize;
+	hW =  (idEntity.this.ancho / 2) + chalfTSize;
+	hH =  (idEntity.this.alto / 2) + chalfTSize;
 	
 	colDir = 0;
 
@@ -557,26 +557,26 @@ begin
         
 		if (oX >= oY) 
             if (vcY > 0) 			//Arriba
-				if (checkTileCode(idObject,COLUP,posY,posX))
+				if (checkTileCode(idEntity,COLUP,posY,posX))
 					colDir = COLUP;
-					idObject.this.fY += oY;
+					idEntity.this.fY += oY;
 				end;
              else 
-                if (checkTileCode(idObject,COLDOWN,posY,posX))
+                if (checkTileCode(idEntity,COLDOWN,posY,posX))
 					colDir = COLDOWN;	//Abajo
-					idObject.this.fY -= oY;
+					idEntity.this.fY -= oY;
 				end;
              end;
         else 
             if (vcX > 0) 
-                if (checkTileCode(idObject,COLIZQ,posY,posX))
+                if (checkTileCode(idEntity,COLIZQ,posY,posX))
 					colDir = COLIZQ;	//Izquierda
-					idObject.this.fX += oX;
+					idEntity.this.fX += oX;
 				end;
              else 
-				if (checkTileCode(idObject,COLDER,posY,posX))
+				if (checkTileCode(idEntity,COLDER,posY,posX))
 					colDir = COLDER;	//Derecha
-					idObject.this.fX -= oX;
+					idEntity.this.fX -= oX;
 				end;
              end;
 	     end;
@@ -588,39 +588,39 @@ begin
 end;
 
 //funcion que aplica la direccion de la colision en el objeto
-function applyDirCollision(entity idObject,int colDir,byte *objGrounded)
+function applyDirCollision(entity idEntity,int colDir,byte *objGrounded)
 begin
 	//acciones segun colision
 	if (colDir == COLIZQ || colDir == COLDER) 
-		idObject.this.vX = 0;
+		idEntity.this.vX = 0;
 	elseif (colDir == COLDOWN) 
 		//si tiene propiedad OBJ_BOUNCY_LOW, rebota al tocar suelo
-		if (isBitSet(idObject.this.props,OBJ_BOUNCY_LOW))
-			idObject.this.vY *= -cBouncyObjectVel;
+		if (isBitSet(idEntity.this.props,OBJ_BOUNCY_LOW))
+			idEntity.this.vY *= -cBouncyObjectVel;
 			//cantidad de rebote
-			if ( abs(idObject.this.vY) < cBouncyObjectVel )
+			if ( abs(idEntity.this.vY) < cBouncyObjectVel )
 				*objGrounded = true;		
 			end;
 		//si tiene propiedad OBJ_BOUNCY_HIGH, rebota al tocar suelo
-		elseif (isBitSet(idObject.this.props,OBJ_BOUNCY_HIGH))
-			idObject.this.vY *= -cBouncyItemVel;
+		elseif (isBitSet(idEntity.this.props,OBJ_BOUNCY_HIGH))
+			idEntity.this.vY *= -cBouncyItemVel;
 			//cantidad de rebote
-			if ( abs(idObject.this.vY) < cBouncyItemVel )
+			if ( abs(idEntity.this.vY) < cBouncyItemVel )
 				*objGrounded = true;		
 			end;			
 		else
 			*objGrounded = true;
 		end;
 	elseif (colDir == COLUP) 
-		idObject.this.vY = 0;			//Flota por el techo	
-		//idObject.this.vY *= -1;		//Rebota hacia abajo con la velocida que subia
-		//idObject.this.vY = 2;		//Rebota hacia abajo con valor fijo
+		idEntity.this.vY = 0;			//Flota por el techo	
+		//idEntity.this.vY *= -1;		//Rebota hacia abajo con la velocida que subia
+		//idEntity.this.vY = 2;		//Rebota hacia abajo con valor fijo
 	end;
 end;
 
 //funcion que engloba la gestion de las fisicas de un proceso
 //devuelve si hubo alguna colision con el terreno
-function byte terrainPhysics(entity idObject,float friction,byte *objGrounded)
+function byte terrainPhysics(entity idEntity,float friction,byte *objGrounded)
 private
 	int i;					//Var auxiliar
 	int collided = false; 	//flag de colision
@@ -630,12 +630,12 @@ begin
 	//leemos el flag de en suelo del objeto
 	grounded = *objGrounded;
 			
-	if (!isBitSet(idObject.this.props,NO_PHYSICS))
+	if (!isBitSet(idEntity.this.props,NO_PHYSICS))
 		if (grounded)
-			idObject.this.vX *= friction;
+			idEntity.this.vX *= friction;
 		end;
 		
-		idObject.this.vY += gravity;
+		idEntity.this.vY += gravity;
 		
 		grounded = false;
 		collided = false;		
@@ -644,9 +644,9 @@ begin
 		//Recorremos la lista de puntos a comprobar
 		for (i=0;i<cNumColPoints;i++)					
 			//obtenemos la direccion de la colision
-			colDir = colCheckTileTerrain(idObject,i);
+			colDir = colCheckTileTerrain(idEntity,i);
 			//aplicamos la direccion de la colision
-			applyDirCollision(idObject,colDir,&grounded);
+			applyDirCollision(idEntity,colDir,&grounded);
 			//seteamos flag de colisionado
 			if (colDir <> NOCOL)
 				collided = true;
@@ -664,16 +664,16 @@ begin
 end;
 
 //funcion que alinea el eje central del grafico respecto a la caja de deteccion
-function alignAxis(entity idObject)
+function alignAxis(entity idEntity)
 begin
-	switch (idObject.this.axisAlign)
+	switch (idEntity.this.axisAlign)
 		case CENTER_AXIS:
 		end;
 		case UP_AXIS:
-			map_info_set(idObject.file,idObject.graph,G_Y_CENTER,abs((map_info(idObject.file,idObject.graph,G_HEIGHT))+(idObject.this.alto>>1)));
+			map_info_set(idEntity.file,idEntity.graph,G_Y_CENTER,abs((map_info(idEntity.file,idEntity.graph,G_HEIGHT))+(idEntity.this.alto>>1)));
 		end;
 		case DOWN_AXIS:
-			map_info_set(idObject.file,idObject.graph,G_Y_CENTER,abs((map_info(idObject.file,idObject.graph,G_HEIGHT))-(idObject.this.alto>>1)));
+			map_info_set(idEntity.file,idEntity.graph,G_Y_CENTER,abs((map_info(idEntity.file,idEntity.graph,G_HEIGHT))-(idEntity.this.alto>>1)));
 		end;
 	end;
 end;

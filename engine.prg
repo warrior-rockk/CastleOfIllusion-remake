@@ -1307,7 +1307,7 @@ end;
 
 //Funcion que comprueba, segun el codigo del tile, el comportamiento de la colision segun la direccion
 //Devuelve 1 si colisiona en esa direccion o 0 si no colisiona.
-function int checkTileCode(entity idObject,int colDir,int posY,int posX)
+function int checkTileCode(entity idEntity,int colDir,int posY,int posX)
 begin
 	switch(colDir)
 		//Colisiones superiores
@@ -1323,8 +1323,8 @@ begin
 				   tileMap[posY][posX].tileCode == SLOPE_45  ||
 			       tileMap[posY][posX].tileCode == NO_SCROLL_L ||
 				   tileMap[posY][posX].tileCode == NO_SCROLL_R ||
-			      (tileMap[posY][posX].tileCode == SOLID_ON_FALL && ( idObject.this.vY>0 || isType(idObject,TYPE player)) )||
-				  (tileMap[posY][posX].tileCode == TOP_STAIRS && (idObject.this.vY>0 || isType(idObject,TYPE player)) );
+			      (tileMap[posY][posX].tileCode == SOLID_ON_FALL && ( idEntity.this.vY>0 || isType(idEntity,TYPE player)) )||
+				  (tileMap[posY][posX].tileCode == TOP_STAIRS && (idEntity.this.vY>0 || isType(idEntity,TYPE player)) );
 		end;
 		//Colisiones lateral izquierdas
 		case COLIZQ:
@@ -1344,11 +1344,11 @@ begin
 end;
 
 //funcion que devuelve el codigo de Tile de un punto de colision
-function int getTileCode(entity idObject,int pointType)
+function int getTileCode(entity idEntity,int pointType)
 begin
 	//sumamos la posicion del objeto al punto de colision
-	x = idObject.x + idObject.this.colPoint[pointType].x;
-	y = idObject.y + idObject.this.colPoint[pointType].y;
+	x = idEntity.x + idEntity.this.colPoint[pointType].x;
+	y = idEntity.y + idEntity.this.colPoint[pointType].y;
 	
 	//comprobamos si existe en el mapeado
 	if (!tileExists(y/cTileSize,x/cTileSize))
@@ -1373,28 +1373,28 @@ end;
 
 //Escalamos la posicion de floats en enteros
 //si la diferencia entre el float y el entero es una unidad
-function positionToInt(entity idObject)
+function positionToInt(entity idEntity)
 begin
 	//movemos si la posicion a cambiado partes enteras
-	idObject.x+= idObject.this.fX - idObject.x;
+	idEntity.x+= idEntity.this.fX - idEntity.x;
 		
 	//en vertical,la asignacion es directa	
-	idObject.y = idObject.this.fY;
+	idEntity.y = idEntity.this.fY;
 end;
 
 //funcion que actualiza las velocidades y la posicion de un proceso
-function updateVelPos(entity idObject,byte grounded)
+function updateVelPos(entity idEntity,byte grounded)
 begin
 	//Actualizar velocidades
 	if (grounded)
-		idObject.this.vY = 0;
+		idEntity.this.vY = 0;
 	end;
 	
 	//actualizar posiciones
-	idObject.this.fX += idObject.this.vX;
-	idObject.this.fY += idObject.this.vY;
+	idEntity.this.fX += idEntity.this.vX;
+	idEntity.this.fY += idEntity.this.vY;
 	
-	positionToInt(idObject);
+	positionToInt(idEntity);
 end;
 
 //funcion que envia signals a los tipos del juego
