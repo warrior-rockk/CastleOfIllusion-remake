@@ -876,14 +876,12 @@ BEGIN
 		
 		//Flag de detencion de scroll
 		if (tileExists(i,j))
-			if (tileMap[i][j].tileCode == NO_SCROLL_R)
-				stopScrollXR = true;
-			end;
-			if (tileMap[i][j].tileCode == NO_SCROLL_L)
-				stopScrollXL = true;
-			end;
-			if (tileMap[i][j].tileCode == NO_SCROLL_Y)
-				stopScrollY = true;
+			//si existe el player
+			if (idPlayer <> 0)
+				//compromos la posicion y codigo de detencion
+				if (checkNoScroll(idPlayer.x,x,tileMap[i][j].tileCode))
+					tileMap[i][j].tileCode == NO_SCROLL_R ? stopScrollXR = true : stopScrollXL = true;
+				end;
 			end;
 		end;
 			
@@ -1091,14 +1089,41 @@ process WGE_ControlScroll()
 private
 	int prevScrollX0;		//Posicion previa del scroll
 	byte doTransition;		//flag de hacer transicion
+	
+	int i;					//variables auxiliarles
+	int j;					
 begin
 	priority = cScrollPrior;
 	
-	//Centramos el scroll en la posicion inicial
+	//Calculamos la posicion del scroll segun la posicion inicial del player
 	
-	//Posicion X para personaje en centro pantalla
+	//inicialmente enfocamos scroll para personaje en centro pantalla
 	scroll[cGameScroll].x0 = level.playerX0 - (cGameRegionW>>1);
 	
+	//recorremos el zona del mapeado de la posicion inicial centrada
+	//para ver si hay algun tile de ajuste de scroll
+	for (i=(level.playerY0 - (cGameRegionH>>1))/cTileSize; i<(level.playerY0 + (cGameRegionH>>1))/cTileSize; i++)
+		for (j=(level.playerX0 - (cGameRegionW>>1))/cTileSize; j<(level.playerX0 + (cGameRegionW>>1))/cTileSize; j++)
+			//si existe el tile en el mapa
+			if (tileExists(i,j))
+				//Codigo NoScrollR
+				if (tileMap[i][j].tileCode == NO_SCROLL_R)
+					if (checkNoScroll(level.playerx0,(j*cTileSize),NO_SCROLL_R))
+						//ajusto posicion X scroll al tile
+						scroll[cGameScroll].x0 = ((j+1)*cTileSize)-cGameRegionW;
+					end;					
+				end;
+				//Codigo NoScrollR
+				if (tileMap[i][j].tileCode == NO_SCROLL_L)
+					if (checkNoScroll(level.playerx0,(j*cTileSize),NO_SCROLL_L))
+						//ajusto posicion X scroll al tile
+						scroll[cGameScroll].x0 = j*cTileSize;
+					end;
+				end;
+			end;			
+		end;
+	end;
+
 	//Posicion Y depende de tener activado el RoomScroll
 	if (!cRoomScroll)
 		//Posicion Y para personaje en centro pantalla
@@ -1110,6 +1135,9 @@ begin
 	
 	//inicializamos la parte float
 	scrollfX = 	scroll[cGameScroll].x0;
+	
+	//guardamos la posicion previa
+	prevScrollX0 = scroll[cGameScroll].x0;
 	
 	loop
 		
@@ -1197,6 +1225,27 @@ begin
 		frame;
 	
 	end;
+end;
+
+//funcion que comprueba si se aplica el noScroll de una posicion
+function byte checkNoScroll(int playerX,int tileX,byte dir)
+begin
+	switch (dir)
+		case NO_SCROLL_R:
+			//si el player esta antes que el tile y el scroll sobrepasa el tile
+			if (playerX < tileX && (scroll[cGameScroll].x0+cGameRegionW) >= (tileX+cHalfTSize))
+				return true;
+			end;
+		end;
+		case NO_SCROLL_L:
+			//si el player esta despues del tile y el scroll sobrepasa el tile
+			if (playerX > tileX && scroll[cGameScroll].x0 <= (tileX-cHalfTSize))
+				return true;
+			end;
+		end;
+	end;
+	
+	return false;
 end;
 
 //funcion que realiza transicion de scroll entre rooms
