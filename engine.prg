@@ -878,9 +878,13 @@ BEGIN
 		if (tileExists(i,j))
 			//si existe el player
 			if (idPlayer <> 0)
-				//compromos la posicion y codigo de detencion
+				//compromos la posicion y codigo de detencion X
 				if (checkNoScroll(idPlayer.x,x,tileMap[i][j].tileCode))
 					tileMap[i][j].tileCode == NO_SCROLL_R ? stopScrollXR = true : stopScrollXL = true;
+				end;
+				//comprobamos codigo detencion Y
+				if (tileMap[i][j].tileCode == NO_SCROLL_Y)
+					stopScrollY = true;
 				end;
 			end;
 		end;
