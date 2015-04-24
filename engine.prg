@@ -1171,7 +1171,8 @@ begin
 							doTransition = ROOM_TRANSITION_DOWN;
 						end;
 						//Posicion Y: al llegar a la mitad del primer tile inferior de la pantalla, transicion room
-						if (idPlayer.y <= (scroll[0].y0 + (cTileSize>>1)))
+									//vigilamos que no este el player saltando
+						if (idPlayer.y <= (scroll[0].y0 + (cTileSize>>1)) && idPlayer.this.vY == 0)
 							doTransition = ROOM_TRANSITION_UP;
 						end;
 					end;
