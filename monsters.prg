@@ -70,6 +70,9 @@ begin
 					case MONS_BUBBLE:
 						idMonster = bubble(20,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
 					end;				
+					case MONS_BALLSCLOWN:
+						idMonster = ballsClown(26,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
+					end;
 				end;	
 				log("Se crea el monstruo "+idMonster,DEBUG_MONSTERS);
 				
@@ -183,7 +186,7 @@ begin
 					//player en rango ataque
 					if (abs(idPlayer.this.fX - this.fX) < atackRangeX && !atack)
 						atack = true;
-						isBitSet(flags,B_HMIRROR) ? monsterFire(7,x,y-16,-2,-4) : monsterFire(7,x,y-16,2,-4);		
+						isBitSet(flags,B_HMIRROR) ? monsterFire(30,x,y-16,-2,-4) : monsterFire(31,x,y-16,2,-4);		
 					end;
 				end;
 				//podemos volver a atacar cuando muere el disparo
@@ -760,6 +763,137 @@ begin
 			end;
 		end;
 		
+		//actualizamos velocidad y posicion
+		updateVelPos(id,grounded);
+		
+		//actualizamos el monstruo padre
+		updateMonster(id,father);
+		
+		//alineacion del eje X del grafico
+		alignAxis(id);
+		
+		frame;
+	end;
+	
+end;
+
+//Proceso enemigo ballsClown
+//Lanza bolas aleatorias desde el techo alrededor del jugador
+process ballsClown(int graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
+private
+byte grounded;		//flag de en suelo
+float friction;		//friccion local
+
+int colID;			//Id de colision
+int colDir;			//direccion de la colision
+byte collided;		//flag de colision
+
+byte atack;			//Flag de atacar al enemigo
+int atackRangeX;	//Rango en el que ataca
+int atacks;			//numero de bolas ataque
+
+int currentStepTime;//tiempo paso actual
+
+int i;				//Variable auxiliar
+
+begin
+	region = cGameRegion;
+	ctype = c_scroll;
+	z = cZMonster;
+	file = level.fpgMonsters;
+	flags = _flags;
+	
+	//igualamos la propiedades publicas a las de parametros
+	this.ancho = _ancho;
+	this.alto = _alto;
+	this.axisAlign = _axisAlign;
+	this.props = _props;
+	
+	//modo debug sin graficos
+	if (file<0)
+		graph = map_new(this.ancho,this.alto,8,0);
+		map_clear(0,graph,rand(200,300));
+	end;
+	
+	this.fX = x;
+	this.fY = y;
+	
+	WGE_CreateObjectColPoints(id);
+	
+	friction = floorFriction;
+	
+	this.state = IDLE_STATE;
+	
+	//actualizamos al padre con los datos de creacion
+	updateMonster(id,father);
+		
+	loop
+		//nos actualizamos del padre
+		updateMonster(father,id);
+		
+		//FISICAS	
+		collided = terrainPhysics(ID,friction,&grounded);
+		
+		//guardamos estado actual
+		this.prevState = this.state;
+		
+		//maquina de estados
+		switch (this.state)
+			case IDLE_STATE:
+				graph = 26;
+				//cambio de paso por tiempo
+				if (currentStepTime >= cBallsClownIdleTime)
+					this.state = ATACK_STATE;
+					currentStepTime = 0;
+				else
+					//contador paso
+					if (clockTick)
+						currentStepTime++;
+					end;
+				end;
+			end;
+			case ATACK_STATE: 
+				graph = 25;
+							
+				//si existe el player
+				if (idPlayer <> 0 )
+					atackRangeX	= idPlayer.x;
+				end;	
+				
+				//lanzamos una bola en el rango de ataque
+				if (!atack)
+					atack = true;
+					monsterFire(rand(30,31),atackRangeX+(cBallsClownAtackRange*rand(-1,1)),0,0,0);
+					atacks++;
+				end;
+				//contamos un tiempo aleatorio hasta siguiente bola
+				if (currentStepTime >= cBallsClownIdleTime + rand(-20,20))
+					atack = false;
+					currentStepTime = 0;
+				else
+					//contador paso
+					if (clockTick)
+						currentStepTime++;
+					end;
+				end;
+				
+				//cambio de estado con bolas maximas
+				if (atacks >= cBallsClownNumBallsMax)
+					this.state = IDLE_STATE;
+					atacks = 0;
+					currentStepTime = 0;
+				end;
+			end;
+			case HURT_STATE:   
+				this.state = DEAD_STATE;
+			end;
+			case DEAD_STATE:
+				graph = 27;
+				deadMonster();
+				signal(id,s_kill);
+			end;
+		end;
+				
 		//actualizamos velocidad y posicion
 		updateVelPos(id,grounded);
 		

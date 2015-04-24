@@ -15,7 +15,8 @@
 #define MONS_TOYPLANE   		1 		//Monstruo ToyPlane
 #define MONS_TOYPLANECONTROL   	2 		//Monstruo ToyPlaneControl
 #define MONS_CHESSHORSE   	    3 		//Monstruo CheessHorse
-#define MONS_BUBBLE				4		//Monstruo Burbuja
+#define MONS_BUBBLE				4		//Monstruo Bubble
+#define MONS_BALLSCLOWN 		5		//Monstruo BallsClown
 
 //enemigo
 Type _monster         			//Tipo de Dato de enemigo
@@ -45,6 +46,11 @@ Const
 	cBubbleVel				= 0.5;	//Velocidad burbuja
 	cBubbleInvisibleTime    = 5;	//Velocidad invisible
 	cBubbleIdleTime         = 60;	//Velocidad reposo
+	
+	//BallClown
+	cBallsClownIdleTime     = 30;  	//Tiempo Reposo
+	cBallsClownAtackRange   = 64;	//Rango ataque
+	cBallsClownNumBallsMax  = 6; 	//Numero de bolas maximo
 end;
 
 Global
@@ -95,6 +101,13 @@ end
 
 //Declaracion de enemigo bubble
 Declare process bubble(int graph,int startX,int startY,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
+public
+	_entityPublicData this;			//datos publicos de entidad
+end
+end
+
+//Declaracion de enemigo ballsClown
+Declare process ballsClown(int graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
 public
 	_entityPublicData this;			//datos publicos de entidad
 end
