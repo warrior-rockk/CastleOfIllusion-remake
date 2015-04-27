@@ -1032,30 +1032,6 @@ Begin
 		platform(platforms[i].platformType,platforms[i].platformGraph,platforms[i].platformX0,platforms[i].platformY0,platforms[i].platformAncho,platforms[i].platformAlto,platforms[i].platformAxisAlign,platforms[i].platformFlags,platforms[i].platformProps);		
 	end;
 	
-	//test
-	if ( game.numLevel == 1)
-		/*platform(PLATF_TRIGGER,8,800,696,32,16);
-		platform(PLATF_LINEAR,8,620,729,32,16);
-		platform(PLATF_LINEAR,8,458,729,32,16);
-		*/
-		/*		
-		object(OBJ_SOLIDITEM,5,218,712,16,16,OBJ_PICKABLE | OBJ_BREAKABLE);
-		object(OBJ_SOLIDITEM,5,1210,136,16,16,OBJ_PICKABLE | OBJ_BOUNCY_LOW );
-		
-		object(OBJ_SOLIDITEM,4,550,300,16,16,OBJ_ITEM_BIG_COIN | OBJ_PICKABLE | OBJ_BREAKABLE | NO_PERSISTENT );
-		object(OBJ_SOLIDITEM,4,570,300,16,16,OBJ_ITEM_BIG_COIN | OBJ_PICKABLE | OBJ_BREAKABLE | NO_PERSISTENT );
-		
-		object(OBJ_ITEM,0,590,300,16,16,OBJ_ITEM_STAR | NO_PERSISTENT);
-		object(OBJ_ITEM,0,1996,257,16,16,OBJ_ITEM_GEM);
-		
-		object(OBJ_SOLIDITEM,1,610,300,16,16,OBJ_PICKABLE | OBJ_BREAKABLE);
-		
-		monster(MONS_CYCLECLOWN,1250,100);
-		monster(MONS_TOYPLANE,526,300);
-		monster(MONS_TOYPLANECONTROL,526,320);
-		*/
-	end;
-	
 End;
 
 //Funcion que reinicia un nivel ya creado

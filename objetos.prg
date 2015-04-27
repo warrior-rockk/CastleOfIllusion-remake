@@ -31,8 +31,8 @@ begin
 		//si existe el objeto
 		if (exists(idObject))
 			
-			//desaparece al salir de la region del juego
-			if (outRegion) 
+			//desaparece al salir de la region del juego y no es persistente
+			if (outRegion && !isBitSet(idObject.this.props,PERSISTENT)) 
 				//eliminamos el objeto
 				signal(idObject,s_kill);	
 				log("Se elimina el objeto "+idObject,DEBUG_OBJECTS);
@@ -42,6 +42,8 @@ begin
 				//la region se comprueba con las coordenadas iniciales
 				x = _x0;
 				y = _y0;
+			else
+				outRegion = false;
 			end;
 
 		else
@@ -52,7 +54,7 @@ begin
 			x = _x0;
 			y = _y0;
 			
-			//creamos el objeto si entra en la region y si es persistente
+			//creamos el objeto si entra en la region
 			if (inRegion && outRegion )
 				//creamos el tipo de objeto
 				switch (objectType)
@@ -69,7 +71,7 @@ begin
 						idObject = doorButton(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
 					end;
 					case OBJ_KEY:
-						idObject = solidItem(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props | OBJ_IS_KEY | NO_PERSISTENT | OBJ_PICKABLE);
+						idObject = solidItem(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props | OBJ_IS_KEY | PERSISTENT | OBJ_PICKABLE);
 					end;
 					case OBJ_DOORKEY:
 						idObject = keyDoor(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
@@ -209,6 +211,8 @@ begin
 				if (exists(idPlayer))
 					isBitSet(idPlayer.flags,B_HMIRROR) ? this.fX = idPlayer.x-cObjectPickedPosX : this.fX = idPlayer.x+cObjectPickedPosX;
 					this.fY = idPlayer.y+cObjectPickedPosY;
+					//el objeto se vuelve persistente
+					setBit(this.props,PERSISTENT);
 					//reseteamos flag boton si lo hubiera seteado el proceso
 					if (idButton == father) 
 						idButton = 0;
@@ -222,6 +226,8 @@ begin
 				setBit(this.props,NO_COLLISION);
 				//fisicas activadas
 				unSetBit(this.props,NO_PHYSICS);
+				//deja de ser persistente
+				setBit(this.props,PERSISTENT);
 				
 				//lanzamos comprobacion con procesos objeto
 				repeat
@@ -300,11 +306,6 @@ begin
 				end;
 				//lanzamos animacion explosion objeto
 				WGE_Animation(file,2,3,x,y,10,ANIM_ONCE);
-				//si el objeto no es persistente
-				if (isBitSet(this.props,NO_PERSISTENT))
-					//matamos al padre
-					signal(father,s_kill);
-				end;
 				//reseteamos flag boton si lo hubiera seteado el proceso
 				if (idButton == father) 
 					idButton = 0;
@@ -795,8 +796,7 @@ begin
 	unSetBit(this.props,OBJ_PICKABLE);
 	SetBit(this.props,NO_PHYSICS);
 	unSetBit(this.props,NO_COLLISION);
-	setBit(this.props,NO_PERSISTENT);
-	
+		
 	//actualizamos al padre con los datos de creacion
 	updateObject(id,father);
 	

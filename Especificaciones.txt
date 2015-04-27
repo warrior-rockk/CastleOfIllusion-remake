@@ -30,7 +30,6 @@ Tiene prioridad superior a los hijos ya que, en flujo de ejecución, reciben los 
 y lo envían al hijo. El hijo a su vez, tiene su maquina de estados, hace sus procesos y al terminar, envia los cambios al padre para que esté 
 actualizado.
 Si reinciamos un nivel en curso, el proceso padre no se mata si no que se reinicia a posiciones iniciales y a ocultacion si fuera necesaria.
-En caso de que es un tipo de objeto/monstruo no persistente, es decir, que no tiene que volver a aparecer aunque el nivel se reinicie o se
-entre en pantalla, se tiene el flag de NO_PERSISTENT que provocará que el proceso hijo mate al padre.
-Solo volveran a ser creados con un LOAD_LEVEL nuevo que carga el nivel de nuevo creando los padres.
+Si una entidad no tiene que desaparecer al salirse de la region, usaremos la propiedad PERSISTENT.
+
 	
