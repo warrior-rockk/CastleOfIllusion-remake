@@ -17,6 +17,7 @@
 #define MONS_CHESSHORSE   	    3 		//Monstruo CheessHorse
 #define MONS_BUBBLE				4		//Monstruo Bubble
 #define MONS_BALLSCLOWN 		5		//Monstruo BallsClown
+#define MONS_MONKEYTOY          6       //Monstruo MonkeyToy
 
 //enemigo
 Type _monster         			//Tipo de Dato de enemigo
@@ -51,6 +52,9 @@ Const
 	cBallsClownIdleTime     = 30;  	//Tiempo Reposo
 	cBallsClownAtackRange   = 64;	//Rango ataque
 	cBallsClownNumBallsMax  = 6; 	//Numero de bolas maximo
+	
+	//MonkeyToy
+	cMonkeyToyIdleTime      = 40;  //Tiempo Reposo
 end;
 
 Global
@@ -72,7 +76,7 @@ end
 end
 
 //declaracion de fuego enemigo (proyectil)
-Declare Process monsterFire(int graph,int x,int y,float _vX,float _vY)
+Declare Process monsterFire(int graph,int x,int y,float _vX,float _vY,int _props)
 public
 	_entityPublicData this;			//datos publicos de entidad
 end
@@ -108,6 +112,13 @@ end
 
 //Declaracion de enemigo ballsClown
 Declare process ballsClown(int graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
+public
+	_entityPublicData this;			//datos publicos de entidad
+end
+end
+
+//Declaracion de enemigo monkeyToy
+Declare process monkeyToy(int graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
 public
 	_entityPublicData this;			//datos publicos de entidad
 end
