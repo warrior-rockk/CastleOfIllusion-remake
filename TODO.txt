@@ -21,6 +21,7 @@ ENGINE: -con screen_get puedo caputar la pantalla y hacer transiciones
 		-terremotos o colisiones sacudiendo el scroll
 		-efectos de paleta: relampagos,agua,etc..
 		-si pasas de room por escalera y se acaba la escalera, te debes caer
+		-EN UNA ROOM, LOS TILES QUE NO SE VEN NO CUENTAN!!!
 		
 OBJECTS:-al salir de la region al saltar desaparece aunque lo lleves en la mano
 		-item con small coin

@@ -1171,8 +1171,8 @@ begin
 							doTransition = ROOM_TRANSITION_DOWN;
 						end;
 						//Posicion Y: al llegar a la mitad del primer tile inferior de la pantalla, transicion room
-									//vigilamos que no este el player saltando
-						if (idPlayer.y <= (scroll[0].y0 + (cTileSize>>1)) && idPlayer.this.vY == 0)
+									//solo se hace transicion superior mediante escaleras
+						if (idPlayer.y <= (scroll[0].y0 + (cTileSize>>1)) && idPlayer.this.state == MOVE_ON_STAIRS_STATE)
 							doTransition = ROOM_TRANSITION_UP;
 						end;
 					end;
@@ -1367,7 +1367,7 @@ begin
 		//Colisiones superiores
 		case COLUP:
 			return tileMap[posY][posX].tileCode == SOLID ||
-			       tileMap[posY][posX].tileCode == NO_SCROLL_L ||
+				   tileMap[posY][posX].tileCode == NO_SCROLL_L ||
 				   tileMap[posY][posX].tileCode == NO_SCROLL_R;
 		end;
 		//Colisiones inferiores
