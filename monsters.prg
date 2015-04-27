@@ -30,8 +30,8 @@ begin
 		//si existe el monstruo
 		if (exists(idMonster))
 						
-			//desaparece al salir de la region del juego
-			if (outRegion) 
+			//desaparece al salir de la region del juego y no es persistente
+			if (outRegion && !isBitSet(idMonster.this.props,PERSISTENT)) 
 				//eliminamos el mosntruo
 				signal(idMonster,s_kill);
 				log("Se elimina el monstruo "+idMonster,DEBUG_MONSTERS);
@@ -41,6 +41,8 @@ begin
 				//la region se comprueba con las coordenadas iniciales
 				x = _x0;
 				y = _y0;
+			else
+				outRegion = false;
 			end;
 			
 		else
@@ -724,6 +726,8 @@ begin
 				graph = 19;
 				//dañamos al player
 				unSetBit(this.props,MONS_HARMLESS);
+				//no desaparecemos al salir de la region automaticamente
+				setBit(this.props,PERSISTENT);
 				
 				//actualizamos movimiento
 				this.vX = cBubbleVel*dir;
@@ -758,6 +762,9 @@ begin
 			case DEAD_STATE:
 				this.vX = 0;
 				if (WGE_Animate(21,21,20,ANIM_ONCE))
+					//volvemos a ser no persistentes
+					unSetBit(this.props,PERSISTENT);
+					//volvemos a estado inicial
 					this.state = INVISIBLE_STATE;
 				end;
 			end;
