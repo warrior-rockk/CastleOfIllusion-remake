@@ -5,10 +5,7 @@ PLAYER:	-comportamiento erratico al manter pulsado salto. si sueltas la tecla no
 		-Poder Salto distinto desde escalera
 		-parece que con las flechas de direccion no cae de escalera
 	    
-OBJECTS:-item con small coin (500pts)
-		-small food
-		-big food
-		-fall on touch
+OBJECTS: -small food (falta grafico)
 		-boxspring
 		-items invisibles
 		-el coin rebota mas rato y el giro va perdiendo velocidad

@@ -1046,6 +1046,9 @@ begin
 	this.vX = 0;
 	this.vY = -4;
 	
+	//puntuacion por enemigo muerto
+	game.score += cKillMonster;
+	
 	repeat	
 			//fisicas
 			this.vY += gravity;

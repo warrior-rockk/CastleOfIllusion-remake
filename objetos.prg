@@ -299,6 +299,13 @@ begin
 				
 			end;
 			case DEAD_STATE:
+				//lanzamos animacion explosion objeto
+				WGE_Animation(file,2,3,x,y,10,ANIM_ONCE);
+				//reseteamos flag boton si lo hubiera seteado el proceso
+				if (idButton == father) 
+					idButton = 0;
+				end;
+				
 				//si el objeto tiene item dentro, lo lanzamos
 				if (isBitSet(this.props,OBJ_ITEM_BIG_COIN) || 
 				    isBitSet(this.props,OBJ_ITEM_COIN)     ||
@@ -308,12 +315,8 @@ begin
 					)
 					//item(x,y,this.ancho,this.alto,this.props);
 					object(OBJ_ITEM,0,x,y,16,16,CENTER_AXIS,0,this.props);
-				end;
-				//lanzamos animacion explosion objeto
-				WGE_Animation(file,2,3,x,y,10,ANIM_ONCE);
-				//reseteamos flag boton si lo hubiera seteado el proceso
-				if (idButton == father) 
-					idButton = 0;
+					//elimina el padre (items no son remanentes)
+					signal(father,s_kill);
 				end;
 				//matamos el objeto
 				signal(id,s_kill);
