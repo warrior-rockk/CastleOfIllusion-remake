@@ -17,12 +17,14 @@
 //propiedades de los objetos
 #define OBJ_PICKABLE				  	8		//Puede ser recogido
 #define OBJ_BREAKABLE             		16		//Se rompe al lanzarlo y colisionar
-#define OBJ_ITEM_BIG_COIN           	32		//Contiene item moneda grande
-#define OBJ_ITEM_STAR	          		64		//Estrella energia extra
-#define OBJ_ITEM_GEM			 		128		//Gema fin de nivel
-#define OBJ_BOUNCY_LOW           		512    	//Objeto tiene rebote bajo
-#define OBJ_BOUNCY_HIGH          		1024    //Objeto tiene rebote alto
-#define OBJ_IS_KEY               		2048    //Objeto es llave
+#define OBJ_ITEM_COIN           	    32		//Contiene item moneda pequeña
+#define OBJ_ITEM_BIG_COIN           	64		//Contiene item moneda grande
+#define OBJ_ITEM_FOOD              	    128		//Contiene item energia 1 estrella
+#define OBJ_ITEM_BIG_FOOD               512		//Contiene item energia todas las estrellas
+#define OBJ_ITEM_TRIE              	    1024 	//Contiene item 1 vida extra
+#define OBJ_ITEM_STAR	          		2048	//Estrella energia extra
+#define OBJ_ITEM_GEM			 		4096	//Gema fin de nivel
+#define OBJ_IS_KEY               		8192    //Objeto es llave
 
 //constantes de objetos
 const
@@ -30,11 +32,15 @@ const
 	cItemVelY 			=			-4;			//Velocidad Y al salir un item
 	cBouncyObjectVel	=           0.6;        //Velocidad Y rebote suelo para objetos
 	cBouncyItemVel		=           0.8;        //Velocidad Y rebote suelo para items
-	cBigCoinScore		=			100;		//Puntuacion de moneda grande
 	cItemTimeOut        =           8;          //Timeout Item
 	cItemTimeToBlink    =           4;			//Tiempo parpadeo antes de timeout
 	cItemBlinkTime      =           3;			//Velocidad parpadeo
 	cDoorTime			=           10;         //Velocidad Puerta
+	
+	//puntuaciones
+	cBigCoinScore       =			1000;
+	cSmallCoinScore     =			500;
+	
 end;
 
 //Objeto

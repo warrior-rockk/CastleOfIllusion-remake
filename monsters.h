@@ -34,7 +34,9 @@ End;
 
 //Constantes
 Const
-
+	//puntuaciones
+	cKillMonster            = 10;
+	
 	//ChessHorse
 	cChessHorseIdleCycles 	= 2;	//Ciclos de reposo para salto pequeño
 	cChessHorseNumCycles    = 3;	//Ciclos de reposo para salto grande

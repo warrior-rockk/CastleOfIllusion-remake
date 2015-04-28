@@ -300,9 +300,14 @@ begin
 			end;
 			case DEAD_STATE:
 				//si el objeto tiene item dentro, lo lanzamos
-				if (isBitSet(this.props,OBJ_ITEM_BIG_COIN) || isBitSet(this.props,OBJ_ITEM_STAR))
+				if (isBitSet(this.props,OBJ_ITEM_BIG_COIN) || 
+				    isBitSet(this.props,OBJ_ITEM_COIN)     ||
+					isBitSet(this.props,OBJ_ITEM_FOOD)     ||
+					isBitSet(this.props,OBJ_ITEM_BIG_FOOD) ||
+					isBitSet(this.props,OBJ_ITEM_TRIE)     
+					)
 					//item(x,y,this.ancho,this.alto,this.props);
-					object(OBJ_ITEM,0,x,y,16,16,CENTER_AXIS,0,OBJ_ITEM_BIG_COIN);
+					object(OBJ_ITEM,0,x,y,16,16,CENTER_AXIS,0,this.props);
 				end;
 				//lanzamos animacion explosion objeto
 				WGE_Animation(file,2,3,x,y,10,ANIM_ONCE);
@@ -426,8 +431,20 @@ begin
 				end;
 				
 				//animacion del item
+				if (isBitSet(this.props,OBJ_ITEM_COIN))
+					WGE_Animate(25,26,20,ANIM_LOOP);
+				end;
 				if (isBitSet(this.props,OBJ_ITEM_BIG_COIN))
 					WGE_Animate(6,7,20,ANIM_LOOP);
+				end;
+				if (isBitSet(this.props,OBJ_ITEM_FOOD))
+					WGE_Animate(28,28,20,ANIM_LOOP);
+				end;
+				if (isBitSet(this.props,OBJ_ITEM_BIG_FOOD))
+					WGE_Animate(28,28,20,ANIM_LOOP);
+				end;
+				if (isBitSet(this.props,OBJ_ITEM_TRIE))
+					WGE_Animate(27,27,20,ANIM_LOOP);
 				end;
 				if (isBitSet(this.props,OBJ_ITEM_STAR))
 					WGE_Animate(11,12,20,ANIM_LOOP);
@@ -441,9 +458,25 @@ begin
 				//si ha sido recodido el item
 				if (picked)
 					//segun el item,realizamos una accion determinada
+					if (isBitSet(this.props,OBJ_ITEM_COIN))
+						//incrementa puntuacion
+						game.score += cSmallCoinScore;
+					end;
 					if (isBitSet(this.props,OBJ_ITEM_BIG_COIN))
 						//incrementa puntuacion
 						game.score += cBigCoinScore;
+					end;
+					if (isBitSet(this.props,OBJ_ITEM_FOOD))
+						//incrementa 1 energia
+						game.playerLife ++;
+					end;
+					if (isBitSet(this.props,OBJ_ITEM_BIG_FOOD))
+						//incrementa toda la energia
+						game.playerLife = game.playerMaxLife;
+					end;
+					if (isBitSet(this.props,OBJ_ITEM_TRIE))
+						//incrementa 1 vida
+						game.playerTries++;
 					end;
 					if (isBitSet(this.props,OBJ_ITEM_STAR))
 						//añade una estrella a la vida
