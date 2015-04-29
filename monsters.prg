@@ -78,6 +78,9 @@ begin
 					case MONS_MONKEYTOY:
 						idMonster = monkeyToy(28,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
 					end;
+					case MONS_FATGENIUS:
+						idMonster = fatGenius(34,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
+					end;
 				end;	
 				log("Se crea el monstruo "+idMonster,DEBUG_MONSTERS);
 				
@@ -981,6 +984,105 @@ begin
 				graph = 33;
 				deadMonster();
 				signal(id,s_kill);
+			end;
+		end;
+				
+		//actualizamos velocidad y posicion
+		updateVelPos(id,grounded);
+		
+		//actualizamos el monstruo padre
+		updateMonster(id,father);
+		
+		//alineacion del eje X del grafico
+		alignAxis(id);
+		
+		frame;
+	end;
+	
+end;
+
+//Proceso enemigo fatGenius
+//Se mueve arriba y abajo y permite rebotar en él. Nunca muere
+process fatGenius(int graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
+private
+float friction;		//friccion local
+byte grounded;		//flag de en suelo
+
+int colID;			//Id de colision
+int colDir;			//direccion de la colision
+byte collided;		//flag de colision
+
+int dir;			//direccion movimiento
+
+int i;				//Variable auxiliar
+begin
+	region = cGameRegion;
+	ctype = c_scroll;
+	z = cZMonster;
+	file = level.fpgMonsters;
+	flags = _flags;
+	
+	//igualamos la propiedades publicas a las de parametros
+	this.ancho = _ancho;
+	this.alto = _alto;
+	this.props = _props;
+	this.axisAlign = _axisAlign;
+	
+	//modo debug sin graficos
+	if (file<0)
+		graph = map_new(this.ancho,this.alto,8,0);
+		map_clear(0,graph,rand(200,300));
+	end;
+	
+	this.fX = x;
+	this.fY = y;
+	
+	setBit(this.props,NO_PHYSICS);
+	dir = 1;
+	
+	WGE_CreateObjectColPoints(id);
+	
+	friction = floorFriction;
+	
+	this.state = MOVE_STATE;
+	
+	//actualizamos el padre con los datos de creación
+	updateMonster(id,father);
+	
+	loop
+		//nos actualizamos del padre
+		updateMonster(father,id);
+		
+		//guardamos estado actual
+		this.prevState = this.state;
+		
+		//maquina de estados
+		switch (this.state)
+			case MOVE_STATE:
+				//grafico inicial
+				graph = 34;
+				//limite superior para cambio sentido
+				if ( getTileCode(id,UP_R_POINT) <> NO_SOLID ||
+				     getTileCode(id,UP_L_POINT) <> NO_SOLID ||
+					 y <= scroll[cGameScroll].y0)
+					dir = 1;
+				end;
+				//limite inferior para cambio sentido
+				if ( getTileCode(id,DOWN_R_POINT) <> NO_SOLID ||
+				     getTileCode(id,DOWN_L_POINT) <> NO_SOLID ||
+					 y >= scroll[cGameScroll].y0+cGameRegionH)
+					dir = -1;
+				end;		
+				//movimiento
+				this.vY = cFatGeniusVel * dir;
+			end;
+			case HURT_STATE: 
+				//detenemos el movimiento
+				this.vY = 0;
+				//tiempo detenido con grafico de toque
+				if (WGE_Animate(35,35,40,ANIM_ONCE))
+					this.state = MOVE_STATE;
+				end;
 			end;
 		end;
 				

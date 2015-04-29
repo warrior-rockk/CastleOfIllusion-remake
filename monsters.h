@@ -18,6 +18,7 @@
 #define MONS_BUBBLE				4		//Monstruo Bubble
 #define MONS_BALLSCLOWN 		5		//Monstruo BallsClown
 #define MONS_MONKEYTOY          6       //Monstruo MonkeyToy
+#define MONS_FATGENIUS          7       //Monstruo FatGenius
 
 //enemigo
 Type _monster         			//Tipo de Dato de enemigo
@@ -57,6 +58,9 @@ Const
 	
 	//MonkeyToy
 	cMonkeyToyIdleTime      = 40;  //Tiempo Reposo
+	
+	//FatGenius
+	cFatGeniusVel			= 1;   //Velocidad movimiento
 end;
 
 Global
@@ -126,6 +130,12 @@ public
 end
 end
 
+//Declaracion de enemigo fatGenius
+Declare process fatGenius(int graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
+public
+	_entityPublicData this;			//datos publicos de entidad
+end
+end
 //Proceso de muerte generico de enemigo
 Declare Process deadMonster()
 public
