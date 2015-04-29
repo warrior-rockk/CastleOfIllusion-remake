@@ -71,6 +71,9 @@ begin
 					case PLATF_CLOUD:
 						idPlatform = cloudPlatform(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
 					end;
+					case PLATF_SPRINGBOX:
+						idPlatform = springBoxPlatform(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
+					end;
 				end;	
 				log("Se crea la plataforma "+idPlatform,DEBUG_OBJECTS);
 				
@@ -395,6 +398,137 @@ begin
 		if (idPlatform == father)
 			//actualizamos la posicion del player lo que se movio la plataforma
 			idPlayer.this.fX += x - prevX;
+		end;
+			
+		frame;
+	end;
+end;
+
+//Proceso plataforma springBox
+Process springBoxPlatform(int _graph,int startX,int startY,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
+private
+	int prevX;				//posicion X previa
+	int prevY;				//posicion Y previa
+	
+begin
+	region = cGameRegion;
+	ctype = c_scroll;
+	z = cZObject+1;
+	file = level.fpgObjects;
+	flags = _flags;
+	
+	//igualamos la propiedades publicas a las de parametros
+	this.ancho 		= _ancho;
+	this.alto 		= _alto;
+	this.props  	= _props;
+	this.axisAlign 	= _axisAlign;
+	
+	//modo debug sin graficos
+	if (file<0)
+		graph = map_new(this.ancho,this.alto,8,0);
+		map_clear(0,graph,310);
+	end;
+	
+	//puntos de colision del objeto
+	
+	this.colPoint[LEFT_UP_POINT].x 		= -(this.ancho>>1);
+	this.colPoint[LEFT_UP_POINT].y 		= 0;
+	this.colPoint[LEFT_UP_POINT].colCode = COLIZQ;
+	this.colPoint[LEFT_UP_POINT].enabled = 1;
+	
+	this.colPoint[RIGHT_UP_POINT].x 		= (this.ancho>>1);
+	this.colPoint[RIGHT_UP_POINT].y 		= 0;
+	this.colPoint[RIGHT_UP_POINT].colCode = COLDER;
+	this.colPoint[RIGHT_UP_POINT].enabled = 1;
+	
+	x = startX;
+	y = startY;
+	
+	this.fX = x;
+	this.fY = y;
+	
+	setBit(this.props,PLATF_ONE_WAY_COLL);
+	
+	this.state = MOVE_STATE;
+	
+	//actualizamos al padre con los datos de creacion
+	updateObject(id,father);	
+	
+	//bucle principal
+	loop
+		//nos actualizamos del padre
+		updateObject(father,id);
+		
+		//guardamos estado actual
+		this.prevState = this.state;
+		
+		switch (this.state)
+			case IDLE_STATE: //oculto hasta que no colisione con ningun objeto
+				graph = 0;
+				this.fX = startX;
+				this.fY = startY;
+				setBit(this.props,NO_COLLISION);
+			end;
+			case MOVE_STATE:
+				//grafico estirado
+				graph = 29;
+				
+				//cambio de paso si se sube el player
+				if (idPlatform == father)			
+					this.state = MOVE_DOWN_STATE;
+				end;
+			end;
+			case MOVE_DOWN_STATE:
+				//grafico estirado
+				graph = 29;
+				
+				//movemos el muelle hacia abajo
+				this.fY+=cSpringBoxVel;
+				
+				//cambio de estado al llegar a posicion
+				if (this.fY >= startY + 16)
+					this.state = PUSHED_STATE;
+				end;
+			end;
+			case PUSHED_STATE:
+				//cambio de estado tras espera
+				if (WGE_Animate(30,30,20,ANIM_ONCE))
+					this.state = MOVE_UP_STATE;
+				end;
+			end;
+			case MOVE_UP_STATE:
+				graph = 29;
+				
+				//movemos muelle hacia arriba
+				this.fY-=cSpringBoxVel;
+				
+				//cambio de estado al llegar a posicion
+				if (this.fY <= startY)
+					this.state = MOVE_STATE;
+					this.fY = startY;
+					//impulsamos al player
+					if (idPlatform == father)
+						idPlayer.this.vY += -cSpringBoxImpulse;
+					end;
+				end;
+			end;
+		end;
+		
+		//guardamos la posicion anterior
+		prevX = x;
+		prevY = y;
+		
+		//actualizamos posicion
+		positionToInt(id);
+		
+		//actualizamos el objeto padre
+		updateObject(id,father);		
+				
+		//si el player esta en plataforma
+		if (idPlatform == father)
+			//actualizamos la posicion del player lo que se movio la plataforma
+			idPlayer.this.fX += x - prevX;
+			idPlayer.this.fY += y-  prevY;
 		end;
 			
 		frame;

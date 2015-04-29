@@ -5,13 +5,16 @@ PLAYER:	-solo deberia morir por outregion si sale por abajo-
 		-si objeto encima de un pickable, no recojer ninguno
 		-Poder Salto distinto desde escalera
 		-parece que con las flechas de direccion no cae de escalera
-	    
-OBJECTS: -small food (falta grafico)
+	    -animacion al borde de objeto??
+		
+OBJECTS:-planos z configurables 
+		-small food (falta grafico)
 		-boxspring
 		-items invisibles
 		-el coin rebota mas rato y el giro va perdiendo velocidad
 		
-ENGINE: -si pasas de room por escalera y se acaba la escalera, te debes caer
+ENGINE: -error en colision con los tiles de la esquina izquierda (en test room)
+		-si pasas de room por escalera y se acaba la escalera, te debes caer
 		-checkpoints. Debe empezar el nivel en sitios distintos cuando muere segun a avanzado en el mapa.
 		-igual fisicas a juego real
 		-Los codigos de tile deberian ser bits para ser simultaneos?

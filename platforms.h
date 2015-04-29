@@ -9,6 +9,7 @@
 //tipos de plataformas
 #define PLATF_LINEAR 		0        
 #define PLATF_CLOUD 		1        
+#define PLATF_SPRINGBOX		2
 
 //propiedades plataformas
 #define PLATF_WAIT_PLAYER          8		//Esta en espera a que suba el player
@@ -21,6 +22,10 @@ const
 	cPlatformDefaultVel     = 0.5;  //Velocidad por defecto plataformas
 	cPlatformFallVel		= 1.5;	//Velocidad caida plataformas
 	cPlatformWaitTime       = 20;   //Tiempo espera plataformas
+	
+	//springBoxPlatform
+	cSpringBoxVel			= 2;	//Velocidad springBox
+	cSpringBoxImpulse		= 6;	//Impulso que le da al player
 end;
 
 //Objeto
@@ -56,6 +61,13 @@ end
 
 //declaracion de plataforma nubes
 Declare Process cloudPlatform(int _graph,int startX,int startY,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
+public
+	_entityPublicData this;			//datos publicos de entidad
+end
+end
+
+//declaracion de plataforma springBox
+Declare Process springBoxPlatform(int _graph,int startX,int startY,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
 public
 	_entityPublicData this;			//datos publicos de entidad
 end

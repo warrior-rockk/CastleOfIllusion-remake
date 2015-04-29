@@ -24,6 +24,7 @@
 #define OBJ_ITEM_TRIE              	    1024 	//Contiene item 1 vida extra
 #define OBJ_ITEM_STAR	          		2048	//Estrella energia extra
 #define OBJ_ITEM_GEM			 		4096	//Gema fin de nivel
+//propiedades internas
 #define OBJ_IS_KEY               		8192    //Objeto es llave
 
 //constantes de objetos
