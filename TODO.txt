@@ -1,6 +1,7 @@
 ENTIDADES: -propiedad local bouncy para tener rebote si/no y cuanto??
 
-PLAYER:	-comportamiento erratico al manter pulsado salto. si sueltas la tecla no deberia sumar poder despues
+PLAYER:	-solo deberia morir por outregion si sale por abajo-
+		-comportamiento erratico al manter pulsado salto. si sueltas la tecla no deberia sumar poder despues
 		-si objeto encima de un pickable, no recojer ninguno
 		-Poder Salto distinto desde escalera
 		-parece que con las flechas de direccion no cae de escalera
@@ -10,8 +11,7 @@ OBJECTS: -small food (falta grafico)
 		-items invisibles
 		-el coin rebota mas rato y el giro va perdiendo velocidad
 		
-ENGINE: -los tiles que estan fuera de la region, deben perder su condicion de solidos
-		-si pasas de room por escalera y se acaba la escalera, te debes caer
+ENGINE: -si pasas de room por escalera y se acaba la escalera, te debes caer
 		-checkpoints. Debe empezar el nivel en sitios distintos cuando muere segun a avanzado en el mapa.
 		-igual fisicas a juego real
 		-Los codigos de tile deberian ser bits para ser simultaneos?

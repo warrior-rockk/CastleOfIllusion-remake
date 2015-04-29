@@ -756,7 +756,6 @@ process pTile(int i,int j)
 private	
 	byte tileColor;		//Color del tile (modo debug)
 	byte redraw = 1;	//Flag redibujar y posicionar el tile
-	
 BEGIN
 	//definimos propiedades iniciales
 	this.alto = cTileSize;
@@ -824,7 +823,7 @@ BEGIN
 		//Redibujamos el tile
 		if (redraw)
 			//posicion
-			x=(j*cTileSize)+cHalfTSize;
+			x = (j*cTileSize)+cHalfTSize;
 			y = (i*cTileSize)+cHalfTSize;
 			
 			//grafico
@@ -1339,38 +1338,53 @@ end;
 //Devuelve 1 si colisiona en esa direccion o 0 si no colisiona.
 function int checkTileCode(entity idEntity,int colDir,int posY,int posX)
 begin
-	switch(colDir)
-		//Colisiones superiores
-		case COLUP:
-			return tileMap[posY][posX].tileCode == SOLID ||
-				   tileMap[posY][posX].tileCode == NO_SCROLL_L ||
-				   tileMap[posY][posX].tileCode == NO_SCROLL_R;
+	//comprobamos si el tile es visible en la pantalla, asi, los tiles fuera de region no serán solidos
+	//condicion solo para el player
+	if (checkTileVisible(posX,posY) || idEntity <> idPlayer)
+		switch(colDir)
+			//Colisiones superiores
+			case COLUP:
+				return tileMap[posY][posX].tileCode == SOLID ||
+					   tileMap[posY][posX].tileCode == NO_SCROLL_L ||
+					   tileMap[posY][posX].tileCode == NO_SCROLL_R;
+			end;
+			//Colisiones inferiores
+			case COLDOWN,COLCENTER:
+				return tileMap[posY][posX].tileCode == SOLID     ||
+					   tileMap[posY][posX].tileCode == SLOPE_135 ||
+					   tileMap[posY][posX].tileCode == SLOPE_45  ||
+					   tileMap[posY][posX].tileCode == NO_SCROLL_L ||
+					   tileMap[posY][posX].tileCode == NO_SCROLL_R ||
+					  (tileMap[posY][posX].tileCode == SOLID_ON_FALL && ( idEntity.this.vY>0 || isType(idEntity,TYPE player)) )||
+					  (tileMap[posY][posX].tileCode == TOP_STAIRS && (idEntity.this.vY>0 || isType(idEntity,TYPE player)) );
+			end;
+			//Colisiones lateral izquierdas
+			case COLIZQ:
+				return tileMap[posY][posX].tileCode == SOLID ||
+					   tileMap[posY][posX].tileCode == NO_SCROLL_L ||
+					   tileMap[posY][posX].tileCode == NO_SCROLL_R;
+					  
+			end;
+			//Colisiones lateral derechas
+			case COLDER:
+				return tileMap[posY][posX].tileCode == SOLID ||
+					   tileMap[posY][posX].tileCode == NO_SCROLL_L ||
+					   tileMap[posY][posX].tileCode == NO_SCROLL_R;
+					   
+			end;
 		end;
-		//Colisiones inferiores
-		case COLDOWN,COLCENTER:
-			return tileMap[posY][posX].tileCode == SOLID     ||
-				   tileMap[posY][posX].tileCode == SLOPE_135 ||
-				   tileMap[posY][posX].tileCode == SLOPE_45  ||
-			       tileMap[posY][posX].tileCode == NO_SCROLL_L ||
-				   tileMap[posY][posX].tileCode == NO_SCROLL_R ||
-			      (tileMap[posY][posX].tileCode == SOLID_ON_FALL && ( idEntity.this.vY>0 || isType(idEntity,TYPE player)) )||
-				  (tileMap[posY][posX].tileCode == TOP_STAIRS && (idEntity.this.vY>0 || isType(idEntity,TYPE player)) );
-		end;
-		//Colisiones lateral izquierdas
-		case COLIZQ:
-			return tileMap[posY][posX].tileCode == SOLID ||
-			       tileMap[posY][posX].tileCode == NO_SCROLL_L ||
-				   tileMap[posY][posX].tileCode == NO_SCROLL_R;
-			      
-		end;
-		//Colisiones lateral derechas
-		case COLDER:
-			return tileMap[posY][posX].tileCode == SOLID ||
-			       tileMap[posY][posX].tileCode == NO_SCROLL_L ||
-				   tileMap[posY][posX].tileCode == NO_SCROLL_R;
-			       
-		end;
+	else
+		return NO_SOLID;
 	end;
+end;
+
+//funcion que comprueba si el tile se ve en la region actual del juego
+function int checkTileVisible(int posX,int posY)
+begin
+	return (posY*cTileSize)-cHalfTSize >= scroll[cGameScroll].y0 &&
+	       (posY*cTileSize)-cHalfTSize <= scroll[cGameScroll].y0+cGameRegionH &&
+		   (posX*cTileSize)-cHalfTSize >= scroll[cGameScroll].x0 &&
+	       (posX*cTileSize)-cHalfTSize <= scroll[cGameScroll].x0+cGameRegionW;
 end;
 
 //funcion que devuelve el codigo de Tile de un punto de colision
