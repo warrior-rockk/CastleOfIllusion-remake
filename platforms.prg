@@ -410,6 +410,8 @@ private
 	int prevX;				//posicion X previa
 	int prevY;				//posicion Y previa
 	
+	entity colID;		//Entidad con la que colisiona
+	int colDir;			//Direccion de la colision
 begin
 	region = cGameRegion;
 	ctype = c_scroll;
@@ -449,7 +451,7 @@ begin
 	
 	setBit(this.props,PLATF_ONE_WAY_COLL);
 	
-	this.state = MOVE_STATE;
+	this.state = IDLE_STATE;
 	
 	//actualizamos al padre con los datos de creacion
 	updateObject(id,father);	
@@ -465,11 +467,25 @@ begin
 		switch (this.state)
 			case IDLE_STATE: //oculto hasta que no colisione con ningun objeto
 				graph = 0;
-				this.fX = startX;
 				this.fY = startY;
 				setBit(this.props,NO_COLLISION);
+				
+				//retardo inicial
+				if (WGE_Animate(0,0,5,ANIM_ONCE))
+					this.state = MOVE_STATE;
+				end;
+				
+				//lanzamos comprobacion con procesos objeto
+				repeat
+					//obtenemos siguiente colision
+					colID = get_id(TYPE object);
+					if (colCheckProcess(id,colID,INFOONLY) <> NOCOL)
+						this.state = IDLE_STATE;
+					end;
+				until (colID == 0);
 			end;
 			case MOVE_STATE:
+				unSetBit(this.props,NO_COLLISION);
 				//grafico estirado
 				graph = 29;
 				
