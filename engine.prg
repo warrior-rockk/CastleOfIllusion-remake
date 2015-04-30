@@ -1135,6 +1135,10 @@ begin
 					if (idPlayer.x <= (scroll[0].x0 + (cTileSize)))
 						doTransition = ROOM_TRANSITION_LEFT;
 					end;
+					//Posicion X: al llegar a la mitad del ultimo tile izquierdo de la pantalla, transicion room
+					if (idPlayer.x >= (scroll[0].x0 +  cGameRegionW - (cTileSize)))
+						doTransition = ROOM_TRANSITION_RIGHT;
+					end;
 					//si no hay roomTransition
 					if (doTransition == 0)		
 						//ajustamos scroll X si hay Stop Right
