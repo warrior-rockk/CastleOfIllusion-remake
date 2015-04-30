@@ -19,6 +19,7 @@
 #define MONS_BALLSCLOWN 		5		//Monstruo BallsClown
 #define MONS_MONKEYTOY          6       //Monstruo MonkeyToy
 #define MONS_FATGENIUS          7       //Monstruo FatGenius
+#define MONS_TOYCAR             8       //Monstruo ToyCar
 
 //enemigo
 Type _monster         			//Tipo de Dato de enemigo
@@ -57,10 +58,13 @@ Const
 	cBallsClownNumBallsMax  = 6; 	//Numero de bolas maximo
 	
 	//MonkeyToy
-	cMonkeyToyIdleTime      = 40;  //Tiempo Reposo
+	cMonkeyToyIdleTime      = 40;  	//Tiempo Reposo
 	
 	//FatGenius
-	cFatGeniusVel			= 1;   //Velocidad movimiento
+	cFatGeniusVel			= 1;   	//Velocidad movimiento
+	
+	//ToyCar
+	cToyCarVel              = 2;	//Velocidad movimiento
 end;
 
 Global
@@ -132,6 +136,13 @@ end
 
 //Declaracion de enemigo fatGenius
 Declare process fatGenius(int graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
+public
+	_entityPublicData this;			//datos publicos de entidad
+end
+end
+
+//Declaracion de enemigo ToyCar
+Declare process toyCar(int graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
 public
 	_entityPublicData this;			//datos publicos de entidad
 end

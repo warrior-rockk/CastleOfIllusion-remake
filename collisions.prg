@@ -619,7 +619,8 @@ begin
 end;
 
 //funcion que engloba la gestion de las fisicas de un proceso
-//devuelve si hubo alguna colision con el terreno
+//devuelve si hubo alguna colision hortizontal con el terreno, ya que las verticales
+//las devuelve en el flag grounded
 function byte terrainPhysics(entity idEntity,float friction,byte *objGrounded)
 private
 	int i;					//Var auxiliar
@@ -648,7 +649,7 @@ begin
 			//aplicamos la direccion de la colision
 			applyDirCollision(idEntity,colDir,&grounded);
 			//seteamos flag de colisionado
-			if (colDir <> NOCOL)
+			if (colDir == COLDER || colDir == COLIZQ)
 				collided = true;
 			end;
 		end;

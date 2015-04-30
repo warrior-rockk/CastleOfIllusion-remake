@@ -81,6 +81,9 @@ begin
 					case MONS_FATGENIUS:
 						idMonster = fatGenius(34,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
 					end;
+					case MONS_TOYCAR:
+						idMonster = toyCar(36,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
+					end;
 				end;	
 				log("Se crea el monstruo "+idMonster,DEBUG_MONSTERS);
 				
@@ -1086,6 +1089,122 @@ begin
 			end;
 		end;
 				
+		//actualizamos velocidad y posicion
+		updateVelPos(id,grounded);
+		
+		//actualizamos el monstruo padre
+		updateMonster(id,father);
+		
+		//alineacion del eje X del grafico
+		alignAxis(id);
+		
+		frame;
+	end;
+	
+end;
+
+//Proceso enemigo toyCar
+//Se mueve izquierda a derecha hasta tocar pared y no muerte hasta matar el mando a distancia
+process toyCar(int graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
+private
+float friction;		//friccion local
+byte grounded;		//flag de en suelo
+
+int colID;			//Id de colision
+int colDir;			//direccion de la colision
+byte collided;		//flag de colision
+
+int dir;
+
+int i;				//Variable auxiliar
+begin
+	region = cGameRegion;
+	ctype = c_scroll;
+	z = cZMonster;
+	file = level.fpgMonsters;
+	flags = _flags;
+	
+	//igualamos la propiedades publicas a las de parametros
+	this.ancho = _ancho;
+	this.alto = _alto;
+	this.props = _props;
+	this.axisAlign = _axisAlign;
+	
+	//modo debug sin graficos
+	if (file<0)
+		graph = map_new(this.ancho,this.alto,8,0);
+		map_clear(0,graph,rand(200,300));
+	end;
+	
+	this.fX = x;
+	this.fY = y;
+	
+	isBitSet(flags,B_HMIRROR) ? dir = 1: dir = -1;
+	
+	WGE_CreateObjectColPoints(id);
+	
+	friction = floorFriction;
+	
+	this.state = MOVE_STATE;
+	
+	//actualizamos el padre con los datos de creación
+	updateMonster(id,father);
+	
+	loop
+		//nos actualizamos del padre
+		updateMonster(father,id);
+		
+		//FISICAS	
+		collided = terrainPhysics(ID,friction,&grounded);
+		
+		//guardamos estado actual
+		this.prevState = this.state;
+		
+		//maquina de estados
+		switch (this.state)
+			case IDLE_STATE: //mirando al frente para cambiar de direcccion
+				//detenemos movimiento
+				this.vX = 0;
+				//pausa con animacion mirando al frente
+				if (WGE_Animate(38,38,5,ANIM_ONCE))
+					collided = false;
+					this.state = MOVE_STATE;
+					this.vX = cToyCarVel*dir;
+				end;
+			end;
+			case MOVE_STATE: //movimiento de pared a pared
+				//dañamos al player
+				unSetBit(this.props,MONS_HARMLESS);
+				//si toca pared, invierte movimiento
+				if (collided)
+					dir *= -1;
+					this.state = IDLE_STATE;
+				end;
+				//actualizamos movimiento
+				this.vX = cToyCarVel*dir;
+				//animacion movimiento
+				WGE_Animate(36,37,10,ANIM_LOOP);
+				//sentido del grafico
+				dir < 0 ? unSetBit(flags,B_HMIRROR) : SetBit(flags,B_HMIRROR);
+			end;
+			case HURT_STATE: //toque
+				//detenemos el movimiento
+				this.vX = 0;
+				//no dañamos en este estado
+				setBit(this.props,MONS_HARMLESS);
+				//animacion toque
+				if (WGE_Animate(39,39,100,ANIM_LOOP))			
+					//pasado el tiempo, volvemos a movernos
+					this.state = MOVE_STATE;
+					this.vX = cToyCarVel*dir;
+				end;
+			end;
+			case DEAD_STATE:
+				deadMonster();
+				signal(id,s_kill);
+			end;
+		end;
+
 		//actualizamos velocidad y posicion
 		updateVelPos(id,grounded);
 		

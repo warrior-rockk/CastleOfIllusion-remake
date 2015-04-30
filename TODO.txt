@@ -9,7 +9,6 @@ PLAYER:	-solo deberia morir por outregion si sale por abajo-
 		
 OBJECTS:-planos z configurables 
 		-small food (falta grafico)
-		-boxspring
 		-items invisibles
 		-el coin rebota mas rato y el giro va perdiendo velocidad
 		
