@@ -84,6 +84,9 @@ begin
 					case MONS_TOYCAR:
 						idMonster = toyCar(36,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
 					end;
+					case MONS_BOSS_CLOWN:
+						idMonster = bossClown(40,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
+					end;
 				end;	
 				log("Se crea el monstruo "+idMonster,DEBUG_MONSTERS);
 				
@@ -1259,6 +1262,191 @@ begin
 	
 end;
 
+//Proceso enemigo bossClown
+//salta hacia el jugador y al tocar suelo tira bolas del techo
+process bossClown(int graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
+private
+byte grounded;			//flag de en suelo
+float friction;			//friccion local
+	
+int colID;				//Id de colision
+int colDir;				//direccion de la colision
+byte collided;			//flag de colision
+	
+int dir;				//Direccion movimiento
+int currentStepTime;	//tiempo paso actual
+int currentHurtTime;	//tiempo daño actual
+	
+int bossLife = 3;		//Vida del boss
+	
+int i;					//Variable auxiliar
+begin
+	region = cGameRegion;
+	ctype = c_scroll;
+	z = cZMonster;
+	file = level.fpgMonsters;
+	flags = _flags;
+	
+	//igualamos la propiedades publicas a las de parametros
+	this.ancho = _ancho;
+	this.alto = _alto;
+	this.axisAlign = _axisAlign;
+	this.props = _props;
+	
+	//modo debug sin graficos
+	if (file<0)
+		graph = map_new(this.ancho,this.alto,8,0);
+		map_clear(0,graph,rand(200,300));
+	end;
+	
+	this.fX = x;
+	this.fY = y;
+	
+	//direccion inicial del movimiento
+	isBitSet(flags,B_HMIRROR) ? dir = -1 : dir = 1;
+	
+	WGE_CreateObjectColPoints(id);
+	
+	friction = floorFriction;
+	
+	this.state = IDLE_STATE;
+	graph = 0;
+	
+	//actualizamos al padre con los datos de creacion
+	updateMonster(id,father);
+		
+	loop
+		//nos actualizamos del padre
+		updateMonster(father,id);
+		
+		//FISICAS	
+		collided = terrainPhysics(ID,friction,&grounded);
+		
+		//lanzamos comprobacion colision con procesos objeto
+		repeat
+			//obtenemos siguiente colision
+			colID = get_id(TYPE object);
+			//aplicamos la direccion de la colision
+			applyDirCollision(ID,colCheckProcess(id,colID,BOTHAXIS),&grounded);		
+		until (colID == 0);
+		
+		//guardamos estado actual
+		this.prevState = this.state;
+		
+		//maquina de estados
+		switch (this.state)
+			case IDLE_STATE: //animacion de tapa caja abierta
+				setBit(this.props,NO_COLLISION);
+				
+				//animacion puerta que se abre
+				if (WGE_Animate(46,48,10,ANIM_ONCE))
+					//sale de la caja
+					graph = 43;
+					this.vY = -cBossClownVelY;
+					this.vX = cBossClownVelX;
+					grounded = false;
+					//es colisionable
+					unSetBit(this.props,NO_COLLISION);
+					//cambio de paso
+					this.state = JUMP_STATE;
+				end;
+			end;
+			case JUMP_STATE: //movimiento salto
+				if (!grounded)
+					//movimiento
+					this.vX = cBossClownVelX*dir;
+					//grafico salto
+					this.vY < 0 ? graph = 41: graph = 42;
+				else
+					//pasamos a reposo cuando toca suelo
+					this.vX = 0;
+										
+					//contamos un tiempo aleatorio hasta siguiente bola
+					if (currentStepTime >= cBossClownBallTime + rand(-20,20))
+						monsterFire(rand(31,32),x+(cBossClownAtackRange*rand(-1,1)),scroll[cGameScroll].y0,0,0,0);
+						currentStepTime = 0;
+					else
+						//contador paso
+						if (clockTick)
+							currentStepTime++;
+						end;
+					end;
+					
+					//cambio de paso cuando acabe animacion
+					if (WGE_Animate(42,43,20,ANIM_ONCE))
+						this.state = MOVE_STATE;
+					end;
+					
+					//efecto temblor al tocar suelo
+					game.shakeScroll = graph == 42;
+					
+				end;
+			end;
+			case MOVE_STATE:
+				//detenemos el movimiento
+				this.vX = 0;
+				//espera hasta el siguiente salto
+				if (WGE_Animate(40,40,80,ANIM_ONCE))
+					//corregimos direccion
+					if (idPlayer <> 0 )
+						if (idPlayer.this.fX > this.fX)
+							dir = 1; 
+						else
+							dir = -1; 
+						end;
+					end;
+					//saltamos
+					this.vX = cBossClownVelX*dir;
+					this.vY = -cBossClownVelY;
+					grounded = false;
+					this.state = JUMP_STATE;
+				end;
+			end;
+			case HURT_STATE:  
+				//reseteamos tiempo de paso
+				currentStepTime = 0;
+				//si no lo queda energia al boss, lo matamos
+				if (bossLife-1 == 0)
+					this.state = DEAD_STATE;
+				else
+					//animacion de daño
+					if (currentHurtTime >= cBossClownHurtCycles)
+						//le quitamos vida
+						bossLife --;
+						//cambio de estado
+						this.state = MOVE_STATE;
+						//reiniciamos tiempo daño
+						currentHurtTime = 0;
+					else
+						if (WGE_Animate(44,45,20,ANIM_LOOP))
+							currentHurtTime++;
+						end;
+					end;
+				end;
+			end;
+			case DEAD_STATE:
+				deadBoss(44,45);
+				signal(id,s_kill);
+			end;
+		end;
+		
+		//ajuste flags segun direccion
+		this.vX<=0 ? setBit(flags,B_HMIRROR) : unSetBit(flags,B_HMIRROR);
+		
+		//actualizamos velocidad y posicion
+		updateVelPos(id,grounded);
+		
+		//actualizamos el monstruo padre
+		updateMonster(id,father);
+		
+		//alineacion del eje X del grafico
+		alignAxis(id);
+		
+		frame;
+	end;
+	
+end;
+
 //proceso de muerte de monstruo
 process deadMonster()
 begin
@@ -1286,12 +1474,63 @@ begin
 			this.fY += this.vY;
 			positionToInt(id);
 			
-			WGE_Animate(graph,graph,1,ANIM_LOOP);
+			WGE_Animate(graph,graph,20,ANIM_LOOP);
 			
 			frame;
 	//morimos al salirnos de la pantalla
 	until (out_region(id,cGameRegion));
+	
+	//creamos gema de fin de nivel
+	
+end;
 
+//proceso de muerte de monstruo jefe
+process deadBoss(int iniGraph,int endGraph)
+private
+int currentStepTime;		//Tiempo paso actual
+	
+begin
+	region = cGameRegion;
+	ctype = c_scroll;
+	z = cZMonster;
+	file = level.fpgMonsters;
+	
+	this.fX = father.x;
+	this.fY = father.y;
+	graph = iniGraph;
+	flags = father.flags;
+	
+	this.vX = 0;
+	this.vY = -4;
+	
+	//puntuacion por jefe muerto??
+	game.score += cKillMonster;
+	
+	repeat	
+			//fisicas
+			this.vY += gravity;
+			
+			this.fX += this.vX;
+			this.fY += this.vY;
+			positionToInt(id);
+			
+			WGE_Animate(iniGraph,endGraph,5,ANIM_LOOP);
+			
+			frame;
+	//morimos al salirnos de la pantalla
+	until (out_region(id,cGameRegion));
+	
+	//Retardo para activar el flag
+	repeat
+		if (clockTick)
+			currentStepTime++;
+		end;
+		frame;
+	until(currentStepTime >= 50)
+	
+	//activamos el flag
+	game.bossKilled = true;
+	
 end;
 
 //funcion que actualiza las propiedades de un monstruo sobre otro

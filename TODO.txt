@@ -12,8 +12,7 @@ OBJECTS:-planos z configurables
 		-items invisibles
 		-el coin rebota mas rato y el giro va perdiendo velocidad
 		
-ENGINE: -error en colision con los tiles de la esquina izquierda (en test room)
-		-si pasas de room por escalera y se acaba la escalera, te debes caer
+ENGINE: -si pasas de room por escalera y se acaba la escalera, te debes caer
 		-checkpoints. Debe empezar el nivel en sitios distintos cuando muere segun a avanzado en el mapa.
 		-igual fisicas a juego real
 		-Los codigos de tile deberian ser bits para ser simultaneos?
@@ -35,7 +34,6 @@ DEBUG:escribir el log a archivo??. Se puede hacer en una bat que diriga la salid
 COLLISIONS:generalizar los calculos de colision para utilizarlo segun los tipos de colision de manera global
 
 MONSTERS: -Limpiar privates de monstruos
-		  -10 pts por matar
 
 EDITOR: -bug en carga de fpgs si hay huecos en el archivo. Cuenta mal el numero de imagenes
 		-bug en posicion entidades sin fisica con zoom editor aplicado
@@ -43,5 +41,6 @@ EDITOR: -bug en carga de fpgs si hay huecos en el archivo. Cuenta mal el numero 
 		-COpiar y pegar varios tipos de entidades y varias a la vez
         -que no se seleccione el siguiente objeto cuando borramos uno
 		-desactivar autoscroll cuando movemos objeto??
+		-descomprimir los fpg!! zlib
 		
 		

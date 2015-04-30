@@ -429,8 +429,11 @@ begin
 				colDir = colCheckProcess(id,idPlayer,INFOONLY);
 				//si colisiona, eliminamos el item
 				if (colDir <> NOCOL)
-					this.state = DEAD_STATE;
-					picked = true;
+					//si no es gema de fin de nivel o si lo es, que tengamos flag de bossKilled
+					if (!isBitSet(this.props,OBJ_ITEM_GEM) || game.bossKilled)
+						this.state = DEAD_STATE;
+						picked = true;
+					end;
 				end;
 				
 				//animacion del item
@@ -453,7 +456,14 @@ begin
 					WGE_Animate(11,12,20,ANIM_LOOP);
 				end;
 				if (isBitSet(this.props,OBJ_ITEM_GEM))
-					WGE_Animate(13,13,10,ANIM_LOOP);
+					//si no tenemos flag de bossKilled
+					if (!game.bossKilled)
+						//item oculto
+						graph = 0;
+						this.vY = 0;
+					else
+						WGE_Animate(13,13,10,ANIM_LOOP);
+					end;
 				end;
 			end;
 			
@@ -489,6 +499,7 @@ begin
 					if (isBitSet(this.props,OBJ_ITEM_GEM))
 						//fin del nivel actual
 						game.endLevel = true;
+						game.bossKilled = false;
 					end;
 				end;
 				//elimina el padre (items no son remanentes)

@@ -20,6 +20,7 @@
 #define MONS_MONKEYTOY          6       //Monstruo MonkeyToy
 #define MONS_FATGENIUS          7       //Monstruo FatGenius
 #define MONS_TOYCAR             8       //Monstruo ToyCar
+#define MONS_BOSS_CLOWN         9		//Monstruo Jefe Clown
 
 //enemigo
 Type _monster         			//Tipo de Dato de enemigo
@@ -65,6 +66,13 @@ Const
 	
 	//ToyCar
 	cToyCarVel              = 2;	//Velocidad movimiento
+	
+	//BossClown
+	cBossClownVelX          = 2;	//Velocidad X BossClown
+	cBossClownVelY          = 6;	//Velocidad Y BossClown
+	cBossClownBallTime	    = 20;	//Tiempo entre cada bola
+	cBossClownAtackRange    = 40;	//Rango de ataque bolas
+	cBossClownHurtCycles    = 4;	//Ciclos de animacion de dañado
 end;
 
 Global
@@ -147,8 +155,23 @@ public
 	_entityPublicData this;			//datos publicos de entidad
 end
 end
+
+//Declaracion de enemigo bossClown
+Declare process bossClown(int graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
+public
+	_entityPublicData this;			//datos publicos de entidad
+end
+end
+
 //Proceso de muerte generico de enemigo
 Declare Process deadMonster()
+public
+	_entityPublicData this;			//datos publicos de entidad
+end
+end
+
+//Proceso de muerte generico de jefe
+Declare Process deadBoss(int iniGraph,int endGraph)
 public
 	_entityPublicData this;			//datos publicos de entidad
 end

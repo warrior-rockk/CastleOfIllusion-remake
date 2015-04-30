@@ -1067,6 +1067,7 @@ End;
 process WGE_ControlScroll()
 private
 	int prevScrollX0;		//Posicion previa del scroll
+	
 	byte doTransition;		//flag de hacer transicion
 	
 	int i;					//variables auxiliarles
@@ -1150,6 +1151,10 @@ begin
 						if (idPlayer.y <= (scroll[0].y0 + (cTileSize>>1)) && idPlayer.this.state == MOVE_ON_STAIRS_STATE)
 							doTransition = ROOM_TRANSITION_UP;
 						end;
+						//si no hay transicion, ajustamos al tile superior de la Room
+						if (doTransition == 0)
+							scroll[cGameScroll].y0 = (cGameRegionH + (cTilesBetweenRooms*cTileSize)) * (idPlayer.y / (cGameRegionH + (cTilesBetweenRooms*cTileSize)));
+						end;
 					end;
 				end;
 			end;
@@ -1187,7 +1192,13 @@ begin
 		    stopScrollXL && prevScrollX0 > scroll[cGameScroll].x0 )
 			scroll[cGameScroll].x0 = prevScrollX0;
 		end;
-				
+		
+		//Efecto temblor Scroll
+		if (game.shakeScroll)			
+			scroll[cGameScroll].y0 += cVelShakeScroll*rand(-1,1);
+			game.shakeScroll = false;
+		end;
+		
 		//Actualizamos el scroll
 		move_scroll(cGameScroll);
 		
@@ -1381,10 +1392,10 @@ end;
 //funcion que comprueba si el tile se ve en la region actual del juego
 function int checkTileVisible(int posX,int posY)
 begin
-	return (posY*cTileSize)-cHalfTSize >= scroll[cGameScroll].y0 &&
-	       (posY*cTileSize)-cHalfTSize <= scroll[cGameScroll].y0+cGameRegionH &&
-		   (posX*cTileSize)-cHalfTSize >= scroll[cGameScroll].x0 &&
-	       (posX*cTileSize)-cHalfTSize <= scroll[cGameScroll].x0+cGameRegionW;
+	return (posY*cTileSize) >= scroll[cGameScroll].y0 &&
+	       (posY*cTileSize) <= scroll[cGameScroll].y0+cGameRegionH &&
+		   (posX*cTileSize) >= scroll[cGameScroll].x0 &&
+	       (posX*cTileSize) <= scroll[cGameScroll].x0+cGameRegionW;
 end;
 
 //funcion que devuelve el codigo de Tile de un punto de colision

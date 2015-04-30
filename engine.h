@@ -116,6 +116,7 @@ const
 	cRoomScroll     = true;					//Flag para utilizar el scroll vertical como Master System (transiciones entre "rooms")
 	cTilesBetweenRooms = 2;					//Numero de tiles transicion entre rooms
 	cVelRoomTransition = 4;					//Velocidad transicion entre rooms
+	cVelShakeScroll    = 2;					//Velocidad efecto shakeScroll
 	
 	//HUD
 	cHUDRegion  	= 2;    				//Numero Region informacion juego
@@ -207,12 +208,14 @@ Global
 		int state;              //estado del juego
 		byte paused;			//Flag de pausa
 		byte endLevel;			//Flag de fin de nivel
+		byte bossKilled;		//Flag de jefe muerto
 		int numLevel;			//Nivel actual
 		int playerLife;			//vida del jugador
 		int playerMaxLife;      //vida maxima del jugador
 		int playerTries;		//vidas del jugador
 		int score;				//puntuación
 		int actualLevelTime;    //tiempo actual del nivel
+		byte shakeScroll;		//activar efecto temblor scroll
 	end;
 	int fpgGame;				//archivo de graficos globales
 	int fntGame;				//fuente general del juego
