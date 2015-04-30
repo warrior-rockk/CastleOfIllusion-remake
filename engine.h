@@ -63,8 +63,10 @@
 #define BIT_TILE_ALPHA      32
 
 //Direccion transicion entre Rooms
-#define ROOM_TRANSITION_DOWN 1
-#define ROOM_TRANSITION_UP   2
+#define ROOM_TRANSITION_DOWN 	1
+#define ROOM_TRANSITION_UP   	2
+#define ROOM_TRANSITION_LEFT  	3
+#define ROOM_TRANSITION_RIGHT   4
 
 //Propiedades globales de las entidades
 #define NO_COLLISION            1		//No colisiona con otros procesos

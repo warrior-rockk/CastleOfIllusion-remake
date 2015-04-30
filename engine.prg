@@ -1066,8 +1066,6 @@ End;
 //Proceso que controla el movimiento del scroll
 process WGE_ControlScroll()
 private
-	int prevScrollX0;		//Posicion previa del scroll
-	
 	byte doTransition;		//flag de hacer transicion
 	
 	int i;					//variables auxiliarles
@@ -1116,9 +1114,6 @@ begin
 	//inicializamos la parte float
 	scrollfX = 	scroll[cGameScroll].x0;
 	
-	//guardamos la posicion previa
-	prevScrollX0 = scroll[cGameScroll].x0;
-	
 	loop
 		
 		//movimiento del scroll
@@ -1130,11 +1125,35 @@ begin
 		else
 			//Si el jugador ya está en ejecución, lo enfocamos
 			if (idPlayer <> 0 )
-				//guardamos la posicion previa
-				prevScrollX0 = scroll[cGameScroll].x0;
-				
-				//ajustamos el scroll al personaje
-				scroll[cGameScroll].x0 = idPlayer.x - (cGameRegionW>>1);
+			
+				//Posicion X depende de tener activado el RoomScroll
+				if (!cRoomScroll)
+					//Posicion X para personaje en centro pantalla
+					scroll[cGameScroll].x0 = idPlayer.x - (cGameRegionW>>1);
+				else
+					//Posicion X: al llegar a la mitad del primer tile izquierdo de la pantalla, transicion room
+					if (idPlayer.x <= (scroll[0].x0 + (cTileSize)))
+						doTransition = ROOM_TRANSITION_LEFT;
+					end;
+					//si no hay roomTransition
+					if (doTransition == 0)		
+						//ajustamos scroll X si hay Stop Right
+						if  (stopScrollXR && scroll[cGameScroll].x0 < idPlayer.x - (cGameRegionW>>1) )
+							if (scroll[cGameScroll].x0%cTileSize <> 0)
+								scroll[cGameScroll].x0 -= cTileSize - (scroll[cGameScroll].x0%cTileSize);
+							end;
+						//ajustamos scroll X si hay Stop Left
+						elseif (stopScrollXL && scroll[cGameScroll].x0 > idPlayer.x - (cGameRegionW>>1) )
+							if (scroll[cGameScroll].x0%cTileSize <> 0)
+								scroll[cGameScroll].x0 += cTileSize - (scroll[cGameScroll].x0%cTileSize);
+							end;
+						else
+							//Posicion X para personaje en centro pantalla
+							scroll[cGameScroll].x0 = idPlayer.x - (cGameRegionW>>1);
+						end;
+					end;
+				end;
+					
 				//si no esta detenido el scroll Y
 				if (!stopScrollY)
 					//Posicion Y depende de tener activado el RoomScroll
@@ -1151,8 +1170,8 @@ begin
 						if (idPlayer.y <= (scroll[0].y0 + (cTileSize>>1)) && idPlayer.this.state == MOVE_ON_STAIRS_STATE)
 							doTransition = ROOM_TRANSITION_UP;
 						end;
-						//si no hay transicion, ajustamos al tile superior de la Room
-						if (doTransition == 0)
+						//si no hay transicion vertical, ajustamos al tile superior de la Room
+						if (doTransition <> ROOM_TRANSITION_DOWN && doTransition <> ROOM_TRANSITION_UP)
 							scroll[cGameScroll].y0 = (cGameRegionH + (cTilesBetweenRooms*cTileSize)) * (idPlayer.y / (cGameRegionH + (cTilesBetweenRooms*cTileSize)));
 						end;
 					end;
@@ -1187,16 +1206,16 @@ begin
 			end;
 		end;
 		
-		//comprobacion detencion scroll vertical ("room")
-		if (stopScrollXR && prevScrollX0 < scroll[cGameScroll].x0 || 
-		    stopScrollXL && prevScrollX0 > scroll[cGameScroll].x0 )
-			scroll[cGameScroll].x0 = prevScrollX0;
-		end;
-		
 		//Efecto temblor Scroll
 		if (game.shakeScroll)			
 			scroll[cGameScroll].y0 += cVelShakeScroll*rand(-1,1);
 			game.shakeScroll = false;
+		end;
+			
+		//lanzamos transicion de scroll
+		if (doTransition <> 0)
+			roomScrollTransition(doTransition);
+			doTransition = 0;
 		end;
 		
 		//Actualizamos el scroll
@@ -1206,12 +1225,6 @@ begin
 		stopScrollXR = false;
 		stopScrollXL = false;
 		stopScrollY  = false;
-		
-		//lanzamos transicion de scroll
-		if (doTransition <> 0)
-			roomScrollTransition(doTransition);
-			doTransition = 0;
-		end;
 		
 		frame;
 	
@@ -1243,16 +1256,18 @@ end;
 function roomScrollTransition(byte transitionDir)
 private
 	int scrollY0;			//Posicion inicial del scroll
+	int scrollX0;			//Posicion inicial del scroll
 	int dir;				//direccion de la transicion
 	int	animPlayer;			//Proceso animacion del jugador durante transicion
 	int animObject;			//Proceso animacion del posible objeto cogido durante transicion
 	entity idObj;			//Objeto en estado recogido
 begin
 	//obtenemos posicion inicial del scroll
+	scrollX0 = scroll[cGameScroll].x0;
 	scrollY0 = scroll[cGameScroll].y0;
 	
 	//seteamos direccion de la transicion
-	if (transitionDir == ROOM_TRANSITION_DOWN)
+	if (transitionDir == ROOM_TRANSITION_DOWN || transitionDir == ROOM_TRANSITION_RIGHT)
 		dir = 1;
 	else
 		dir = -1;
@@ -1267,6 +1282,9 @@ begin
 	switch (idPlayer.this.state)
 		case MOVE_ON_STAIRS_STATE:
 			animPlayer = WGE_Animation(fpgPlayer,19, 20,idPlayer.x,idPlayer.y,8,ANIM_LOOP);
+		end;
+		case MOVE_STATE:
+			animPlayer = WGE_Animation(fpgPlayer,3, 8,idPlayer.x,idPlayer.y,4,ANIM_LOOP);
 		end;
 		default:
 			animPlayer = WGE_Animation(fpgPlayer,idPlayer.graph,idPlayer.graph,idPlayer.x,idPlayer.y,8,ANIM_LOOP);
@@ -1288,32 +1306,66 @@ begin
 	animPlayer.flags = idPlayer.flags;
 	
 	//movemos el scroll y la animacion hasta la nueva room
-	repeat
-		scroll[0].y0 += cVelRoomTransition * dir;
-		animPlayer.y += dir;
-		if (animObject <> 0 )
-			animObject.y += dir;
-		end;
-		//actualizamos la posicion del player para no dar muerte por region
-		idPlayer.y  = animPlayer.y;
-		frame;
-	until( abs(scroll[0].y0 - scrollY0) >= cGameRegionH+(cTilesBetweenRooms*cTileSize) )
-		
-	//igualamos la posicion del player a la animacion
-	if (transitionDir == ROOM_TRANSITION_DOWN)
-		idPlayer.this.fY = scroll[0].y0 + cTileSize;
-		if (idObj <> 0)
-			idObj.y = scroll[0].y0 + cTileSize;
-			idObj.this.fY = idObj.y;
-		end;
-	else
-		idPlayer.this.fY = scroll[0].y0 +cGameRegionH - cTileSize;
-		if (idObj <> 0)
-			idObj.y = scroll[0].y0 +cGameRegionH - cTileSize;
-			idObj.this.fY = idObj.y;
-		end;
+	//Transicion vertical
+	if (transitionDir == ROOM_TRANSITION_DOWN || transitionDir == ROOM_TRANSITION_UP)
+		repeat
+			scroll[0].y0 += cVelRoomTransition * dir;
+			animPlayer.y += dir;
+			if (animObject <> 0 )
+				animObject.y += dir;
+			end;
+			//actualizamos la posicion del player para no dar muerte por region
+			idPlayer.y  = animPlayer.y;
+			frame;
+		until( abs(scroll[0].y0 - scrollY0) >= cGameRegionH+(cTilesBetweenRooms*cTileSize) )
 	end;
 	
+	//Transicion horizontal
+	if (transitionDir == ROOM_TRANSITION_LEFT || transitionDir == ROOM_TRANSITION_RIGHT)
+		repeat
+			scroll[0].x0 += cVelRoomTransition * dir;
+			animPlayer.x += dir;
+			if (animObject <> 0 )
+				animObject.x += dir;
+			end;
+			//actualizamos la posicion del player para no dar muerte por region
+			idPlayer.x  = animPlayer.x;
+			frame;
+		until( abs(scroll[0].x0 - scrollX0) >= cGameRegionW)
+	end;
+	
+	//igualamos la posicion del player a la animacion
+	switch (transitionDir)
+		case ROOM_TRANSITION_DOWN:
+			idPlayer.this.fY = scroll[0].y0 + cTileSize;
+			if (idObj <> 0)
+				idObj.y = scroll[0].y0 + cTileSize;
+				idObj.this.fY = idObj.y;
+			end;
+		end;
+		case ROOM_TRANSITION_UP:
+			idPlayer.this.fY = scroll[0].y0 +cGameRegionH - cTileSize;
+			if (idObj <> 0)
+				idObj.y = scroll[0].y0 +cGameRegionH - cTileSize;
+				idObj.this.fY = idObj.y;
+			end;
+		end;
+		case ROOM_TRANSITION_LEFT:
+			idPlayer.this.fX = scroll[0].x0 +cGameRegionW - (cTileSize*2);
+			if (idObj <> 0)
+				idObj.x = scroll[0].x0 +cGameRegionW - (cTileSize*2);
+				idObj.this.fX = idObj.x;
+			end;
+		end;
+		case ROOM_TRANSITION_RIGHT:
+			idPlayer.this.fX = scroll[0].x0 + (cTileSize*2);
+			if (idObj <> 0)
+				idObj.x = scroll[0].x0 + (cTileSize*2);
+				idObj.this.fX = idObj.x;
+			end;
+		end;
+	end;
+		
 	//despertamos los procesos
 	signal(idPlayer,s_wakeup);
 	signal(TYPE WGE_ControlScroll,s_wakeup);
