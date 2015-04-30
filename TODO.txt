@@ -7,7 +7,8 @@ PLAYER:	-solo deberia morir por outregion si sale por abajo-
 		-parece que con las flechas de direccion no cae de escalera
 	    -animacion al borde de objeto??
 		
-OBJECTS:-planos z configurables 
+OBJECTS:-bug en objeto encima del muelle. Aparecen los 2 cuando vuelves a su region
+		-planos z configurables 
 		-small food (falta grafico)
 		-items invisibles
 		-el coin rebota mas rato y el giro va perdiendo velocidad

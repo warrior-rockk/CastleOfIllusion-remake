@@ -1175,9 +1175,11 @@ begin
 							doTransition = ROOM_TRANSITION_UP;
 						end;
 						//si no hay transicion vertical, ajustamos al tile superior de la Room
-						if (doTransition <> ROOM_TRANSITION_DOWN && doTransition <> ROOM_TRANSITION_UP)
+						//ESTO ME PROVOCA FALLO AL SALIRME DE LA REGION SUPERIOR PERO NO SE PORQUE LO PUSE PORQUE
+						//NO LO HECHO EN FALTA
+						/*if (doTransition <> ROOM_TRANSITION_DOWN && doTransition <> ROOM_TRANSITION_UP)
 							scroll[cGameScroll].y0 = (cGameRegionH + (cTilesBetweenRooms*cTileSize)) * (idPlayer.y / (cGameRegionH + (cTilesBetweenRooms*cTileSize)));
-						end;
+						end;*/
 					end;
 				end;
 			end;
