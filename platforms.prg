@@ -24,8 +24,8 @@ begin
 		//si se reinicia, se actualiza flags region
 		if (this.state == INITIAL_STATE)
 			//DE MOMENTO LAS PLATAFORMAS SE CREAN SIEMPRE?
-			inRegion = true;
-			//inRegion  = region_in(_x0,_y0,this.ancho,this.alto);
+			//inRegion = true;
+			inRegion  = region_in(_x0,_y0,this.ancho,this.alto);
 			outRegion = true;
 		end;
 		
@@ -40,8 +40,8 @@ begin
 				idPlatform.priority = cPlatformChildPrior;
 			end;
 		
-			//desaparece al salir de la region del juego
-			if (outRegion) 
+			//desaparece al salir de la region del juego y no es persistente
+			if (outRegion && !isBitSet(idPlatform.this.props,PERSISTENT)) 
 				//eliminamos la plataforma
 				signal(idPlatform,s_kill);
 				log("Se elimina la plataforma "+idPlatform,DEBUG_OBJECTS);
@@ -66,10 +66,10 @@ begin
 				//creamos el tipo de plataforma
 				switch (_platformType)
 					case PLATF_LINEAR:
-						idPlatform = linearPlatform(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props,cPlatformDefaultVel);
+						idPlatform = linearPlatform(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props | PERSISTENT,cPlatformDefaultVel);
 					end;
 					case PLATF_CLOUD:
-						idPlatform = cloudPlatform(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
+						idPlatform = cloudPlatform(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props | PERSISTENT);
 					end;
 					case PLATF_SPRINGBOX:
 						idPlatform = springBoxPlatform(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
@@ -87,11 +87,10 @@ begin
 			inRegion = true;
 		end;
 		
-		//DE MOMENTO LAS PLATAFORMAS NO DESAPARECEN
 		//Comprobamos si sale de la region
-		/*if (!region_in(x,y,this.ancho,this.alto))
+		if (!region_in(x,y,this.ancho+cPlatformMargin,this.alto+cPlatformMargin))
 			outRegion = true;
-		end;*/
+		end;
 			
 		frame;
 	end;
@@ -471,10 +470,10 @@ begin
 				setBit(this.props,NO_COLLISION);
 				
 				//retardo inicial
-				if (WGE_Animate(0,0,5,ANIM_ONCE))
+				if (WGE_Animate(0,0,10,ANIM_ONCE))
 					this.state = MOVE_STATE;
 				end;
-				
+
 				//lanzamos comprobacion con procesos objeto
 				repeat
 					//obtenemos siguiente colision
@@ -529,7 +528,7 @@ begin
 				end;
 			end;
 		end;
-		
+				
 		//guardamos la posicion anterior
 		prevX = x;
 		prevY = y;

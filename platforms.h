@@ -19,6 +19,8 @@
 
 //constantes de plataformas
 const
+	cPlatformMargin         =  2;	//Margen para outregion
+	
 	cPlatformDefaultVel     = 0.5;  //Velocidad por defecto plataformas
 	cPlatformFallVel		= 1.5;	//Velocidad caida plataformas
 	cPlatformWaitTime       = 20;   //Tiempo espera plataformas
