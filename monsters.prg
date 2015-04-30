@@ -32,7 +32,7 @@ begin
 						
 			//desaparece al salir de la region del juego y no es persistente
 			if (outRegion && !isBitSet(idMonster.this.props,PERSISTENT)) 
-				//eliminamos el mosntruo
+				//eliminamos el monstruo
 				signal(idMonster,s_kill);
 				log("Se elimina el monstruo "+idMonster,DEBUG_MONSTERS);
 				//bajamos flags
@@ -99,8 +99,8 @@ begin
 			inRegion = true;
 		end;
 		
-		//Comprobamos si sale de la region
-		if (!region_in(x,y,this.ancho,this.alto))
+		//Comprobamos si sale de la region con un margen
+		if (!region_in(x,y,this.ancho+cMonsterMargin,this.alto+cMonsterMargin))
 			outRegion = true;
 		end;
 			

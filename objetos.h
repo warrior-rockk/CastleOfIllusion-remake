@@ -29,6 +29,8 @@
 
 //constantes de objetos
 const
+	cObjectMargin		=			2;			//Margen ancho y alto para salir de region
+	
 	cMinVelXToIdle		= 			0.1;        //Velocidad X minima para pasar a reposo
 	cItemVelY 			=			-4;			//Velocidad Y al salir un item
 	cBouncyObjectVel	=           0.6;        //Velocidad Y rebote suelo para objetos

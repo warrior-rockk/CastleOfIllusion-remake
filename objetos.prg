@@ -89,7 +89,7 @@ begin
 		end;
 		
 		//Comprobamos si sale de la region
-		if (!region_in(x,y,this.ancho,this.alto))
+		if (!region_in(x,y,this.ancho+cObjectMargin,this.alto+cObjectMargin))
 			outRegion = true;
 		end;
 			

@@ -37,6 +37,8 @@ End;
 
 //Constantes
 Const
+	cMonsterMargin			= 2;			//Margen ancho y alto para salir de region
+	
 	//puntuaciones
 	cKillMonster            = 10;
 	
