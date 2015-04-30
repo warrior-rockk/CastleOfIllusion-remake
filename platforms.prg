@@ -24,8 +24,8 @@ begin
 		//si se reinicia, se actualiza flags region
 		if (this.state == INITIAL_STATE)
 			//DE MOMENTO LAS PLATAFORMAS SE CREAN SIEMPRE?
-			//inRegion = true;
-			inRegion  = region_in(_x0,_y0,this.ancho,this.alto);
+			inRegion = true;
+			//inRegion  = region_in(_x0,_y0,this.ancho,this.alto);
 			outRegion = true;
 		end;
 		
@@ -470,7 +470,7 @@ begin
 				setBit(this.props,NO_COLLISION);
 				
 				//retardo inicial
-				if (WGE_Animate(0,0,10,ANIM_ONCE))
+				if (WGE_Animate(0,0,20,ANIM_ONCE))
 					this.state = MOVE_STATE;
 				end;
 
