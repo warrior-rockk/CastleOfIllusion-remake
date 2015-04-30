@@ -13,7 +13,7 @@
 //Tipos de monstruo
 #define MONS_CYCLECLOWN			0 		//Monstruo CycleClown
 #define MONS_TOYPLANE   		1 		//Monstruo ToyPlane
-#define MONS_TOYPLANECONTROL   	2 		//Monstruo ToyPlaneControl
+#define MONS_TOYREMOTECONTROL 	2 		//Monstruo ToyRemoteControl
 #define MONS_CHESSHORSE   	    3 		//Monstruo CheessHorse
 #define MONS_BUBBLE				4		//Monstruo Bubble
 #define MONS_BALLSCLOWN 		5		//Monstruo BallsClown
@@ -99,8 +99,8 @@ public
 end
 end
 
-//Declaracion de enemigo ToyPlaneControl
-Declare process toyPlaneControl(int graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
+//Declaracion de enemigo ToyRemoteControl
+Declare process toyRemoteControl(int graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
 public
 	_entityPublicData this;			//datos publicos de entidad
 end

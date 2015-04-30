@@ -63,8 +63,8 @@ begin
 					case MONS_TOYPLANE:
 						idMonster = toyPlane(9,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
 					end;
-					case MONS_TOYPLANECONTROL:
-						idMonster = toyPlaneControl(15,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
+					case MONS_TOYREMOTECONTROL:
+						idMonster = toyRemoteControl(15,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
 					end;
 					case MONS_CHESSHORSE:
 						idMonster = chessHorse(22,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
@@ -356,14 +356,14 @@ begin
 	
 end;
 
-//Proceso enemigo toyPlaneControl
-//Cuando muere, mata a los toyPlane
-process toyPlaneControl(int graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
+//Proceso enemigo toyRemoteControl
+//Cuando muere, mata a los toyPlane y toyCar que haya en pantalla
+process toyRemoteControl(int graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
 private
 byte grounded;		//flag de en suelo
-monster idToyPlane;	//id de toyPlane activo
-
+monster idToy;		//id de toyPlane o toyCar
 int i;				//Variable auxiliar
+
 begin
 	region = cGameRegion;
 	ctype = c_scroll;
@@ -412,12 +412,20 @@ begin
 				this.state = DEAD_STATE;
 				//matamos todo toyPlane que esté activo
 				repeat
-					idToyPlane = get_id(TYPE toyPlane);
-					if (idToyPlane <> 0 )
-						idToyPlane = idToyPlane.father;
-						idToyPlane.this.state = DEAD_STATE;
+					idToy = get_id(TYPE toyPlane);
+					if (idToy <> 0 )
+						idToy = idToy.father;
+						idToy.this.state = DEAD_STATE;
 					end;
-				until (idToyPlane == 0);
+				until (idToy == 0);
+				//matamos todo toyCar que esté activo
+				repeat
+					idToy = get_id(TYPE toyCar);
+					if (idToy <> 0 )
+						idToy = idToy.father;
+						idToy.this.state = DEAD_STATE;
+					end;
+				until (idToy == 0);
 			end;
 			case DEAD_STATE:
 				graph = 17;
