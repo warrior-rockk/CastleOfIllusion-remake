@@ -243,12 +243,14 @@ Global
 			byte  autoScrollX;   		//Scroll con movimiento X automático
 			float velAutoScrollX; 		//Velocidad autoscroll X automático
 		end;
+		int idMusicLevel;
 	End;
 	//archivos de los niveles
 	struct levelFiles[10]
 		string MapFile;			//archivo binario del mapa
 		string DataFile;		//archivo binario datos del nivel
 		string TileFile;		//archivo grafico de los tiles del mapa
+		string MusicFile;		//archivo musica del nivel
 	end;
 	_path* paths;				//Array Dinamico de paths
 	_tile** tileMap;  	        //Matriz Dinamica del mapa de tiles del nivel
