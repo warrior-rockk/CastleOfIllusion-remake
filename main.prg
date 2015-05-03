@@ -23,6 +23,7 @@ import "mod_string";
 import "mod_timers";
 import "mod_time";
 import "mod_mem";
+import "mod_joy";
 
 include "engine.h";      //archivo de definiciones,constantes y variables globales
 

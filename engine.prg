@@ -53,7 +53,7 @@ begin
 	//archivo graficos generales
 	fpgGame 	= fpg_load("test\game.fpg");	 
 	//sonidos generales
-	gameSound[PAUSE_SND] 		= load_wav("snd\pause.wav");
+	gameSound[PAUSE_SND] 		= load_wav("snd\pause.ogg");
 	//musicas generales
 	gameMusic[DEAD_MUS]         = load_song("mus\dead.ogg");
 	
@@ -61,16 +61,16 @@ begin
 	fpgPlayer 	= fpg_load("test\player.fpg");
 	
 	//sonidos del jugador
-	playerSound[BOUNCE_SND] 	= load_wav("snd\bounce.wav");
-	playerSound[BREAK_SND] 		= load_wav("snd\break.wav");	
-	playerSound[DEAD_SND] 		= load_wav("snd\dead.wav");	
-	playerSound[HURT_SND]		= load_wav("snd\hurt.wav");	
-	playerSound[JUMP_SND] 		= load_wav("snd\jump.wav");	
-	playerSound[KILL_SND] 		= load_wav("snd\kill.wav");	
-	playerSound[PICK_SND]		= load_wav("snd\pick.wav");	
-	playerSound[PICKITEM_SND] 	= load_wav("snd\pickItem.wav");
-	playerSound[STAIRS_SND]		= load_wav("snd\stairs.wav");	
-	playerSound[THROW_SND] 		= load_wav("snd\throw.wav");	
+	playerSound[BOUNCE_SND] 	= load_wav("snd\bounce.ogg");
+	playerSound[BREAK_SND] 		= load_wav("snd\break.ogg");	
+	playerSound[DEAD_SND] 		= load_wav("snd\dead.ogg");	
+	playerSound[HURT_SND]		= load_wav("snd\hurt.ogg");	
+	playerSound[JUMP_SND] 		= load_wav("snd\jump.ogg");	
+	playerSound[KILL_SND] 		= load_wav("snd\kill.ogg");	
+	playerSound[PICK_SND]		= load_wav("snd\pick.ogg");	
+	playerSound[PICKITEM_SND] 	= load_wav("snd\pickItem.ogg");
+	playerSound[STAIRS_SND]		= load_wav("snd\stairs.ogg");	
+	playerSound[THROW_SND] 		= load_wav("snd\throw.ogg");	
 	
 	//fuente del juego
 	fntGame     = fnt_load("test\gameFont.fnt");
