@@ -12,6 +12,7 @@
 #define setBit(a,b)     ( a |= b )								//Setear un bit
 #define unsetBit(a,b)   ( a &=~ b )								//Quitar un bit
 #define isType(a,b)     (a.reserved.process_type == b) 			//Funcion para comprobar tipo proceso
+#define getType(a)      (a.reserved.process_type)				//devuelve el estado de un proceso
 #define tickClock(a)    ((clockCounter % a) == 0 && clockTick)	//Funcion que devuelve flanco de numero de frames especificados
 
 //Estado del juego
@@ -72,6 +73,10 @@
 #define NO_COLLISION            1		//No colisiona con otros procesos
 #define NO_PHYSICS              2       //No le afecta las fisicas
 #define PERSISTENT              4       //No desaparece al salir de la region
+
+//efectos de sonido generales
+#define PAUSE_SND				0
+
 
 //Constantes del motor
 const

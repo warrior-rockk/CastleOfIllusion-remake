@@ -9,4 +9,10 @@
 //Constantes
 const
 	cMusicTimer		= 1;					//Timer usado para el tiempo de musica
+	cGameSndChn		= 1;
+	cPlayerSndChn   = 1;
 End;
+
+Global
+	int gameSound[10];				//Array de indentificadores de efectos de sonido generales
+	int playerSound[10];			//Array de identificadores de efectos de sonido del player

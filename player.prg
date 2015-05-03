@@ -377,6 +377,8 @@ BEGIN
 				if ( this.state == ATACK_STATE && isBitSet(colID.this.props,OBJ_BREAKABLE))
 					//rebote al atacar
 					this.vY = -cPlayerAtackBounce;
+					//reproducimos sonido
+					WGE_PlayEntitySnd(id,playerSound[BOUNCE_SND]);
 					//si se pulsa ataque se añade incremento en rebote
 					if (WGE_Key(K_ACTION_ATACK,KEY_PRESSED))
 						this.vY -= cPlayerPowerAtackBounce;
@@ -478,6 +480,8 @@ BEGIN
 				if ( this.state == ATACK_STATE && !isBitSet(colId.this.props,MONS_HURTLESS))
 					//rebote al atacar
 					this.vY = -cPlayerAtackBounce;
+					//reproducimos sonido
+					WGE_PlayEntitySnd(id,playerSound[BOUNCE_SND]);
 					//si se pulsa ataque se añade incremento en rebote
 					if (WGE_Key(K_ACTION_ATACK,KEY_PRESSED))
 						this.vY -= cPlayerPowerAtackBounce;
@@ -773,12 +777,17 @@ BEGIN
 				end;
 			end;
 			case JUMP_STATE:
+				//subiendo
 				if (this.vY < 0)
+					//reproducimos sonido estado
+					WGE_PlayEntityStateSnd(id,playerSound[JUMP_SND]);	
+				
 					if (picked)
 						WGE_Animate(30,30,1,ANIM_LOOP);
 					else
 						WGE_Animate(10,10,1,ANIM_LOOP);	
 					end;
+				//bajando
 				else
 					if (picked)
 						WGE_Animate(31,31,1,ANIM_LOOP);
@@ -823,6 +832,10 @@ BEGIN
 			end
 			case MOVE_ON_STAIRS_STATE:
 				WGE_Animate(19,20,8,ANIM_LOOP);
+				if (tickClock(20))
+					//reproducimos sonido estado
+					WGE_PlayEntitySnd(id,playerSound[STAIRS_SND]);
+				end;
 			end
 			case ATACK_STATE:
 				WGE_Animate(13,13,1,ANIM_LOOP);
@@ -840,12 +853,18 @@ BEGIN
 				WGE_Animate(25,26,40,ANIM_LOOP);
 			end;
 			case PICKED_STATE:
+				//reproducimos sonido estado
+				WGE_PlayEntityStateSnd(id,playerSound[PICK_SND]);
+				
 				if (WGE_Animate(21,21,10,ANIM_ONCE))
 					this.state = IDLE_STATE;
 					picking = false;
 				end;
 			end;
 			case THROWING_STATE:
+				//reproducimos sonido estado
+				WGE_PlayEntityStateSnd(id,playerSound[THROW_SND]);
+				
 				if (jumping)
 					if (WGE_Animate(24,24,10,ANIM_ONCE))
 						this.state = IDLE_STATE;
@@ -859,6 +878,9 @@ BEGIN
 				end;
 			end;
 			case HURT_STATE:
+				//reproducimos sonido estado
+				WGE_PlayEntityStateSnd(id,playerSound[HURT_SND]);
+				
 				if (WGE_Animate(32,33,15,ANIM_ONCE))					
 					this.state = IDLE_STATE;
 					hurt = false;

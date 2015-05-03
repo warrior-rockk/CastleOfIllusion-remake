@@ -52,8 +52,23 @@ begin
 	
 	//archivo graficos generales
 	fpgGame 	= fpg_load("test\game.fpg");	 
+	//sonidos generales
+	gameSound[PAUSE_SND] 		= load_wav("snd\pause.wav");
+	
 	//archivo del player
 	fpgPlayer 	= fpg_load("test\player.fpg");
+	
+	//sonidos del jugador
+	playerSound[BOUNCE_SND] 	= load_wav("snd\bounce.wav");
+	playerSound[BREAK_SND] 		= load_wav("snd\break.wav");	
+	playerSound[DEAD_SND] 		= load_wav("snd\dead.wav");	
+	playerSound[HURT_SND]		= load_wav("snd\hurt.wav");	
+	playerSound[JUMP_SND] 		= load_wav("snd\jump.wav");	
+	playerSound[KILL_SND] 		= load_wav("snd\kill.wav");	
+	playerSound[PICK_SND]		= load_wav("snd\pick.wav");	
+	playerSound[PICKITEM_SND] 	= load_wav("snd\pickItem.wav");
+	playerSound[STAIRS_SND]		= load_wav("snd\stairs.wav");	
+	playerSound[THROW_SND] 		= load_wav("snd\throw.wav");	
 	
 	//fuente del juego
 	fntGame     = fnt_load("test\gameFont.fnt");
@@ -165,11 +180,15 @@ begin
 						delete_text(pauseText);
 						game.paused = false;
 						resume_song();
+						//reproducimos sonido
+						WGE_PlayEntitySnd(id,gameSound[PAUSE_SND]);
 					else
 						gameSignal(s_freeze_tree);
 						pauseText = write(fntGame,cResx>>1,cResy>>1,ALIGN_CENTER,"-PAUSED-");
 						game.paused = true;
 						pause_song();
+						//reproducimos sonido
+						WGE_PlayEntitySnd(id,gameSound[PAUSE_SND]);
 					end;
 				end;
 				

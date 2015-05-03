@@ -25,3 +25,40 @@ begin
 	WGE_PlayMusicLevel();
 	set_music_position(levelFiles[game.numLevel].MusicIntroEnd);
 end;
+
+//funcion que reproduce el sonido de estado de una entidad
+function WGE_PlayEntityStateSnd(entity idEntity,int idSound)
+private
+	int sndChannel;		//canal de sonido para reproducir
+begin
+	//seteamos el canal de sonido segun entidad
+	switch (getType(idEntity))
+		case (TYPE player):
+			sndChannel = cPlayerSndChn;
+		end;
+	end;
+		
+	//reproducimos el sonido al entrar en el estado
+	if (idEntity.this.prevState <> idEntity.this.state)
+		play_wav(idSound,0,sndChannel);
+	end;
+end;
+
+//funcion que reproduce un sonido de una entidad
+function WGE_PlayEntitySnd(entity idEntity,int idSound)
+private
+	int sndChannel;		//canal de sonido para reproducir
+begin
+	//seteamos el canal de sonido segun entidad
+	switch (getType(idEntity))
+		case (TYPE WGE_Loop):
+			sndChannel = cGameSndChn;
+		end;
+		case (TYPE player):
+			sndChannel = cPlayerSndChn;
+		end;
+	end;
+	
+	//reproducimos el sonido
+	play_wav(idSound,0,sndChannel);
+end;

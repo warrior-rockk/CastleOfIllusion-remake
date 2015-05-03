@@ -34,6 +34,19 @@
 #define INITIAL_STATE           24
 #define PUSHED_STATE            25
 
+//efectos de sonido
+#define BOUNCE_SND				0
+#define BREAK_SND				1 //ESTE ES DE OBJETOS
+#define DEAD_SND				2 
+#define HURT_SND				3
+#define JUMP_SND				4
+#define KILL_SND				5
+#define PICK_SND				6
+#define PICKITEM_SND			7 //ESTE ES DE OBJETOS
+#define STAIRS_SND				8
+#define THROW_SND				9
+
+
 Const
 	//Fisicas
 	cPlayerVelMaxX			= 3.4;			//Velocidad Maxima X Player
