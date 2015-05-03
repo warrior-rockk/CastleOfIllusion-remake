@@ -20,5 +20,7 @@
         <File name="controls.prg" />
         <File name="platforms.h" />
         <File name="platforms.prg" />
+        <File name="sound.h" />
+        <File name="sound.prg" />
     </Project>
 </NotepadPlus>

@@ -44,6 +44,7 @@ begin
 	levelFiles[0].DataFile 	= "test\ToyLand.dat";
 	levelFiles[0].TileFile 	= "test\tiles.fpg";
 	levelFiles[0].MusicFile = "test\ToyLand.ogg";
+	levelFiles[0].MusicIntroEnd = 1.87;
 	//level 1
 	levelFiles[1].MapFile 	= "testRoom\testRoom.bin";
 	levelFiles[1].DataFile 	= "testRoom\testRoom.dat";
@@ -107,7 +108,7 @@ begin
 				WGE_LoadLevelData(levelFiles[game.numLevel].DataFile);
 				//Cargamos la musica del nivel
 				level.idMusicLevel = load_song(levelFiles[game.numLevel].MusicFile);
-				
+								
 				//Iniciamos Scroll
 				WGE_InitScroll();
 				//Dibujamos el mapeado
@@ -120,10 +121,7 @@ begin
 				
 				//creamos el HUD
 				HUD();
-				
-				//activamos la musica del nivel
-				WGE_PlayMusicLevel();
-				
+											
 				//procesos congelados
 				gameSignal(s_freeze_tree);
 				
@@ -131,18 +129,29 @@ begin
 				game.playerLife = game.playerMaxLife;
 				game.actualLevelTime = level.levelTime;
 				
+				//reproducimos la musica del nivel
+				WGE_PlayMusicLevel();
+				
 				//encendemos pantalla
 				fade(100,100,100,cFadeTime);
 				while(fading) frame; end;
 				
-				WGE_Wait(100);
-				
+				//esperamos fin intro
+				while (!WGE_MusicIntroEnded())
+					frame;
+				end;
+
 				//se despiertan los procesos
 				gameSignal(s_wakeup_tree);
-				
+								
 				game.state = PLAYLEVEL;
 			end;
 			case PLAYLEVEL:
+				
+				//loop musica nivel
+				if (!is_playing_song())
+					WGE_RepeatMusicLevel();
+				end;
 				
 				//cronometro nivel	
 				if ((clockCounter % cNumFps) == 0 && clockTick && !game.paused && level.levelTime <> 0)
@@ -1661,9 +1670,4 @@ begin
 			entityID.this.state = INITIAL_STATE;
 		end;
 	until (entityID == 0);
-end;
-
-function WGE_PlayMusicLevel()
-begin
-	play_song(level.idMusicLevel,-1);
 end;

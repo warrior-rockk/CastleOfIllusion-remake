@@ -145,6 +145,7 @@ const
 	//Mapeado
 	cTileSize   = 16;   					//Tamaño tiles (Ancho y alto iguales)
 	cHalfTSize = cTileSize >> 1; 			//Mitad del tamaño tile (util para todo el proyecto)
+	
 End;
 
 //Data Types
@@ -251,6 +252,7 @@ Global
 		string DataFile;		//archivo binario datos del nivel
 		string TileFile;		//archivo grafico de los tiles del mapa
 		string MusicFile;		//archivo musica del nivel
+		float  MusicIntroEnd;	//Posicion en segundos con centesimas del final del intro de la musica	
 	end;
 	_path* paths;				//Array Dinamico de paths
 	_tile** tileMap;  	        //Matriz Dinamica del mapa de tiles del nivel
@@ -297,6 +299,7 @@ end
 
 //definiciones del engine
 include "controls.h";		//funciones controles
+include "sound.h";			//funciones sonido
 include "debug.h";			//funciones debug
 include "player.h";       	//Proceso jugador
 include "collisions.h"      //Funciones de colision
@@ -308,6 +311,7 @@ include "platforms.h"		//Funciones de plataformas
 //Codigo del engine
 include "engine.prg";		//Core principal de engine
 include "controls.prg";		//funciones de control
+include "sound.prg";		//funciones de sonido
 include "debug.prg";		//Funciones de debug
 include "player.prg";       //Proceso jugador
 include "collisions.prg";	//Funciones de colision
