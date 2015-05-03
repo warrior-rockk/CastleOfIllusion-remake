@@ -54,6 +54,8 @@ begin
 	fpgGame 	= fpg_load("test\game.fpg");	 
 	//sonidos generales
 	gameSound[PAUSE_SND] 		= load_wav("snd\pause.wav");
+	//musicas generales
+	gameMusic[DEAD_MUS]         = load_song("mus\dead.ogg");
 	
 	//archivo del player
 	fpgPlayer 	= fpg_load("test\player.fpg");
@@ -215,15 +217,23 @@ begin
 					idPlayer = 0;
 					//restamos una vida
 					game.playerTries --;
-					
+					//reproducimos sonido
+					WGE_PlayEntitySnd(id,playerSound[DEAD_SND]);
 					//esperamos a que el proceso muerte desaparezca de pantalla
 					while(exists(idDeadPlayer))
 						frame;
 					end;
 					//congelamos los procesos
 					gameSignal(s_freeze_tree);
-					//esperamos un tiempo
-					WGE_Wait(100);
+					
+					//paramos la musica del nivel
+					stop_song();
+					//reproducimo musica muerte
+					play_song(gameMusic[DEAD_MUS],0);
+					//esperamos a que finalice
+					while (is_playing_song())
+						frame;
+					end;
 					
 					//GameOver por perdida de vidas
 					if (game.playerTries == 0 )
@@ -245,14 +255,22 @@ begin
 				//reiniciamos el nivel
 				WGE_RestartLevel();
 				
-				//encendemos pantalla
-				fade(100,100,100,cFadeTime);
-				while(fading) frame; end;
-				
 				//variables de reinicio de nivel
 				game.playerLife = game.playerMaxLife;
 				game.actualLevelTime = level.levelTime;
 				
+				//reproducimos la musica del nivel
+				WGE_PlayMusicLevel();
+				
+				//encendemos pantalla
+				fade(100,100,100,cFadeTime);
+				while(fading) frame; end;
+				
+				//esperamos fin intro
+				while (!WGE_MusicIntroEnded())
+					frame;
+				end;
+								
 				//se despiertan los procesos
 				gameSignal(s_wakeup_tree);
 				WGE_Wait(100);

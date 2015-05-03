@@ -77,6 +77,8 @@
 //efectos de sonido generales
 #define PAUSE_SND				0
 
+//musicas generales
+#define DEAD_MUS				0
 
 //Constantes del motor
 const
