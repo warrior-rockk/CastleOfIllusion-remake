@@ -33,7 +33,7 @@ const
 	
 	cMinVelXToIdle		= 			0.1;        //Velocidad X minima para pasar a reposo
 	cItemVelY 			=			-4;			//Velocidad Y al salir un item
-	cBouncyObjectVel	=           0.6;        //Velocidad Y rebote suelo para objetos
+	cBouncyObjectVel	=           0.1;        //Velocidad Y rebote suelo para objetos
 	cBouncyItemVel		=           0.8;        //Velocidad Y rebote suelo para items
 	cItemTimeOut        =           8;          //Timeout Item
 	cItemTimeToBlink    =           4;			//Tiempo parpadeo antes de timeout

@@ -10,8 +10,6 @@ PLAYER:	-solo deberia morir por outregion si sale por abajo-
 	    -animacion al borde de objeto??
 		
 OBJECTS:
-		-BUG:rebotan todos los obejtos!!
-		
 		-planos z configurables 
 		-small food (falta grafico)
 		-items invisibles
