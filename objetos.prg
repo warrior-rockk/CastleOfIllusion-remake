@@ -251,7 +251,7 @@ begin
 							this.fX = colId.this.fX;
 						end;
 						//Comprobacion de colision con keyDoor para abrirla
-						if (colDir <> NOCOL && isType(colID.son,TYPE keyDoor))
+						if (colDir <> NOCOL && isBitSet(this.props,OBJ_IS_KEY) && isType(colID.son,TYPE keyDoor))
 							//seteamos el idKey al objeto padre nuestro
 							idKey = father;
 							//rompemos la llave
