@@ -85,7 +85,7 @@ begin
 			idDebugText[3] = write_float(0,cDebugInfoX,cDebugInfoY+30,0,&idPlayer.this.vX);
 			//idDebugText[4] = write_float(0,cDebugInfoX,cDebugInfoY+40,0,&friction);
 			//Hacemos al player un blend aditivo para ver las colisiones
-			if (idPlayer<>0) idPlayer.flags |= B_ABLEND; end;
+			if (exists(idPlayer)) idPlayer.flags |= B_ABLEND; end;
 			//activamos el modo debug
 			actDebugMode = 1;
 		end;
@@ -127,7 +127,7 @@ begin
 				end;
 			end;
 			//Quitamos al player el blend aditivo para ver las colisiones
-			if (idPlayer<>0) idPlayer.flags &= ~ B_ABLEND; end;
+			if (exists(idPlayer)) idPlayer.flags &= ~ B_ABLEND; end;
 			//desactivamos el modo debug
 			actDebugMode = 0;
 		end;

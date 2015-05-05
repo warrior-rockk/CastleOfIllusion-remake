@@ -194,7 +194,7 @@ begin
 				WGE_Animate(1,6,5,ANIM_LOOP);	
 				
 				//si existe el player
-				if (idPlayer <> 0 )
+				if (exists(idPlayer) )
 					//miramos a su direccion
 					if (idPlayer.this.fX > this.fX)
 						flags &=~ B_HMIRROR; 
@@ -859,7 +859,7 @@ begin
 				graph = 25;
 							
 				//si existe el player
-				if (idPlayer <> 0 )
+				if (exists(idPlayer) )
 					atackRangeX	= idPlayer.x;
 				end;	
 				
@@ -1392,7 +1392,7 @@ begin
 				//espera hasta el siguiente salto
 				if (WGE_Animate(40,40,80,ANIM_ONCE))
 					//corregimos direccion
-					if (idPlayer <> 0 )
+					if (exists(idPlayer) )
 						if (idPlayer.this.fX > this.fX)
 							dir = 1; 
 						else

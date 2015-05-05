@@ -942,7 +942,7 @@ BEGIN
 		//Flag de detencion de scroll
 		if (tileExists(i,j))
 			//si existe el player
-			if (idPlayer <> 0)
+			if (exists(idPlayer))
 				//compromos la posicion y codigo de detencion X
 				if (checkNoScroll(idPlayer.x,x,tileMap[i][j].tileCode))
 					tileMap[i][j].tileCode == NO_SCROLL_R ? stopScrollXR = true : stopScrollXL = true;
@@ -1108,7 +1108,7 @@ Begin
     //detenemos los procesos
 	signal(TYPE WGE_ControlScroll,s_kill_tree);
 	signal(TYPE pTile,s_kill_tree);
-	if (idPlayer <> 0) 
+	if (exists(idPlayer)) 
 		signal(idPlayer,s_kill);
 	end;		
 	
@@ -1185,7 +1185,7 @@ begin
 			scrollfX += level.levelflags.velAutoScrollX;
 		else
 			//Si el jugador ya está en ejecución, lo enfocamos
-			if (idPlayer <> 0 )
+			if (exists(idPlayer) )
 			
 				//Posicion X depende de tener activado el RoomScroll
 				if (!cRoomScroll)
@@ -1576,7 +1576,7 @@ function gameSignal(int _signal)
 begin
 	signal(TYPE WGE_ControlScroll,_signal);
 	signal(TYPE pTile,_signal);
-	if (idPlayer <> 0 ) 
+	if (exists(idPlayer) ) 
 		signal(idPlayer,_signal);
 	end;
 	
