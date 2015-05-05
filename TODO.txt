@@ -1,3 +1,7 @@
+TOYLAND:  -determinar que contienen los items
+		  -tile no solido para caerse
+		  -items invisibles
+		  
 ENTIDADES: 
        	-propiedad local bouncy para tener rebote si/no y cuanto?? (de momento rebota por tipo de objeto)
 
@@ -15,6 +19,7 @@ OBJECTS:
 		
 ENGINE: -checkpoints. Debe empezar el nivel en sitios distintos cuando muere segun a avanzado en el mapa.
 		-igual fisicas a juego real
+		
 		-Los codigos de tile deberian ser bits para ser simultaneos?
 		-UpdateObject generalizarlo a updateentity para todos en engine.prg
 		-con screen_get puedo caputar la pantalla y hacer transiciones
@@ -22,7 +27,6 @@ ENGINE: -checkpoints. Debe empezar el nivel en sitios distintos cuando muere seg
 		-atractt mode que se vea jugar un nivel
 		-grabacion de como jugar en testrom
 		-Sustituir el escribir la posicion en el tile en debug con mostrar flotante la posicion o algo		
-		-terremotos o colisiones sacudiendo el scroll
 		-efectos de paleta: relampagos,agua,etc..
 		-Tareas de inicializacion del engine:el mapa que esta en la posicion de mapStairs, se borra¿¿¿ ¿es por culpa de tener id 0 el 	sistema y el primer fpg?
         -paleta del juego?

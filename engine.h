@@ -269,7 +269,7 @@ Global
 	_tile** tileMap;  	        //Matriz Dinamica del mapa de tiles del nivel
 	byte mapUsesAlpha;				//Bit que indica que el mapa usa propiedad alpha (relentiza la carga)
 	//Fisicas
-	float gravity 			= 0.3;		//Aceleracion gravedad
+	float gravity 			= 0.25; 	//Aceleracion gravedad
 	float floorFriction 	= 0.85;		//Friccion suelo
 	float airFriction 		= 0.85;		//Friccion aire
 	//generales
