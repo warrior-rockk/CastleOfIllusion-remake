@@ -11,9 +11,9 @@
 #define	K_DOWN	  		_DOWN 
 #define	K_LEFT    		_LEFT 
 #define	K_RIGHT	  		_RIGHT 
-#define	K_JUMP	  		_R_SHIFT
-#define	K_ACTION_ATACK	_SPACE
-#define K_PAUSE         _ENTER
+#define	K_JUMP	  		_L_ALT
+#define	K_ACTION_ATACK	_L_CONTROL
+#define K_PAUSE         _SPACE
 
 //Estados de tecla
 #define KEY_PRESSED    0

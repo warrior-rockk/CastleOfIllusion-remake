@@ -49,11 +49,11 @@
 
 Const
 	//Fisicas
-	cPlayerVelMaxX			= 3.4;			//Velocidad Maxima X Player
+	cPlayerVelMaxX			= 1.4;			//Velocidad Maxima X Player
 	cPlayerVelMaxXSlopeUp	= 2;            //Velocidad Maxima X Player subiendo rampa
 	cPlayerVelMaxXSlopeDown = 3.6;          //Velocidad Maxima X Player bajando rampa
 	cPlayerVelMaxXSloping	= 6;            //Velocidad Maxima X Player resbalando por rampa
-	cPlayerAccelX           = 0.6;          //Aceleracion maxima X Player
+	cPlayerAccelX           = 0.4;          //Aceleracion maxima X Player
 	cPlayerAccelXSlopeUp    = 0.2;      	//Aceleracion maxima X Player subiendo rampa
 	cPlayerAccelXSlopeDown  = 0.65;    	    //Aceleracion maxima X Player bajando rampa
 	cPlayerAccelXSloping	= 0.15;         //Aceleracion maxima X Player resbalando por rampa
