@@ -11,6 +11,7 @@ process player()
 private 
 
 byte  jumping,				//Flag salto
+byte  longJump,				//Flag de incremento de salto
 byte  grounded; 			//Flag en suelo
 byte  onStairs;				//Flag de en escaleras
 byte  crouched;				//Flag de agachado
@@ -115,11 +116,13 @@ BEGIN
 					end;
 				end;
 				//incremento del poder del salto con pulsacion larga
-				if (jumpPower <= cPlayerMaxPowerJump && clockTick)
+				if (!longJump && !grounded && jumpPower <= cPlayerMaxPowerJump && clockTick)
 					this.vY -= cPlayerPowerJumpFactor;
 					jumpPower++;					
 				end;
 			else
+				//salto largo realizado
+				longJump = true;
 				//reinicio del incremento de poder de salto
 				jumpPower = 0;
 			end;
@@ -540,6 +543,7 @@ BEGIN
 		if (grounded)
 			this.vY = 0;
 			jumping = false;
+			longJump = false;
 			atacking = false;
 		end;
 		
