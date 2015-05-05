@@ -27,6 +27,10 @@ begin
 			inRegion = true;
 			//inRegion  = region_in(_x0,_y0,this.ancho,this.alto);
 			outRegion = true;
+			//eliminamos la plataforma para crearlo de nuevo
+			if (exists(idPlatform))
+				signal(idPlatform,s_kill_tree);
+			end;
 		end;
 		
 		//si existe el hijo

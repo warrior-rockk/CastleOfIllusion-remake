@@ -26,6 +26,10 @@ begin
 		if (this.state == INITIAL_STATE)
 			inRegion  = region_in(_x0,_y0,this.ancho,this.alto);
 			outRegion = true;
+			//eliminamos el objeto para crearlo de nuevo
+			if (exists(idObject))
+				signal(idObject,s_kill_tree);
+			end;
 		end;
 		
 		//si existe el objeto

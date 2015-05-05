@@ -251,9 +251,22 @@ begin
 				//apagamos pantalla
 				fade(0,0,0,cFadeTime);
 				while(fading) frame; end;
-				
+								
 				//reiniciamos el nivel
 				WGE_RestartLevel();
+								
+				//se despiertan los procesos para
+				//actualizar el restart
+				gameSignal(s_wakeup_tree);
+				
+				//frame para actualizar los procesos
+				frame;
+				
+				//creamos al player
+				idPlayer = player();
+				
+				//congelamos los procesos de nuevo
+				gameSignal(s_freeze_tree);
 				
 				//variables de reinicio de nivel
 				game.playerLife = game.playerMaxLife;
@@ -273,8 +286,7 @@ begin
 								
 				//se despiertan los procesos
 				gameSignal(s_wakeup_tree);
-				WGE_Wait(100);
-				
+								
 				game.state = PLAYLEVEL;
 				
 			end;
@@ -1096,19 +1108,14 @@ Begin
     //detenemos los procesos
 	signal(TYPE WGE_ControlScroll,s_kill_tree);
 	signal(TYPE pTile,s_kill_tree);
-	if (idPlayer <> 0 ) 
-		signal(idPlayer,s_kill_tree);
-	end;
-	idPlayer = 0;
+	if (idPlayer <> 0) 
+		signal(idPlayer,s_kill);
+	end;		
 	
-		
 	//arrancamos el control de scroll
 	WGE_ControlScroll();
 	//dibujamos el mapa
 	WGE_DrawMap();
-		
-	//creamos al player
-	player();
 	
 	//Reiniciamos los procesos del nivel
 	restartEntityType(TYPE object);

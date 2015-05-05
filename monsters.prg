@@ -25,6 +25,10 @@ begin
 		if (this.state == INITIAL_STATE)
 			inRegion  = region_in(_x0,_y0,_ancho,_alto);
 			outRegion = true;
+			//eliminamos el enemigo para crearlo de nuevo
+			if (exists(idMonster))
+				signal(idMonster,s_kill_tree);
+			end;
 		end;
 		
 		//si existe el monstruo
