@@ -549,7 +549,7 @@ begin
 					end;
 				end;
 				//perseguir jugador
-				if (idPlayer <> 0 )
+				if (exists(idPlayer))
 					//corregimos direccion
 					if (idPlayer.this.fX > this.fX)
 						dir = 1; 

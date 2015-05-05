@@ -56,6 +56,14 @@ begin
 
 		//reiniciar nivel
 		if (WGE_Key(_r,KEY_DOWN) && game.state == PLAYLEVEL)
+			//matamos al player
+			if (exists(idPlayer))
+				signal(idPlayer,s_kill);
+				idPlayer = 0;
+			end;
+			//congelamos los procesos
+			gameSignal(s_freeze_tree);
+			//reiniciamos nivel
 			game.state = RESTARTLEVEL;
 		end;
 		

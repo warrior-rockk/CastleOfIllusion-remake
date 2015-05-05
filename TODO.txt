@@ -13,8 +13,7 @@ OBJECTS:
 		-items invisibles
 		-el coin rebota mas rato y el giro va perdiendo velocidad
 		
-ENGINE: -si pasas de room por escalera y se acaba la escalera, te debes caer
-		-checkpoints. Debe empezar el nivel en sitios distintos cuando muere segun a avanzado en el mapa.
+ENGINE: -checkpoints. Debe empezar el nivel en sitios distintos cuando muere segun a avanzado en el mapa.
 		-igual fisicas a juego real
 		-Los codigos de tile deberian ser bits para ser simultaneos?
 		-UpdateObject generalizarlo a updateentity para todos en engine.prg
