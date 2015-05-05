@@ -25,7 +25,7 @@ begin
 		if (this.state == INITIAL_STATE)
 			//DE MOMENTO LAS PLATAFORMAS SE CREAN SIEMPRE?
 			inRegion = true;
-			//inRegion  = region_in(_x0,_y0,this.ancho,this.alto);
+			//inRegion  = checkInRegion(_x0,_y0,this.ancho,this.alto,CHECKREGION_ALL);
 			outRegion = true;
 			//eliminamos la plataforma para crearlo de nuevo
 			if (exists(idPlatform))
@@ -87,12 +87,12 @@ begin
 		
 		
 		//Comprobamos si entra en la region
-		if (region_in(x,y,this.ancho,this.alto))
+		if (checkInRegion(x,y,this.ancho,this.alto,CHECKREGION_ALL))
 			inRegion = true;
 		end;
 		
 		//Comprobamos si sale de la region
-		if (!region_in(x,y,this.ancho+cPlatformMargin,this.alto+cPlatformMargin))
+		if (!checkInRegion(x,y,this.ancho+cPlatformMargin,this.alto+cPlatformMargin,CHECKREGION_ALL))
 			outRegion = true;
 		end;
 			
@@ -229,7 +229,7 @@ begin
 					idPlayer.this.fY += cPlatformFallVel;
 				end;
 				//matamos la plataforma cuando se salga de la region
-				if (!region_in(x,y,this.ancho,this.alto<<1))
+				if (!checkInRegion(x,y,this.ancho,this.alto<<1,CHECKREGION_ALL))
 					signal(id,s_kill);
 				end;
 			end;

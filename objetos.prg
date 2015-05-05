@@ -24,7 +24,7 @@ begin
 	loop
 		//si se reinicia, se actualiza flags region
 		if (this.state == INITIAL_STATE)
-			inRegion  = region_in(_x0,_y0,this.ancho,this.alto);
+			inRegion  = checkInRegion(_x0,_y0,this.ancho,this.alto,CHECKREGION_ALL);
 			outRegion = true;
 			//eliminamos el objeto para crearlo de nuevo
 			if (exists(idObject))
@@ -88,12 +88,12 @@ begin
 		end;
 		
 		//Comprobamos si entra en la region
-		if (region_in(x,y,this.ancho,this.alto) && !inRegion)
+		if (checkInRegion(x,y,this.ancho,this.alto,CHECKREGION_ALL) && !inRegion)
 			inRegion = true;
 		end;
 		
 		//Comprobamos si sale de la region
-		if (!region_in(x,y,this.ancho+cObjectMargin,this.alto+cObjectMargin))
+		if (!checkInRegion(x,y,this.ancho+cObjectMargin,this.alto+cObjectMargin,CHECKREGION_ALL))
 			outRegion = true;
 		end;
 			

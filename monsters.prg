@@ -23,7 +23,7 @@ begin
 	loop
 		//si se reinicia, se actualiza flags region
 		if (this.state == INITIAL_STATE)
-			inRegion  = region_in(_x0,_y0,_ancho,_alto);
+			inRegion  = checkInRegion(_x0,_y0,_ancho,_alto,CHECKREGION_ALL);
 			outRegion = true;
 			//eliminamos el enemigo para crearlo de nuevo
 			if (exists(idMonster))
@@ -99,12 +99,12 @@ begin
 		end;
 		
 		//Comprobamos si entra en la region
-		if (region_in(x,y,this.ancho,this.alto))
+		if (checkInRegion(x,y,this.ancho,this.alto,CHECKREGION_ALL))
 			inRegion = true;
 		end;
 		
 		//Comprobamos si sale de la region con un margen
-		if (!region_in(x,y,this.ancho+cMonsterMargin,this.alto+cMonsterMargin))
+		if (!checkInRegion(x,y,this.ancho+cMonsterMargin,this.alto+cMonsterMargin,CHECKREGION_ALL))
 			outRegion = true;
 		end;
 			
@@ -204,7 +204,7 @@ begin
 					//player en rango ataque
 					if (abs(idPlayer.this.fX - this.fX) < atackRangeX && !atack)
 						atack = true;
-						isBitSet(flags,B_HMIRROR) ? monsterFire(30,x,y-16,-2,-4,0) : monsterFire(31,x,y-16,2,-4,0);		
+						isBitSet(flags,B_HMIRROR) ? monsterFire(31,x,y-16,-2,-4,0) : monsterFire(31,x,y-16,2,-4,0);		
 					end;
 				end;
 				//podemos volver a atacar cuando muere el disparo

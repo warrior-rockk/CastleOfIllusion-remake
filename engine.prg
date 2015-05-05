@@ -208,7 +208,7 @@ begin
 				   (game.actualLevelTime == 0 && level.levelTime <> 0)         ||
 				   //por salir de la region
 				   //out_region(idPlayer,cGameRegion) 
-				   !region_in(idPlayer.x,idPlayer.y,idPlayer.this.ancho,idPlayer.this.alto<<1)
+				   !checkInRegion(idPlayer.x,idPlayer.y,idPlayer.this.ancho,idPlayer.this.alto<<1,CHECKREGION_DOWN)
 				   )									
 					//creamos el proceso/animacion muerte
 					idDeadPlayer = deadPlayer();
@@ -1694,11 +1694,21 @@ begin
 	end;
 end;
 
-//funcion que devuelve si una posicion x/y esta en la region del juego
-function region_in(int _x0,int _y0,int _ancho,int _alto)
+//funcion que devuelve si un rectangulo esta en la region del juego
+//pudiendo elegirse en que direccion se comprueba con checkMode
+function checkInRegion(int _x0,int _y0,int _ancho,int _alto,int checkMode)
 begin
-	return ((_x0 - _ancho) <= scroll[cGameScroll].x0+(cGameRegionW) && (_x0 + _ancho) >= scroll[cGameScroll].x0 &&
+	switch (checkMode)
+		case CHECKREGION_ALL:
+			return ((_x0 - _ancho) <= scroll[cGameScroll].x0+(cGameRegionW) && (_x0 + _ancho) >= scroll[cGameScroll].x0 &&
 		   (_y0 + _alto) >= scroll[cGameScroll].y0 && (_y0 - _alto) <= scroll[cGameScroll].y0+(cGameRegionH) );
+		end;
+		case CHECKREGION_DOWN:
+			return ((_x0 - _ancho) <= scroll[cGameScroll].x0+(cGameRegionW) && (_x0 + _ancho) >= scroll[cGameScroll].x0 &&
+		   (_y0 - _alto) <= scroll[cGameScroll].y0+(cGameRegionH) );
+		end;
+	end;
+	
 end;
 
 //funcion que devuelve a inicio las entidades de un tipo

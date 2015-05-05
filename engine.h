@@ -80,6 +80,10 @@
 //musicas generales
 #define DEAD_MUS				0
 
+//parametros del checkInRegion
+#define CHECKREGION_ALL         0		//Comprueba en toda la region
+#define CHECKREGION_DOWN        1		//Comprueba si sale de la region por abajo
+
 //Constantes del motor
 const
 	//Engine
