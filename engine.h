@@ -208,7 +208,13 @@ Type _entityPublicData
 	end;
 	int frameCount;					//Contador frames animacion	
 end;
-	
+
+//CheckPoint
+Type _checkPoint
+	_point position;
+	int _flags;
+end;	
+
 //Variables Globales
 Global
 	//engine
@@ -256,6 +262,9 @@ Global
 			float velAutoScrollX; 		//Velocidad autoscroll X automático
 		end;
 		int idMusicLevel;
+		int numCheckPoints;			//Numero checkpoints del nivel
+		//test_checkPoint* checkPoints;   //Array dinamico de checkpoints del nivel
+		_checkPoint checkPoints[5];   //Array dinamico de checkpoints del nivel
 	End;
 	//archivos de los niveles
 	struct levelFiles[10]

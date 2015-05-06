@@ -9,7 +9,17 @@
 //Tareas de inicializacion del engine
 function WGE_Init()
 begin
-	         
+		
+	//test checkpoint
+	level.numCheckPoints = 2;
+	level.checkPoints[0].position.x = 49;
+	level.checkPoints[0].position.y = 477;
+	level.checkPoints[0]._flags = B_HMIRROR;
+	
+	level.checkPoints[1].position.x = 225;
+	level.checkPoints[1].position.y = 702;
+	level.checkPoints[1]._flags = 0;
+    
 	
 	//Dibujamos mapas que componen las distintas figuras de tile
 	//que se usarán para comprobar las durezas de colision
@@ -1285,6 +1295,9 @@ begin
 			doTransition = 0;
 		end;
 		
+		//lanzamos comprobacion de checkPoints
+		checkLevelCheckPoints();
+		
 		//Actualizamos el scroll
 		move_scroll(cGameScroll);
 		
@@ -1449,6 +1462,38 @@ begin
 		signal(animObject,s_kill_tree);
 	end;
 end;
+
+//funcion que se encarga de actualizar la posicion de inicio de nivel
+//segun el ultimo checkpoint pasado
+function checkLevelCheckPoints()
+private
+	int i;		//variable auxiliar
+begin
+	//si existe el player
+	if (exists(idPlayer))
+		//recorremos todos los checkpoints del nivel
+		for (i=0;i<level.numCheckPoints;i++)
+			//si el checkpoint no es la posicion actual
+			if (level.playerX0 <> level.checkPoints[i].position.x &&
+			    level.playerY0 <> level.checkPoints[i].position.y)
+				//si la posicion del checkpoint esta en la region de pantalla visible actual
+				if ( scroll[cGameScroll].x0 <= level.checkPoints[i].position.x && 
+					 scroll[cGameScroll].x0+cGameRegionW >= level.checkPoints[i].position.x &&
+					 scroll[cGameScroll].y0 <= level.checkPoints[i].position.y &&
+					 scroll[cGameScroll].y0+cGameRegionH >= level.checkPoints[i].position.y
+				   )
+					//asociamos la posicion de inicio del nivel al checkpoint
+					level.playerX0 		= level.checkPoints[i].position.x;
+					level.playerY0 		= level.checkPoints[i].position.y;
+					level.playerFlags	= level.checkPoints[i]._flags;
+					
+					log("Se alcanza el checkpoint "+i,DEBUG_ENGINE);
+				end;
+			end;
+		end;
+	end;
+end
+
 
 function int WGE_Wait(int t)
 Begin

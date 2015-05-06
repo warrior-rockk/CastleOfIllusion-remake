@@ -16,8 +16,7 @@ OBJECTS:
 		-items invisibles
 		-el coin rebota mas rato y el giro va perdiendo velocidad
 		
-ENGINE: -checkpoints. Debe empezar el nivel en sitios distintos cuando muere segun a avanzado en el mapa.
-		-Los codigos de tile deberian ser bits para ser simultaneos?
+ENGINE: -Los codigos de tile deberian ser bits para ser simultaneos?
 		-UpdateObject generalizarlo a updateentity para todos en engine.prg
 		-con screen_get puedo caputar la pantalla y hacer transiciones
 		-los estados posibles deberian diferenciarse por tipo de proceso a pesar de tener estados globales que tengan el mismo numero
