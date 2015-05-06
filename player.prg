@@ -106,19 +106,26 @@ BEGIN
 			
 			//boton salto
 			if (WGE_Key(K_JUMP,KEY_PRESSED))
-				//salto con key_down
-				if (WGE_Key(K_JUMP,KEY_DOWN)) 
-					if(!jumping && (grounded || onStairs)) 
-						jumping = true;
-						grounded = false;
-						this.vY = -accelY;
-						onStairs = false;
+				//si no esta en escalera
+				if(!onStairs)			
+					//salto con key_down
+					if (WGE_Key(K_JUMP,KEY_DOWN)) 
+						if(!jumping && (grounded || onStairs)) 
+							jumping = true;
+							grounded = false;
+							this.vY = -accelY;
+						end;
 					end;
-				end;
-				//incremento del poder del salto con pulsacion larga
-				if (!longJump && !grounded && jumpPower <= cPlayerMaxPowerJump && clockTick)
-					this.vY -= cPlayerPowerJumpFactor;
-					jumpPower++;					
+					//incremento del poder del salto con pulsacion larga
+					if (!longJump && !grounded && jumpPower <= cPlayerMaxPowerJump && clockTick)
+						this.vY -= cPlayerPowerJumpFactor;
+						jumpPower++;					
+					end;
+				else
+					//caemos de la escalera
+					onStairs = false;
+					longJump = true;
+					grounded = false;
 				end;
 			else
 				//salto largo realizado
