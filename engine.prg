@@ -11,7 +11,7 @@ function WGE_Init()
 begin
 		
 	//test checkpoint
-	level.numCheckPoints = 2;
+	/*level.numCheckPoints = 2;
 	level.checkPoints[0].position.x = 49;
 	level.checkPoints[0].position.y = 477;
 	level.checkPoints[0]._flags = B_HMIRROR;
@@ -19,7 +19,7 @@ begin
 	level.checkPoints[1].position.x = 225;
 	level.checkPoints[1].position.y = 702;
 	level.checkPoints[1]._flags = 0;
-    
+    */
 	
 	//Dibujamos mapas que componen las distintas figuras de tile
 	//que se usarán para comprobar las durezas de colision
@@ -1054,7 +1054,7 @@ Begin
 	//numero de plataformas
 	fread(levelDataFile,level.numPlatforms);
 	
-	//Creamos el array dinamico de enemigos
+	//Creamos el array dinamico de plataformas
 	platforms = calloc(level.numPlatforms,sizeof(_platform));
 	
 	//comprobamos el direccionamiento
@@ -1063,7 +1063,7 @@ Begin
 		WGE_Quit();
 	end;
 
-	//leemos los enemigos
+	//leemos las plataformas
 	from i=0 to level.numPlatforms-1;
 		fread(levelDataFile,Platforms[i].PlatformType);
 		fread(levelDataFile,Platforms[i].PlatformGraph);
@@ -1074,6 +1074,25 @@ Begin
 		fread(levelDataFile,Platforms[i].PlatformAxisAlign);
 		fread(levelDataFile,Platforms[i].PlatformFlags);
 		fread(levelDataFile,Platforms[i].PlatformProps);
+	end;
+	
+	//numero de checkpoints
+	fread(levelDataFile,level.numCheckPoints);
+	
+	//Creamos el array dinamico de checkpoints
+	level.checkPoints = calloc(level.numCheckPoints,sizeof(_checkPoint));
+	
+	//comprobamos el direccionamiento
+	if ( level.checkPoints == NULL )
+		log("Fallo alocando memoria dinámica (checkPoints)",DEBUG_ENGINE);
+		WGE_Quit();
+	end;
+
+	//leemos los checkpoints
+	from i=0 to level.numCheckPoints-1;
+		fread(levelDataFile,level.checkpoints[i].position.x);
+		fread(levelDataFile,level.checkpoints[i].position.y);
+		fread(levelDataFile,level.checkpoints[i]._flags);
 	end;
 	
 	//cerramos el archivo
