@@ -665,14 +665,14 @@ BEGIN
 		if (crouched)
 			this.state = CROUCH_STATE;
 		end;
+		if (atacking)
+			this.state = ATACK_STATE;
+		end;
 		if (onStairs)
 			this.state = ON_STAIRS_STATE;
 		end;
 		if (onStairs && (WGE_Key(K_UP,KEY_PRESSED) || WGE_Key(K_DOWN,KEY_PRESSED)) )
 			this.state = MOVE_ON_STAIRS_STATE;
-		end;
-		if (atacking)
-			this.state = ATACK_STATE;
 		end;
 		if (sloping)
 			this.state = SLOPING_STATE;
