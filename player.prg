@@ -21,6 +21,7 @@ byte  sloping;              //Resbalando por una pendiente
 byte  atacking;             //Flag de atacando
 byte  picking;				//Flag de recogiendo
 byte  picked;				//Flag de recogido
+byte  failPick;				//Flag de no recogido
 byte  throwing;				//Flag de lanzando
 byte  canMove;				//Flag de movimiento permitido
 byte  hurt;					//Flag de daño
@@ -144,11 +145,17 @@ BEGIN
 			end;
 			//recojer objeto
 			if (picking && !picked)
-				picked = true;
-				//cambiamos el estado del objeto a recogiendo
-				idObjectPicked = memObjectforPickID;
-				idObjectPicked.this.state = PICKING_STATE;
-				memObjectforPickID = 0;
+				//comprobamos si podemos cojer el objeto
+				if (checkObjectPicking(memObjectforPickID))
+					picked = true;
+					//cambiamos el estado del objeto a recogiendo
+					idObjectPicked = memObjectforPickID;
+					idObjectPicked.this.state = PICKING_STATE;
+					memObjectforPickID = 0;
+				else
+					picked = false;
+					failPick = true;
+				end;
 			end;
 			//lanzar objeto
 			if (!picking & picked)
@@ -690,6 +697,9 @@ BEGIN
 		if (picked && picking)
 			this.state = PICKED_STATE;
 		end;
+		if (failPick)
+			this.state = FAILPICKED_STATE;
+		end;
 		if (throwing)
 			this.state = THROWING_STATE;
 		end;
@@ -872,6 +882,12 @@ BEGIN
 					picking = false;
 				end;
 			end;
+			case FAILPICKED_STATE:
+				if (WGE_Animate(85,85,20,ANIM_ONCE))
+					this.state = PICKING_STATE;
+					failPick = false;
+				end;
+			end;
 			case THROWING_STATE:
 				//reproducimos sonido estado
 				WGE_PlayEntityStateSnd(id,playerSound[THROW_SND]);
@@ -990,30 +1006,30 @@ begin
 	until (out_region(id,cGameRegion));
 end;
 	
-/*
-process player_no_gravity()
+//funcion que comprueba si se puede cojer un objeto comprobando si el objeto a cojer
+//no tiene otro objeto encima
+function int checkObjectPicking(entity pickingObject)
+private
+	entity colID;		//Id del objeto a comprobar
+	int dir;			//Direccion de la colision
+	
+	int canPick;		//Flag que determina si el objeto se puede cojer
 begin
-	this.ancho = 32;
-	this.alto = 32;
+	//seteamos la variable
+	canPick = true;
 	
-	region = cGameRegion;
-	ctype = c_scroll;
-	z = cZPlayer;
+	//comprobamos si hay algun objeto encima del que queremos recojer
+	repeat
+		colID = get_id(TYPE object);
+		if (colID <> 0 && colID <> pickingObject)
+			//comprobamos la colision de cada objeto con la base superior del objeto a cojer
+			dir = colCheckAABB(colID,pickingObject.x,pickingObject.y-(pickingObject.this.alto>>1),pickingObject.this.ancho,cPickCheckObjectWidth,INFOONLY);
+			if (dir == COLDOWN)
+				canPick = false;
+			end;
+		end;
+	until (colID == 0);
 	
-	graph = map_new(this.ancho,this.ancho,8);
-	drawing_map(0,graph);
-	drawing_color(300);
-	draw_box(0,0,this.ancho,this.alto);
-	
-	x = level.playerx0;
-	y = level.playery0;
-	
-	loop
-		x+=key(_right)*2;
-		x-=key(_left)*2;
-		y+=key(_down)*2;
-		y-=key(_up)*2;
-		frame;
-	end;
+	//devolvemos la comprobacion
+	return canPick;
 end;
-*/

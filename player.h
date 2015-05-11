@@ -33,6 +33,7 @@
 #define INVISIBLE_STATE         23
 #define INITIAL_STATE           24
 #define PUSHED_STATE            25
+#define FAILPICKED_STATE        26
 
 //efectos de sonido
 #define BOUNCE_SND				0
@@ -80,6 +81,8 @@ Const
 	cObjectPickedPosY       = -(cPlayerAlto>>1);		//Offset Y posicion player para el objeto cogido
 	cThrowObjectVelX        = 3;						//Velocidad X lanzamiento objeto
 	cThrowObjectVelY        = -3;						//Velocidad Y lanzamiento objeto
+	
+	cPickCheckObjectWidth   = 2;			//base de comprobacion de cojer objeto
 	
 	cHurtVelX               = 4;			//desplazamiento X cuando daño
 	cHurtVelY               = 4;			//desplazamiento Y cuando daño
