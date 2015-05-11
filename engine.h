@@ -76,9 +76,12 @@
 
 //efectos de sonido generales
 #define PAUSE_SND				0
+#define TIMESCORE_SND           1
+#define STOPSCORE_SND			2
 
 //musicas generales
 #define DEAD_MUS				0
+#define END_LEVEL_MUS           1
 
 //parametros del checkInRegion
 #define CHECKREGION_ALL         0		//Comprueba en toda la region

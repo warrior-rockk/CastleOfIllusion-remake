@@ -64,8 +64,12 @@ begin
 	fpgGame 	= fpg_load("gfx\game.fpg");	 
 	//sonidos generales
 	gameSound[PAUSE_SND] 		= load_wav("snd\pause.ogg");
+	gameSound[TIMESCORE_SND] 	= load_wav("snd\timeScor.ogg");
+	gameSound[STOPSCORE_SND] 	= load_wav("snd\endScore.ogg");
+	
 	//musicas generales
 	gameMusic[DEAD_MUS]         = load_song("mus\dead.ogg");
+	gameMusic[END_LEVEL_MUS]    = load_song("mus\levelEnd.ogg");
 	
 	//archivo del player
 	fpgPlayer 	= fpg_load("gfx\player.fpg");
@@ -307,14 +311,27 @@ begin
 				
 				//congelamos durante la melodia de fin a los procesos
 				gameSignal(s_freeze_tree);
-				WGE_Wait(100);
+				
+				//paramos la musica del nivel
+				stop_song();
+				//reproducimo musica muerte
+				play_song(gameMusic[END_LEVEL_MUS],0);
+				//esperamos a que finalice
+				while (is_playing_song())
+					frame;
+				end;
 				
 				//obtenemos puntuacion por tiempo restante
 				repeat
 					game.actualLevelTime--;
 					game.score++;
+					//reproducimos sonido
+					WGE_PlayEntitySnd(id,gameSound[TIMESCORE_SND]);
 					frame;
 				until (game.actualLevelTime <= 0);
+				
+				//reproducimos sonido
+				WGE_PlayEntitySnd(id,gameSound[STOPSCORE_SND]);
 				
 				WGE_Wait(100);
 				
@@ -385,9 +402,11 @@ end;
 function WGE_InitScreen()
 begin
 	//Complete restore para evitar "flickering" (no funciona)
-	restore_type = COMPLETE_RESTORE;
-	scale_mode=SCALE_NORMAL2X; 
-	set_mode(cResX,cResY,8);
+	restore_type = NO_RESTORE;// COMPLETE_RESTORE;
+	dump_type    = COMPLETE_DUMP;
+	 scale_mode=SCALE_NORMAL2X; 
+	
+	set_mode(cResX,cResY,8,MODE_WAITVSYNC);
 	//set_mode(992,600,8);
 	set_fps(cNumFPS,0);
 	//definimos la region del scroll
