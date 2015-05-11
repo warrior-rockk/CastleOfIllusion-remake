@@ -11,8 +11,6 @@ PLAYER:	-ajsutar los graficos de pendientes subida y bajada
 	    -animacion al borde de objeto??
 		
 OBJECTS:
-		-planos z configurables 
-		-small food (falta grafico)
 		-el coin rebota mas rato y el giro va perdiendo velocidad
 		
 ENGINE: -Los codigos de tile deberian ser bits para ser simultaneos?
@@ -30,7 +28,8 @@ DEBUG:escribir el log a archivo??. Se puede hacer en una bat que diriga la salid
          -moverse por el mapeado con boton central raton y poder depositar al player
 		 
 
-COLLISIONS:generalizar los calculos de colision para utilizarlo segun los tipos de colision de manera global
+COLLISIONS:-que exista un array dinamico (lista enlazada?) de entidades existentes (no ocultadas por su padre) para aligerar las comprobacines de colision rollo repeats->get_type
+			-generalizar los calculos de colision para utilizarlo segun los tipos de colision de manera global
 
 MONSTERS: -Limpiar privates de monstruos
 

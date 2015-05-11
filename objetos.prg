@@ -488,7 +488,7 @@ begin
 					WGE_Animate(6,7,20,ANIM_LOOP);
 				end;
 				if (isBitSet(this.props,OBJ_ITEM_FOOD))
-					WGE_Animate(28,28,20,ANIM_LOOP);
+					WGE_Animate(31,28,20,ANIM_LOOP);
 				end;
 				if (isBitSet(this.props,OBJ_ITEM_BIG_FOOD))
 					WGE_Animate(28,28,20,ANIM_LOOP);

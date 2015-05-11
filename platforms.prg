@@ -114,7 +114,7 @@ private
 begin
 	region = cGameRegion;
 	ctype = c_scroll;
-	z = cZObject;
+	z = cZPlatform;
 	file = level.fpgObjects;
 	flags = _flags;
 	
@@ -269,7 +269,7 @@ private
 begin
 	region = cGameRegion;
 	ctype = c_scroll;
-	z = cZObject;
+	z = cZPlatform;
 	file = level.fpgObjects;
 	flags = _flags;
 	
@@ -418,7 +418,7 @@ private
 begin
 	region = cGameRegion;
 	ctype = c_scroll;
-	z = cZObject+1;
+	z = cZPlatform;
 	file = level.fpgObjects;
 	flags = _flags;
 	

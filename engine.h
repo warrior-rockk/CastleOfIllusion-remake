@@ -104,9 +104,10 @@ const
 	cZCursor    	 =-4; 		     		//Profundidad del cursor de Debug
 	cZMap2	    	 =-3;     				//Profundidad del mapeado encima del player
 	cZPlayer		 =-2;					//Profundidad del player
-	cZMonster        =-1;
-	cZObject         = 1;					//Profundidad de los objetos
-	cZMap1 	    	 = 2;					//Profundidad del mapeado tras el player
+	cZMonster        =-1;					//Profundidad enemigos
+	cZPlatform       = 1;					//Profundidad Plataformas
+	cZObject         = 2;					//Profundidad de los objetos
+	cZMap1 	    	 = 3;					//Profundidad del mapeado tras el player
 	
 	//Parametros del engine
 	cMaxObjParams   = 9;					//Numero de parametros objetos
