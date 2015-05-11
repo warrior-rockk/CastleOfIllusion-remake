@@ -309,6 +309,15 @@ begin
 				gameSignal(s_freeze_tree);
 				WGE_Wait(100);
 				
+				//obtenemos puntuacion por tiempo restante
+				repeat
+					game.actualLevelTime--;
+					game.score++;
+					frame;
+				until (game.actualLevelTime <= 0);
+				
+				WGE_Wait(100);
+				
 				//apagamos pantalla
 				fade(0,0,0,cFadeTime);
 				while(fading) frame; end;
