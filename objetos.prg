@@ -102,7 +102,7 @@ begin
 end;
 
 //Proceso solidItem
-process solidItem(int graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
+process solidItem(int _graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
 private
 	byte grounded;		//Flag de en suelo
 	float friction;		//Friccion local
@@ -110,7 +110,9 @@ private
 	entity colID;		//Entidad con la que colisiona
 	int colDir;			//Direccion de la colision
 	byte collided;		//flag de colisionado
-		
+	
+	int appearingTime;	//Tiempo apareciendo si es invisible
+	
 	int i;				//Variables auxiliares
 begin
 	
@@ -121,6 +123,7 @@ begin
 	flags = _flags;
 	
 	//igualamos la propiedades publicas a las de parametros
+	graph  = _graph;
 	this.ancho = _ancho;
 	this.alto = _alto;
 	this.props = _props;
@@ -140,6 +143,11 @@ begin
 	friction = floorFriction;
 	
 	this.state = MOVE_STATE;
+	
+	//ocultamos el grafico si es invisible
+	if (isBitSet(this.props,OBJ_INVISIBLE))
+		graph = 0;
+	end;
 	
 	//actualizamos al padre con los datos de creacion
 	updateObject(id,father);
@@ -165,8 +173,21 @@ begin
 				setBit(this.props,NO_PHYSICS);
 				this.vX = 0;
 				this.vY = 0;
-				//vuelver a ser colisionable por procesos
+				//vuelver a ser colisionable por procesos (si no es invisible)
 				unSetBit(this.props,NO_COLLISION);
+				
+				//si es un objeto invisible
+				if (isBitSet(this.props,OBJ_INVISIBLE))
+					//no es colisionable
+					setBit(this.props,NO_COLLISION);
+					//Comprobamos si el player nos ataca para aparecer
+					if (exists(idPlayer))
+						if (colCheckProcess(id,idPlayer,INFOONLY) && idPlayer.this.state == ATACK_STATE)
+							this.state = OBJ_APPEARING_STATE;
+							graph = _graph;
+						end;
+					end;
+				end;
 				
 			end;
 			case MOVE_STATE:
@@ -301,6 +322,25 @@ begin
 					end;
 				end;
 				
+			end;
+			case OBJ_APPEARING_STATE:
+				//parpadeo mientras aparece
+				if (clockTick)
+					isBitSet(flags,B_ABLEND) ? unsetBit(flags,B_ABLEND) : setBit(flags,B_ABLEND);
+				end;
+				
+				//contador de aparecer
+				if (appearingTime >= cAppearTime)
+					//quitamos la propiedad de invisible
+					unsetBit(this.props,OBJ_INVISIBLE);
+					//quitamos el additive blend
+					unsetBit(flags,B_ABLEND);
+					//pasamos a reposo
+					this.state = IDLE_STATE;
+					appearingTime = 0;
+				elseif (clockTick)
+					appearingTime++;
+				end;
 			end;
 			case DEAD_STATE:
 				//lanzamos animacion explosion objeto

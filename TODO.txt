@@ -13,7 +13,6 @@ PLAYER:	-ajsutar los graficos de pendientes subida y bajada
 OBJECTS:
 		-planos z configurables 
 		-small food (falta grafico)
-		-items invisibles
 		-el coin rebota mas rato y el giro va perdiendo velocidad
 		
 ENGINE: -Los codigos de tile deberian ser bits para ser simultaneos?

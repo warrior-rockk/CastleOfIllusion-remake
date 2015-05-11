@@ -24,8 +24,13 @@
 #define OBJ_ITEM_TRIE              	    1024 	//Contiene item 1 vida extra
 #define OBJ_ITEM_STAR	          		2048	//Estrella energia extra
 #define OBJ_ITEM_GEM			 		4096	//Gema fin de nivel
+#define OBJ_INVISIBLE                   8192    //Objeto invisible
 //propiedades internas
-#define OBJ_IS_KEY               		8192    //Objeto es llave
+#define OBJ_IS_KEY               		16384   //Objeto es llave
+
+
+//estados propios de los objetos
+#define OBJ_APPEARING_STATE				100
 
 //constantes de objetos
 const
@@ -39,6 +44,7 @@ const
 	cItemTimeToBlink    =           4;			//Tiempo parpadeo antes de timeout
 	cItemBlinkTime      =           3;			//Velocidad parpadeo
 	cDoorTime			=           10;         //Velocidad Puerta
+	cAppearTime         =           80;			//Tiempo que aparece un objeto invisible
 	
 	//puntuaciones
 	cBigCoinScore       =			1000;
@@ -71,7 +77,7 @@ end
 end
 
 //declaracion de proceso bloque
-Declare Process solidItem(int graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
+Declare Process solidItem(int _graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
 public
 	_entityPublicData this;			//datos publicos de entidad
 end
