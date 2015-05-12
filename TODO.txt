@@ -5,11 +5,14 @@ TOYLAND:  -determinar que contienen los items
 ENTIDADES: 
        	-propiedad local bouncy para tener rebote si/no y cuanto?? (de momento rebota por tipo de objeto)
 
-PLAYER:	-ajsutar los graficos de pendientes subida y bajada
+PLAYER:	-bug: despues de morir, el scrollroom bajando escaleras se ralla (sube y baja??)
+		-ajsutar los graficos de pendientes subida y bajada
 		-ver en meka capturando frames animacion de recojer objeto
 		-parece que con las flechas de direccion no cae de escalera
 	    -animacion al borde de objeto??
-		
+
+PLATFORMS: -la plataforma que cae cuando la tocas, no te permite pasar si estas cerca (esto estaba solucionado!!!)
+		   -la plataforma que cae cuando la tocas, se crea al salir de la pantalla!!
 OBJECTS:
 		-el coin rebota mas rato y el giro va perdiendo velocidad
 		
