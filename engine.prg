@@ -402,8 +402,8 @@ end;
 function WGE_InitScreen()
 begin
 	//Complete restore para evitar "flickering" (no funciona)
-	restore_type = NO_RESTORE;// COMPLETE_RESTORE;
-	dump_type    = COMPLETE_DUMP;
+	//restore_type = NO_RESTORE;// COMPLETE_RESTORE;
+	//dump_type    = COMPLETE_DUMP;
 	scale_mode=SCALE_NORMAL2X; 
 	
 	set_mode(cResX,cResY,8,MODE_WAITVSYNC);
