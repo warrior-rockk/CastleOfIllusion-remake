@@ -70,7 +70,7 @@ begin
 				//creamos el tipo de plataforma
 				switch (_platformType)
 					case PLATF_LINEAR:
-						idPlatform = linearPlatform(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props | PERSISTENT,cPlatformDefaultVel);
+						idPlatform = linearPlatform(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props,cPlatformDefaultVel);
 					end;
 					case PLATF_CLOUD:
 						idPlatform = cloudPlatform(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props | PERSISTENT);

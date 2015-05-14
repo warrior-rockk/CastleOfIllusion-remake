@@ -12,7 +12,7 @@ PLAYER:	-bug: despues de morir, el scrollroom bajando escaleras se ralla (sube y
 	    -animacion al borde de objeto??
 
 PLATFORMS: -la plataforma que cae cuando la tocas, no te permite pasar si estas cerca (esto estaba solucionado!!!)
-		   -la plataforma que cae cuando la tocas, se crea al salir de la pantalla!!
+		   
 OBJECTS:
 		-el coin rebota mas rato y el giro va perdiendo velocidad
 		
@@ -36,8 +36,7 @@ COLLISIONS:-que exista un array dinamico (lista enlazada?) de entidades existent
 
 MONSTERS: -Limpiar privates de monstruos
 
-EDITOR: -bug al aplicar flags a una entidad. todas las entidades que usan esa imagen se dan la vuelta tambien porque estan referenciadas.
-		-bug en posicion entidades sin fisica con zoom editor aplicado
+EDITOR: -bug en posicion entidades sin fisica con zoom editor aplicado
 		-bug al mover player con zoom aplicado
 		-COpiar y pegar varios tipos de entidades y varias a la vez
         -que no se seleccione el siguiente objeto cuando borramos uno
