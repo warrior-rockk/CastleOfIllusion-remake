@@ -43,5 +43,6 @@ EDITOR: -bug en posicion entidades sin fisica con zoom editor aplicado
 		-desactivar autoscroll cuando movemos objeto??
 		-descomprimir los fpg!! zlib
 		-al darle a guardar como, lo guarda pero sigue abierto el original
+		-aparece texto NO_PERSISTENT cuando deberia ser PERSISTENT
 		
 		
