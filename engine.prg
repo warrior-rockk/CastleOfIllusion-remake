@@ -53,7 +53,7 @@ begin
 	levelFiles[0].MapFile 	= "levels\ToyLand\ToyLand.bin";
 	levelFiles[0].DataFile 	= "levels\ToyLand\ToyLand.dat";
 	levelFiles[0].TileFile 	= "levels\ToyLand\tiles.fpg";
-	levelFiles[0].MusicFile = "levels\ToyLand\ToyLand.ogg";
+	levelFiles[0].MusicFile = "mus\ToyLand.ogg";
 	levelFiles[0].MusicIntroEnd = 1.87;
 	//level 1
 	levelFiles[1].MapFile 	= "levels\testRoom\testRoom.bin";

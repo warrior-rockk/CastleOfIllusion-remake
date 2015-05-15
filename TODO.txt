@@ -1,3 +1,11 @@
+BUGS:     estan pasando cosas raras y aleatorias (fallo memoria dinamica??):
+         -tiles que se quedan en negro
+		 -personaje sube y baja de las escaleras
+		 -objetos que no aparecen al reiniciar nivel en el prmier frame congelado
+		 -cuelgues al cambiar de room
+		 
+
+		
 TOYLAND:  -determinar que contienen los items
 		  -tile no solido para caerse
 		  -items invisibles
