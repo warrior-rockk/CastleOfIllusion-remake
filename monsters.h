@@ -78,7 +78,11 @@ Const
 end;
 
 Global
-	_monster* monsters;			//Array Dinamico de enemigos
+	#ifdef DYNAMIC_MEM
+		_monster* monsters;			//Array Dinamico de enemigos
+	#else
+		_monster monsters[100];			//Array Estatico de enemigos
+	#endif
 end;
 
 //declaracion de proceso monstruo generico

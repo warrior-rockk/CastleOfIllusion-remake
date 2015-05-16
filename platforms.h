@@ -44,7 +44,12 @@ Type _platform         			//Tipo de Dato de plataforma
 End;
 
 Global
-	_platform* platforms;			//Array Dinamico de objetos
+	#ifdef DYNAMIC_MEM
+		_platform* platforms;			//Array Dinamico de objetos
+	#else
+		_platform platforms[100];			//Array Estatico de objetos
+	#endif
+	
 end;
 
 //declaracion de plataforma generica

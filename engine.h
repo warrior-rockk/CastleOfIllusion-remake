@@ -8,6 +8,7 @@
 
 //Defines del engine
 #define WGE_ENGINE												//Utilizando WGE engine
+//#define DYNAMIC_MEM												//Usando memoria dinámica
 #define isBitSet(a,b) 	( (a & b) == b )						//Funcion comparar bit
 #define setBit(a,b)     ( a |= b )								//Setear un bit
 #define unsetBit(a,b)   ( a &=~ b )								//Quitar un bit
@@ -174,7 +175,11 @@ End;
 //Path
 Type _path						//Tipo de dato path
 	int numPuntos;				//Numero de puntos
-	_point* punto;	     		//Array Dinamico de puntos
+	#ifdef DYNAMIC_MEM
+		_point* punto;	     		//Array Dinamico de puntos
+	#else
+		_point punto[10];	     	//Array Estatico de puntos
+	#endif
 end;
 
 //Tile
@@ -267,7 +272,11 @@ Global
 		end;
 		int idMusicLevel;
 		int numCheckPoints;			//Numero checkpoints del nivel
-		_checkPoint* checkPoints;   //Array dinamico de checkpoints del nivel
+		#ifdef DYNAMIC_MEM
+			_checkPoint* checkPoints;   //Array dinamico de checkpoints del nivel
+		#else
+			_checkPoint checkPoints[10]; //Array estatico checkpoints del nivel
+		#endif
 	End;
 	//archivos de los niveles
 	struct levelFiles[10]
@@ -277,8 +286,13 @@ Global
 		string MusicFile;		//archivo musica del nivel
 		float  MusicIntroEnd;	//Posicion en segundos con centesimas del final del intro de la musica	
 	end;
-	_path* paths;				//Array Dinamico de paths
-	_tile** tileMap;  	        //Matriz Dinamica del mapa de tiles del nivel
+	#ifdef DYNAMIC_MEM
+		_tile** tileMap;  	        //Matriz Dinamica del mapa de tiles del nivel
+		_path* paths;				//Array Dinamico de paths
+	#else
+		_tile tileMap[1000][1000];	//Matriz Estatica del mapa de tiles del nivel
+		_path paths[100];           //Array Estatico de paths
+	#endif
 	byte mapUsesAlpha;				//Bit que indica que el mapa usa propiedad alpha (relentiza la carga)
 	//Fisicas
 	float gravity 			= 0.25; 	//Aceleracion gravedad

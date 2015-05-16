@@ -469,88 +469,6 @@ begin
 	log("Modo alpha activado",DEBUG_ENGINE); 
 end;
 
-//Carga de archivo de nivel
-function WGE_LoadLevel(string file_)
-private 
-	int levelFile;		//Archivo del nivel
-	int i,j;			//Indices auxiliares
-end
-
-begin 
-	//Comprobamos si existe el archivo de datos del nivel
-	if (not fexists(file_))
-		log("No existe el fichero: " + file_,DEBUG_ENGINE);
-		WGE_Quit();
-	end;
-	
-	//Abrimos el archivo
-	levelFile = fopen(file_,o_read);
-	//Nos situamos al principio del archivo
-	fseek(levelFile,0,SEEK_SET);  
-	
-	//Leemos icion inicial jugador
-	log("Leyendo datos nivel",DEBUG_ENGINE);
-	fread(levelFile,level.playerX0); 
-	fread(levelFile,level.playerY0);
-	
-	//Leemos numero de objetos
-	log("Leyendo objetos nivel",DEBUG_ENGINE);
-	fread(levelFile,level.numObjects);
-	
-	//Asignamos tamaño dinamico al array de objetos
-//	objects = calloc(level.numObjects ,sizeof(_object));
-	//comprobamos el direccionamiento dinamico
-/*	if ( objects == NULL )
-		log("Fallo alocando memoria dinámica (objetos)",DEBUG_ENGINE);
-		WGE_Quit();
-	end;
-	*/
-	//Leemos los datos de los objetos
-	/*for (i=0;i<level.numObjects;i++)
-			fread(levelFile,objects[i].tipo);
-			fread(levelFile,objects[i].grafico);
-			fread(levelFile,objects[i].x0);
-			fread(levelFile,objects[i].y0); 
-			fread(levelFile,objects[i].angulo);
-			for (j=0;j<cMaxObjParams;j++)
-				fread(levelFile,objetos[i].param[j]);
-			end;
-	end;*/ 
-	
-	//Leemos numero de paths
-	log("Leyendo Paths Nivel",DEBUG_ENGINE);
-	fread(levelFile,level.numPaths);
-	//Asignamos tamaño dinamico al array de paths
-	paths = calloc(level.numPaths , sizeof(_path));
-	//comprobamos el direccionamiento dinamico
-	if ( paths == NULL )
-		log("Fallo alocando memoria dinámica (paths)",DEBUG_ENGINE);
-		WGE_Quit();
-	end;
-	//Leemos los datos de los trackings	
-	for (i=0;i<level.numPaths;i++)
-			//Leemos numero de puntos
-			fread(levelFile,paths[i].numPuntos);
-			//Asignamos tamaño dinamico al array de puntos
-			paths[i].punto = calloc(paths[i].numPuntos,sizeof(_point));
-			//comprobamos el direccionamiento dinamico
-			if ( paths[i].punto == NULL )
-				log("Fallo alocando memoria dinámica (paths["+i+"])",DEBUG_ENGINE);
-				WGE_Quit();
-			end;
-			for (j=0;j<paths[i].numPuntos;j++)
-				//Leemos los puntos
-				fread(levelFile,paths[i].punto[j].x); 
-				fread(levelFile,paths[i].punto[j].y);
-			end;
-	end;
-	
-	//cerramos el archivo
-	fclose(levelFile);
-	log("Fichero nivel leído con " + level.numObjects + " Objetos y " + level.numPaths + " Paths",DEBUG_ENGINE);	
-	
-end;  
-
 //Genera in archivo de nivel aleatorio
 function WGE_GenLevelData(string file_)
 private 
@@ -620,23 +538,25 @@ Begin
 	
 	
 	//Creamos la matriz dinamica del tileMap
-	//Primera dimension
-	tileMap = calloc(level.numTilesY,sizeof(_tile));
-	
-	//comprobamos el direccionamiento
-	if ( tileMap == NULL )
-		log("Fallo alocando memoria dinámica (tileMap)",DEBUG_ENGINE);
-		WGE_Quit();
-	end;
-	//segunda dimension
-	from i = 0 to level.numTilesY-1;
-		tileMap[i] = calloc(level.numTilesX ,sizeof(_tile));
+	#ifdef DYNAMIC_MEM
+		//Primera dimension
+		tileMap = calloc(level.numTilesY,sizeof(_tile));
+		
 		//comprobamos el direccionamiento
-		if ( tileMap[i] == NULL )
-			log("Fallo alocando memoria dinámica (tileMap["+i+"])",DEBUG_ENGINE);
+		if ( tileMap == NULL )
+			log("Fallo alocando memoria dinámica (tileMap)",DEBUG_ENGINE);
 			WGE_Quit();
-		end;	
-	end;
+		end;
+		//segunda dimension
+		from i = 0 to level.numTilesY-1;
+			tileMap[i] = calloc(level.numTilesX ,sizeof(_tile));
+			//comprobamos el direccionamiento
+			if ( tileMap[i] == NULL )
+				log("Fallo alocando memoria dinámica (tileMap["+i+"])",DEBUG_ENGINE);
+				WGE_Quit();
+			end;	
+		end;
+	#endif
 	
 	//Cargamos la informacion del grafico de los tiles del fichero de mapa
 	for (i=0;i<level.numTilesY;i++)
@@ -1033,14 +953,16 @@ Begin
 	fread(levelDataFile,level.numObjects);
 	
 	//Creamos el array dinamico de objetos
-	objects = calloc(level.numObjects,sizeof(_object));
+	#ifdef DYNAMIC_MEM
+		objects = calloc(level.numObjects,sizeof(_object));
+		
+		//comprobamos el direccionamiento
+		if ( objects == NULL )
+			log("Fallo alocando memoria dinámica (objects)",DEBUG_ENGINE);
+			WGE_Quit();
+		end;
+	#endif
 	
-	//comprobamos el direccionamiento
-	if ( objects == NULL )
-		log("Fallo alocando memoria dinámica (objects)",DEBUG_ENGINE);
-		WGE_Quit();
-	end;
-
 	//leemos los objetos
 	from i=0 to level.numObjects-1;
 		fread(levelDataFile,objects[i].objectType);
@@ -1058,14 +980,16 @@ Begin
 	fread(levelDataFile,level.numMonsters);
 	
 	//Creamos el array dinamico de enemigos
-	monsters = calloc(level.numMonsters,sizeof(_monster));
+	#ifdef DYNAMIC_MEM
+		monsters = calloc(level.numMonsters,sizeof(_monster));
+		
+		//comprobamos el direccionamiento
+		if ( monsters == NULL )
+			log("Fallo alocando memoria dinámica (monsters)",DEBUG_ENGINE);
+			WGE_Quit();
+		end;
+	#endif
 	
-	//comprobamos el direccionamiento
-	if ( monsters == NULL )
-		log("Fallo alocando memoria dinámica (monsters)",DEBUG_ENGINE);
-		WGE_Quit();
-	end;
-
 	//leemos los enemigos
 	from i=0 to level.numMonsters-1;
 		fread(levelDataFile,monsters[i].monsterType);
@@ -1083,14 +1007,16 @@ Begin
 	fread(levelDataFile,level.numPlatforms);
 	
 	//Creamos el array dinamico de plataformas
-	platforms = calloc(level.numPlatforms,sizeof(_platform));
+	#ifdef DYNAMIC_MEM
+		platforms = calloc(level.numPlatforms,sizeof(_platform));
+		
+		//comprobamos el direccionamiento
+		if ( platforms == NULL )
+			log("Fallo alocando memoria dinámica (platforms)",DEBUG_ENGINE);
+			WGE_Quit();
+		end;
+	#endif
 	
-	//comprobamos el direccionamiento
-	if ( platforms == NULL )
-		log("Fallo alocando memoria dinámica (platforms)",DEBUG_ENGINE);
-		WGE_Quit();
-	end;
-
 	//leemos las plataformas
 	from i=0 to level.numPlatforms-1;
 		fread(levelDataFile,Platforms[i].PlatformType);
@@ -1108,14 +1034,16 @@ Begin
 	fread(levelDataFile,level.numCheckPoints);
 	
 	//Creamos el array dinamico de checkpoints
-	level.checkPoints = calloc(level.numCheckPoints,sizeof(_checkPoint));
+	#ifdef DYNAMIC_MEM
+		level.checkPoints = calloc(level.numCheckPoints,sizeof(_checkPoint));
+		
+		//comprobamos el direccionamiento
+		if ( level.checkPoints == NULL )
+			log("Fallo alocando memoria dinámica (checkPoints)",DEBUG_ENGINE);
+			WGE_Quit();
+		end;
+	#endif
 	
-	//comprobamos el direccionamiento
-	if ( level.checkPoints == NULL )
-		log("Fallo alocando memoria dinámica (checkPoints)",DEBUG_ENGINE);
-		WGE_Quit();
-	end;
-
 	//leemos los checkpoints
 	from i=0 to level.numCheckPoints-1;
 		fread(levelDataFile,level.checkpoints[i].position.x);
@@ -1693,11 +1621,13 @@ begin
 	delete_text(all_text);
 	
 	//Limpiamos la memoria dinamica
-	free(objects);
-	free(monsters);
-	free(platforms);
-	//free(paths);
-	free(tileMap);
+	#ifdef DYNAMIC_MEM
+		free(objects);
+		free(monsters);
+		free(platforms);
+		//free(paths);
+		free(tileMap);
+	#endif
 	
 	//liberamos archivos cargados
 	unload_fpg(level.fpgTiles);

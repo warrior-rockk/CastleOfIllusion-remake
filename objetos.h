@@ -66,7 +66,11 @@ Type _object         			//Tipo de Dato de objeto
 End;
 
 Global
-	_object* objects;			//Array Dinamico de objetos
+	#ifdef DYNAMIC_MEM
+		_object* objects;			//Array Dinamico de objetos
+	#else
+		_object objects[100];		//Array Estatico de objetos
+	#endif
 end;
 
 //declaracion de proceso objeto

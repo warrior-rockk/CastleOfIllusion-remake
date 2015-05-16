@@ -1,11 +1,14 @@
-BUGS:     estan pasando cosas raras y aleatorias (fallo memoria dinamica??):
+BUGS:    -cuelgue al pasar a modo debug!!
+		 -no es practico  el margin de outregion de los objetos ya que no aparecen al salirte un poco
+		 -estan pasando cosas raras y aleatorias (fallo memoria dinamica??):
          -tiles que se quedan en negro
 		 -personaje sube y baja de las escaleras
 		 -objetos que no aparecen al reiniciar nivel en el prmier frame congelado
 		 -cuelgues al cambiar de room
 		 
 
-		
+SND:     -sonido al matar enemigo con objeto
+
 TOYLAND:  -determinar que contienen los items
 		  -tile no solido para caerse
 		  -items invisibles
@@ -21,7 +24,7 @@ PLAYER:	-bug: despues de morir, el scrollroom bajando escaleras se ralla (sube y
 
 PLATFORMS: -la plataforma que cae cuando la tocas, no te permite pasar si estas cerca (esto estaba solucionado!!!) AHORA NO PASA??
 		   
-OBJECTS:
+OBJECTS:-intentando cojer cofre con objeto arriba, ha cogido el de arriba
 		-el coin rebota mas rato y el giro va perdiendo velocidad
 		
 ENGINE: -Los codigos de tile deberian ser bits para ser simultaneos?
