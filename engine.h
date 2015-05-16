@@ -8,7 +8,7 @@
 
 //Defines del engine
 #define WGE_ENGINE												//Utilizando WGE engine
-//#define DYNAMIC_MEM												//Usando memoria dinámica
+#define DYNAMIC_MEM												//Usando memoria dinámica
 #define isBitSet(a,b) 	( (a & b) == b )						//Funcion comparar bit
 #define setBit(a,b)     ( a |= b )								//Setear un bit
 #define unsetBit(a,b)   ( a &=~ b )								//Quitar un bit

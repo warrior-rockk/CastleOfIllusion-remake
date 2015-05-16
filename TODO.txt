@@ -1,5 +1,7 @@
-BUGS:    -cuelgue al pasar a modo debug!!
-		 -no es practico  el margin de outregion de los objetos ya que no aparecen al salirte un poco
+BUGS:     -no es practico  el margin de outregion de los objetos ya que no aparecen al salirte un poco
+		 
+		 PROBLEMA BUG EN BENNU CON SCALE MODE Y NO USAR COMPLETE RESTORE
+		 -cuelgue al pasar a modo debug!!
 		 -estan pasando cosas raras y aleatorias (fallo memoria dinamica??):
          -tiles que se quedan en negro
 		 -personaje sube y baja de las escaleras
@@ -16,7 +18,9 @@ TOYLAND:  -determinar que contienen los items
 ENTIDADES: 
        	-propiedad local bouncy para tener rebote si/no y cuanto?? (de momento rebota por tipo de objeto)
 
-PLAYER:	-bug: despues de morir, el scrollroom bajando escaleras se ralla (sube y baja??) AHORA NO PASA??
+PLAYER:	-no salta mas del springbox con las nuevas fisicas
+		-no mata cuando resbala por pendiente
+		-bug: despues de morir, el scrollroom bajando escaleras se ralla (sube y baja??) AHORA NO PASA??
 		-ajsutar los graficos de pendientes subida y bajada
 		-ver en meka capturando frames animacion de recojer objeto
 		-parece que con las flechas de direccion no cae de escalera
@@ -24,7 +28,7 @@ PLAYER:	-bug: despues de morir, el scrollroom bajando escaleras se ralla (sube y
 
 PLATFORMS: -la plataforma que cae cuando la tocas, no te permite pasar si estas cerca (esto estaba solucionado!!!) AHORA NO PASA??
 		   
-OBJECTS:-intentando cojer cofre con objeto arriba, ha cogido el de arriba
+OBJECTS:-intentando cojer cofre con objeto arriba, ha cogido el de arriba. Parece ser que no comprueba que no quiera cojer el 	objeto de arriba.
 		-el coin rebota mas rato y el giro va perdiendo velocidad
 		
 ENGINE: -Los codigos de tile deberian ser bits para ser simultaneos?

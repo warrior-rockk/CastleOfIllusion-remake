@@ -92,6 +92,7 @@ begin
 		
 		//Tareas ciclicas del modo debug
 		if (actDebugMode)
+			
 			//Pintamos la caja de deteccion del player
 			debugColBox(idPlayer);
 			//pintamos caja deteccion monsters

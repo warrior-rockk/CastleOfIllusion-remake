@@ -402,11 +402,14 @@ end;
 function WGE_InitScreen()
 begin
 	//Complete restore para evitar "flickering" (no funciona)
-	//restore_type = NO_RESTORE;// COMPLETE_RESTORE;
+	//hay un bug con una combinacion de scalemode y restore_type. Si no pongo complete restore y
+	//uso scale mode, se cuelga al pasar al modo debug por ejemplo
+	restore_type  = COMPLETE_RESTORE;
 	//dump_type    = COMPLETE_DUMP;
+	
 	scale_mode=SCALE_NORMAL2X; 
 	
-	set_mode(cResX,cResY,8,MODE_WAITVSYNC);
+	set_mode(cResX,cResY,8);
 	//set_mode(992,600,8);
 	set_fps(cNumFPS,0);
 	//definimos la region del scroll
