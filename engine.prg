@@ -190,7 +190,7 @@ begin
 				end;
 				
 				//pausa del juego
-				if (WGE_Key(K_PAUSE,KEY_DOWN))
+				if (WGE_CheckControl(CTRL_START,E_DOWN))
 					if (game.paused)
 						gameSignal(s_wakeup_tree);
 						delete_text(pauseText);

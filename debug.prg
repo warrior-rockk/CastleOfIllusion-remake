@@ -26,12 +26,12 @@ begin
 		end;
 		
 		//activacion/desactivacion del debugMode
-		if (key(_control) && WGE_Key(_d,KEY_DOWN))
+		if (key(_control) && WGE_Key(_d,E_DOWN))
 			debugMode = not debugMode;
 		end;
 		
 		//Seteo de fps a 0
-		if (key(_control) && WGE_Key(_f,KEY_DOWN))
+		if (key(_control) && WGE_Key(_f,E_DOWN))
 			if (FPS==cNumFPS)
 				set_fps(cNumFPSDebug,0);
 				log("Pasamos a "+cNumFPSDebug+" FPS",DEBUG_ENGINE);
@@ -45,17 +45,17 @@ begin
 		end;
 
 		//Subida/Bajada de fps
-		If (WGE_Key(_C_MINUS,KEY_DOWN))
+		If (WGE_Key(_C_MINUS,E_DOWN))
 			set_fps(fps-10,0);
 			log("Pasamos a "+fps+" FPS",DEBUG_ENGINE);
 		end;
-		If (WGE_Key(_C_PLUS,KEY_DOWN))
+		If (WGE_Key(_C_PLUS,E_DOWN))
 			set_fps(fps+10,0);
 			log("Pasamos a "+fps+" FPS",DEBUG_ENGINE);
 		end;
 
 		//reiniciar nivel
-		if (WGE_Key(_r,KEY_DOWN) && game.state == PLAYLEVEL)
+		if (WGE_Key(_r,E_DOWN) && game.state == PLAYLEVEL)
 			//matamos al player
 			if (exists(idPlayer))
 				signal(idPlayer,s_kill);
@@ -68,7 +68,7 @@ begin
 		end;
 		
 		//saltar nivel
-		if (WGE_Key(_n,KEY_DOWN) && game.state == PLAYLEVEL)
+		if (WGE_Key(_n,E_DOWN) && game.state == PLAYLEVEL)
 			game.endLevel = true;
 		end;
 		
@@ -134,12 +134,12 @@ begin
 		end;
 	
 		//test: grabar keylogger
-		if (WGE_Key(_control,KEY_PRESSED) && WGE_Key(_g,KEY_DOWN))
+		if (WGE_Key(_control,E_PRESSED) && WGE_Key(_g,E_DOWN))
 			keyLoggerRecorder("partida.rec");
 		end;
 		
 		//test: reproducir keylogger
-		if (WGE_Key(_control,KEY_PRESSED) && WGE_Key(_p,KEY_DOWN))
+		if (WGE_Key(_control,E_PRESSED) && WGE_Key(_p,E_DOWN))
 			keyLoggerPlayer("partida.rec");
 		end;
 		

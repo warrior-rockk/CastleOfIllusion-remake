@@ -11,22 +11,9 @@
 //Funcion que devuelve el estado del control solicitado
 function WGE_CheckControl(int control,int event)
 begin
-	switch (event)
-		case KEY_DOWN:
-			return (keyState[ configuredKeys[control] ][ keyUse ] && !keyState[ configuredKeys[control] ][ keyUse ^ 1 ]) ||
-			       (joyState[ configuredButtons[control] ][ keyUse ] && !joyState[ configuredButtons[control] ][ keyUse ^ 1 ]);
-		end;
-		case KEY_UP:
-			return (!keyState[ configuredKeys[control] ][ keyUse ] &&  keyState[ configuredKeys[control] ][ keyUse ^ 1 ]) ||
-			       (!joyState[ configuredButtons[control] ][ keyUse ] &&  joyState[ configuredButtons[control] ][ keyUse ^ 1 ]);
-		end;
-		case KEY_PRESSED:
-			return ( keyState[ configuredKeys[control] ][ keyUse ]) ||
-			       ( joyState[ configuredButtons[control] ][ keyUse ]);
-		end;
-	end;
+	return WGE_Key(configuredKeys[control],event) ||
+	       WGE_Button(configuredButtons[control],event);
 end;
-
 
 //Funcion actualizacion estado de teclas
 function keyStateUpdate()
@@ -43,10 +30,10 @@ begin
 end;	
 
 //Funcion que devuelve el estado de la tecla solicitado
-function WGE_Key(int k,int event)
+function WGE_Key(byte k,int event)
 begin
-return ((event==KEY_DOWN)?(  keyState[ k ][ keyUse ] && !keyState[ k ][ keyUse ^ 1 ] ): \
-		(event==KEY_UP  )?( !keyState[ k ][ keyUse ] &&  keyState[ k ][ keyUse ^ 1 ] ): \
+return ((event==E_DOWN)?(  keyState[ k ][ keyUse ] && !keyState[ k ][ keyUse ^ 1 ] ): \
+		(event==E_UP  )?( !keyState[ k ][ keyUse ] &&  keyState[ k ][ keyUse ^ 1 ] ): \
 		( keyState[ k ][ keyUse ]));
 end;
 
@@ -58,24 +45,26 @@ begin
 	//intercambiamos el flanco
 	joyUse ^= 1;
 	//recorremos el array de estados botones
-	for ( i = 0; i < 8; i++ )
+	for ( i = 0; i < 10; i++ )
 		joyState[ i ][ joyUse ] =  joy_getbutton(0,i);
 	end;
+	
 	//arriba
-	joyState[9][ joyUse ] 	= joy_getaxis(0,1) == -32768;
+	joyState[10][ joyUse ] 	= joy_getaxis(0,1) == -32768;
 	//abajo
-	joyState[10][ joyUse ] 	= joy_getaxis(0,1) ==  32767;
+	joyState[11][ joyUse ] 	= joy_getaxis(0,1) ==  32767;
 	//izquierda
-	joyState[11][ joyUse ] 	= joy_getaxis(0,0) ==  -32768;
+	joyState[12][ joyUse ] 	= joy_getaxis(0,0) ==  -32768;
 	//derecha
-	joyState[12][ joyUse ] 	= joy_getaxis(0,0) == 32767;
+	joyState[13][ joyUse ] 	= joy_getaxis(0,0) == 32767;
+	
 end;
 
 //Funcion que devuelve el estado del boton solicitado
-function WGE_Button(int b,int event)
+function WGE_Button(byte b,int event)
 begin
-return ((event==KEY_DOWN)?(  joyState[ b ][ keyUse ] && !joyState[ b ][ keyUse ^ 1 ] ): \
-		(event==KEY_UP  )?( !joyState[ b ][ keyUse ] &&  joyState[ b ][ keyUse ^ 1 ] ): \
+return ((event==E_DOWN)?(  joyState[ b ][ keyUse ] && !joyState[ b ][ keyUse ^ 1 ] ): \
+		(event==E_UP  )?( !joyState[ b ][ keyUse ] &&  joyState[ b ][ keyUse ^ 1 ] ): \
 		( joyState[ b ][ keyUse ]));
 end;
 
@@ -122,7 +111,7 @@ begin
 		
 		frame;
 	
-	until(index == ckeyLoggerMaxFrames || WGE_Key(_control,KEY_PRESSED) && WGE_Key(_s,KEY_DOWN));
+	until(index == ckeyLoggerMaxFrames || WGE_Key(_control,E_PRESSED) && WGE_Key(_s,E_DOWN));
 	
 	//marcamos fin de grabacion si no llegó al maximo
 	if (index < ckeyLoggerMaxFrames)

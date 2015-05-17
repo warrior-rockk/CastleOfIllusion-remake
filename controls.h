@@ -42,15 +42,19 @@ End;
 	
 //Variables Globales
 Global
-	//joystick
-	byte joyUse = 0;
-	byte joyState[12][1];
 	//teclas
-	byte keyUse = 0;            			//Seleccion Flanco
-    byte keyState[127][1];      			//Mapa estados en flanco anterior y actual
+	byte keyUse = 0;            						//Seleccion Flanco
+    byte keyState[127][1];      						//Mapa estados en flanco anterior y actual
+	byte configuredKeys[7] = _UP,_DOWN,_LEFT,_RIGHT,
+							_L_ALT,_L_CONTROL,_SPACE;	//configuracion de teclas
+	
+	//joystick
+	byte joyUse = 0;								//Seleccion Flanco
+	byte joyState[13][1];							//Mapa estados flanco anterior y actual
+	byte configuredButtons[7] = 10,11,12,13,3,2,9; //Configuracion de botones
+	
+	//Keylogger
 	byte keyLogger[127];					//Array de teclas del keylogger
-	byte configuredKeys[7] = _UP,_DOWN,_LEFT,_RIGHT,_L_ALT,_L_CONTROL,_SPACE;
-	byte configuredButtons[7] = 9,10,11,12,3,2,0,0;
 	struct keyLoggerRecord					//Grabacion de teclas actual
 		int frameTime[ckeyLoggerMaxFrames];	//Marca de tiempo
 		byte keyCode[ckeyLoggerMaxFrames];	//Tecla pulsada
