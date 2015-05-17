@@ -24,6 +24,7 @@ import "mod_timers";
 import "mod_time";
 import "mod_mem";
 import "mod_joy";
+import "mod_wm";
 
 include "engine.h";      //archivo de definiciones,constantes y variables globales
 
@@ -41,6 +42,7 @@ Begin
 	level.playery0 =320;*/
 	//level.playerx0 =408;
 	//level.playery0 =640;
+	
 	
 	//Iniciamos el engine
 	WGE_Init();

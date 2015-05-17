@@ -8,6 +8,19 @@
 //  Funcion estado de tecla basado en código de SplinterGU
 // ========================================================================
 
+//Proceso encargado de actualizar el estado de los controles
+process WGE_UpdateControls()
+begin
+	loop
+		//actualizamos el estado de las teclas
+		keyStateUpdate();
+		//actualizamos el estado de los botones
+		joyStateUpdate();
+		
+		frame;
+	end;
+end;
+
 //Funcion que devuelve el estado del control solicitado
 function WGE_CheckControl(int control,int event)
 begin

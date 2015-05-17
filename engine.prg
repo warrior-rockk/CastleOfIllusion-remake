@@ -95,6 +95,9 @@ begin
 	//Arrancamos el loop del juego
 	WGE_Loop();
 	
+	//Llamomos a updateControls
+	WGE_UpdateControls();
+	
 	//Arrancamos rutinas debug si esta definido
 	#ifdef USE_DEBUG
 		WGE_Debug();
@@ -111,13 +114,36 @@ private
 begin
 	priority = cMainPrior;
 	
+	//contador de reloj por frames.A 60 fps = 16ms 
+	clockCounter++;
+
+	//Flanco de reloj segun intervalo escogido
+	if (clockCounter % cTimeInterval == 0) 
+		if (!clockTickMem)
+			clockTick = true;
+			clockTickMem = true;
+		end;
+	else
+		clockTick = false;
+		clockTickMem = false;
+	end;
+	
 	loop
 		//estado del juego
 		switch (game.state)
 			case SPLASH:
+				//mensaje hasta pulsar tecla
+				write(fntGame,cResx>>1,cResy>>1,ALIGN_CENTER,"CASTLE OF   ILLUSION");
+				repeat
+					frame;
+				until(WGE_CheckControl(CTRL_START,E_DOWN));
+				
 				//apagamos pantalla
 				fade(0,0,0,cFadeTime);
 				while(fading) frame; end;
+				
+				//eliminamos texto
+				delete_text(all_text);
 				
 				game.state = LOADLEVEL;
 			end;
@@ -362,7 +388,7 @@ begin
 				write(fntGame,cResx>>1,cResy>>1,ALIGN_CENTER,"GAME OVER");
 				repeat
 					frame;
-				until(key(_ENTER));
+				until(WGE_CheckControl(CTRL_START,E_DOWN));
 				//continuamos juego
 				game.state = CONTINUEGAME;
 			end;
@@ -375,25 +401,6 @@ begin
 				game.state = LOADLEVEL;
 			end;
 		end;
-		
-		//contador de reloj por frames.A 60 fps = 16ms 
-		clockCounter++;
-		
-		//Flanco de reloj segun intervalo escogido
-		if (clockCounter % cTimeInterval == 0) 
-			if (!clockTickMem)
-				clockTick = true;
-				clockTickMem = true;
-			end;
-		else
-			clockTick = false;
-			clockTickMem = false;
-		end;
-
-		//actualizamos el estado de las teclas
-		keyStateUpdate();
-		//actualizamos el estado de los botones
-		joyStateUpdate();
 		
 		frame;
 	end;
@@ -410,8 +417,11 @@ begin
 	//dump_type    = COMPLETE_DUMP;
 	
 	scale_mode=SCALE_NORMAL2X; 
+	//Scale_resolution = 16801050;
+	//scale_resolution_aspectratio = SRA_STRETCH;
 	
-	set_mode(cResX,cResY,8);
+	full_screen = true;
+	set_mode(cResX,cResY,8,MODE_WAITVSYNC);
 	//set_mode(992,600,8);
 	set_fps(cNumFPS,0);
 	//definimos la region del scroll
