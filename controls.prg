@@ -8,6 +8,26 @@
 //  Funcion estado de tecla basado en código de SplinterGU
 // ========================================================================
 
+//Funcion que devuelve el estado del control solicitado
+function WGE_CheckControl(int control,int event)
+begin
+	switch (event)
+		case KEY_DOWN:
+			return (keyState[ configuredKeys[control] ][ keyUse ] && !keyState[ configuredKeys[control] ][ keyUse ^ 1 ]) ||
+			       (joyState[ configuredButtons[control] ][ keyUse ] && !joyState[ configuredButtons[control] ][ keyUse ^ 1 ]);
+		end;
+		case KEY_UP:
+			return (!keyState[ configuredKeys[control] ][ keyUse ] &&  keyState[ configuredKeys[control] ][ keyUse ^ 1 ]) ||
+			       (!joyState[ configuredButtons[control] ][ keyUse ] &&  joyState[ configuredButtons[control] ][ keyUse ^ 1 ]);
+		end;
+		case KEY_PRESSED:
+			return ( keyState[ configuredKeys[control] ][ keyUse ]) ||
+			       ( joyState[ configuredButtons[control] ][ keyUse ]);
+		end;
+	end;
+end;
+
+
 //Funcion actualizacion estado de teclas
 function keyStateUpdate()
 private
@@ -28,6 +48,35 @@ begin
 return ((event==KEY_DOWN)?(  keyState[ k ][ keyUse ] && !keyState[ k ][ keyUse ^ 1 ] ): \
 		(event==KEY_UP  )?( !keyState[ k ][ keyUse ] &&  keyState[ k ][ keyUse ^ 1 ] ): \
 		( keyState[ k ][ keyUse ]));
+end;
+
+//Funcion actualizacion estado de botones joystick
+function JoyStateUpdate()
+private
+	int i;		//variable aux
+begin
+	//intercambiamos el flanco
+	joyUse ^= 1;
+	//recorremos el array de estados botones
+	for ( i = 0; i < 8; i++ )
+		joyState[ i ][ joyUse ] =  joy_getbutton(0,i);
+	end;
+	//arriba
+	joyState[9][ joyUse ] 	= joy_getaxis(0,1) == -32768;
+	//abajo
+	joyState[10][ joyUse ] 	= joy_getaxis(0,1) ==  32767;
+	//izquierda
+	joyState[11][ joyUse ] 	= joy_getaxis(0,0) ==  -32768;
+	//derecha
+	joyState[12][ joyUse ] 	= joy_getaxis(0,0) == 32767;
+end;
+
+//Funcion que devuelve el estado del boton solicitado
+function WGE_Button(int b,int event)
+begin
+return ((event==KEY_DOWN)?(  joyState[ b ][ keyUse ] && !joyState[ b ][ keyUse ^ 1 ] ): \
+		(event==KEY_UP  )?( !joyState[ b ][ keyUse ] &&  joyState[ b ][ keyUse ^ 1 ] ): \
+		( joyState[ b ][ keyUse ]));
 end;
 
 //Funcion que registra las pulsaciones de tecla para grabar partida

@@ -90,7 +90,7 @@ BEGIN
 		if (canMove)
 			
 			//direccion derecha
-			if (WGE_Key(K_RIGHT,KEY_PRESSED)) 
+			if (WGE_CheckControl(CTRL_RIGHT,KEY_PRESSED)) 
 				if (this.vX < velMaxX) 
 					this.vX+=accelx*(1-friction);
 				end;
@@ -98,7 +98,7 @@ BEGIN
 			end;
 			
 			//direccion izquierda
-			if (WGE_Key(K_LEFT,KEY_PRESSED)) 
+			if (WGE_CheckControl(CTRL_LEFT,KEY_PRESSED)) 
 				if (this.vX > -velMaxX) 
 					this.vX-=accelx*(1-friction);
 				end;
@@ -106,11 +106,11 @@ BEGIN
 			end;
 			
 			//boton salto
-			if (WGE_Key(K_JUMP,KEY_PRESSED))
+			if (WGE_CheckControl(CTRL_JUMP,KEY_PRESSED))
 				//si no esta en escalera
 				if(!onStairs)			
 					//salto con key_down
-					if (WGE_Key(K_JUMP,KEY_DOWN)) 
+					if (WGE_CheckControl(CTRL_JUMP,KEY_DOWN)) 
 						if(!jumping && (grounded || onStairs)) 
 							jumping = true;
 							grounded = false;
@@ -138,7 +138,7 @@ BEGIN
 		end; //end del canMove
 		
 		//boton ataque/accion
-		if (WGE_Key(K_ACTION_ATACK,KEY_DOWN)) 
+		if (WGE_CheckControl(CTRL_ACTION_ATACK,KEY_DOWN)) 
 			//activar atacando
 			if (jumping && !picked)
 				atacking = true;
@@ -169,7 +169,7 @@ BEGIN
 		end;
 		
 		//direccion arriba/subir escaleras
-		if (WGE_Key(K_UP,KEY_PRESSED))			
+		if (WGE_CheckControl(CTRL_UP,KEY_PRESSED))			
 			//si objeto cogido y permiso mover, no podemos subir escaleras
 			if (!picked && canMove)
 				//si el centro del objeto esta en tile escaleras
@@ -196,7 +196,7 @@ BEGIN
 		end;
 		
 		//direccion abajo/agacharse/bajar escalera
-		if (WGE_key(K_DOWN,KEY_PRESSED))
+		if (WGE_CheckControl(CTRL_DOWN,KEY_PRESSED))
 			//si objeto cogido y permiso movimiento, no podemos ni agacharnos y bajar escaleras
 			if (!picked && canMove)
 				//si el centro inferior del objeto esta en tile escaleras
@@ -247,7 +247,7 @@ BEGIN
 		
 		
 		//friccion: La friccion actua cuando no se mueve o esta agachado o dañado
-		if ((!WGE_Key(K_LEFT,KEY_PRESSED) && !WGE_Key(K_RIGHT,KEY_PRESSED)) || crouched || hurt)
+		if ((!WGE_CheckControl(CTRL_LEFT,KEY_PRESSED) && !WGE_CheckControl(CTRL_RIGHT,KEY_PRESSED)) || crouched || hurt)
 			this.vX *= friction;
 		end;
 						
@@ -282,7 +282,7 @@ BEGIN
 				//Bajandola, cambio consignas velocidades
 				elseif (isBitSet(flags,B_HMIRROR))
 					//si esta atacando,resbala por la rampa
-					if ((atacking && WGE_Key(K_LEFT,KEY_PRESSED)) || sloping)
+					if ((atacking && WGE_CheckControl(CTRL_LEFT,KEY_PRESSED)) || sloping)
 						sloping = true;
 						canMove = false;
 						friction = 1;
@@ -306,7 +306,7 @@ BEGIN
 				//Bajandola, cambio consignas velocidades
 				elseif (!isBitSet(flags,B_HMIRROR))
 					//si esta atacando,resbala por la rampa
-					if ((atacking && WGE_Key(K_RIGHT,KEY_PRESSED)) || sloping)
+					if ((atacking && WGE_CheckControl(CTRL_RIGHT,KEY_PRESSED)) || sloping)
 						sloping = true;
 						canMove = false;
 						friction = 1;
@@ -397,7 +397,7 @@ BEGIN
 					//reproducimos sonido
 					WGE_PlayEntitySnd(id,playerSound[BOUNCE_SND]);
 					//si se pulsa ataque se añade incremento en rebote
-					if (WGE_Key(K_ACTION_ATACK,KEY_PRESSED))
+					if (WGE_CheckControl(CTRL_ACTION_ATACK,KEY_PRESSED))
 						this.vY -= cPlayerPowerAtackBounce;
 					end;
 					grounded = false;
@@ -500,7 +500,7 @@ BEGIN
 					//reproducimos sonido
 					WGE_PlayEntitySnd(id,playerSound[BOUNCE_SND]);
 					//si se pulsa ataque se añade incremento en rebote
-					if (WGE_Key(K_ACTION_ATACK,KEY_PRESSED))
+					if (WGE_CheckControl(CTRL_ACTION_ATACK,KEY_PRESSED))
 						this.vY -= cPlayerPowerAtackBounce;
 					end;
 					grounded = false;
@@ -639,7 +639,7 @@ BEGIN
 				this.state = IDLE_STATE;
 			end;
 			//estados de frenadas al no pulsar movimiento
-			if ( abs(this.vX) > cPlayerMinVelToIdle && !WGE_Key(K_RIGHT,KEY_PRESSED) && !WGE_Key(K_LEFT,KEY_PRESSED)) 
+			if ( abs(this.vX) > cPlayerMinVelToIdle && !WGE_CheckControl(CTRL_RIGHT,KEY_PRESSED) && !WGE_CheckControl(CTRL_LEFT,KEY_PRESSED)) 
 				//si no esta en rampas o con objeto cogido
 				if (!on135Slope && !on45Slope && !picked)
 					//frenada cayendo
@@ -659,12 +659,12 @@ BEGIN
 			end;
 		end;
 		
-		if (WGE_Key(K_LEFT,KEY_PRESSED))
+		if (WGE_CheckControl(CTRL_LEFT,KEY_PRESSED))
 			this.state = MOVE_STATE;
 			//miramos hacia la izquierda
 			flags |= B_HMIRROR;
 		end;
-		if (WGE_Key(K_RIGHT,KEY_PRESSED))
+		if (WGE_CheckControl(CTRL_RIGHT,KEY_PRESSED))
 			this.state = MOVE_STATE;
 			//miramos hacia la derecha
 			flags &=~ B_HMIRROR;
@@ -685,7 +685,7 @@ BEGIN
 		if (onStairs)
 			this.state = ON_STAIRS_STATE;
 		end;
-		if (onStairs && (WGE_Key(K_UP,KEY_PRESSED) || WGE_Key(K_DOWN,KEY_PRESSED)) )
+		if (onStairs && (WGE_CheckControl(CTRL_UP,KEY_PRESSED) || WGE_CheckControl(CTRL_DOWN,KEY_PRESSED)) )
 			this.state = MOVE_ON_STAIRS_STATE;
 		end;
 		if (sloping)

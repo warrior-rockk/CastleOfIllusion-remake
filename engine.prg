@@ -392,6 +392,8 @@ begin
 
 		//actualizamos el estado de las teclas
 		keyStateUpdate();
+		//actualizamos el estado de los botones
+		joyStateUpdate();
 		
 		frame;
 	end;

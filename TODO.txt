@@ -18,7 +18,8 @@ TOYLAND:  -determinar que contienen los items
 ENTIDADES: 
        	-propiedad local bouncy para tener rebote si/no y cuanto?? (de momento rebota por tipo de objeto)
 
-PLAYER:	-no salta mas del springbox con las nuevas fisicas
+PLAYER:	-no suena salto si pega en techo enseguida
+		-no salta mas del springbox con las nuevas fisicas
 		-no mata cuando resbala por pendiente
 		-bug: despues de morir, el scrollroom bajando escaleras se ralla (sube y baja??) AHORA NO PASA??
 		-ajsutar los graficos de pendientes subida y bajada
