@@ -83,6 +83,7 @@
 //musicas generales
 #define DEAD_MUS				0
 #define END_LEVEL_MUS           1
+#define BOSS_MUS				3
 
 //parametros del checkInRegion
 #define CHECKREGION_ALL         0		//Comprueba en toda la region
@@ -237,6 +238,7 @@ Global
 		int state;              //estado del juego
 		byte paused;			//Flag de pausa
 		byte endLevel;			//Flag de fin de nivel
+		byte boss;				//Flag de jefe
 		byte bossKilled;		//Flag de jefe muerto
 		int numLevel;			//Nivel actual
 		int playerLife;			//vida del jugador

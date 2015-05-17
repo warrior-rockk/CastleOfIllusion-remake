@@ -1318,7 +1318,9 @@ begin
 	
 	//actualizamos al padre con los datos de creacion
 	updateMonster(id,father);
-		
+	
+	game.boss = true;
+	
 	loop
 		//nos actualizamos del padre
 		updateMonster(father,id);

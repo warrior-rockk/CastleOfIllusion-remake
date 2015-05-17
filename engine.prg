@@ -70,6 +70,7 @@ begin
 	//musicas generales
 	gameMusic[DEAD_MUS]         = load_song("mus\dead.ogg");
 	gameMusic[END_LEVEL_MUS]    = load_song("mus\levelEnd.ogg");
+	gameMusic[BOSS_MUS]    		= load_song("mus\boss.ogg");
 	
 	//archivo del player
 	fpgPlayer 	= fpg_load("gfx\player.fpg");
@@ -111,6 +112,7 @@ private
 	byte clockTickMem;						//Memoria Flanco Reloj
 	int pauseText;							//Id texto de pausa
 	int idDeadPlayer;						//id del proceso muerte del player
+	byte memBoss;
 begin
 	priority = cMainPrior;
 	
@@ -206,8 +208,17 @@ begin
 			case PLAYLEVEL:
 				
 				//loop musica nivel
-				if (!is_playing_song())
-					WGE_RepeatMusicLevel();
+				if (!game.boss)
+					if (!is_playing_song())
+						WGE_RepeatMusicLevel();
+					end;
+				else
+					fade_music_off(1000);
+					if (!is_playing_song())
+						game.boss = false;
+						//reproducimo musica boss
+						play_song(gameMusic[BOSS_MUS],-1);
+					end;
 				end;
 				
 				//cronometro nivel	
