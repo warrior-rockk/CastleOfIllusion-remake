@@ -1,4 +1,7 @@
-BUGS:     -no es practico  el margin de outregion de los objetos ya que no aparecen al salirte un poco
+BUGS:   -si mueres cuando matas al boss, la gema ya no vuelve a salir
+		-no deberias poder salir del boosroom. Implementar puerta que te cierra
+		-si vuelves a room con door, ves como se deshace.
+		-no es practico  el margin de outregion de los objetos ya que no aparecen al salirte un poco
 		 -tiles que se quedan en negro!!!
 		 -personaje sube y baja de las escaleras
 		 -objetos que no aparecen o aparecen cuando no deben al reiniciar nivel en el prmier frame congelado. PARECE QUE NO ES BUG Y SOLO SUCEDE CUANDO REINICIO EL NIVEL VIA DEBUG
@@ -12,6 +15,7 @@ SND:     -sonido al matar enemigo con objeto
 		 -sonido escaleras con transition room
 		 -sonido puertas
 		 -musica jefe
+		 -sonido al recojer item
 
 TOYLAND:  -determinar que contienen los items
 		  -tile no solido para caerse
