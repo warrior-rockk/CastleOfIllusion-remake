@@ -252,7 +252,7 @@ begin
 				//fisicas activadas
 				unSetBit(this.props,NO_PHYSICS);
 				//deja de ser persistente
-				setBit(this.props,PERSISTENT);
+				unSetBit(this.props,PERSISTENT);
 				
 				//lanzamos comprobacion con procesos objeto
 				repeat

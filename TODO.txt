@@ -3,8 +3,7 @@ BUGS:    -el scrollshake me deja el scroll en mala posicion????
 		 -tiles que se quedan en negro!!!
 		 -personaje sube y baja de las escaleras
 		 -objetos que no aparecen o aparecen cuando no deben al reiniciar nivel en el prmier frame congelado
-		 -el objecto cogido no pierde la propiedad PERSISTENT cuando lo lanzas??
-		-intentando cojer cofre con objeto arriba, ha cogido el de arriba. Parece ser que no comprueba que no quiera cojer el 	objeto de arriba.
+		 -intentando cojer cofre con objeto arriba, ha cogido el de arriba. Parece ser que no comprueba que no quiera cojer el 	objeto de arriba.
 		-no suena salto si pega en techo enseguida
 		-no salta mas del springbox con las nuevas fisicas
 		
