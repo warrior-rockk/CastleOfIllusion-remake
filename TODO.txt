@@ -8,7 +8,6 @@ BUGS:    -el scrollshake me deja el scroll en mala posicion????
 		-no suena salto si pega en techo enseguida
 		-no salta mas del springbox con las nuevas fisicas
 		
-		
 		 PROBLEMA BUG EN BENNU CON SCALE MODE Y NO USAR COMPLETE RESTORE
 		 
 

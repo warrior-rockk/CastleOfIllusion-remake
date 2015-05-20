@@ -282,7 +282,7 @@ BEGIN
 				//Bajandola, cambio consignas velocidades
 				elseif (isBitSet(flags,B_HMIRROR))
 					//si esta atacando,resbala por la rampa
-					if ((atacking && WGE_CheckControl(CTRL_LEFT,E_PRESSED)) || sloping)
+					if ((atacking && this.vX < cPlayerMinVelToIdle) || sloping)
 						sloping = true;
 						canMove = false;
 						friction = 1;
@@ -306,7 +306,7 @@ BEGIN
 				//Bajandola, cambio consignas velocidades
 				elseif (!isBitSet(flags,B_HMIRROR))
 					//si esta atacando,resbala por la rampa
-					if ((atacking && WGE_CheckControl(CTRL_RIGHT,E_PRESSED)) || sloping)
+					if ((atacking && this.vX > cPlayerMinVelToIdle) || sloping)
 						sloping = true;
 						canMove = false;
 						friction = 1;
