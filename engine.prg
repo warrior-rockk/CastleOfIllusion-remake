@@ -431,7 +431,7 @@ begin
 	//Scale_resolution = 16801050;
 	//scale_resolution_aspectratio = SRA_STRETCH;
 	
-	full_screen = true;
+	//full_screen = true;
 	set_mode(cResX,cResY,8,MODE_WAITVSYNC);
 	//set_mode(992,600,8);
 	set_fps(cNumFPS,0);

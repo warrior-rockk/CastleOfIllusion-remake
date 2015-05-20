@@ -2,8 +2,13 @@ BUGS:    -el scrollshake me deja el scroll en mala posicion????
 		 -no es practico  el margin de outregion de los objetos ya que no aparecen al salirte un poco
 		 -tiles que se quedan en negro!!!
 		 -personaje sube y baja de las escaleras
-		 -objetos que no aparecen al reiniciar nivel en el prmier frame congelado
-		 
+		 -objetos que no aparecen o aparecen cuando no deben al reiniciar nivel en el prmier frame congelado
+		 -el objecto cogido no pierde la propiedad PERSISTENT cuando lo lanzas??
+		-intentando cojer cofre con objeto arriba, ha cogido el de arriba. Parece ser que no comprueba que no quiera cojer el 	objeto de arriba.
+		-no suena salto si pega en techo enseguida
+		-no salta mas del springbox con las nuevas fisicas
+		
+		
 		 PROBLEMA BUG EN BENNU CON SCALE MODE Y NO USAR COMPLETE RESTORE
 		 
 
@@ -24,10 +29,7 @@ CONTROLS: -implementar el keylogger para mando segun controles genericos no tecl
 ENTIDADES: 
        	-propiedad local bouncy para tener rebote si/no y cuanto?? (de momento rebota por tipo de objeto)
 
-PLAYER:	-no suena salto si pega en techo enseguida
-		-no salta mas del springbox con las nuevas fisicas
-		-no mata cuando resbala por pendiente
-		-bug: despues de morir, el scrollroom bajando escaleras se ralla (sube y baja??) AHORA NO PASA??
+PLAYER:	
 		-ajsutar los graficos de pendientes subida y bajada
 		-ver en meka capturando frames animacion de recojer objeto
 		-parece que con las flechas de direccion no cae de escalera
@@ -35,8 +37,7 @@ PLAYER:	-no suena salto si pega en techo enseguida
 
 PLATFORMS: -la plataforma que cae cuando la tocas, no te permite pasar si estas cerca (esto estaba solucionado!!!) AHORA NO PASA??
 		   
-OBJECTS: -el objecto cogido no pierde la propiedad PERSISTENT cuando lo lanzas??
-		-intentando cojer cofre con objeto arriba, ha cogido el de arriba. Parece ser que no comprueba que no quiera cojer el 	objeto de arriba.
+OBJECTS: 
 		-el coin rebota mas rato y el giro va perdiendo velocidad
 		
 ENGINE: -centralizar y optimizar carga de archivos

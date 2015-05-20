@@ -491,34 +491,35 @@ BEGIN
 			//colisiones ambos ejes con procesos
 			dir = colCheckProcess(id,colID,INFOONLY);
 				
-			//si la colision es inferior y el monster no esta muerto 
-			if (dir == COLDOWN && colID.this.state != DEAD_STATE )
-				//si estamos atacando y el monstruo se puede dañar
-				if ( this.state == ATACK_STATE && !isBitSet(colId.this.props,MONS_HURTLESS))
-					//rebote al atacar
-					this.vY = -cPlayerAtackBounce;
-					//reproducimos sonido
-					WGE_PlayEntitySnd(id,playerSound[BOUNCE_SND]);
-					//si se pulsa ataque se añade incremento en rebote
-					if (WGE_CheckControl(CTRL_ACTION_ATACK,E_PRESSED))
-						this.vY -= cPlayerPowerAtackBounce;
-					end;
-					grounded = false;
-					//enviamos señal de daño
-					colID.this.state = HURT_STATE;
-				else
-					//el monstruo te daña si no soy invencible y tiene propiedad de dañar
-					if (!hurtDisabled && !isBitSet(colID.this.props,MONS_HARMLESS)) 
+			//si hay colision
+			if (dir != NOCOL)
+				//si el  monster no esta muerto 
+				if (colID.this.state != DEAD_STATE)
+					//si estamos atacando y el monstruo se puede dañar
+					if (dir == COLDOWN && this.state == ATACK_STATE && !isBitSet(colId.this.props,MONS_HURTLESS) )
+						//rebote al atacar
+						this.vY = -cPlayerAtackBounce;
+						//reproducimos sonido
+						WGE_PlayEntitySnd(id,playerSound[BOUNCE_SND]);
+						//si se pulsa ataque se añade incremento en rebote
+						if (WGE_CheckControl(CTRL_ACTION_ATACK,E_PRESSED))
+							this.vY -= cPlayerPowerAtackBounce;
+						end;
+						grounded = false;
+						//enviamos señal de daño
+						colID.this.state = HURT_STATE;
+					//si estamos resbalando y el monstruo se puede dañar
+					elseif (!isBitSet(colId.this.props,MONS_HURTLESS) && colId.this.state <> HURT_STATE &&
+						   (this.state == SLOPING_STATE  || this.state == BREAK_SLOPING_STATE) ) 
+						//enviamos señal de daño
+						colID.this.state = HURT_STATE;
+					//si no, el monstruo te daña si no soy invencible y tiene propiedad de dañar
+					elseif (!hurtDisabled && !isBitSet(colID.this.props,MONS_HARMLESS)) 
 						hurt = true;
 					end;
 				end;
-			elseif ( dir != NOCOL && colID.this.state != DEAD_STATE ) //cualquier otra colision
-				//el monstruo te daña si no soy invencible y tiene propiedad de dañar
-				if (!hurtDisabled && !isBitSet(colID.this.props,MONS_HARMLESS)) 
-					hurt = true;
-				end;
 			end;
-					
+			
 		until (colID == 0);
 		
 		//lanzamos comprobacion con disparos monstruos
