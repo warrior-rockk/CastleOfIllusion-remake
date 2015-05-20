@@ -413,8 +413,10 @@ private
 	int prevX;				//posicion X previa
 	int prevY;				//posicion Y previa
 	
-	entity colID;		//Entidad con la que colisiona
-	int colDir;			//Direccion de la colision
+	entity colID;			//Entidad con la que colisiona
+	int colDir;				//Direccion de la colision
+	
+	byte memPlayerImpulse;	//Flag de impulsion al jugador
 begin
 	region = cGameRegion;
 	ctype = c_scroll;
@@ -491,7 +493,12 @@ begin
 				unSetBit(this.props,NO_COLLISION);
 				//grafico estirado
 				graph = 29;
-				
+				if (memPlayerImpulse && idPlatform <> father)
+					if (WGE_CheckControl(CTRL_JUMP,E_PRESSED))
+						idPlayer.this.vY += -cSpringBoxJumpImpulse;
+					end;
+					memPlayerImpulse = false;
+				end;
 				//cambio de paso si se sube el player
 				if (idPlatform == father)			
 					this.state = MOVE_DOWN_STATE;
@@ -528,6 +535,7 @@ begin
 					//impulsamos al player
 					if (idPlatform == father)
 						idPlayer.this.vY += -cSpringBoxImpulse;
+						memPlayerImpulse = true;
 					end;
 				end;
 			end;

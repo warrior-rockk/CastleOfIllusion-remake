@@ -3,7 +3,6 @@ BUGS:     -no es practico  el margin de outregion de los objetos ya que no apare
 		 -personaje sube y baja de las escaleras
 		 -objetos que no aparecen o aparecen cuando no deben al reiniciar nivel en el prmier frame congelado. PARECE QUE NO ES BUG Y SOLO SUCEDE CUANDO REINICIO EL NIVEL VIA DEBUG
 		 -no suena salto si pega en techo enseguida
-		-no salta mas del springbox con las nuevas fisicas
 		
 		 PROBLEMA BUG EN BENNU CON SCALE MODE Y NO USAR COMPLETE RESTORE
 		 

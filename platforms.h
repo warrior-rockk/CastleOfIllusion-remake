@@ -27,7 +27,8 @@ const
 	
 	//springBoxPlatform
 	cSpringBoxVel			= 2;	//Velocidad springBox
-	cSpringBoxImpulse		= 6;	//Impulso que le da al player
+	cSpringBoxImpulse		= 5;	//Impulso que le da al player
+	cSpringBoxJumpImpulse	= 2;	//Impulso que le da al player si pulsa saltar
 end;
 
 //Objeto
