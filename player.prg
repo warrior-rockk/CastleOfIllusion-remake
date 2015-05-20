@@ -417,9 +417,9 @@ BEGIN
 			//colisiones horizontales con procesos
 			dir = colCheckProcess(id,colID,HORIZONTALAXIS);
 			
-			//comprobamos si colisionamos con un objeto recogible
+			//comprobamos si colisionamos con un objeto recogible y esta en la mitad inferior
 			if (!picked && (dir == COLDER || dir == COLIZQ)) 
-				if (isBitSet(colID.this.props,OBJ_PICKABLE))
+				if (isBitSet(colID.this.props,OBJ_PICKABLE) && colID.y >= y)
 					objectforPickID = colID; 
 				end;
 			end;
