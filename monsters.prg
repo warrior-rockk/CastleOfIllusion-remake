@@ -1343,19 +1343,25 @@ begin
 		switch (this.state)
 			case IDLE_STATE: //animacion de tapa caja abierta
 				setBit(this.props,NO_COLLISION);
-				
-				//animacion puerta que se abre
-				if (WGE_Animate(46,48,10,ANIM_ONCE))
-					//sale de la caja
-					graph = 43;
-					this.vY = -cBossClownVelY;
-					this.vX = cBossClownVelX;
-					grounded = false;
-					//es colisionable
-					unSetBit(this.props,NO_COLLISION);
-					//cambio de paso
-					this.state = JUMP_STATE;
-				end;
+				//tiempo espera
+				if (currentHurtTime < cBossClownWaitTime)
+					currentHurtTime++;	
+				else
+					//animacion puerta que se abre
+					if (WGE_Animate(46,48,10,ANIM_ONCE))
+						//sale de la caja
+						graph = 43;
+						this.vY = -cBossClownVelY;
+						this.vX = cBossClownVelX;
+						grounded = false;
+						//es colisionable
+						unSetBit(this.props,NO_COLLISION);
+						//cambio de paso
+						this.state = JUMP_STATE;
+						//reiniciamos tiempo
+						currentHurtTime = 0;
+					end;
+				end;				
 			end;
 			case JUMP_STATE: //movimiento salto
 				if (!grounded)
@@ -1411,6 +1417,8 @@ begin
 			case HURT_STATE:  
 				//reseteamos tiempo de paso
 				currentStepTime = 0;
+				//detenemos movimiento
+				this.vX = 0;
 				//si no lo queda energia al boss, lo matamos
 				if (bossLife-1 == 0)
 					this.state = DEAD_STATE;

@@ -3,7 +3,8 @@ BUGS:     -no es practico  el margin de outregion de los objetos ya que no apare
 		 -personaje sube y baja de las escaleras
 		 -objetos que no aparecen o aparecen cuando no deben al reiniciar nivel en el prmier frame congelado. PARECE QUE NO ES BUG Y SOLO SUCEDE CUANDO REINICIO EL NIVEL VIA DEBUG
 		 -no suena salto si pega en techo enseguida
-		
+		 -la fuente de texto no tiene espacios!
+		 
 		 PROBLEMA BUG EN BENNU CON SCALE MODE Y NO USAR COMPLETE RESTORE
 		 
 
@@ -15,9 +16,8 @@ SND:     -sonido al matar enemigo con objeto
 TOYLAND:  -determinar que contienen los items
 		  -tile no solido para caerse
 		  -items invisibles
-		  -el jefe final si le das toque corta el salto vX
-		  -bossclown tiene algunas zonas no transparentes en el grafico
-		  -bossclown debe esperar un poco mas a salir
+		  -como evitar que puedas matar al boss a saltos continuos??
+		  	  
 
 CONTROLS: -implementar el keylogger para mando segun controles genericos no teclas. y eleiminar los defines de teclas
 		  -implementar y controlar el numero de joysticks y el joystick seleccionado,numero botones,etc..

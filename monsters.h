@@ -75,6 +75,7 @@ Const
 	cBossClownBallTime	    = 20;	//Tiempo entre cada bola
 	cBossClownAtackRange    = 40;	//Rango de ataque bolas
 	cBossClownHurtCycles    = 4;	//Ciclos de animacion de dañado
+	cBossClownWaitTime      = 60;   //Tiempo espera para salir
 end;
 
 Global
