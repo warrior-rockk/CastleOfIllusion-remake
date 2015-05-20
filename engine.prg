@@ -1246,12 +1246,15 @@ begin
 						if (idPlayer.y <= (scroll[0].y0 + (cTileSize>>1)) && idPlayer.this.state == MOVE_ON_STAIRS_STATE)
 							doTransition = ROOM_TRANSITION_UP;
 						end;
-						//si no hay transicion vertical, ajustamos al tile superior de la Room
-						//ESTO ME PROVOCA FALLO AL SALIRME DE LA REGION SUPERIOR PERO NO SE PORQUE LO PUSE PORQUE
-						//NO LO HECHO EN FALTA
-						/*if (doTransition <> ROOM_TRANSITION_DOWN && doTransition <> ROOM_TRANSITION_UP)
-							scroll[cGameScroll].y0 = (cGameRegionH + (cTilesBetweenRooms*cTileSize)) * (idPlayer.y / (cGameRegionH + (cTilesBetweenRooms*cTileSize)));
-						end;*/
+						//si no hay transicion vertical, ajustamos la posicion multiplo de tamaño tile
+						if (doTransition <> ROOM_TRANSITION_DOWN && doTransition <> ROOM_TRANSITION_UP &&						
+						    scroll[cGameScroll].y0 % cTileSize <> 0)
+							if (scroll[cGameScroll].y0 % cTileSize > cHalfTSize)
+								scroll[cGameScroll].y0 += cTileSize - (scroll[cGameScroll].y0 % cTileSize);
+							else
+								scroll[cGameScroll].y0 -= scroll[cGameScroll].y0 % cTileSize;
+							end;
+						end;
 					end;
 				end;
 			end;
