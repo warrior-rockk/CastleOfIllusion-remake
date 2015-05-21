@@ -1,4 +1,4 @@
-BUGS:   -si mueres cuando matas al boss, la gema ya no vuelve a salir
+BUGS:   
 		-no deberias poder salir del boosroom. Implementar puerta que te cierra
 		-si vuelves a room con door, ves como se deshace.
 		-no es practico  el margin de outregion de los objetos ya que no aparecen al salirte un poco
@@ -19,8 +19,7 @@ SND:     -sonido al matar enemigo con objeto
 TOYLAND:  -determinar que contienen los items
 		  -tile no solido para caerse
 		  -items invisibles
-		  -como evitar que puedas matar al boss a saltos continuos??
-		  	  
+		  		  	  
 
 CONTROLS: -implementar el keylogger para mando segun controles genericos no teclas. y eleiminar los defines de teclas
 		  -implementar y controlar el numero de joysticks y el joystick seleccionado,numero botones,etc..

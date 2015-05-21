@@ -1415,6 +1415,8 @@ begin
 				end;
 			end;
 			case HURT_STATE:  
+				//no es colisionable en este estado
+				setBit(this.props,NO_COLLISION);
 				//reseteamos tiempo de paso
 				currentStepTime = 0;
 				//detenemos movimiento
@@ -1429,6 +1431,8 @@ begin
 						bossLife --;
 						//cambio de estado
 						this.state = MOVE_STATE;
+						//vuelve a ser colisionable
+						unSetBit(this.props,NO_COLLISION);
 						//reiniciamos tiempo daño
 						currentHurtTime = 0;
 					else

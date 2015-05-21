@@ -1133,6 +1133,10 @@ Begin
 	restartEntityType(TYPE monster);
 	restartEntityType(TYPE platform);	
 	
+	//reiniciamos flags
+	game.boss = false;
+	game.bossKilled = false;
+	
 End;
 
 //Proceso que controla el movimiento del scroll
