@@ -666,7 +666,10 @@ begin
 		
 		frame;
 	end;
-	
+
+onexit:
+	//al eliminar el boton, reseteamos el flag
+	idButton = 0;
 end;
 
 //proceso puerta con boton: cuando alguien setea idbutton distinto de 0, ocultamos los bloques de 
@@ -713,8 +716,9 @@ begin
 	
 	friction = floorFriction;
 	
-	this.state = IDLE_STATE;
-	
+	//seteamos estado segun idButton
+	idButton == 0 ? this.state = IDLE_STATE : this.state = PUSHED_STATE;
+		
 	//ajustamos propiedades fijas de un doorbutton
 	unSetBit(this.props,OBJ_BREAKABLE);
 	unSetBit(this.props,OBJ_PICKABLE);

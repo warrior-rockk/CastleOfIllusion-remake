@@ -1,6 +1,5 @@
 BUGS:   
 		-no deberias poder salir del boosroom. Implementar puerta que te cierra
-		-si vuelves a room con door, ves como se deshace.
 		-no es practico  el margin de outregion de los objetos ya que no aparecen al salirte un poco
 		 -tiles que se quedan en negro!!!
 		 -personaje sube y baja de las escaleras
