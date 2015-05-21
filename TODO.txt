@@ -6,8 +6,7 @@ BUGS:   -si mueres cuando matas al boss, la gema ya no vuelve a salir
 		 -personaje sube y baja de las escaleras
 		 -objetos que no aparecen o aparecen cuando no deben al reiniciar nivel en el prmier frame congelado. PARECE QUE NO ES BUG Y SOLO SUCEDE CUANDO REINICIO EL NIVEL VIA DEBUG
 		 -no suena salto si pega en techo enseguida
-		 -la fuente de texto no tiene espacios!
-		 
+		 		 
 		 PROBLEMA BUG EN BENNU CON SCALE MODE Y NO USAR COMPLETE RESTORE
 		 
 

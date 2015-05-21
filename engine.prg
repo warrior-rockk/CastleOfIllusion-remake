@@ -135,7 +135,7 @@ begin
 		switch (game.state)
 			case SPLASH:
 				//mensaje hasta pulsar tecla
-				write(fntGame,cResx>>1,cResy>>1,ALIGN_CENTER,"CASTLE OF   ILLUSION");
+				write(fntGame,cResx>>1,cResy>>1,ALIGN_CENTER,"CASTLE OF ILLUSION");
 				repeat
 					frame;
 				until(WGE_CheckControl(CTRL_START,E_DOWN));
