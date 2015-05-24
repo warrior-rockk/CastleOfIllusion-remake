@@ -6,9 +6,7 @@ BUGS:   -se activa el game.boss si te acercas al boss desde la otra pared!
 SND:      
 
 TOYLAND:  -determinar que contienen los items
-		  -tile no solido para caerse
-		  -items invisibles
-		  		  	  
+		  		  		  	  
 
 CONTROLS: -implementar el keylogger para mando segun controles genericos no teclas. y eleiminar los defines de teclas
 		  -implementar y controlar el numero de joysticks y el joystick seleccionado,numero botones,etc..
