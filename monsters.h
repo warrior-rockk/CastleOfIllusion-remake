@@ -22,6 +22,9 @@
 #define MONS_TOYCAR             8       //Monstruo ToyCar
 #define MONS_BOSS_CLOWN         9		//Monstruo Jefe Clown
 
+//efectos de sonido
+#define KILL_SND				        0
+
 //enemigo
 Type _monster         			//Tipo de Dato de enemigo
 	int monsterType;      		//Tipo del enemigo

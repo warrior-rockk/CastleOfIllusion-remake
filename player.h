@@ -41,11 +41,9 @@
 #define DEAD_SND				2 
 #define HURT_SND				3
 #define JUMP_SND				4
-#define KILL_SND				5
-#define PICK_SND				6
-#define PICKITEM_SND			7 //ESTE ES DE OBJETOS
-#define STAIRS_SND				8
-#define THROW_SND				9
+#define PICK_SND				5
+#define STAIRS_SND				6
+#define THROW_SND				7
 
 
 Const

@@ -36,6 +36,12 @@ begin
 		case (TYPE player):
 			sndChannel = cPlayerSndChn;
 		end;
+		case (TYPE object):
+			sndChannel = cObjectSndChn;
+		end;
+		case (TYPE monster):
+			sndChannel = cMonsterSndChn;
+		end;
 	end;
 		
 	//reproducimos el sonido al entrar en el estado
@@ -56,6 +62,12 @@ begin
 		end;
 		case (TYPE player):
 			sndChannel = cPlayerSndChn;
+		end;
+		case (TYPE object):
+			sndChannel = cObjectSndChn;
+		end;
+		case (TYPE monster):
+			sndChannel = cMonsterSndChn;
 		end;
 	end;
 	

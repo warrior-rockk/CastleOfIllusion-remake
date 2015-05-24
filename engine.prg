@@ -81,11 +81,15 @@ begin
 	playerSound[DEAD_SND] 		= load_wav("snd\dead.ogg");	
 	playerSound[HURT_SND]		= load_wav("snd\hurt.ogg");	
 	playerSound[JUMP_SND] 		= load_wav("snd\jump.ogg");	
-	playerSound[KILL_SND] 		= load_wav("snd\kill.ogg");	
 	playerSound[PICK_SND]		= load_wav("snd\pick.ogg");	
-	playerSound[PICKITEM_SND] 	= load_wav("snd\pickItem.ogg");
 	playerSound[STAIRS_SND]		= load_wav("snd\stairs.ogg");	
 	playerSound[THROW_SND] 		= load_wav("snd\throw.ogg");	
+	
+	//sonidos de objetos
+	objectSound[PICKITEM_SND] 	= load_wav("snd\pickItem.ogg");
+	
+	//sonidos de enemigos
+	monsterSound[KILL_SND]		= load_wav("snd\kill.ogg");
 	
 	//fuente del juego
 	fntGame     = fnt_load("fnt\gameFont.fnt");

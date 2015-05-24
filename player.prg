@@ -513,6 +513,8 @@ BEGIN
 						   (this.state == SLOPING_STATE  || this.state == BREAK_SLOPING_STATE) ) 
 						//enviamos señal de daño
 						colID.this.state = HURT_STATE;
+						//reproducimos sonido
+						WGE_PlayEntitySnd(id,monsterSound[KILL_SND]);
 					//si no, el monstruo te daña si no soy invencible y tiene propiedad de dañar
 					elseif (!hurtDisabled && !isBitSet(colID.this.props,MONS_HARMLESS)) 
 						hurt = true;

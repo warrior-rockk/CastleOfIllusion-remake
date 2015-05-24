@@ -28,9 +28,12 @@
 //propiedades internas
 #define OBJ_IS_KEY               		16384   //Objeto es llave
 
-
 //estados propios de los objetos
 #define OBJ_APPEARING_STATE				100
+
+//efectos de sonido
+#define PICKITEM_SND					0
+
 
 //constantes de objetos
 const

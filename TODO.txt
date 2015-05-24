@@ -9,11 +9,8 @@ BUGS:
 		 PROBLEMA BUG EN BENNU CON SCALE MODE Y NO USAR COMPLETE RESTORE
 		 
 
-SND:     -sonido al matar enemigo con objeto
-		 -sonido escaleras con transition room
+SND:     -sonido escaleras con transition room
 		 -sonido puertas
-		 -musica jefe
-		 -sonido al recojer item
 
 TOYLAND:  -determinar que contienen los items
 		  -tile no solido para caerse

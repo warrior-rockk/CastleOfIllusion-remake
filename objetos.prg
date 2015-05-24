@@ -296,6 +296,8 @@ begin
 					if (colDir <> NOCOL && colID.this.state <> DEAD_STATE)
 						collided = true;
 						colID.this.state = HURT_STATE;
+						//reproducimos sonido
+						WGE_PlayEntitySnd(father,monsterSound[KILL_SND]);
 					end;
 					
 				until (colID == 0);
@@ -518,18 +520,26 @@ begin
 					if (isBitSet(this.props,OBJ_ITEM_COIN))
 						//incrementa puntuacion
 						game.score += cSmallCoinScore;
+						//reproducimos sonido
+						WGE_PlayEntitySnd(father,objectSound[PICKITEM_SND]);
 					end;
 					if (isBitSet(this.props,OBJ_ITEM_BIG_COIN))
 						//incrementa puntuacion
 						game.score += cBigCoinScore;
+						//reproducimos sonido
+						WGE_PlayEntitySnd(father,objectSound[PICKITEM_SND]);
 					end;
 					if (isBitSet(this.props,OBJ_ITEM_FOOD))
 						//incrementa 1 energia
 						game.playerLife ++;
+						//reproducimos sonido
+						WGE_PlayEntitySnd(father,objectSound[PICKITEM_SND]);
 					end;
 					if (isBitSet(this.props,OBJ_ITEM_BIG_FOOD))
 						//incrementa toda la energia
 						game.playerLife = game.playerMaxLife;
+						//reproducimos sonido
+						WGE_PlayEntitySnd(father,objectSound[PICKITEM_SND]);
 					end;
 					if (isBitSet(this.props,OBJ_ITEM_TRIE))
 						//incrementa 1 vida
