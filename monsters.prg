@@ -763,6 +763,8 @@ begin
 					//volvemos a estado inicial
 					this.state = INVISIBLE_STATE;
 				end;
+				//reproducimos sonido
+				WGE_PlayEntityStateSnd(id,monsterSound[BUBBLE_SND]);
 			end;
 		end;
 		

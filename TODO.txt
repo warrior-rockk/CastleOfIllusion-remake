@@ -1,14 +1,9 @@
-BUGS:   
+BUGS:   -se activa el game.boss si te acercas al boss desde la otra pared!
 		-no deberias poder salir del boosroom. Implementar puerta que te cierra
 		-no es practico  el margin de outregion de los objetos ya que no aparecen al salirte un poco
-		 -tiles que se quedan en negro!!!
-		 -personaje sube y baja de las escaleras
-		 -objetos que no aparecen o aparecen cuando no deben al reiniciar nivel en el prmier frame congelado. PARECE QUE NO ES BUG Y SOLO SUCEDE CUANDO REINICIO EL NIVEL VIA DEBUG
-		 		 		 
-		 PROBLEMA BUG EN BENNU CON SCALE MODE Y NO USAR COMPLETE RESTORE
-		 
+		 -tiles que se quedan en negro!!! (solo pasa en versiones < 317?)
 
-SND:      -sonido puertas
+SND:      
 
 TOYLAND:  -determinar que contienen los items
 		  -tile no solido para caerse

@@ -37,13 +37,12 @@
 
 //efectos de sonido
 #define BOUNCE_SND				0
-#define BREAK_SND				1 //ESTE ES DE OBJETOS
-#define DEAD_SND				2 
-#define HURT_SND				3
-#define JUMP_SND				4
-#define PICK_SND				5
-#define STAIRS_SND				6
-#define THROW_SND				7
+#define DEAD_SND				1
+#define HURT_SND				2
+#define JUMP_SND				3
+#define PICK_SND				4
+#define STAIRS_SND				5
+#define THROW_SND				6
 
 
 Const

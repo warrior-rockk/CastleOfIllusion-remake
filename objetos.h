@@ -32,7 +32,14 @@
 #define OBJ_APPEARING_STATE				100
 
 //efectos de sonido
-#define PICKITEM_SND					0
+#define BREAK_SND				        0
+#define KILL_SND				        1
+#define KILLSOLID_SND			        2
+#define PICKITEM_SND					3
+#define PICKCOIN_SND					4
+#define PICKSTAR_SND					5
+#define PICKTRIE_SND					6
+#define DOOR_SND						7
 
 
 //constantes de objetos
@@ -46,7 +53,7 @@ const
 	cItemTimeOut        =           8;          //Timeout Item
 	cItemTimeToBlink    =           4;			//Tiempo parpadeo antes de timeout
 	cItemBlinkTime      =           3;			//Velocidad parpadeo
-	cDoorTime			=           10;         //Velocidad Puerta
+	cDoorTime			=           20;         //Velocidad Puerta
 	cAppearTime         =           80;			//Tiempo que aparece un objeto invisible
 	
 	//puntuaciones

@@ -297,7 +297,11 @@ begin
 						collided = true;
 						colID.this.state = HURT_STATE;
 						//reproducimos sonido
-						WGE_PlayEntitySnd(father,monsterSound[KILL_SND]);
+						if (isBitSet(this.props,OBJ_BREAKABLE))
+							WGE_PlayEntitySnd(father,objectSound[KILL_SND]);
+						else
+							WGE_PlayEntitySnd(father,objectSound[KILLSOLID_SND]);
+						end;
 					end;
 					
 				until (colID == 0);
@@ -316,6 +320,8 @@ begin
 						
 						//cambiamos de estado
 						this.state = DEAD_STATE;
+						//reproducimos sonido
+						WGE_PlayEntitySnd(father,objectSound[BREAK_SND]);
 					end;
 				else
 					//si no ha colisionado y toca suelo, cambiamos de estado
@@ -366,6 +372,8 @@ begin
 				end;
 				//matamos el objeto
 				signal(id,s_kill);
+				//reproducimos sonido
+				WGE_PlayEntityStateSnd(id,objectSound[BREAK_SND]);
 			end;
 		end;
 			
@@ -521,13 +529,13 @@ begin
 						//incrementa puntuacion
 						game.score += cSmallCoinScore;
 						//reproducimos sonido
-						WGE_PlayEntitySnd(father,objectSound[PICKITEM_SND]);
+						WGE_PlayEntitySnd(father,objectSound[PICKCOIN_SND]);
 					end;
 					if (isBitSet(this.props,OBJ_ITEM_BIG_COIN))
 						//incrementa puntuacion
 						game.score += cBigCoinScore;
 						//reproducimos sonido
-						WGE_PlayEntitySnd(father,objectSound[PICKITEM_SND]);
+						WGE_PlayEntitySnd(father,objectSound[PICKCOIN_SND]);
 					end;
 					if (isBitSet(this.props,OBJ_ITEM_FOOD))
 						//incrementa 1 energia
@@ -544,11 +552,15 @@ begin
 					if (isBitSet(this.props,OBJ_ITEM_TRIE))
 						//incrementa 1 vida
 						game.playerTries++;
+						//reproducimos sonido
+						WGE_PlayEntitySnd(father,objectSound[PICKTRIE_SND]);
 					end;
 					if (isBitSet(this.props,OBJ_ITEM_STAR))
 						//añade una estrella a la vida
 						game.playerMaxLife += 1;
 						game.playerLife = game.playerMaxLife;
+						//reproducimos sonido
+						WGE_PlayEntitySnd(father,objectSound[PICKSTAR_SND]);
 					end;
 					if (isBitSet(this.props,OBJ_ITEM_GEM))
 						//fin del nivel actual
@@ -752,6 +764,7 @@ begin
 				unSetBit(this.props,NO_COLLISION);
 				//grafico inicial
 				graph = _graph;
+								
 				//si se pulsa boton
 				if (idButton <> 0 )
 					//seteamos flag de apertura
@@ -784,6 +797,8 @@ begin
 							until (doorID == 0);
 							//cambiamos estado
 							this.state = PUSHED_STATE;
+							//reproducimos sonido
+							WGE_PlayEntityStateSnd(id,objectSound[DOOR_SND]);
 						end;
 					end;
 				end;
@@ -793,6 +808,8 @@ begin
 				SetBit(this.props,NO_COLLISION);
 				//le quitamos grafico
 				graph = 0;
+				//reproducimos sonido
+				WGE_PlayEntityStateSnd(id,objectSound[DOOR_SND]);
 				
 				//si se suelta el boton
 				if (idButton == 0 )
@@ -828,6 +845,8 @@ begin
 							graph = _graph;
 							//cambiamos de estado
 							this.state = IDLE_STATE;
+							//reproducimos sonido
+							WGE_PlayEntityStateSnd(id,objectSound[DOOR_SND]);
 						end;
 					end;
 				end;
@@ -954,6 +973,8 @@ begin
 							until (doorID == 0);
 							//cambiamos estado
 							this.state = PUSHED_STATE;
+							//reproducimos sonido
+							WGE_PlayEntityStateSnd(id,objectSound[DOOR_SND]);
 						end;
 					end;
 				end;

@@ -180,6 +180,11 @@ begin
 				say (header + "WGE_Objects: " + texto);
 			end;
 		end;
+		case DEBUG_SOUND:
+			if (traceSOUND)
+				say (header + "WGE_Sound: " + texto);
+			end;
+		end;
 	end;
 	
 end;

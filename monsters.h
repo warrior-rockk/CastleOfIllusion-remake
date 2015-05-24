@@ -23,7 +23,7 @@
 #define MONS_BOSS_CLOWN         9		//Monstruo Jefe Clown
 
 //efectos de sonido
-#define KILL_SND				        0
+#define BUBBLE_SND						0
 
 //enemigo
 Type _monster         			//Tipo de Dato de enemigo

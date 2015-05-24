@@ -31,25 +31,30 @@ function WGE_PlayEntityStateSnd(entity idEntity,int idSound)
 private
 	int sndChannel;		//canal de sonido para reproducir
 begin
-	//seteamos el canal de sonido segun entidad
-	switch (getType(idEntity))
-		case (TYPE player):
-			sndChannel = cPlayerSndChn;
+	//comprobamos si existe el idSound
+	if (idSound <> 0)
+		//seteamos el canal de sonido segun entidad
+		switch (getType(idEntity))
+			case (TYPE player):
+				sndChannel = cPlayerSndChn;
+			end;
+			case (TYPE object):
+				sndChannel = cObjectSndChn;
+			end;
+			case (TYPE monster):
+				sndChannel = cMonsterSndChn;
+			end;
+			default:
+				sndChannel = cDefaultSndChn;
+			end;
 		end;
-		case (TYPE object):
-			sndChannel = cObjectSndChn;
+			
+		//reproducimos el sonido al entrar en el estado
+		if (idEntity.this.prevState <> idEntity.this.state)
+			play_wav(idSound,0,sndChannel);
 		end;
-		case (TYPE monster):
-			sndChannel = cMonsterSndChn;
-		end;
-		default:
-			sndChannel = cDefaultSndChn;
-		end;
-	end;
-		
-	//reproducimos el sonido al entrar en el estado
-	if (idEntity.this.prevState <> idEntity.this.state)
-		play_wav(idSound,0,sndChannel);
+	else
+		log("Id sonido inexistente",DEBUG_SOUND);
 	end;
 end;
 
@@ -58,25 +63,30 @@ function WGE_PlayEntitySnd(entity idEntity,int idSound)
 private
 	int sndChannel;		//canal de sonido para reproducir
 begin
-	//seteamos el canal de sonido segun entidad
-	switch (getType(idEntity))
-		case (TYPE WGE_Loop):
-			sndChannel = cGameSndChn;
+	//comprobamos si existe el idSound
+	if (idSound <> 0 )
+		//seteamos el canal de sonido segun entidad
+		switch (getType(idEntity))
+			case (TYPE WGE_Loop):
+				sndChannel = cGameSndChn;
+			end;
+			case (TYPE player):
+				sndChannel = cPlayerSndChn;
+			end;
+			case (TYPE object):
+				sndChannel = cObjectSndChn;
+			end;
+			case (TYPE monster):
+				sndChannel = cMonsterSndChn;
+			end;
+			default:
+				sndChannel = cDefaultSndChn;
+			end;
 		end;
-		case (TYPE player):
-			sndChannel = cPlayerSndChn;
-		end;
-		case (TYPE object):
-			sndChannel = cObjectSndChn;
-		end;
-		case (TYPE monster):
-			sndChannel = cMonsterSndChn;
-		end;
-		default:
-			sndChannel = cDefaultSndChn;
-		end;
+		
+		//reproducimos el sonido
+		play_wav(idSound,0,sndChannel);
+	else
+		log("Id sonido inexistente",DEBUG_SOUND);
 	end;
-	
-	//reproducimos el sonido
-	play_wav(idSound,0,sndChannel);
 end;
