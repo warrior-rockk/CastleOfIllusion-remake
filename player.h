@@ -59,7 +59,7 @@ Const
 	cPlayerDecelXSlopeUp    = 0.1;			//Factor deceleracion X al subir rampa
 	cPlayerAccelY			= 3;			//Aceleracion Player Y salto
 	cPlayerVelMaxY          = 10;			//Velocidad Maxima Y Player
-	cPlayerVelYStairs       = 2;			//Velocidad movimiento en escalera
+	cPlayerVelYStairs       = 1;			//Velocidad movimiento en escalera
 	cPlayerAtackBounce      = 4;            //Rebote al romper objet/atacar
 	cPlayerPowerAtackBounce = 1.4;          //Extra de rebote al romper/atacar
 	cPlayerPowerJumpFactor  = 0.25;			//Factor de incremento poder salto

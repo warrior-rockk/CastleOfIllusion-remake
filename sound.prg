@@ -42,6 +42,9 @@ begin
 		case (TYPE monster):
 			sndChannel = cMonsterSndChn;
 		end;
+		default:
+			sndChannel = cDefaultSndChn;
+		end;
 	end;
 		
 	//reproducimos el sonido al entrar en el estado
@@ -68,6 +71,9 @@ begin
 		end;
 		case (TYPE monster):
 			sndChannel = cMonsterSndChn;
+		end;
+		default:
+			sndChannel = cDefaultSndChn;
 		end;
 	end;
 	

@@ -13,6 +13,7 @@ const
 	cPlayerSndChn   = 2;
 	cObjectSndChn 	= 3;
 	cMonsterSndChn  = 4;
+	cDefaultSndChn  = 5;
 End;
 
 Global

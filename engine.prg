@@ -120,21 +120,21 @@ private
 begin
 	priority = cMainPrior;
 	
-	//contador de reloj por frames.A 60 fps = 16ms 
-	clockCounter++;
-
-	//Flanco de reloj segun intervalo escogido
-	if (clockCounter % cTimeInterval == 0) 
-		if (!clockTickMem)
-			clockTick = true;
-			clockTickMem = true;
-		end;
-	else
-		clockTick = false;
-		clockTickMem = false;
-	end;
-	
 	loop
+		//contador de reloj por frames.A 60 fps = 16ms 
+		clockCounter++;
+
+		//Flanco de reloj segun intervalo escogido
+		if (clockCounter % cTimeInterval == 0) 
+			if (!clockTickMem)
+				clockTick = true;
+				clockTickMem = true;
+			end;
+		else
+			clockTick = false;
+			clockTickMem = false;
+		end;
+			
 		//estado del juego
 		switch (game.state)
 			case SPLASH:
@@ -1408,6 +1408,15 @@ begin
 			end;
 			//actualizamos la posicion del player para no dar muerte por region
 			idPlayer.y  = animPlayer.y;
+			
+			//si la transicion es por escaleras, efecto sonido
+			if (idPlayer.this.state == MOVE_ON_STAIRS_STATE)
+				//reproducimos sonido en cada loop
+				if (tickClock(16))
+					WGE_PlayEntitySnd(id,playerSound[STAIRS_SND]);
+				end;
+			end;
+			
 			frame;
 		until( abs(scroll[0].y0 - scrollY0) >= cGameRegionH+(cTilesBetweenRooms*cTileSize) )
 	end;
@@ -1422,6 +1431,7 @@ begin
 			end;
 			//actualizamos la posicion del player para no dar muerte por region
 			idPlayer.x  = animPlayer.x;
+							
 			frame;
 		until( abs(scroll[0].x0 - scrollX0) >= cGameRegionW)
 	end;

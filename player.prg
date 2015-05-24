@@ -802,7 +802,7 @@ BEGIN
 			end;
 			case JUMP_STATE:
 				//subiendo
-				if (this.vY < 0)
+				if (this.vY <= 0)
 					//reproducimos sonido estado
 					WGE_PlayEntityStateSnd(id,playerSound[JUMP_SND]);	
 				
@@ -855,9 +855,11 @@ BEGIN
 				WGE_Animate(18,18,1,ANIM_LOOP);
 			end
 			case MOVE_ON_STAIRS_STATE:
-				WGE_Animate(19,20,8,ANIM_LOOP);
-				if (tickClock(20))
-					//reproducimos sonido estado
+				//reproducimos sonido estado
+				WGE_PlayEntityStateSnd(id,playerSound[STAIRS_SND]);
+				
+				if (WGE_Animate(19,20,8,ANIM_LOOP))
+					//reproducimos sonido en cada loop
 					WGE_PlayEntitySnd(id,playerSound[STAIRS_SND]);
 				end;
 			end
