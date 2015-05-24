@@ -343,7 +343,7 @@ include "debug.h";			//funciones debug
 include "player.h";       	//Proceso jugador
 include "collisions.h"      //Funciones de colision
 include "animation.h"      	//Funciones de animacion
-include "objetos.h"        	//Funciones de objetos
+include "objects.h"        	//Funciones de objetos
 include "monsters.h"		//Funciones de monstruos
 include "platforms.h"		//Funciones de plataformas
 
@@ -354,7 +354,7 @@ include "sound.prg";		//funciones de sonido
 include "debug.prg";		//Funciones de debug
 include "player.prg";       //Proceso jugador
 include "collisions.prg";	//Funciones de colision
-include "objetos.prg"		//Procesos objetos
+include "objects.prg"		//Procesos objetos
 include "monsters.prg"		//Procesos monstruos
 include "platforms.prg"		//Procesos plataformas
 include "animation.prg"		//Funciones de animacion
