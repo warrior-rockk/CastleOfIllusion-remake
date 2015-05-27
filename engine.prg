@@ -9,18 +9,7 @@
 //Tareas de inicializacion del engine
 function WGE_Init()
 begin
-		
-	//test checkpoint
-	/*level.numCheckPoints = 2;
-	level.checkPoints[0].position.x = 49;
-	level.checkPoints[0].position.y = 477;
-	level.checkPoints[0]._flags = B_HMIRROR;
-	
-	level.checkPoints[1].position.x = 225;
-	level.checkPoints[1].position.y = 702;
-	level.checkPoints[1]._flags = 0;
-    */
-	
+
 	//Dibujamos mapas que componen las distintas figuras de tile
 	//que se usarán para comprobar las durezas de colision
 	mapBox = map_new(cTileSize,cTileSize,8);
@@ -40,14 +29,6 @@ begin
 	mapSolidOnFall = map_new(cTileSize,cTileSize,8);
 	draw_SolidOnFall(mapSolidOnFall);
 	
-	//iniciamos variables juego
-	game.playerTries 	= 3;
-	game.playerLife 	= 3;
-	game.playerMaxLife  = 3;
-	game.score      	= 0;
-	game.numLevel       = 0;
-	game.state          = SPLASH;
-	
 	//Archivos de los niveles
 	//level 0
 	levelFiles[0].MapFile 	= "levels\ToyLand\ToyLand.bin";
@@ -62,46 +43,28 @@ begin
 	
 	//archivo graficos generales
 	fpgGame 	= fpg_load("gfx\game.fpg");	 
-	//sonidos generales
-	gameSound[PAUSE_SND] 		= load_wav("snd\pause.ogg");
-	gameSound[TIMESCORE_SND] 	= load_wav("snd\timeScor.ogg");
-	gameSound[STOPSCORE_SND] 	= load_wav("snd\endScore.ogg");
-	
-	//musicas generales
-	gameMusic[DEAD_MUS]         = load_song("mus\dead.ogg");
-	gameMusic[END_LEVEL_MUS]    = load_song("mus\levelEnd.ogg");
-	gameMusic[BOSS_MUS]    		= load_song("mus\boss.ogg");
 	
 	//archivo del player
 	fpgPlayer 	= fpg_load("gfx\player.fpg");
 	
-	//sonidos del jugador
-	playerSound[BOUNCE_SND] 	= load_wav("snd\bounce.ogg");
-	playerSound[DEAD_SND] 		= load_wav("snd\dead.ogg");	
-	playerSound[HURT_SND]		= load_wav("snd\hurt.ogg");	
-	playerSound[JUMP_SND] 		= load_wav("snd\jump.ogg");	
-	playerSound[PICK_SND]		= load_wav("snd\pick.ogg");	
-	playerSound[STAIRS_SND]		= load_wav("snd\stairs.ogg");	
-	playerSound[THROW_SND] 		= load_wav("snd\throw.ogg");	
-	
-	//sonidos de objetos
-	objectSound[BREAK_SND] 		= load_wav("snd\break.ogg");
-	objectSound[KILL_SND]		= load_wav("snd\kill.ogg");
-	objectSound[KILLSOLID_SND]  = load_wav("snd\killSolid.ogg");
-	objectSound[PICKITEM_SND] 	= load_wav("snod\pickItem.ogg");
-	objectSound[PICKCOIN_SND] 	= load_wav("snd\pickCoin.ogg");
-	objectSound[PICKSTAR_SND] 	= load_wav("snd\star.ogg");
-	objectSound[PICKTRIE_SND] 	= load_wav("snd\trie.ogg");
-	objectSound[DOOR_SND] 	    = load_wav("snd\door.ogg");
-	
-	//sonidos de enemigos
-	monsterSound[BUBBLE_SND]	= load_wav("snd\bubble.ogg");
-	
 	//fuente del juego
 	fntGame     = fnt_load("fnt\gameFont.fnt");
 	
+	//archivos de sonido
+	if (!loadSoundFiles())
+		WGE_Quit();
+	end;
+	
 	//Iniciamos modo grafico
 	WGE_InitScreen();
+	
+	//iniciamos variables juego
+	game.playerTries 	= 3;
+	game.playerLife 	= 3;
+	game.playerMaxLife  = 3;
+	game.score      	= 0;
+	game.numLevel       = 0;
+	game.state          = SPLASH;
 	
 	//Arrancamos el loop del juego
 	WGE_Loop();
@@ -1799,4 +1762,54 @@ begin
 			entityID.this.state = INITIAL_STATE;
 		end;
 	until (entityID == 0);
+end;
+
+//cargamos archivos de sonido
+function int loadSoundFiles()
+private
+	int numSoundFiles;		//numero de archivos
+	int fileError;			//error en algun archivo
+begin
+	//iniciamos
+	numSoundFiles = 0;
+	fileError 	  = false;
+	
+	//musicas generales
+	(gameMusic[DEAD_MUS]        = WGE_LoadMusic("mus\dead.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
+	(gameMusic[END_LEVEL_MUS]   = WGE_LoadMusic("mus\levelEnd.ogg")) 	<= 0 ? fileError = true : numSoundFiles++;
+	(gameMusic[BOSS_MUS]    	= WGE_LoadMusic("mus\boss.ogg"))		<= 0 ? fileError = true : numSoundFiles++;
+	
+	//sonidos generales
+	(gameSound[PAUSE_SND] 		= WGE_LoadSound("snd\pause.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
+		
+	
+	(gameSound[TIMESCORE_SND] 	= WGE_LoadSound("snd\timeScor.ogg")) 	<= 0 ? fileError = true : numSoundFiles++;
+	(gameSound[STOPSCORE_SND] 	= WGE_LoadSound("snd\endScore.ogg")) 	<= 0 ? fileError = true : numSoundFiles++;
+	
+    //sonidos del jugador
+	(playerSound[BOUNCE_SND] 	= WGE_LoadSound("snd\bounce.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
+	(playerSound[DEAD_SND] 		= WGE_LoadSound("snd\dead.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;	
+	(playerSound[HURT_SND]		= WGE_LoadSound("snd\hurt.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;	
+	(playerSound[JUMP_SND] 		= WGE_LoadSound("snd\jump.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;	
+	(playerSound[PICK_SND]		= WGE_LoadSound("snd\pick.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;	
+	(playerSound[STAIRS_SND]	= WGE_LoadSound("snd\stairs.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;	
+	(playerSound[THROW_SND] 	= WGE_LoadSound("snd\throw.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
+	
+	//sonidos de objetos
+	(objectSound[BREAK_SND] 	= WGE_LoadSound("snd\break.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
+	(objectSound[KILL_SND]		= WGE_LoadSound("snd\kill.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
+	(objectSound[KILLSOLID_SND] = WGE_LoadSound("snd\killSolid.ogg")) 	<= 0 ? fileError = true : numSoundFiles++;
+	(objectSound[PICKITEM_SND] 	= WGE_LoadSound("snd\pickItem.ogg")) 	<= 0 ? fileError = true : numSoundFiles++;
+	(objectSound[PICKCOIN_SND] 	= WGE_LoadSound("snd\pickCoin.ogg")) 	<= 0 ? fileError = true : numSoundFiles++;
+	(objectSound[PICKSTAR_SND] 	= WGE_LoadSound("snd\star.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
+	(objectSound[PICKTRIE_SND] 	= WGE_LoadSound("snd\trie.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
+	(objectSound[DOOR_SND] 	    = WGE_LoadSound("snd\door.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
+	
+	//sonidos de enemigos
+	(monsterSound[BUBBLE_SND]	= WGE_LoadSound("snd\bubble.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
+	
+	fileError ? log("Ha habido un fallo en algun archivo de sonido",DEBUG_SOUND) : log("Cargados "+numSoundFiles+" archivos de sonido",DEBUG_SOUND);
+	
+	return !fileError;
+	
 end;

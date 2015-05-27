@@ -1,10 +1,8 @@
 BUGS:   -se activa el game.boss si te acercas al boss desde la otra pared!
 		-no deberias poder salir del boosroom. Implementar puerta que te cierra
 		-no es practico  el margin de outregion de los objetos ya que no aparecen al salirte un poco
-		 -tiles que se quedan en negro!!! (solo pasa en versiones < 317?)
-
-SND:      
-
+		-tiles que se quedan en negro!!!
+		
 TOYLAND:  -determinar que contienen los items
 		  		  		  	  
 
@@ -24,8 +22,7 @@ PLATFORMS: -la plataforma que cae cuando la tocas, no te permite pasar si estas 
 OBJECTS: 
 		-el coin rebota mas rato y el giro va perdiendo velocidad
 		
-ENGINE: -centralizar y optimizar carga de archivos
-		-Los codigos de tile deberian ser bits para ser simultaneos?
+ENGINE: -Los codigos de tile deberian ser bits para ser simultaneos?
 		-UpdateObject generalizarlo a updateentity para todos en engine.prg
 		-con screen_get puedo caputar la pantalla y hacer transiciones
 		-los estados posibles deberian diferenciarse por tipo de proceso a pesar de tener estados globales que tengan el mismo numero

@@ -90,3 +90,27 @@ begin
 		log("Id sonido inexistente",DEBUG_SOUND);
 	end;
 end;
+
+//funcion para cargar archivo de sonido
+function int WGE_LoadSound(string soundFile)
+private
+	int soundID;	//identificador del sonido
+begin
+	if ((soundID =  load_wav(soundFile)) <=0 ) 
+		log("Fallo al cargar el archivo de sonido: "+soundFile,DEBUG_SOUND);
+	end;
+	
+	return soundID;
+end;
+
+//funcion para cargar archivo de musica
+function int WGE_LoadMusic(string musicFile)
+private
+	int musicID;	//identificador del sonido
+begin
+	if ((musicID =  load_song(musicFile)) <=0 ) 
+		log("Fallo al cargar el archivo de musica: "+musicFile,DEBUG_SOUND);
+	end;
+	
+	return musicID;
+end;
