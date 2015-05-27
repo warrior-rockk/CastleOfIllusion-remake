@@ -13,6 +13,7 @@
 #define OBJ_DOORBUTTON            3       //Objeto puerta con boton
 #define OBJ_KEY					  4       //Objeto llave
 #define OBJ_DOORKEY               5       //Objeto puerta con llave
+#define OBJ_DOORBOSS			  6       //Objeto puerta de Boss Zone
 
 //propiedades de los objetos
 #define OBJ_PICKABLE				  	8		//Puede ser recogido
@@ -124,3 +125,11 @@ public
 	_entityPublicData this;			//datos publicos de entidad
 end
 end
+
+//declaracion de objeto puerta de boss
+Declare Process doorBoss(int _graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
+public
+	_entityPublicData this;			//datos publicos de entidad
+end
+end
+

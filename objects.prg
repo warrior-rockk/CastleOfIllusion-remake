@@ -80,6 +80,9 @@ begin
 					case OBJ_DOORKEY:
 						idObject = keyDoor(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
 					end;
+					case OBJ_DOORBOSS:
+						idObject = doorBoss(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
+					end;
 				end;
 				log("Se crea el objeto "+idObject,DEBUG_OBJECTS);
 				
@@ -983,6 +986,137 @@ begin
 				//eliminamos la puerta
 				signal(father,s_kill);
 				signal(id,s_kill);				
+			end;
+		end;
+		
+		//actualizamos velocidad y posicion
+		updateVelPos(id,grounded);
+		
+		//actualizamos el objeto padre
+		if (isType(father,TYPE object))
+			updateObject(id,father);		
+		end;
+		
+		//alineacion del eje X del grafico
+		alignAxis(id);
+		
+		frame;
+	end;
+	
+end;
+
+//proceso puerta Boss Zone. Cierra el camino cuando entras en una zona de Boss
+process doorBoss(int _graph,int x,int y,int _ancho,int _alto,int _axisAlign,int _flags,int _props)
+private
+	byte grounded;			//flag de en suelo
+	float friction;			//friccion local
+	
+	entity colID;			//entidad con al que colisiona
+	int colDir;				//direccion de la colision
+	byte collided;			//flag de colisionado
+	
+	int doorTime;			//Tiempo de apertura/cierre
+	entity doorID;			//Id de los objetos puerta que puedan existir
+	byte openDoor;			//Flag de abrir
+	int i;					//Var aux
+begin
+	region = cGameRegion;
+	ctype = c_scroll;
+	z = cZObject;
+	file = level.fpgObjects;
+	flags = _flags;
+	
+	graph = _graph;
+	
+	//igualamos la propiedades publicas a las de parametros
+	this.ancho = _ancho;
+	this.alto = _alto;
+	this.props = _props;
+	this.axisAlign = _axisAlign;
+	
+	//modo debug sin graficos
+	if (file<0)
+		graph = map_new(this.ancho,this.alto,8,0);
+		map_clear(0,graph,rand(200,300));
+	end;
+	
+	//establecemos posicion y velocidad
+	this.fX = x;
+	this.fY = y;
+		
+	WGE_CreateObjectColPoints(id);
+	
+	friction = floorFriction;
+	
+	this.state = IDLE_STATE;
+	
+	//ajustamos propiedades fijas de un doorbutton
+	unSetBit(this.props,OBJ_BREAKABLE);
+	unSetBit(this.props,OBJ_PICKABLE);
+	SetBit(this.props,NO_PHYSICS);
+	unSetBit(this.props,NO_COLLISION);
+	
+	//actualizamos al padre con los datos de creacion
+	updateObject(id,father);
+	
+	loop
+		//nos actualizamos del padre
+		updateObject(father,id);
+		
+		//guardamos estado actual
+		this.prevState = this.state;
+		
+		//comportamiento item
+		switch (this.state)
+			case IDLE_STATE:
+				//hacemos la puerta no solida
+				SetBit(this.props,NO_COLLISION);
+				//le quitamos grafico
+				graph = 0;
+								
+				//si  tengo flag boss
+				if (game.boss)
+					//reseteamos el flag de apertura
+					openDoor = false;
+					//comprobamos las demas puertas para abrir en secuencia segun altura
+					repeat
+						doorID = get_id(TYPE doorBoss);
+						if (doorID <> 0)
+							//si hay alguna puerta por debajo que no se ha cerrado, reseteamos el cierre
+							if (doorID.y > y && doorID.this.state <> PUSHED_STATE)
+								openDoor = true;
+							end;
+						end;
+					until (doorID == 0);
+					//flag de cerrar
+					if (!openDoor)
+						//tiempo apertura
+						if (clockTick)
+							doorTime++;
+						end;
+						//tiempo cumplido
+						if (doorTime >= cDoorTime)
+							//movemos los objetos puerta hacia abajo un tile
+							repeat
+								doorID = get_id(TYPE doorBoss);
+								if (doorID <> 0 )
+									doorID = doorID.father;
+									doorID.this.fY += cTileSize;
+								end;
+							until (doorID == 0);
+							//grafico inicial
+							graph = _graph;
+							//cambiamos de estado
+							this.state = PUSHED_STATE;
+						end;
+					end;
+				end;
+			end;
+			case PUSHED_STATE:
+				//la puerta es solida
+				unSetBit(this.props,NO_COLLISION);
+				//grafico inicial
+				graph = _graph;
 			end;
 		end;
 		

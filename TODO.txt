@@ -1,6 +1,8 @@
-BUGS:   -no deberias poder salir del boosroom. Implementar puerta que te cierra
+BUGS:   -boss se queda colgado en puerta??
+		-player se queda colgado en puerta??
 		-no es practico  el margin de outregion de los objetos ya que no aparecen al salirte un poco
-		-tiles que se quedan en negro!!!
+		-tiles que se quedan en negro!!! en todas las versiones??
+		-no puedo cruzar por plataforma?
 		
 TOYLAND:  -determinar que contienen los items
 		  		  		  	  
