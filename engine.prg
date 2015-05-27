@@ -896,7 +896,7 @@ BEGIN
 			redraw = 0;		
 		end;
 		
-		//Flag de detencion de scroll
+		//Comprobacion codigos de tile
 		if (tileExists(i,j))
 			//si existe el player
 			if (exists(idPlayer))
@@ -907,6 +907,10 @@ BEGIN
 				//comprobamos codigo detencion Y
 				if (tileMap[i][j].tileCode == NO_SCROLL_Y)
 					stopScrollY = true;
+				end;
+				//comprobamos Boss Zone
+				if (tileMap[i][j].tileCode == BOSS_ZONE)
+					game.boss = true;
 				end;
 			end;
 		end;

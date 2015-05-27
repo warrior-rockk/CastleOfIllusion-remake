@@ -1321,8 +1321,6 @@ begin
 	//actualizamos al padre con los datos de creacion
 	updateMonster(id,father);
 	
-	game.boss = true;
-	
 	loop
 		//nos actualizamos del padre
 		updateMonster(father,id);
@@ -1345,6 +1343,7 @@ begin
 		switch (this.state)
 			case IDLE_STATE: //animacion de tapa caja abierta
 				setBit(this.props,NO_COLLISION);
+				
 				//tiempo espera
 				if (currentHurtTime < cBossClownWaitTime)
 					currentHurtTime++;	
@@ -1364,6 +1363,11 @@ begin
 						currentHurtTime = 0;
 					end;
 				end;				
+				
+				//esperamos a tener flag de boss
+				if (!game.boss)
+					currentHurtTime = 0;
+				end;
 			end;
 			case JUMP_STATE: //movimiento salto
 				if (!grounded)

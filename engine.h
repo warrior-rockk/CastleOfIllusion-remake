@@ -30,7 +30,7 @@
 //bits del 0 al 4 del mapa de tiles
 //				Tipo 0: No Solido
 //				Tipo 1: Solido
-//				Tipo 2: Rompible
+//				Tipo 2: Zona Boss
 //				Tipo 3: Cinta a derechas
 //				Tipo 4: Cinta a izquierdas
 //				Tipo 5: Escalera
@@ -44,9 +44,11 @@
 //				Tipo 13: Detencion scroll X izq
 //				Tipo 14: Pendiente 135º
 //				Tipo 15: Pendiente 45*
+//				Tipo 16: Detencion Scroll Y
 //              ..31
 #define NO_SOLID      0
 #define SOLID         1
+#define BOSS_ZONE     2
 #define STAIRS        5
 #define TOP_STAIRS    6
 #define SOLID_ON_FALL 9

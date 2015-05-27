@@ -1,5 +1,4 @@
-BUGS:   -se activa el game.boss si te acercas al boss desde la otra pared!
-		-no deberias poder salir del boosroom. Implementar puerta que te cierra
+BUGS:   -no deberias poder salir del boosroom. Implementar puerta que te cierra
 		-no es practico  el margin de outregion de los objetos ya que no aparecen al salirte un poco
 		-tiles que se quedan en negro!!!
 		
