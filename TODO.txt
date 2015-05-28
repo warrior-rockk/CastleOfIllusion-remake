@@ -1,5 +1,5 @@
-BUGS:   -boss se queda colgado en puerta??
-		-player se queda colgado en puerta??
+BUGS:   -fallo de enfoque stopscroll al revivir?
+		-doorboss despues de revivir se crea durante transitionroom??
 		-no es practico  el margin de outregion de los objetos ya que no aparecen al salirte un poco
 		-tiles que se quedan en negro!!! en todas las versiones??
 		-no puedo cruzar por plataforma?

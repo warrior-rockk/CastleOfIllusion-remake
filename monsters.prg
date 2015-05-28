@@ -1333,7 +1333,7 @@ begin
 			//obtenemos siguiente colision
 			colID = get_id(TYPE object);
 			//aplicamos la direccion de la colision
-			applyDirCollision(ID,colCheckProcess(id,colID,BOTHAXIS),&grounded);		
+			applyDirCollision(ID,colCheckProcess(id,colID,HORIZONTALAXIS),&grounded);		
 		until (colID == 0);
 		
 		//guardamos estado actual
@@ -1345,8 +1345,9 @@ begin
 				setBit(this.props,NO_COLLISION);
 				
 				//tiempo espera
-				if (currentHurtTime < cBossClownWaitTime)
+				if (currentHurtTime < cBossClownWaitTime && game.boss)
 					currentHurtTime++;	
+					graph = 0;
 				else
 					//animacion puerta que se abre
 					if (WGE_Animate(46,48,10,ANIM_ONCE))
@@ -1364,10 +1365,6 @@ begin
 					end;
 				end;				
 				
-				//esperamos a tener flag de boss
-				if (!game.boss)
-					currentHurtTime = 0;
-				end;
 			end;
 			case JUMP_STATE: //movimiento salto
 				if (!grounded)
