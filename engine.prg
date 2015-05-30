@@ -1818,6 +1818,7 @@ begin
 	
 	//sonidos de enemigos
 	(monsterSound[BUBBLE_SND]	= WGE_LoadSound("snd\bubble.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
+	(monsterSound[EXPLODE_SND]	= WGE_LoadSound("snd\explode.ogg"))		<= 0 ? fileError = true : numSoundFiles++;
 	
 	fileError ? log("Ha habido un fallo en algun archivo de sonido",DEBUG_SOUND) : log("Cargados "+numSoundFiles+" archivos de sonido",DEBUG_SOUND);
 	

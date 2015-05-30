@@ -24,6 +24,7 @@
 
 //efectos de sonido
 #define BUBBLE_SND						0
+#define EXPLODE_SND						1
 
 //enemigo
 Type _monster         			//Tipo de Dato de enemigo

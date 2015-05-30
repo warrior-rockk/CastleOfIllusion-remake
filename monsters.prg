@@ -1373,29 +1373,34 @@ begin
 					//grafico salto
 					this.vY < 0 ? graph = 41: graph = 42;
 				else
-					//pasamos a reposo cuando toca suelo
-					this.vX = 0;
-										
-					//contamos un tiempo aleatorio hasta siguiente bola
-					if (currentStepTime >= cBossClownBallTime + rand(-20,20))
-						monsterFire(rand(31,32),x+(cBossClownAtackRange*rand(-1,1)),scroll[cGameScroll].y0,0,0,0);
-						currentStepTime = 0;
-					else
-						//contador paso
-						if (clockTick)
-							currentStepTime++;
-						end;
-					end;
-					
-					//cambio de paso cuando acabe animacion
-					if (WGE_Animate(42,43,20,ANIM_ONCE))
-						this.state = MOVE_STATE;
-					end;
-					
-					//efecto temblor al tocar suelo
-					game.shakeScroll = graph == 42;
-					
+					this.state = ATACK_STATE;	
+					//reproducimos sonido
+					WGE_PlayEntitySnd(father,monsterSound[EXPLODE_SND]);					
 				end;
+			end;
+			case ATACK_STATE:							
+				//pasamos a reposo cuando toca suelo
+				this.vX = 0;
+									
+				//contamos un tiempo aleatorio hasta siguiente bola
+				if (currentStepTime >= cBossClownBallTime + rand(-20,20))
+					monsterFire(rand(31,32),x+(cBossClownAtackRange*rand(-1,1)),scroll[cGameScroll].y0,0,0,0);
+					currentStepTime = 0;
+				else
+					//contador paso
+					if (clockTick)
+						currentStepTime++;
+					end;
+				end;
+				
+				//cambio de paso cuando acabe animacion
+				if (WGE_Animate(42,43,20,ANIM_ONCE))
+					this.state = MOVE_STATE;
+				end;
+				
+				//efecto temblor al tocar suelo
+				game.shakeScroll = graph == 42;
+				
 			end;
 			case MOVE_STATE:
 				//detenemos el movimiento

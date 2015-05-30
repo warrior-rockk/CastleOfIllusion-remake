@@ -1,11 +1,13 @@
-BUGS:   -fallo de enfoque stopscroll al revivir?
+BUGS:   -el jefe parpadea invencible y no colisionable y sigue moviendo
+		-no se estan reproduciendo los sonidos por los canales deseados. Poner un OR a father.type en el sound??
+		-fallo de enfoque stopscroll al revivir?
 		-doorboss despues de revivir se crea durante transitionroom??
 		-no es practico  el margin de outregion de los objetos ya que no aparecen al salirte un poco
 		-tiles que se quedan en negro!!! en todas las versiones??
 		-no puedo cruzar por plataforma?
 		
 TOYLAND:  -determinar que contienen los items
-		  -sonidos boss 		  	  
+		  
 
 CONTROLS: -implementar el keylogger para mando segun controles genericos no teclas. y eleiminar los defines de teclas
 		  -implementar y controlar el numero de joysticks y el joystick seleccionado,numero botones,etc..
