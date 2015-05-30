@@ -5,7 +5,7 @@ BUGS:   -fallo de enfoque stopscroll al revivir?
 		-no puedo cruzar por plataforma?
 		
 TOYLAND:  -determinar que contienen los items
-		  		  		  	  
+		  -sonidos boss 		  	  
 
 CONTROLS: -implementar el keylogger para mando segun controles genericos no teclas. y eleiminar los defines de teclas
 		  -implementar y controlar el numero de joysticks y el joystick seleccionado,numero botones,etc..

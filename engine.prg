@@ -85,7 +85,7 @@ private
 	byte clockTickMem;						//Memoria Flanco Reloj
 	int pauseText;							//Id texto de pausa
 	int idDeadPlayer;						//id del proceso muerte del player
-	byte memBoss;
+	byte memBoss;							//flag de boss activo
 begin
 	priority = cMainPrior;
 	
@@ -181,14 +181,14 @@ begin
 			case PLAYLEVEL:
 				
 				//loop musica nivel
-				if (!game.boss)
+				if (!game.boss || memBoss)
 					if (!is_playing_song())
 						WGE_RepeatMusicLevel();
 					end;
 				else
 					fade_music_off(1000);
 					if (!is_playing_song())
-						game.boss = false;
+						memBoss = true;
 						//reproducimo musica boss
 						play_song(gameMusic[BOSS_MUS],-1);
 					end;
