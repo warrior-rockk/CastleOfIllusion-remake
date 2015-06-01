@@ -493,12 +493,7 @@ begin
 				unSetBit(this.props,NO_COLLISION);
 				//grafico estirado
 				graph = 29;
-				//if (memPlayerImpulse && idPlatform <> father)
-					//if (WGE_CheckControl(CTRL_JUMP,E_PRESSED))
-					//	idPlayer.this.vY += -cSpringBoxJumpImpulse;
-					//end;
-				//	memPlayerImpulse = false;
-				//end;
+				
 				//cambio de paso si se sube el player
 				if (idPlatform == father)			
 					this.state = MOVE_DOWN_STATE;
@@ -520,6 +515,7 @@ begin
 				//cambio de estado tras espera
 				if (WGE_Animate(30,30,10,ANIM_ONCE))
 					this.state = MOVE_UP_STATE;
+					//guardamos flag para impulsar
 					if (idPlatform == father)
 						memPlayerImpulse = true;	
 					end;
@@ -535,12 +531,10 @@ begin
 				if (this.fY <= startY)
 					this.state = MOVE_STATE;
 					this.fY = startY;
-					if (WGE_CheckControl(CTRL_JUMP,E_PRESSED))
-						say("pulsado");
-					end;
 					//impulsamos al player
 					if (memPlayerImpulse && WGE_CheckControl(CTRL_JUMP,E_PRESSED))						
 						idPlayer.this.vY = -cSpringBoxJumpImpulse;
+						
 					elseif (idPlatform == father)
 						idPlayer.this.vY = -cSpringBoxImpulse;
 					end;

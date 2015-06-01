@@ -1,5 +1,4 @@
 BUGS:   -transition room muy rapida
-		-springbox dificil hacer el salto
 		-el jefe parpadea invencible y no colisionable y sigue moviendo
 		-no se estan reproduciendo los sonidos por los canales deseados. Poner un OR a father.type en el sound??
 		-fallo de enfoque stopscroll al revivir?
