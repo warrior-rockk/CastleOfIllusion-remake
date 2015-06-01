@@ -493,12 +493,12 @@ begin
 				unSetBit(this.props,NO_COLLISION);
 				//grafico estirado
 				graph = 29;
-				if (memPlayerImpulse && idPlatform <> father)
-					if (WGE_CheckControl(CTRL_JUMP,E_PRESSED))
-						idPlayer.this.vY += -cSpringBoxJumpImpulse;
-					end;
-					memPlayerImpulse = false;
-				end;
+				//if (memPlayerImpulse && idPlatform <> father)
+					//if (WGE_CheckControl(CTRL_JUMP,E_PRESSED))
+					//	idPlayer.this.vY += -cSpringBoxJumpImpulse;
+					//end;
+				//	memPlayerImpulse = false;
+				//end;
 				//cambio de paso si se sube el player
 				if (idPlatform == father)			
 					this.state = MOVE_DOWN_STATE;
@@ -518,8 +518,11 @@ begin
 			end;
 			case PUSHED_STATE:
 				//cambio de estado tras espera
-				if (WGE_Animate(30,30,20,ANIM_ONCE))
+				if (WGE_Animate(30,30,10,ANIM_ONCE))
 					this.state = MOVE_UP_STATE;
+					if (idPlatform == father)
+						memPlayerImpulse = true;	
+					end;
 				end;
 			end;
 			case MOVE_UP_STATE:
@@ -527,16 +530,21 @@ begin
 				
 				//movemos muelle hacia arriba
 				this.fY-=cSpringBoxVel;
-				
+							
 				//cambio de estado al llegar a posicion
 				if (this.fY <= startY)
 					this.state = MOVE_STATE;
 					this.fY = startY;
-					//impulsamos al player
-					if (idPlatform == father)
-						idPlayer.this.vY += -cSpringBoxImpulse;
-						memPlayerImpulse = true;
+					if (WGE_CheckControl(CTRL_JUMP,E_PRESSED))
+						say("pulsado");
 					end;
+					//impulsamos al player
+					if (memPlayerImpulse && WGE_CheckControl(CTRL_JUMP,E_PRESSED))						
+						idPlayer.this.vY = -cSpringBoxJumpImpulse;
+					elseif (idPlatform == father)
+						idPlayer.this.vY = -cSpringBoxImpulse;
+					end;
+					memPlayerImpulse = false;
 				end;
 			end;
 		end;

@@ -1,4 +1,6 @@
-BUGS:   -el jefe parpadea invencible y no colisionable y sigue moviendo
+BUGS:   -transition room muy rapida
+		-springbox dificil hacer el salto
+		-el jefe parpadea invencible y no colisionable y sigue moviendo
 		-no se estan reproduciendo los sonidos por los canales deseados. Poner un OR a father.type en el sound??
 		-fallo de enfoque stopscroll al revivir?
 		-doorboss despues de revivir se crea durante transitionroom??
@@ -14,8 +16,8 @@ CONTROLS: -implementar el keylogger para mando segun controles genericos no tecl
 ENTIDADES: 
        	-propiedad local bouncy para tener rebote si/no y cuanto?? (de momento rebota por tipo de objeto)
 
-PLAYER:	
-		
+PLAYER:	 -los objetos que tienes pick, deberian moverse con tus graph mas bajos?
+		-animacion de incorporase en la escalera (no está en el fpg)
 		-ver en meka capturando frames animacion de recojer objeto
 		-parece que con las flechas de direccion no cae de escalera
 	    -animacion al borde de objeto??

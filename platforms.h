@@ -26,9 +26,9 @@ const
 	cPlatformWaitTime       = 20;   //Tiempo espera plataformas
 	
 	//springBoxPlatform
-	cSpringBoxVel			= 2;	//Velocidad springBox
-	cSpringBoxImpulse		= 5;	//Impulso que le da al player
-	cSpringBoxJumpImpulse	= 2;	//Impulso que le da al player si pulsa saltar
+	cSpringBoxVel			= 4;	//Velocidad springBox
+	cSpringBoxImpulse		= 6;	//Impulso que le da al player
+	cSpringBoxJumpImpulse	= 7;	//Impulso que le da al player si pulsa saltar
 end;
 
 //Objeto

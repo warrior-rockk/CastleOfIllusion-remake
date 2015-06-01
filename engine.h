@@ -112,8 +112,8 @@ const
 	cZMap2	    	 =-3;     				//Profundidad del mapeado encima del player
 	cZPlayer		 =-2;					//Profundidad del player
 	cZMonster        =-1;					//Profundidad enemigos
-	cZPlatform       = 1;					//Profundidad Plataformas
-	cZObject         = 2;					//Profundidad de los objetos
+	cZObject         = 1;					//Profundidad de los objetos
+	cZPlatform       = 2;					//Profundidad Plataformas
 	cZMap1 	    	 = 3;					//Profundidad del mapeado tras el player
 	
 	//Parametros del engine
