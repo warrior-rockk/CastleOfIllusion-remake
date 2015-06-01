@@ -1516,8 +1516,7 @@ end;
 function int checkTileCode(entity idEntity,int colDir,int posY,int posX)
 begin
 	//comprobamos si el tile es visible en la pantalla, asi, los tiles fuera de region no serán solidos
-	//condicion solo para el player
-	if (checkTileVisible(posX,posY) || idEntity <> idPlayer)
+	if (checkTileVisible(idEntity,posX,posY))
 		switch(colDir)
 			//Colisiones superiores
 			case COLUP:
@@ -1556,12 +1555,17 @@ begin
 end;
 
 //funcion que comprueba si el tile se ve en la region actual del juego
-function int checkTileVisible(int posX,int posY)
+function int checkTileVisible(entity idEntity,int posX,int posY)
 begin
-	return (posY*cTileSize) >= scroll[cGameScroll].y0 &&
-	       (posY*cTileSize) <= scroll[cGameScroll].y0+cGameRegionH &&
-		   (posX*cTileSize) >= scroll[cGameScroll].x0 &&
-	       (posX*cTileSize) <= scroll[cGameScroll].x0+cGameRegionW;
+	//comprobacion solo para el player
+	if (idEntity <> idPlayer)
+		return true;
+	else
+		return (posY*cTileSize) >= scroll[cGameScroll].y0 &&
+			   (posY*cTileSize) <= scroll[cGameScroll].y0+cGameRegionH &&
+			   (posX*cTileSize) >= scroll[cGameScroll].x0 &&
+			   (posX*cTileSize) <= scroll[cGameScroll].x0+cGameRegionW;
+	end;
 end;
 
 //funcion que devuelve el codigo de Tile de un punto de colision
@@ -1571,8 +1575,8 @@ begin
 	x = idEntity.x + idEntity.this.colPoint[pointType].x;
 	y = idEntity.y + idEntity.this.colPoint[pointType].y;
 	
-	//comprobamos si existe en el mapeado
-	if (!tileExists(y/cTileSize,x/cTileSize))
+	//comprobamos si existe en el mapeado y si es visible
+	if (!tileExists(y/cTileSize,x/cTileSize) || !checkTileVisible(idEntity,x/cTileSize,y/cTileSize))
 		return 0;
 	else
 		//devolvemos el tileCode
