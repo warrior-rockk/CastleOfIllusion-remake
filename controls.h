@@ -69,6 +69,7 @@ Global
 										K_ACTION_ATACK;		//Array de teclas a comprobar
 	byte keyLoggerRecording;				//flag de grabando teclas
 	byte keyLoggerPlaying;					//flag de reproduciendo teclas
+	byte keyLoggerFinished;					//flag de reproduccion finalizada
 	
 End;
 

@@ -86,6 +86,8 @@ private
 	int pauseText;							//Id texto de pausa
 	int idDeadPlayer;						//id del proceso muerte del player
 	byte memBoss;							//flag de boss activo
+	int counterTime;
+	byte attractModeActive;
 begin
 	priority = cMainPrior;
 	
@@ -110,9 +112,14 @@ begin
 				//mensaje hasta pulsar tecla
 				write(fntGame,cResx>>1,cResy>>1,ALIGN_CENTER,"CASTLE OF ILLUSION");
 				repeat
+					counterTime++;
+					if (counterTime >= cNumFPS*6)
+						attractModeActive = true;
+						counterTime=0;
+					end;
 					frame;
-				until(WGE_CheckControl(CTRL_START,E_DOWN));
-				
+				until(WGE_CheckControl(CTRL_START,E_DOWN) || attractModeActive);
+							
 				//apagamos pantalla
 				fade(0,0,0,cFadeTime);
 				while(fading) frame; end;
@@ -124,16 +131,7 @@ begin
 			end;
 			case MENU:
 			end;
-			case LOADLEVEL:
-				//Creamos datos nivel aleatorios
-				//WGE_GenLevelData("test\random.dat");
-				//Cargamos archivo nivel
-				//WGE_LoadLevel("test\random.dat");
-				//Creamos un mapa aleatorio
-				//WGE_GenRandomMapFile("test\random.bin",12,8);
-				//Creamos un mapa con matriz definida
-				//WGE_GenMatrixMapFile("test\random.bin");
-				
+			case LOADLEVEL:		
 				//Cargamos el mapeado del nivel
 				WGE_LoadMapLevel(levelFiles[game.numLevel].MapFile,levelFiles[game.numLevel].TileFile);
 				//Cargamos el archivo de datos del nivel
@@ -158,7 +156,7 @@ begin
 				gameSignal(s_freeze_tree);
 				
 				//variables de reinicio de nivel
-				game.playerLife = game.playerMaxLife;
+				game.playerLife		 = game.playerMaxLife;
 				game.actualLevelTime = level.levelTime;
 				
 				//reproducimos la musica del nivel
@@ -176,7 +174,12 @@ begin
 				//se despiertan los procesos
 				gameSignal(s_wakeup_tree);
 								
-				game.state = PLAYLEVEL;
+				if (!attractModeActive)
+					game.state = PLAYLEVEL;
+				else
+					controlLoggerPlayer("partida.rec");
+					game.state = ATTRACTMODE;
+				end;
 			end;
 			case PLAYLEVEL:
 				
@@ -383,6 +386,21 @@ begin
 				game.playerLife = game.playerMaxLife;
 				game.playerTries = 3;
 				game.state = LOADLEVEL;
+			end;
+			case ATTRACTMODE:
+				if (keyLoggerFinished)
+					attractModeActive = false;
+					//apagamos pantalla
+					fade(0,0,0,cFadeTime);
+					while(fading) frame; end;
+					//limpiamos el nivel
+					clearLevel();
+					//encendemos pantalla
+					fade(100,100,100,cFadeTime);
+					while(fading) frame; end;
+					//pantalla inicial
+					game.state = SPLASH;
+				end;
 			end;
 		end;
 		

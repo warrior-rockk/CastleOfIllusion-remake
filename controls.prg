@@ -226,6 +226,7 @@ private
 	int i;						//variable aux
 begin 	
 	keyLoggerRecording = true;
+	keyLoggerFinished = false;
 	
 	log("Grabacion iniciada",DEBUG_ENGINE);
 	
@@ -299,6 +300,8 @@ private
 	int playerFile;				//archivo de reproduccion
 	int i;						//variable aux
 begin 
+	keyLoggerFinished = false;
+	
 	//abrimos la reproduccion de archivo
 	if (_file <> "" && fexists(_file) )
 		playerFile = fopen(_file,O_READ);
@@ -356,6 +359,7 @@ begin
 	end;
 	
 	keyLoggerPlaying = false;
+	keyLoggerFinished = true;
 	
 	log("Reproduccion detenida",DEBUG_ENGINE);
 end;

@@ -25,6 +25,7 @@
 #define LEVELENDED  	6
 #define GAMEOVER        7
 #define CONTINUEGAME    8
+#define ATTRACTMODE     9
 
 //Codigo del tile
 //bits del 0 al 4 del mapa de tiles
