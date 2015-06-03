@@ -847,6 +847,7 @@ BEGIN
 			redraw = 1;
 		end;
 		
+			
 		//Redibujamos el tile
 		if (redraw)
 			//posicion
@@ -881,7 +882,7 @@ BEGIN
 				end;
 			else
 				//tile no existente
-				graph = 0;
+				graph = 79; //intentando debuggear el fallo de tile en negro
 				tileColor = 255; 
 			end;
 			
@@ -919,6 +920,11 @@ BEGIN
 			end;
 		end;
 			
+		//intentando debuggear fallo tile en negro
+		if (tileExists(i,j) && graph == 0)
+			debug;
+		end;
+		
 		frame;
 	
 	end;

@@ -1,4 +1,4 @@
-BUGS:   -tiles que se quedan en negro al reiniciar nivel!!
+BUGS:   -tiles que se quedan en negro al reiniciar nivel!! (activadas funciones para debuggearlo)
 		-transition room muy rapida y no puedo poner animacion mas lenta por floats
 		-jarra se enganchó en la pared izquierda (al lanzarla o al caerse por tocar pompa?)
 		-el jefe parpadea invencible y no colisionable y sigue moviendo
@@ -9,7 +9,8 @@ BUGS:   -tiles que se quedan en negro al reiniciar nivel!!
 		
 		-no puedo cruzar por plataforma?
 		
-TOYLAND:  -determinar que contienen los items
+TOYLAND: -se pudo pasar por doorbutton sin dejarla fija 
+         -determinar que contienen los items
 		  
 
 CONTROLS: -implementar el keylogger para mando segun controles genericos no teclas. y eleiminar los defines de teclas
