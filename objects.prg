@@ -82,7 +82,6 @@ begin
 					end;
 					case OBJ_DOORBOSS:
 						idObject = doorBoss(_graph,_x0,_y0,_ancho,_alto,_axisAlign,_flags,_props);
-						debug;
 					end;
 				end;
 				log("Se crea el objeto "+idObject,DEBUG_OBJECTS);
