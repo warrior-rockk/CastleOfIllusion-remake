@@ -135,12 +135,13 @@ begin
 	
 		//test: grabar keylogger
 		if (WGE_Key(_control,E_PRESSED) && WGE_Key(_g,E_DOWN))
-			keyLoggerRecorder("partida.rec");
+			//keyLoggerRecorder("partida.rec");
+			controlLoggerRecorder("partida.rec");
 		end;
 		
 		//test: reproducir keylogger
 		if (WGE_Key(_control,E_PRESSED) && WGE_Key(_p,E_DOWN))
-			keyLoggerPlayer("partida.rec");
+			controlLoggerPlayer("partida.rec");
 		end;
 		
 		frame;

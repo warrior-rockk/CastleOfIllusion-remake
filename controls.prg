@@ -25,7 +25,8 @@ end;
 function WGE_CheckControl(int control,int event)
 begin
 	return WGE_Key(configuredKeys[control],event) ||
-	       WGE_Button(configuredButtons[control],event);
+	       WGE_Button(configuredButtons[control],event) ||
+		   (controlLogger[control] && keyLoggerPlaying);
 end;
 
 //Funcion actualizacion estado de teclas
@@ -208,6 +209,138 @@ begin
 	//limpiamos el buffer de reproduccion
 	for (i=0;i<ckeyCheckNumber;i++)
 		keyLogger[keysCheck[i]] = false;
+	end;
+	
+	keyLoggerPlaying = false;
+	
+	log("Reproduccion detenida",DEBUG_ENGINE);
+end;
+
+//Funcion que registra los controles para grabar partida
+process ControlLoggerRecorder(string _file)
+private
+	int keyFrameCounter;		//contador frames grabación
+	int index;					//indice de registro
+	
+	int recordFile;				//archivo de grabacion
+	int i;						//variable aux
+begin 
+	keyLoggerRecording = true;
+	
+	log("Grabacion iniciada",DEBUG_ENGINE);
+	
+	//limpiamos el buffer de grabacion
+	for (i=0;i<ckeyLoggerMaxFrames;i++)
+		keyLoggerRecord.frameTime[i] = 0;
+		keyLoggerRecord.keyCode[i]   = 0;
+	end;
+	
+	//loop grabacion
+	repeat
+		//comprobamos todos los controles disponibles
+		for (i=0;i<=6;i++)
+			if (WGE_CheckControl(i,E_PRESSED))
+				//registramos la tecla con el frametimestamp
+				keyLoggerRecord.frameTime[index] = keyFrameCounter;
+				keyLoggerRecord.keyCode[index]   = i;
+				//incrementamos el indice
+				index ++;
+				if (index == ckeyLoggerMaxFrames)
+					break;
+				end;
+				log("Grabado control "+i+" en frame: "+keyFrameCounter+" e indice: "+index,DEBUG_ENGINE);
+			end;
+		end;
+		
+		keyFrameCounter ++;
+		
+		frame;
+	
+	until(index == ckeyLoggerMaxFrames || WGE_Key(_control,E_PRESSED) && WGE_Key(_s,E_DOWN));
+	
+	//marcamos fin de grabacion si no llegó al maximo
+	if (index < ckeyLoggerMaxFrames)
+		keyLoggerRecord.frameTime[index] = keyFrameCounter;
+		keyLoggerRecord.keyCode[index]   = cendRecordCode; 	
+	end;
+	
+	keyLoggerRecording = false;
+	
+	log("Grabacion Finalizada",DEBUG_ENGINE);
+	
+	//guardamos la grabacion a archivo
+	if (_file <> "" )
+		recordFile = fopen(_file,O_WRITE);
+		//escribimos los registros grabados
+		for (i=0;i<ckeyLoggerMaxFrames;i++)
+			fwrite(recordFile,keyLoggerRecord.frameTime[i]);
+			fwrite(recordFile,keyLoggerRecord.keyCode[i]);
+		end;
+		//cerramos el archivo
+		fclose(recordFile);
+		log("Archivo "+_file+" guardado con éxito",DEBUG_ENGINE);
+	else
+		log("Grabacion se guarda en memoria",DEBUG_ENGINE);
+	end;
+end;
+
+//funcion que reproduce los controles grabados
+process controlLoggerPlayer(string _file)
+private
+	int keyFrameCounter;		//contador frames reproducción
+	int index;					//indice del registro
+	
+	int playerFile;				//archivo de reproduccion
+	int i;						//variable aux
+begin 
+	//abrimos la reproduccion de archivo
+	if (_file <> "" && fexists(_file) )
+		playerFile = fopen(_file,O_READ);
+		//leemos los registros grabados
+		for (i=0;i<ckeyLoggerMaxFrames;i++)
+			fread(playerFile,keyLoggerRecord.frameTime[i]);
+			fread(playerFile,keyLoggerRecord.keyCode[i]);
+		end;
+		//cerramos el archivo
+		fclose(playerFile);
+		log("Archivo "+_file+" leído con éxito",DEBUG_ENGINE);
+	else
+		log("Grabacion se lee de memoria",DEBUG_ENGINE);
+	end;
+	
+	keyLoggerPlaying = true;
+	
+	log("Reproduccion iniciada",DEBUG_ENGINE);
+	
+	repeat
+		//recorremos el array de teclas a comprobar
+		for (i=0;i<ckeyCheckNumber;i++)
+			//limpiamos la tecla
+			controlLogger[i] = false;
+			//si el timestamp actual coincide con el registro y la tecla es una del array a comprobar
+			if ( keyLoggerRecord.frameTime[index] == keyFrameCounter && 
+				 keyLoggerRecord.keyCode[index]  == i )
+				//seteamos la tecla en el keylogger
+				controlLogger[keyLoggerRecord.keyCode[index]] = true;
+				//incrementamos indice
+				index++;
+				if (index == ckeyLoggerMaxFrames)
+					break;
+				end;
+				log("Reproducido control "+i+" en frame: "+keyFrameCounter+" e indice: "+index,DEBUG_ENGINE);
+			end;
+		end;
+		
+		keyFrameCounter ++;
+
+		frame;
+	
+	//se comprueba con key porque WGE_Key esta deshabilitado en reproduccion
+	until (index == ckeyLoggerMaxFrames || keyLoggerRecord.keyCode[index]  == cendRecordCode || key(_control) && key(_s)); 
+	
+	//limpiamos el buffer de reproduccion
+	for (i=0;i<ckeyCheckNumber;i++)
+		controlLogger[i] = false;
 	end;
 	
 	keyLoggerPlaying = false;

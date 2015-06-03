@@ -15,7 +15,7 @@
 #define	CTRL_ACTION_ATACK		5
 #define CTRL_START				6
 
-//Teclas 
+//Teclas (se suprime por variables cuando tenga modificado el keylogger)
 #define	K_UP 	  				_UP 
 #define	K_DOWN	  				_DOWN 
 #define	K_LEFT    				_LEFT 
@@ -55,6 +55,8 @@ Global
 	
 	//Keylogger
 	byte keyLogger[127];					//Array de teclas del keylogger
+	byte controlLogger[6];					//Array de controles del controlLogger
+	
 	struct keyLoggerRecord					//Grabacion de teclas actual
 		int frameTime[ckeyLoggerMaxFrames];	//Marca de tiempo
 		byte keyCode[ckeyLoggerMaxFrames];	//Tecla pulsada

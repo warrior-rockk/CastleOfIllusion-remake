@@ -5,9 +5,9 @@ BUGS:   -tiles que se quedan en negro al reiniciar nivel!! (activadas funciones 
 		-no puedo cruzar por plataforma?
 		
 TOYLAND: -determinar que contienen los items
-		 -revisar objetos triplicados por el editor.
 
 CONTROLS: -implementar el keylogger para mando segun controles genericos no teclas. y eleiminar los defines de teclas
+			HECHO! FALTA LIMPIAR LO ANTIGUO
 		  -implementar y controlar el numero de joysticks y el joystick seleccionado,numero botones,etc..
 ENTIDADES: 
        	-propiedad local bouncy para tener rebote si/no y cuanto?? (de momento rebota por tipo de objeto)
@@ -18,13 +18,12 @@ PLAYER:	 -los objetos que tienes pick, deberian moverse con tus graph mas bajos?
 		-parece que con las flechas de direccion no cae de escalera
 	    -animacion al borde de objeto??
 
-PLATFORMS: -la plataforma que cae cuando la tocas, no te permite pasar si estas cerca (esto estaba solucionado!!!) AHORA NO PASA??
+PLATFORMS: 
 		   
 OBJECTS: 
 		-el coin rebota mas rato y el giro va perdiendo velocidad
 		
-ENGINE: -OJO! no se ejecuta todo lo que hay tras una instruccion kill de tu mismo ID
-		-pasar todos los repeats de get_id a whiles
+ENGINE: -pasar todos los repeats de get_id a whiles
 		-Se puede llegar a configurar que al hacer un transition entre rooms, esten congelados, desaparezcan o sigan en movimiento las entidades.
 		 COn sleep desaparecen y queda como en master system pero con freeze se congelan y queda mas real.
 		-Los codigos de tile deberian ser bits para ser simultaneos?
@@ -47,8 +46,7 @@ COLLISIONS:-que exista un array dinamico (lista enlazada?) de entidades existent
 
 MONSTERS: -Limpiar privates de monstruos
 
-EDITOR: -se estan triplicando las cosas unas encimas de otras. No se cuando pasa.
-		-no se borran los triplicados del fallo anterior ?=?= algo pasa con el editor
+EDITOR: 
 		-bug en posicion entidades sin fisica con zoom editor aplicado
 		-bug al mover player con zoom aplicado
 		-COpiar y pegar varios tipos de entidades y varias a la vez
