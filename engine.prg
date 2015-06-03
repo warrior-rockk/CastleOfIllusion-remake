@@ -1873,3 +1873,11 @@ begin
 	return !fileError;
 	
 end;
+
+//funcion que realiza parpadeo de una entidad
+function blinkEntity(int idEntity)
+begin
+	if (tickClock(cBlinkEntityTime))
+		isBitSet(idEntity.flags,B_ABLEND) ? unsetBit(idEntity.flags,B_ABLEND) : setBit(idEntity.flags,B_ABLEND);
+	end;
+end;

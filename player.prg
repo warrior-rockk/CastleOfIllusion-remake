@@ -614,13 +614,14 @@ BEGIN
 			end;
 			
 			//parpadeo si invencible
-			if (clockTick)
+			blinkEntity(id);
+			/*if (clockTick)
 				if (isBitSet(idPlayer.flags,B_ABLEND))
 					unsetBit(idPlayer.flags,B_ABLEND);
 				else	
 					setBit(idPlayer.flags,B_ABLEND);
 				end;
-			end;
+			end;*/
 		else
 			hurtDisabledCounter = 0;
 			unsetBit(idPlayer.flags,B_ABLEND);

@@ -166,6 +166,8 @@ const
 	cTileSize   = 16;   					//Tamaño tiles (Ancho y alto iguales)
 	cHalfTSize = cTileSize >> 1; 			//Mitad del tamaño tile (util para todo el proyecto)
 	
+	//Entidades
+	cBlinkEntityTime  = 2;					//Tiempo de parpadeo general entidades
 End;
 
 //Data Types
