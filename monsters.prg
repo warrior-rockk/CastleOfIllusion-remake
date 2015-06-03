@@ -1443,15 +1443,21 @@ begin
 						unSetBit(this.props,NO_COLLISION);
 						//reiniciamos tiempo daño
 						currentHurtTime = 0;
+						//quitamos el blend
+						unSetBit(flags,B_ABLEND);
 					else
+						//animacion daño
 						if (WGE_Animate(44,45,20,ANIM_LOOP))
 							currentHurtTime++;
 						end;
+						//parpadeo
+						blinkEntity(id);
 					end;
 				end;
 			end;
 			case DEAD_STATE:
 				deadBoss(44,45);
+				signal(TYPE monsterFire,s_kill);
 				signal(id,s_kill);
 			end;
 		end;
