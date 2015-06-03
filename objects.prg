@@ -375,8 +375,6 @@ begin
 				end;
 				//matamos el objeto
 				signal(id,s_kill);
-				//reproducimos sonido
-				WGE_PlayEntityStateSnd(id,objectSound[BREAK_SND]);
 			end;
 		end;
 			
@@ -773,15 +771,12 @@ begin
 					//seteamos flag de apertura
 					openDoor = true;
 					//comprobamos las demas puertas para abrir secuencial segun altura
-					repeat
-						doorID = get_id(TYPE doorButton);
-						if (doorID <> 0)
-							//si hay alguna puerta superior que no se ha abierto, reseteamos apertura
-							if (doorID.y < y && doorID.this.state <> PUSHED_STATE)
-								openDoor = false;
-							end;
-						end;
-					until (doorID == 0);
+					while (doorID = get_id(TYPE doorButton)) 					
+						//si hay alguna puerta superior que no se ha abierto, reseteamos apertura
+						if (doorID.y < y && doorID.this.state <> PUSHED_STATE)
+							openDoor = false;
+						end;						
+					end;
 					//si tenemos apertura
 					if (openDoor)
 						//tiempo apertura
@@ -791,17 +786,14 @@ begin
 						//tiempo cumplido
 						if (doorTime >= cDoorTime)
 							//movemos los objetos puerta hacia arriba un tile
-							repeat
-								doorID = get_id(TYPE doorButton);
-								if (doorID <> 0 )
-									doorID = doorID.father;
-									doorID.this.fY -= cTileSize;
-								end;
-							until (doorID == 0);
+							while (doorID = get_id(TYPE doorButton))
+								doorID = doorID.father;
+								doorID.this.fY -= cTileSize;
+							end;
 							//cambiamos estado
 							this.state = PUSHED_STATE;
 							//reproducimos sonido
-							WGE_PlayEntityStateSnd(id,objectSound[DOOR_SND]);
+							WGE_PlayEntityStateSnd(father,objectSound[DOOR_SND]);
 						end;
 					end;
 				end;
@@ -812,7 +804,7 @@ begin
 				//le quitamos grafico
 				graph = 0;
 				//reproducimos sonido
-				WGE_PlayEntityStateSnd(id,objectSound[DOOR_SND]);
+				WGE_PlayEntityStateSnd(father,objectSound[DOOR_SND]);
 				
 				//si se suelta el boton
 				if (idButton == 0 )
@@ -849,7 +841,7 @@ begin
 							//cambiamos de estado
 							this.state = IDLE_STATE;
 							//reproducimos sonido
-							WGE_PlayEntityStateSnd(id,objectSound[DOOR_SND]);
+							WGE_PlayEntityStateSnd(father,objectSound[DOOR_SND]);
 						end;
 					end;
 				end;
@@ -977,7 +969,7 @@ begin
 							//cambiamos estado
 							this.state = PUSHED_STATE;
 							//reproducimos sonido
-							WGE_PlayEntityStateSnd(id,objectSound[DOOR_SND]);
+							WGE_PlayEntityStateSnd(father,objectSound[DOOR_SND]);
 						end;
 					end;
 				end;

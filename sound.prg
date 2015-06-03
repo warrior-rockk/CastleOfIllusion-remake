@@ -52,6 +52,7 @@ begin
 		//reproducimos el sonido al entrar en el estado
 		if (idEntity.this.prevState <> idEntity.this.state)
 			play_wav(idSound,0,sndChannel);
+			log("Reproducido sonido en canal "+sndChannel,DEBUG_SOUND);
 		end;
 	else
 		log("Id sonido inexistente",DEBUG_SOUND);
@@ -86,6 +87,7 @@ begin
 		
 		//reproducimos el sonido
 		play_wav(idSound,0,sndChannel);
+		log("Reproducido sonido en canal "+sndChannel,DEBUG_SOUND);
 	else
 		log("Id sonido inexistente",DEBUG_SOUND);
 	end;

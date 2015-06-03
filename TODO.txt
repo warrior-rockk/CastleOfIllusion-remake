@@ -1,8 +1,6 @@
 BUGS:   -tiles que se quedan en negro al reiniciar nivel!! (activadas funciones para debuggearlo)
-		-las busquedas de procesos que se repiten en un mismo frame, no devolveran nada???
 		-jarra se enganchó en la pared izquierda (al lanzarla o al caerse por tocar pompa?)
 		-el jefe parpadea invencible y no colisionable y sigue moviendo
-		-no se estan reproduciendo los sonidos por los canales deseados. Poner un OR a father.type en el sound??
 		-no es practico  el margin de outregion de los objetos ya que no aparecen al salirte un poco
 		-definir mejor la animacion del player con trasition room horizontal segun si esta cogiendo objeto, saltando con objeto,etc..
 		-no puedo cruzar por plataforma?
@@ -26,7 +24,9 @@ PLATFORMS: -la plataforma que cae cuando la tocas, no te permite pasar si estas 
 OBJECTS: 
 		-el coin rebota mas rato y el giro va perdiendo velocidad
 		
-ENGINE: -Se puede llegar a configurar que al hacer un transition entre rooms, esten congelados, desaparezcan o sigan en movimiento las entidades.
+ENGINE: -OJO! no se ejecuta todo lo que hay tras una instruccion kill de tu mismo ID
+		-pasar todos los repeats de get_id a whiles
+		-Se puede llegar a configurar que al hacer un transition entre rooms, esten congelados, desaparezcan o sigan en movimiento las entidades.
 		 COn sleep desaparecen y queda como en master system pero con freeze se congelan y queda mas real.
 		-Los codigos de tile deberian ser bits para ser simultaneos?
 		-UpdateObject generalizarlo a updateentity para todos en engine.prg

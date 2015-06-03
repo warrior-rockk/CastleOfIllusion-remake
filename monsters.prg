@@ -764,7 +764,7 @@ begin
 					this.state = INVISIBLE_STATE;
 				end;
 				//reproducimos sonido
-				WGE_PlayEntityStateSnd(id,monsterSound[BUBBLE_SND]);
+				WGE_PlayEntityStateSnd(father,monsterSound[BUBBLE_SND]);
 			end;
 		end;
 		
