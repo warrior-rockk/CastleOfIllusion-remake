@@ -24,9 +24,9 @@ end;
 //Funcion que devuelve el estado del control solicitado
 function WGE_CheckControl(int control,int event)
 begin
-	return WGE_Key(configuredKeys[control],event) ||
-	       WGE_Button(configuredButtons[control],event) ||
-		   (controlLogger[control] && keyLoggerPlaying);
+	return (WGE_Key(configuredKeys[control],event)  	 && !keyLoggerPlaying) ||
+	       (WGE_Button(configuredButtons[control],event) && !keyLoggerPlaying) ||
+		   (controlLogger[control] 						 && keyLoggerPlaying);
 end;
 
 //Funcion actualizacion estado de teclas
@@ -224,7 +224,7 @@ private
 	
 	int recordFile;				//archivo de grabacion
 	int i;						//variable aux
-begin 
+begin 	
 	keyLoggerRecording = true;
 	
 	log("Grabacion iniciada",DEBUG_ENGINE);
@@ -237,22 +237,28 @@ begin
 	
 	//loop grabacion
 	repeat
-		//comprobamos todos los controles disponibles
-		for (i=0;i<=6;i++)
-			if (WGE_CheckControl(i,E_PRESSED))
-				//registramos la tecla con el frametimestamp
-				keyLoggerRecord.frameTime[index] = keyFrameCounter;
-				keyLoggerRecord.keyCode[index]   = i;
-				//incrementamos el indice
-				index ++;
-				if (index == ckeyLoggerMaxFrames)
-					break;
+		if (get_status(idPlayer) <> 2)
+			log("Esperando a player para grabacion",DEBUG_ENGINE);
+		else
+						
+			//comprobamos todos los controles disponibles
+			for (i=0;i<=6;i++)
+				if (WGE_CheckControl(i,E_PRESSED))
+					//registramos la tecla con el frametimestamp
+					keyLoggerRecord.frameTime[index] = keyFrameCounter;
+					keyLoggerRecord.keyCode[index]   = i;
+					//incrementamos el indice
+					index ++;
+					if (index == ckeyLoggerMaxFrames)
+						break;
+					end;
+					log("Grabado control "+i+" en frame: "+keyFrameCounter+" e indice: "+index,DEBUG_ENGINE);
 				end;
-				log("Grabado control "+i+" en frame: "+keyFrameCounter+" e indice: "+index,DEBUG_ENGINE);
 			end;
-		end;
+			
+			keyFrameCounter ++;
 		
-		keyFrameCounter ++;
+		end;
 		
 		frame;
 	
@@ -308,31 +314,37 @@ begin
 		log("Grabacion se lee de memoria",DEBUG_ENGINE);
 	end;
 	
-	keyLoggerPlaying = true;
-	
 	log("Reproduccion iniciada",DEBUG_ENGINE);
 	
 	repeat
-		//recorremos el array de teclas a comprobar
-		for (i=0;i<ckeyCheckNumber;i++)
-			//limpiamos la tecla
-			controlLogger[i] = false;
-			//si el timestamp actual coincide con el registro y la tecla es una del array a comprobar
-			if ( keyLoggerRecord.frameTime[index] == keyFrameCounter && 
-				 keyLoggerRecord.keyCode[index]  == i )
-				//seteamos la tecla en el keylogger
-				controlLogger[keyLoggerRecord.keyCode[index]] = true;
-				//incrementamos indice
-				index++;
-				if (index == ckeyLoggerMaxFrames)
-					break;
+		if (get_status(idPlayer) <> 2)
+			log("Esperando a player para reproduccion",DEBUG_ENGINE);
+			keyLoggerPlaying = false;
+		else
+			keyLoggerPlaying = true;
+			
+			//recorremos el array de teclas a comprobar
+			for (i=0;i<ckeyCheckNumber;i++)
+				//limpiamos la tecla
+				controlLogger[i] = false;
+				//si el timestamp actual coincide con el registro y la tecla es una del array a comprobar
+				if ( keyLoggerRecord.frameTime[index] == keyFrameCounter && 
+					 keyLoggerRecord.keyCode[index]  == i )
+					//seteamos la tecla en el keylogger
+					controlLogger[keyLoggerRecord.keyCode[index]] = true;
+					//incrementamos indice
+					index++;
+					if (index == ckeyLoggerMaxFrames)
+						break;
+					end;
+					log("Reproducido control "+i+" en frame: "+keyFrameCounter+" e indice: "+index,DEBUG_ENGINE);
 				end;
-				log("Reproducido control "+i+" en frame: "+keyFrameCounter+" e indice: "+index,DEBUG_ENGINE);
 			end;
+			
+			keyFrameCounter ++;
+
 		end;
 		
-		keyFrameCounter ++;
-
 		frame;
 	
 	//se comprueba con key porque WGE_Key esta deshabilitado en reproduccion
