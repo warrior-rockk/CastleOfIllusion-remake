@@ -1333,8 +1333,8 @@ private
 	int scrollY0;			//Posicion inicial del scroll
 	int scrollX0;			//Posicion inicial del scroll
 	int dir;				//direccion de la transicion
-	int	animPlayer;			//Proceso animacion del jugador durante transicion
-	int animObject;			//Proceso animacion del posible objeto cogido durante transicion
+	entity	animPlayer;		//Proceso animacion del jugador durante transicion
+	entity  animObject;		//Proceso animacion del posible objeto cogido durante transicion
 	entity idObj;			//Objeto en estado recogido
 begin
 	//obtenemos posicion inicial del scroll
@@ -1366,8 +1366,7 @@ begin
 			animPlayer = WGE_Animation(fpgPlayer,3, 8,idPlayer.x,idPlayer.y,4,ANIM_LOOP);
 		end;
 		default:
-			animPlayer = WGE_Animation(fpgPlayer,idPlayer.graph,idPlayer.graph,idPlayer.x,idPlayer.y,8,ANIM_LOOP);
-			//buscamos si hay algun objeto recogido para crear su animacion tambien
+			//buscamos si hay algun objeto recogido para crear su animacion
 			repeat
 				idObj = get_id(TYPE object);
 				if (idObj <> 0 )
@@ -1377,25 +1376,46 @@ begin
 						signal(idObj,s_sleep_tree);
 					end;
 				end;
-			until (idObj == 0 || animObject <> 0)
+			until (idObj == 0 || animObject <> 0);
+			
+			animPlayer = WGE_Animation(fpgPlayer,idPlayer.graph,idPlayer.graph,idPlayer.x,idPlayer.y,8,ANIM_LOOP);
 		end;
 	end;
 	
 	//seteamos los mismos flags
 	animPlayer.flags = idPlayer.flags;
 	
+	//seteamos posicion entidad animacion
+	animPlayer.this.fX = animPlayer.x;
+	animPlayer.this.fY = animPlayer.y;
+	
+	//seteamos posicion entidad animacion objeto
+	if (animObject <> 0 )
+		animObject.this.fX = animObject.x;
+		animObject.this.fY = animObject.y;
+	end;
+	
 	//movemos el scroll y la animacion hasta la nueva room
 	//Transicion vertical
 	if (transitionDir == ROOM_TRANSITION_DOWN || transitionDir == ROOM_TRANSITION_UP)
 		repeat
+			//movemos scroll
 			scroll[0].y0 += cVelRoomTransition * dir;
-			animPlayer.y += dir;
-			if (animObject <> 0 )
-				animObject.y += dir;
-			end;
+			
+			//movemos animacion player
+			animPlayer.this.vY = (cVelRoomTransition*cVelRoomTransFactor)*dir;
+			animPlayer.this.fY += animPlayer.this.vY;
+			positionToInt(animPlayer);
 			//actualizamos la posicion del player para no dar muerte por region
 			idPlayer.y  = animPlayer.y;
 			
+			//movemos animacion objeto si lo llevaras
+			if (animObject <> 0 )
+				animObject.this.vY = (cVelRoomTransition*cVelRoomTransFactor)*dir;
+				animObject.this.fY += animObject.this.vY;
+				positionToInt(animObject);
+			end;
+						
 			//si la transicion es por escaleras, efecto sonido
 			if (idPlayer.this.state == MOVE_ON_STAIRS_STATE)
 				//reproducimos sonido en cada loop
@@ -1411,15 +1431,25 @@ begin
 	//Transicion horizontal
 	if (transitionDir == ROOM_TRANSITION_LEFT || transitionDir == ROOM_TRANSITION_RIGHT)
 		repeat
+			//movemos scroll
 			scroll[0].x0 += cVelRoomTransition * dir;
-			animPlayer.x += dir;
-			if (animObject <> 0 )
-				animObject.x += dir;
-			end;
+			
+			//movemos animacion player
+			animPlayer.this.vX = (cVelRoomTransition*cVelRoomTransFactor)*dir;
+			animPlayer.this.fX += animPlayer.this.vX;
+			positionToInt(animPlayer);
 			//actualizamos la posicion del player para no dar muerte por region
 			idPlayer.x  = animPlayer.x;
-							
+			
+			//movemos animacion objeto
+			if (animObject <> 0 )
+				animObject.this.vY = (cVelRoomTransition*cVelRoomTransFactor)*dir;
+				animObject.this.fY += animObject.this.vY;
+				positionToInt(animObject);
+			end;
+			
 			frame;
+		
 		until( abs(scroll[0].x0 - scrollX0) >= cGameRegionW)
 	end;
 	

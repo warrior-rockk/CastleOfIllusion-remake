@@ -135,9 +135,10 @@ const
 	cGameRegionW 	= 256;					//Region Horizontal Pantalla de juego (Representacion Mapeado) 
 	cGameRegionH 	= 160;					//Region Vertical Pantalla de juego (Representacion Mapeado)	
 	cRoomScroll     = true;					//Flag para utilizar el scroll vertical como Master System (transiciones entre "rooms")
-	cTilesBetweenRooms = 2;					//Numero de tiles transicion entre rooms
-	cVelRoomTransition = 4;					//Velocidad transicion entre rooms
-	cVelShakeScroll    = 2;					//Velocidad efecto shakeScroll
+	cTilesBetweenRooms  = 2;				//Numero de tiles transicion entre rooms
+	cVelRoomTransition  = 2;				//Velocidad transicion entre rooms
+	cVelRoomTransFactor = 0.25;				//Factor velocidad transicion entre rooms para el player
+	cVelShakeScroll     = 2;				//Velocidad efecto shakeScroll
 	
 	//HUD
 	cHUDRegion  	= 2;    				//Numero Region informacion juego

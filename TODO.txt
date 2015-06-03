@@ -1,12 +1,12 @@
 BUGS:   -tiles que se quedan en negro al reiniciar nivel!! (activadas funciones para debuggearlo)
-		-transition room muy rapida y no puedo poner animacion mas lenta por floats
+		-las busquedas de procesos que se repiten en un mismo frame, no devolveran nada???
 		-jarra se enganchó en la pared izquierda (al lanzarla o al caerse por tocar pompa?)
 		-el jefe parpadea invencible y no colisionable y sigue moviendo
 		-no se estan reproduciendo los sonidos por los canales deseados. Poner un OR a father.type en el sound??
 		-fallo de enfoque stopscroll al revivir?
 		-doorboss despues de revivir se crea durante transitionroom??
 		-no es practico  el margin de outregion de los objetos ya que no aparecen al salirte un poco
-		
+		-definir mejor la animacion del player con trasition room horizontal segun si esta cogiendo objeto, saltando con objeto,etc..
 		-no puedo cruzar por plataforma?
 		
 TOYLAND: -se pudo pasar por doorbutton sin dejarla fija 
