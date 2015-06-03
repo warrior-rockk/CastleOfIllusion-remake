@@ -54,7 +54,7 @@ const
 	cItemTimeOut        =           8;          //Timeout Item
 	cItemTimeToBlink    =           4;			//Tiempo parpadeo antes de timeout
 	cItemBlinkTime      =           3;			//Velocidad parpadeo
-	cDoorTime			=           20;         //Velocidad Puerta
+	cDoorTime			=           15;         //Velocidad Puerta
 	cAppearTime         =           80;			//Tiempo que aparece un objeto invisible
 	
 	//puntuaciones

@@ -1067,7 +1067,11 @@ Begin
 	//cerramos el archivo
 	fclose(levelDataFile);
 	
-	log("Fichero datos nivel leído correctamente",DEBUG_ENGINE);   
+	log("Fichero datos nivel leído correctamente:",DEBUG_ENGINE);   
+	log("Leídos "+level.numObjects+" objetos",DEBUG_ENGINE);
+	log("Leídos "+level.numMonsters+" enemigos",DEBUG_ENGINE);
+	log("Leídos "+level.numPlatforms+" plataformas",DEBUG_ENGINE);
+	log("Leídos "+level.numCheckPoints+" checkPoints",DEBUG_ENGINE);
 	
 End;
 
