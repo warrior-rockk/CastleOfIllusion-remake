@@ -1,10 +1,12 @@
-BUGS:   -transition room muy rapida
+BUGS:   -tiles que se quedan en negro al reiniciar nivel!!
+		-transition room muy rapida y no puedo poner animacion mas lenta por floats
+		-jarra se enganchó en la pared izquierda (al lanzarla o al caerse por tocar pompa?)
 		-el jefe parpadea invencible y no colisionable y sigue moviendo
 		-no se estan reproduciendo los sonidos por los canales deseados. Poner un OR a father.type en el sound??
 		-fallo de enfoque stopscroll al revivir?
 		-doorboss despues de revivir se crea durante transitionroom??
 		-no es practico  el margin de outregion de los objetos ya que no aparecen al salirte un poco
-		-tiles que se quedan en negro!!! en todas las versiones??
+		
 		-no puedo cruzar por plataforma?
 		
 TOYLAND:  -determinar que contienen los items
