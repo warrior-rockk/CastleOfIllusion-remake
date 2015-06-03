@@ -1353,9 +1353,9 @@ begin
 	//dormimos el control del scroll
 	signal(TYPE WGE_ControlScroll,s_sleep);
 	//dormimos el resto de entidades
-	signal(type object,s_sleep);
-	signal(type monster,s_sleep);
-	signal(type platform,s_sleep);
+	signal(type object,s_sleep_tree);
+	signal(type monster,s_sleep_tree);
+	signal(type platform,s_sleep_tree);
 	
 	//creamos una animacion del personaje segun su estado
 	switch (idPlayer.this.state)
@@ -1491,9 +1491,9 @@ begin
 	if (idObj <> 0 )
 		signal(idObj,s_wakeup_tree);
 	end;
-	signal(type object,s_wakeup);
-	signal(type monster,s_wakeup);
-	signal(type platform,s_wakeup);
+	signal(type object,s_wakeup_tree);
+	signal(type monster,s_wakeup_tree);
+	signal(type platform,s_wakeup_tree);
 	
 	//forzamos un frame para mostrar al player en la posicion
 	frame;
