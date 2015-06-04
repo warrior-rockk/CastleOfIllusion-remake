@@ -149,10 +149,8 @@ begin
 				player();
 				
 				//creamos el HUD
-				if (!game.attractActive)
-					HUD();
-				end;
-											
+				HUD();
+															
 				//procesos congelados
 				gameSignal(s_freeze_tree);
 				
@@ -390,10 +388,11 @@ begin
 			end;
 			case ATTRACTMODE:
 				if (controlLoggerFinished || WGE_CheckControl(CTRL_START,E_PRESSED))
-					game.attractActive = false;
 					//apagamos pantalla
 					fade(0,0,0,cFadeTime);
 					while(fading) frame; end;
+					//desactivamos flag
+					game.attractActive = false;
 					//limpiamos el nivel
 					clearLevel();
 					//encendemos pantalla
@@ -1736,6 +1735,7 @@ private
 	string strScore;	//puntuacion en formato string 5 digitos
 	string strTries;	//vidas en formato string 2 digitos
 	string strTime;		//tiempo en formato string 3 digitos
+	string strMessage;	//Mensaje pantalla
 	
 	int prevPlayerLife;	//Energia anterior del player para redibujar
 	int i;				//variables auxiliares
@@ -1747,51 +1747,65 @@ begin
 	x = (cHUDRegionW >> 1);
 	y = cHUDRegionY;
 	
-	//grafico del HUD
-	graph = map_clone(fpgGame,1);
-	//cambiamos su centro
-	map_info_set(file,graph,G_Y_CENTER,0);
 	
-	//mostramos string de puntuacion
-	write_var(fntGame,x+cHUDScoreX,y+cHUDScoreY,ALIGN_CENTER,strScore);
-	//mostramos string de vidas
-	write_var(fntGame,x+cHUDTriesX,y+cHUDTriesY,ALIGN_CENTER,strTries);
-	//mostramos tiempo nivel
-	write_var(fntGame,x+cHUDTimeX,y+cHUDTimeY,ALIGN_CENTER,strTime);
+	if (!game.attractActive)
+		//grafico del HUD
+		graph = map_clone(fpgGame,1);
+		//cambiamos su centro
+		map_info_set(file,graph,G_Y_CENTER,0);
+		
+		//mostramos string de puntuacion
+		write_var(fntGame,x+cHUDScoreX,y+cHUDScoreY,ALIGN_CENTER,strScore);
+		//mostramos string de vidas
+		write_var(fntGame,x+cHUDTriesX,y+cHUDTriesY,ALIGN_CENTER,strTries);
+		//mostramos tiempo nivel
+		write_var(fntGame,x+cHUDTimeX,y+cHUDTimeY,ALIGN_CENTER,strTime);
+	else
+		//mostramos mensaje
+		write_var(fntGame,x,y+cHUDTimeY,ALIGN_CENTER,strMessage);
+	end;
 	
 	loop
-		//Convertimos la puntuacion a string formato de 5 digitos
-		int2String(game.score,&strScore,5);
-		
-		//Convertimos las vidas a string formato de 2 digitos
-		int2String(game.playerTries,&strTries,2);
-		
-		//Convertimos el tiempo a string formato de 3 digitos
-		int2String(game.actualLevelTime,&strTime,3);
-		
-		//comprobamos si ha cambiado la vida del player para redibujar
-		if (prevPlayerLife <> game.playerLife)
-		
-			//copiamos el HUD vacío
-			map_del(0,graph);
-			graph = map_clone(0,1);
-			//reestablecemos el centro
-			map_info_set(file,graph,G_Y_CENTER,0);
+		if (!game.attractActive)
+			//Convertimos la puntuacion a string formato de 5 digitos
+			int2String(game.score,&strScore,5);
 			
-			//dibujamos las estrellas de energia
-			for (i=0;i<game.playerMaxLife;i++)
-				if (game.playerLife <= i)
-					//estrella apagada
-					map_put(0,graph,2,cHudLifeX+(cHUDLifeSize*i),cHudLifeY);
-				else
-					//estrella encendida
-					map_put(0,graph,3,cHudLifeX+(cHUDLifeSize*i),cHudLifeY);
+			//Convertimos las vidas a string formato de 2 digitos
+			int2String(game.playerTries,&strTries,2);
+			
+			//Convertimos el tiempo a string formato de 3 digitos
+			int2String(game.actualLevelTime,&strTime,3);
+			
+			//comprobamos si ha cambiado la vida del player para redibujar
+			if (prevPlayerLife <> game.playerLife)
+			
+				//copiamos el HUD vacío
+				map_del(0,graph);
+				graph = map_clone(0,1);
+				//reestablecemos el centro
+				map_info_set(file,graph,G_Y_CENTER,0);
+				
+				//dibujamos las estrellas de energia
+				for (i=0;i<game.playerMaxLife;i++)
+					if (game.playerLife <= i)
+						//estrella apagada
+						map_put(0,graph,2,cHudLifeX+(cHUDLifeSize*i),cHudLifeY);
+					else
+						//estrella encendida
+						map_put(0,graph,3,cHudLifeX+(cHUDLifeSize*i),cHudLifeY);
+					end;
 				end;
 			end;
-		end;
+			
+			//actualizamos la energia del player
+			prevPlayerLife = game.playerLife;
 		
-		//actualizamos la energia del player
-		prevPlayerLife = game.playerLife;
+		else	
+			//Mensaje attractMode
+			if (tickClock(cNumFPS))
+				strMessage =="" ? strMessage = "PRESS START BUTTON" : strMessage = "";
+			end;	
+		end;
 		
 		frame;
 	end;

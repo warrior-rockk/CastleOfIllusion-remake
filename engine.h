@@ -103,7 +103,7 @@
 const
 	//Engine
 	cTimeInterval    = 1; 					//Intervalo reloj: cTimeInterval*16ms
-	cFadeTime		 = 16;					//Velocidad de los fundidos de pantalla (1..64)
+	
 	//Prioridades (orden ejecucion)
 	cMainPrior	 	 	= 6;
 	cPlayerPrior	 	= 5;
@@ -142,6 +142,7 @@ const
 	cGameRegionY 	= 0;					//Region Vertical Pantalla de juego (Representacion Mapeado)
 	cGameRegionW 	= 256;					//Region Horizontal Pantalla de juego (Representacion Mapeado) 
 	cGameRegionH 	= 160;					//Region Vertical Pantalla de juego (Representacion Mapeado)	
+	cFadeTime		= 5;					//Velocidad de los fundidos de pantalla (1..64)
 	cRoomScroll     = true;					//Flag para utilizar el scroll vertical como Master System (transiciones entre "rooms")
 	cTilesBetweenRooms  = 2;				//Numero de tiles transicion entre rooms
 	cVelRoomTransition  = 2;				//Velocidad transicion entre rooms
