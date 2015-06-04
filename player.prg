@@ -94,7 +94,7 @@ BEGIN
 				if (this.vX < velMaxX) 
 					this.vX+=accelx*(1-friction);
 				end;
-				onStairs = false;
+				//onStairs = false;
 			end;
 			
 			//direccion izquierda
@@ -102,7 +102,7 @@ BEGIN
 				if (this.vX > -velMaxX) 
 					this.vX-=accelx*(1-friction);
 				end;
-				onStairs = false;
+				//onStairs = false;
 			end;
 			
 			//boton salto

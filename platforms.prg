@@ -263,6 +263,7 @@ private
 	int prevY;				//posicion Y previa
 	
 	int numClouds;				//Numero de procesos nube	
+	entity cloudID;
 	
 	int currentStepTime; 	//tiempo actual paso
 	int stepTime;
@@ -315,8 +316,8 @@ begin
 	until( get_id(TYPE cloudPlatform) == 0)
 	
 	//ajustamos retardo
-	stepTime = 30*numClouds;
-	
+	stepTime = 1+((numClouds-1)*1);
+
 	//bucle principal
 	loop
 		//nos actualizamos del padre
@@ -337,7 +338,7 @@ begin
 					currentStepTime = 0;
 				else
 					//contador paso
-					if (clockTick)
+					if (tickClock(cNumFps))
 						currentStepTime++;
 					end;
 				end;
@@ -355,7 +356,7 @@ begin
 					graph = 23;
 				end;
 				//cambio de paso al llegar a altura
-				if (this.fY <= startY - 50)
+				if (this.fY <= startY - 60)
 					this.state = MOVE_RIGHT_STATE;
 				end;
 			end;
@@ -377,12 +378,18 @@ begin
 			end;
 			case DEAD_STATE:
 				graph = _graph;
-				//movimiento lineal
-				this.fX+=this.vX;
 				//cambio de paso al llegar a posicion
 				if (this.fX >= startX + 220)
 					graph = 0;
 					this.state = IDLE_STATE;
+					while (cloudID = get_id(TYPE cloudPlatform))
+						if (cloudID.this.state <> DEAD_STATE && cloudID.this.state <> IDLE_STATE && cloudID<>id)
+							this.state = DEAD_STATE;
+						end;
+					end;
+				else
+					//movimiento lineal
+					this.fX+=this.vX;
 				end;
 			end;
 		end;
