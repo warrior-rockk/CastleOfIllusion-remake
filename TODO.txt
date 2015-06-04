@@ -1,4 +1,5 @@
-BUGS:   -tiles que se quedan en negro al reiniciar nivel!! (activadas funciones para debuggearlo)
+BUGS:   -se cuelga al salir de splash despues de una repeticion de partida
+		-tiles que se quedan en negro al reiniciar nivel!! (activadas funciones para debuggearlo)
 		-jarra se enganchó en la pared izquierda (al lanzarla o al caerse por tocar pompa?)
 		-no es practico  el margin de outregion de los objetos ya que no aparecen al salirte un poco
 		-definir mejor la animacion del player con trasition room horizontal segun si esta cogiendo objeto, saltando con objeto,etc..
@@ -24,7 +25,8 @@ PLATFORMS:
 OBJECTS: 
 		-el coin rebota mas rato y el giro va perdiendo velocidad
 		
-ENGINE: -pasar todos los repeats de get_id a whiles
+ENGINE: -en el WGE_LOOP, como se hace bucles con frame, no se ejecuta el contador de frames. ¿Es un problema??
+		-pasar todos los repeats de get_id a whiles
 		-Se puede llegar a configurar que al hacer un transition entre rooms, esten congelados, desaparezcan o sigan en movimiento las entidades.
 		 COn sleep desaparecen y queda como en master system pero con freeze se congelan y queda mas real.
 		-Los codigos de tile deberian ser bits para ser simultaneos?

@@ -24,9 +24,11 @@ end;
 //Funcion que devuelve el estado del control solicitado
 function WGE_CheckControl(int control,int event)
 begin
+	//say("Pido "+control+","+event);
+	//say("Tengo "+controlLogger[control][event]);
 	return (WGE_Key(configuredKeys[control],event)  	 && !keyLoggerPlaying) ||
 	       (WGE_Button(configuredButtons[control],event) && !keyLoggerPlaying) ||
-		   (controlLogger[control] 						 && keyLoggerPlaying);
+		   (controlLogger[control][event]				 && keyLoggerPlaying);
 end;
 
 //Funcion actualizacion estado de teclas
@@ -248,12 +250,21 @@ begin
 					//registramos la tecla con el frametimestamp
 					keyLoggerRecord.frameTime[index] = keyFrameCounter;
 					keyLoggerRecord.keyCode[index]   = i;
+					//registramos el evento
+					if (WGE_CheckControl(i,E_DOWN))
+						keyLoggerRecord.keyEvent[index]  = E_DOWN;
+					elseif (WGE_CheckControl(i,E_UP))
+						keyLoggerRecord.keyEvent[index]  = E_UP;
+					else
+						keyLoggerRecord.keyEvent[index]  = E_PRESSED;
+					end;
+					
 					//incrementamos el indice
 					index ++;
 					if (index == ckeyLoggerMaxFrames)
 						break;
 					end;
-					log("Grabado control "+i+" en frame: "+keyFrameCounter+" e indice: "+index,DEBUG_ENGINE);
+					log("Grabado control "+i+" con evento "+keyLoggerRecord.keyEvent[index-1]+" en frame: "+keyFrameCounter+" e indice: "+index,DEBUG_ENGINE);
 				end;
 			end;
 			
@@ -282,6 +293,7 @@ begin
 		for (i=0;i<ckeyLoggerMaxFrames;i++)
 			fwrite(recordFile,keyLoggerRecord.frameTime[i]);
 			fwrite(recordFile,keyLoggerRecord.keyCode[i]);
+			fwrite(recordFile,keyLoggerRecord.keyEvent[i]);
 		end;
 		//cerramos el archivo
 		fclose(recordFile);
@@ -309,6 +321,7 @@ begin
 		for (i=0;i<ckeyLoggerMaxFrames;i++)
 			fread(playerFile,keyLoggerRecord.frameTime[i]);
 			fread(playerFile,keyLoggerRecord.keyCode[i]);
+			fread(playerFile,keyLoggerRecord.keyEvent[i]);
 		end;
 		//cerramos el archivo
 		fclose(playerFile);
@@ -329,18 +342,24 @@ begin
 			//recorremos el array de teclas a comprobar
 			for (i=0;i<ckeyCheckNumber;i++)
 				//limpiamos la tecla
-				controlLogger[i] = false;
+				controlLogger[i][E_PRESSED] = false;
+				controlLogger[i][E_DOWN]	= false;
+				controlLogger[i][E_UP] 		= false;
 				//si el timestamp actual coincide con el registro y la tecla es una del array a comprobar
 				if ( keyLoggerRecord.frameTime[index] == keyFrameCounter && 
 					 keyLoggerRecord.keyCode[index]  == i )
 					//seteamos la tecla en el keylogger
-					controlLogger[keyLoggerRecord.keyCode[index]] = true;
+					controlLogger[keyLoggerRecord.keyCode[index]][keyLoggerRecord.keyEvent[index]] = true;
+					if (keyLoggerRecord.keyEvent[index] == E_DOWN)
+						controlLogger[keyLoggerRecord.keyCode[index]][E_PRESSED] = true;
+					end;
+					
 					//incrementamos indice
 					index++;
 					if (index == ckeyLoggerMaxFrames)
 						break;
 					end;
-					log("Reproducido control "+i+" en frame: "+keyFrameCounter+" e indice: "+index,DEBUG_ENGINE);
+					log("Reproducido control "+i+" con evento:"+keyLoggerRecord.keyEvent[index-1]+" en frame: "+keyFrameCounter+" e indice: "+index,DEBUG_ENGINE);
 				end;
 			end;
 			
@@ -355,7 +374,9 @@ begin
 	
 	//limpiamos el buffer de reproduccion
 	for (i=0;i<ckeyCheckNumber;i++)
-		controlLogger[i] = false;
+		controlLogger[i][E_PRESSED] = false;
+		controlLogger[i][E_DOWN]	= false;
+		controlLogger[i][E_UP] 		= false;
 	end;
 	
 	keyLoggerPlaying = false;

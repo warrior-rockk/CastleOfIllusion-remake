@@ -55,11 +55,12 @@ Global
 	
 	//Keylogger
 	byte keyLogger[127];					//Array de teclas del keylogger
-	byte controlLogger[6];					//Array de controles del controlLogger
+	byte controlLogger[6][3];					//Array de controles del controlLogger
 	
 	struct keyLoggerRecord					//Grabacion de teclas actual
 		int frameTime[ckeyLoggerMaxFrames];	//Marca de tiempo
 		byte keyCode[ckeyLoggerMaxFrames];	//Tecla pulsada
+		byte keyEvent[ckeyLoggerMaxFrames];  //Evento
 	end;
 	byte keysCheck[ckeyCheckNumber] =	K_LEFT,	
 										K_RIGHT,
