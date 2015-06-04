@@ -25,8 +25,8 @@ end;
 function WGE_CheckControl(int control,int event)
 begin
 	
-	return (WGE_Key(configuredKeys[control],event)  	 && !controlLoggerPlaying) ||
-	       (WGE_Button(configuredButtons[control],event) && !controlLoggerPlaying) ||
+	return (WGE_Key(configuredKeys[control],event)  	 && (!controlLoggerPlaying || control==CTRL_START)) ||
+	       (WGE_Button(configuredButtons[control],event) && (!controlLoggerPlaying || control==CTRL_START)) ||
 		   (controlLogger[control][event]				 &&  controlLoggerPlaying);
 end;
 
@@ -240,7 +240,7 @@ begin
 		frame;
 	
 	//se comprueba con key porque WGE_Key esta deshabilitado en reproduccion
-	until (index == cControlLoggerMaxFrames || controlLoggerRecord.controlCode[index]  == cendRecordCode || key(_control) && key(_s)); 
+	until (index == cControlLoggerMaxFrames || controlLoggerRecord.controlCode[index]  == cendRecordCode || key(_control) && key(_s) || !game.attractActive); 
 	
 	//limpiamos el buffer de reproduccion
 	for (i=0;i<cControlCheckNumber;i++)

@@ -15,20 +15,10 @@
 #define	CTRL_ACTION_ATACK		5
 #define CTRL_START				6
 
-//Teclas (se suprime por variables cuando tenga modificado el keylogger)
-#define	K_UP 	  				_UP 
-#define	K_DOWN	  				_DOWN 
-#define	K_LEFT    				_LEFT 
-#define	K_RIGHT	  				_RIGHT 
-#define	K_JUMP	  				_L_ALT
-#define	K_ACTION_ATACK			_L_CONTROL
-#define K_PAUSE         		_SPACE
-
 //Estados de un control
 #define E_PRESSED    0
 #define E_DOWN       1
 #define E_UP         2
-
 
 //Constantes
 const

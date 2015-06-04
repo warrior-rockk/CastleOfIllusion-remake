@@ -253,6 +253,7 @@ Global
 		byte endLevel;			//Flag de fin de nivel
 		byte boss;				//Flag de jefe
 		byte bossKilled;		//Flag de jefe muerto
+		byte attractActive;		//Flag de attract mode activo
 		int numLevel;			//Nivel actual
 		int playerLife;			//vida del jugador
 		int playerMaxLife;      //vida maxima del jugador

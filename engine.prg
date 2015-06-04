@@ -87,7 +87,6 @@ private
 	int idDeadPlayer;						//id del proceso muerte del player
 	byte memBoss;							//flag de boss activo
 	int counterTime;
-	byte attractModeActive;
 begin
 	priority = cMainPrior;
 	
@@ -114,11 +113,11 @@ begin
 				repeat
 					counterTime++;
 					if (counterTime >= cNumFPS*6)
-						attractModeActive = true;
+						game.attractActive = true;
 						counterTime=0;
 					end;
 					frame;
-				until(WGE_CheckControl(CTRL_START,E_DOWN) || attractModeActive);
+				until(WGE_CheckControl(CTRL_START,E_DOWN) || game.attractActive);
 							
 				//apagamos pantalla
 				fade(0,0,0,cFadeTime);
@@ -150,7 +149,9 @@ begin
 				player();
 				
 				//creamos el HUD
-				HUD();
+				if (!game.attractActive)
+					HUD();
+				end;
 											
 				//procesos congelados
 				gameSignal(s_freeze_tree);
@@ -174,7 +175,7 @@ begin
 				//se despiertan los procesos
 				gameSignal(s_wakeup_tree);
 								
-				if (!attractModeActive)
+				if (!game.attractActive)
 					game.state = PLAYLEVEL;
 				else
 					controlLoggerPlayer("partida.rec");
@@ -388,8 +389,8 @@ begin
 				game.state = LOADLEVEL;
 			end;
 			case ATTRACTMODE:
-				if (controlLoggerFinished)
-					attractModeActive = false;
+				if (controlLoggerFinished || WGE_CheckControl(CTRL_START,E_PRESSED))
+					game.attractActive = false;
 					//apagamos pantalla
 					fade(0,0,0,cFadeTime);
 					while(fading) frame; end;
@@ -1794,6 +1795,9 @@ begin
 		
 		frame;
 	end;
+
+	onexit:
+		delete_text(all_text);
 end;
 
 //funcion que convierte un entero a string añadiendo ceros a la izquierda

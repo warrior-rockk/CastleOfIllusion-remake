@@ -31,7 +31,6 @@ ENGINE: -en el WGE_LOOP, como se hace bucles con frame, no se ejecuta el contado
 		-UpdateObject generalizarlo a updateentity para todos en engine.prg
 		-con screen_get puedo caputar la pantalla y hacer transiciones
 		-los estados posibles deberian diferenciarse por tipo de proceso a pesar de tener estados globales que tengan el mismo numero
-		-atractt mode que se vea jugar un nivel
 		-grabacion de como jugar en testrom
 		-Sustituir el escribir la posicion en el tile en debug con mostrar flotante la posicion o algo		
 		-efectos de paleta: relampagos,agua,etc..
