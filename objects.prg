@@ -239,6 +239,13 @@ begin
 				if (exists(idPlayer))
 					isBitSet(idPlayer.flags,B_HMIRROR) ? this.fX = idPlayer.x-cObjectPickedPosX : this.fX = idPlayer.x+cObjectPickedPosX;
 					this.fY = idPlayer.y+cObjectPickedPosY;
+					//correccion de altura por grafico player
+					if (idPlayer.graph == 28)
+						this.fY ++;
+					end;
+					if (idPlayer.graph == 29)
+						this.fY += 2;
+					end;
 					//el objeto se vuelve persistente
 					setBit(this.props,PERSISTENT);
 					//reseteamos flag boton si lo hubiera seteado el proceso

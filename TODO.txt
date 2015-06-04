@@ -1,9 +1,10 @@
-BUGS:   -se cuelga al salir de splash despues de una repeticion de partida
-		-tiles que se quedan en negro al reiniciar nivel!! (activadas funciones para debuggearlo)
+BUGS:   -tiles que se quedan en negro al reiniciar nivel!! (activadas funciones para debuggearlo)
+		-no puedo cruzar por plataforma?
+		
 		-jarra se enganchó en la pared izquierda (al lanzarla o al caerse por tocar pompa?)
 		-no es practico  el margin de outregion de los objetos ya que no aparecen al salirte un poco
 		-definir mejor la animacion del player con trasition room horizontal segun si esta cogiendo objeto, saltando con objeto,etc..
-		-no puedo cruzar por plataforma?
+		
 		
 TOYLAND: -determinar que contienen los items
 
@@ -12,8 +13,7 @@ CONTROLS:  -implementar y controlar el numero de joysticks y el joystick selecci
 ENTIDADES: 
        	-propiedad local bouncy para tener rebote si/no y cuanto?? (de momento rebota por tipo de objeto)
 
-PLAYER:	 -los objetos que tienes pick, deberian moverse con tus graph mas bajos?
-		-animacion de incorporase en la escalera (no está en el fpg)
+PLAYER:	-animacion de incorporase en la escalera (no está en el fpg)
 		-ver en meka capturando frames animacion de recojer objeto
 		-parece que con las flechas de direccion no cae de escalera
 	    -animacion al borde de objeto??
@@ -46,7 +46,7 @@ COLLISIONS:-que exista un array dinamico (lista enlazada?) de entidades existent
 
 MONSTERS: -Limpiar privates de monstruos
 
-EDITOR: 
+EDITOR: -flags de checks y player se trastocan si abro el proyecto de nuevo.¿no limpia memoria?
 		-bug en posicion entidades sin fisica con zoom editor aplicado
 		-bug al mover player con zoom aplicado
 		-COpiar y pegar varios tipos de entidades y varias a la vez
