@@ -7,10 +7,8 @@ BUGS:   -se cuelga al salir de splash despues de una repeticion de partida
 		
 TOYLAND: -determinar que contienen los items
 
-CONTROLS: -implementar el keylogger para mando segun controles genericos no teclas. y eleiminar los defines de teclas
-			HECHO! FALTA LIMPIAR LO ANTIGUO
-		  -revisar porque no daria los eventos bien. SI pide down, dara true aunque sea pressed ¿puede afectar??
-		  -implementar y controlar el numero de joysticks y el joystick seleccionado,numero botones,etc..
+CONTROLS:  -implementar y controlar el numero de joysticks y el joystick seleccionado,numero botones,etc..
+
 ENTIDADES: 
        	-propiedad local bouncy para tener rebote si/no y cuanto?? (de momento rebota por tipo de objeto)
 

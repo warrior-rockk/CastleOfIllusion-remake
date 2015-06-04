@@ -5,7 +5,7 @@
 //
 //  Funciones controles
 //
-//  Funcion estado de tecla basado en código de SplinterGU
+//  Rutina contenida en WGE_Key basado en código de SplinterGU
 // ========================================================================
 
 //Proceso encargado de actualizar el estado de los controles
@@ -24,11 +24,10 @@ end;
 //Funcion que devuelve el estado del control solicitado
 function WGE_CheckControl(int control,int event)
 begin
-	//say("Pido "+control+","+event);
-	//say("Tengo "+controlLogger[control][event]);
-	return (WGE_Key(configuredKeys[control],event)  	 && !keyLoggerPlaying) ||
-	       (WGE_Button(configuredButtons[control],event) && !keyLoggerPlaying) ||
-		   (controlLogger[control][event]				 && keyLoggerPlaying);
+	
+	return (WGE_Key(configuredKeys[control],event)  	 && !controlLoggerPlaying) ||
+	       (WGE_Button(configuredButtons[control],event) && !controlLoggerPlaying) ||
+		   (controlLogger[control][event]				 &&  controlLoggerPlaying);
 end;
 
 //Funcion actualizacion estado de teclas
@@ -40,8 +39,7 @@ begin
 	keyUse ^= 1;
 	//recorremos el array de estados tecla
 	for ( i = 0; i < 127; i++ )
-		keyState[ i ][ keyUse ] = ( key( i ) && !keyLoggerPlaying ) || 
-								  ( keyLogger[ i ] && keyLoggerPlaying );
+		keyState[ i ][ keyUse ] = key( i );
 	end;
 end;	
 
@@ -84,6 +82,182 @@ return ((event==E_DOWN)?(  joyState[ b ][ keyUse ] && !joyState[ b ][ keyUse ^ 1
 		( joyState[ b ][ keyUse ]));
 end;
 
+//Funcion que registra los controles para grabar partida
+process ControlLoggerRecorder(string _file)
+private
+	int controlFrameCounter;		//contador frames grabación
+	int index;					//indice de registro
+	
+	int recordFile;				//archivo de grabacion
+	int i;						//variable aux
+begin 	
+	//iniciamos flags
+	controlLoggerRecording = true;
+	controlLoggerFinished = false;
+	
+	log("Grabacion iniciada",DEBUG_ENGINE);
+	
+	//limpiamos el buffer de grabacion
+	for (i=0;i<cControlLoggerMaxFrames;i++)
+		controlLoggerRecord.frameTime[i] = 0;
+		controlLoggerRecord.controlCode[i]   = 0;
+	end;
+	
+	//loop grabacion
+	repeat
+		//comprobamos si el player esta vivo
+		if (get_status(idPlayer) <> STATUS_ALIVE)
+			log("Esperando a player para grabacion",DEBUG_ENGINE);
+		else
+						
+			//comprobamos todos los controles disponibles
+			for (i=0;i<=cControlCheckNumber;i++)
+				//si se ha presionado un control
+				if (WGE_CheckControl(i,E_PRESSED))
+					//registramos el control con el frametimestamp
+					controlLoggerRecord.frameTime[index] = controlFrameCounter;
+					controlLoggerRecord.controlCode[index]   = i;
+					//registramos el tipo de evento
+					if (WGE_CheckControl(i,E_DOWN))
+						controlLoggerRecord.controlEvent[index]  	 = E_DOWN;
+					elseif (WGE_CheckControl(i,E_UP))
+						controlLoggerRecord.controlEvent[index]  = E_UP;
+					else
+						controlLoggerRecord.controlEvent[index]  = E_PRESSED;
+					end;
+					
+					//incrementamos el indice
+					index ++;
+					if (index == cControlLoggerMaxFrames)
+						break;
+					end;
+					log("Grabado control "+i+" con evento "+controlLoggerRecord.controlEvent[index-1]+" en frame: "+controlFrameCounter+" e indice: "+index,DEBUG_ENGINE);
+				end;
+			end;
+			
+			controlFrameCounter ++;
+		
+		end;
+		
+		frame;
+	
+	until(index == cControlLoggerMaxFrames || WGE_Key(_control,E_PRESSED) && WGE_Key(_s,E_DOWN));
+	
+	//marcamos fin de grabacion si no llegó al maximo
+	if (index < cControlLoggerMaxFrames)
+		controlLoggerRecord.frameTime[index] = controlFrameCounter;
+		controlLoggerRecord.controlCode[index]   = cendRecordCode; 	
+	end;
+	
+	controlLoggerRecording = false;
+	
+	log("Grabacion Finalizada",DEBUG_ENGINE);
+	
+	//guardamos la grabacion a archivo
+	if (_file <> "" )
+		recordFile = fopen(_file,O_WRITE);
+		//escribimos los registros grabados
+		for (i=0;i<ccontrolLoggerMaxFrames;i++)
+			fwrite(recordFile,controlLoggerRecord.frameTime[i]);
+			fwrite(recordFile,controlLoggerRecord.controlCode[i]);
+			fwrite(recordFile,controlLoggerRecord.controlEvent[i]);
+		end;
+		//cerramos el archivo
+		fclose(recordFile);
+		log("Archivo "+_file+" guardado con éxito",DEBUG_ENGINE);
+	else
+		log("Grabacion se guarda en memoria",DEBUG_ENGINE);
+	end;
+end;
+
+//funcion que reproduce los controles grabados
+process controlLoggerPlayer(string _file)
+private
+	int controlFrameCounter;		//contador frames reproducción
+	int index;					//indice del registro
+	
+	int playerFile;				//archivo de reproduccion
+	int i;						//variable aux
+begin 
+	//iniciamos flags
+	controlLoggerFinished = false;
+	
+	//abrimos la reproduccion de archivo
+	if (_file <> "" && fexists(_file) )
+		playerFile = fopen(_file,O_READ);
+		//leemos los registros grabados
+		for (i=0;i<cControlLoggerMaxFrames;i++)
+			fread(playerFile,controlLoggerRecord.frameTime[i]);
+			fread(playerFile,controlLoggerRecord.controlCode[i]);
+			fread(playerFile,controlLoggerRecord.controlEvent[i]);
+		end;
+		//cerramos el archivo
+		fclose(playerFile);
+		log("Archivo "+_file+" leído con éxito",DEBUG_ENGINE);
+	else
+		log("Grabacion se lee de memoria",DEBUG_ENGINE);
+	end;
+	
+	log("Reproduccion iniciada",DEBUG_ENGINE);
+	
+	repeat
+		//comprobamos si el player esta vivo
+		if (get_status(idPlayer) <> STATUS_ALIVE)
+			log("Esperando a player para reproduccion",DEBUG_ENGINE);
+			controlLoggerPlaying = false;
+		else
+			controlLoggerPlaying = true;
+			
+			//recorremos el array de teclas a comprobar
+			for (i=0;i<cControlCheckNumber;i++)
+				//limpiamos los eventos del control actual
+				controlLogger[i][E_PRESSED] = false;
+				controlLogger[i][E_DOWN]	= false;
+				controlLogger[i][E_UP] 		= false;
+				//si el timestamp actual coincide con el registro y el control activo es el actual
+				if ( controlLoggerRecord.frameTime[index] == controlFrameCounter && 
+					 controlLoggerRecord.controlCode[index]  == i )
+					//seteamos el control y su evento en el controlLogger
+					controlLogger[controlLoggerRecord.controlCode[index]][controlLoggerRecord.controlEvent[index]] = true;
+					//si el evento es E_DOWN, ímplicitamente es E_PRESSED también
+					if (controlLoggerRecord.controlEvent[index] == E_DOWN)
+						controlLogger[controlLoggerRecord.controlCode[index]][E_PRESSED] = true;
+					end;
+					
+					//incrementamos indice
+					index++;
+					if (index == cControlLoggerMaxFrames)
+						break;
+					end;
+					log("Reproducido control "+i+" con evento:"+controlLoggerRecord.controlEvent[index-1]+" en frame: "+controlFrameCounter+" e indice: "+index,DEBUG_ENGINE);
+				end;
+			end;
+			
+			controlFrameCounter ++;
+
+		end;
+		
+		frame;
+	
+	//se comprueba con key porque WGE_Key esta deshabilitado en reproduccion
+	until (index == cControlLoggerMaxFrames || controlLoggerRecord.controlCode[index]  == cendRecordCode || key(_control) && key(_s)); 
+	
+	//limpiamos el buffer de reproduccion
+	for (i=0;i<cControlCheckNumber;i++)
+		controlLogger[i][E_PRESSED] = false;
+		controlLogger[i][E_DOWN]	= false;
+		controlLogger[i][E_UP] 		= false;
+	end;
+	
+	controlLoggerPlaying = false;
+	controlLoggerFinished = true;
+	
+	log("Reproduccion detenida",DEBUG_ENGINE);
+end;
+
+//FUNCIONES ANTIGUAS NO USADAS DE GRABACION DE TECLAS
+
+/*
 //Funcion que registra las pulsaciones de tecla para grabar partida
 process keyLoggerRecorder(string _file)
 private
@@ -216,171 +390,4 @@ begin
 	keyLoggerPlaying = false;
 	
 	log("Reproduccion detenida",DEBUG_ENGINE);
-end;
-
-//Funcion que registra los controles para grabar partida
-process ControlLoggerRecorder(string _file)
-private
-	int keyFrameCounter;		//contador frames grabación
-	int index;					//indice de registro
-	
-	int recordFile;				//archivo de grabacion
-	int i;						//variable aux
-begin 	
-	keyLoggerRecording = true;
-	keyLoggerFinished = false;
-	
-	log("Grabacion iniciada",DEBUG_ENGINE);
-	
-	//limpiamos el buffer de grabacion
-	for (i=0;i<ckeyLoggerMaxFrames;i++)
-		keyLoggerRecord.frameTime[i] = 0;
-		keyLoggerRecord.keyCode[i]   = 0;
-	end;
-	
-	//loop grabacion
-	repeat
-		if (get_status(idPlayer) <> 2)
-			log("Esperando a player para grabacion",DEBUG_ENGINE);
-		else
-						
-			//comprobamos todos los controles disponibles
-			for (i=0;i<=6;i++)
-				if (WGE_CheckControl(i,E_PRESSED))
-					//registramos la tecla con el frametimestamp
-					keyLoggerRecord.frameTime[index] = keyFrameCounter;
-					keyLoggerRecord.keyCode[index]   = i;
-					//registramos el evento
-					if (WGE_CheckControl(i,E_DOWN))
-						keyLoggerRecord.keyEvent[index]  = E_DOWN;
-					elseif (WGE_CheckControl(i,E_UP))
-						keyLoggerRecord.keyEvent[index]  = E_UP;
-					else
-						keyLoggerRecord.keyEvent[index]  = E_PRESSED;
-					end;
-					
-					//incrementamos el indice
-					index ++;
-					if (index == ckeyLoggerMaxFrames)
-						break;
-					end;
-					log("Grabado control "+i+" con evento "+keyLoggerRecord.keyEvent[index-1]+" en frame: "+keyFrameCounter+" e indice: "+index,DEBUG_ENGINE);
-				end;
-			end;
-			
-			keyFrameCounter ++;
-		
-		end;
-		
-		frame;
-	
-	until(index == ckeyLoggerMaxFrames || WGE_Key(_control,E_PRESSED) && WGE_Key(_s,E_DOWN));
-	
-	//marcamos fin de grabacion si no llegó al maximo
-	if (index < ckeyLoggerMaxFrames)
-		keyLoggerRecord.frameTime[index] = keyFrameCounter;
-		keyLoggerRecord.keyCode[index]   = cendRecordCode; 	
-	end;
-	
-	keyLoggerRecording = false;
-	
-	log("Grabacion Finalizada",DEBUG_ENGINE);
-	
-	//guardamos la grabacion a archivo
-	if (_file <> "" )
-		recordFile = fopen(_file,O_WRITE);
-		//escribimos los registros grabados
-		for (i=0;i<ckeyLoggerMaxFrames;i++)
-			fwrite(recordFile,keyLoggerRecord.frameTime[i]);
-			fwrite(recordFile,keyLoggerRecord.keyCode[i]);
-			fwrite(recordFile,keyLoggerRecord.keyEvent[i]);
-		end;
-		//cerramos el archivo
-		fclose(recordFile);
-		log("Archivo "+_file+" guardado con éxito",DEBUG_ENGINE);
-	else
-		log("Grabacion se guarda en memoria",DEBUG_ENGINE);
-	end;
-end;
-
-//funcion que reproduce los controles grabados
-process controlLoggerPlayer(string _file)
-private
-	int keyFrameCounter;		//contador frames reproducción
-	int index;					//indice del registro
-	
-	int playerFile;				//archivo de reproduccion
-	int i;						//variable aux
-begin 
-	keyLoggerFinished = false;
-	
-	//abrimos la reproduccion de archivo
-	if (_file <> "" && fexists(_file) )
-		playerFile = fopen(_file,O_READ);
-		//leemos los registros grabados
-		for (i=0;i<ckeyLoggerMaxFrames;i++)
-			fread(playerFile,keyLoggerRecord.frameTime[i]);
-			fread(playerFile,keyLoggerRecord.keyCode[i]);
-			fread(playerFile,keyLoggerRecord.keyEvent[i]);
-		end;
-		//cerramos el archivo
-		fclose(playerFile);
-		log("Archivo "+_file+" leído con éxito",DEBUG_ENGINE);
-	else
-		log("Grabacion se lee de memoria",DEBUG_ENGINE);
-	end;
-	
-	log("Reproduccion iniciada",DEBUG_ENGINE);
-	
-	repeat
-		if (get_status(idPlayer) <> 2)
-			log("Esperando a player para reproduccion",DEBUG_ENGINE);
-			keyLoggerPlaying = false;
-		else
-			keyLoggerPlaying = true;
-			
-			//recorremos el array de teclas a comprobar
-			for (i=0;i<ckeyCheckNumber;i++)
-				//limpiamos la tecla
-				controlLogger[i][E_PRESSED] = false;
-				controlLogger[i][E_DOWN]	= false;
-				controlLogger[i][E_UP] 		= false;
-				//si el timestamp actual coincide con el registro y la tecla es una del array a comprobar
-				if ( keyLoggerRecord.frameTime[index] == keyFrameCounter && 
-					 keyLoggerRecord.keyCode[index]  == i )
-					//seteamos la tecla en el keylogger
-					controlLogger[keyLoggerRecord.keyCode[index]][keyLoggerRecord.keyEvent[index]] = true;
-					if (keyLoggerRecord.keyEvent[index] == E_DOWN)
-						controlLogger[keyLoggerRecord.keyCode[index]][E_PRESSED] = true;
-					end;
-					
-					//incrementamos indice
-					index++;
-					if (index == ckeyLoggerMaxFrames)
-						break;
-					end;
-					log("Reproducido control "+i+" con evento:"+keyLoggerRecord.keyEvent[index-1]+" en frame: "+keyFrameCounter+" e indice: "+index,DEBUG_ENGINE);
-				end;
-			end;
-			
-			keyFrameCounter ++;
-
-		end;
-		
-		frame;
-	
-	//se comprueba con key porque WGE_Key esta deshabilitado en reproduccion
-	until (index == ckeyLoggerMaxFrames || keyLoggerRecord.keyCode[index]  == cendRecordCode || key(_control) && key(_s)); 
-	
-	//limpiamos el buffer de reproduccion
-	for (i=0;i<ckeyCheckNumber;i++)
-		controlLogger[i][E_PRESSED] = false;
-		controlLogger[i][E_DOWN]	= false;
-		controlLogger[i][E_UP] 		= false;
-	end;
-	
-	keyLoggerPlaying = false;
-	keyLoggerFinished = true;
-	
-	log("Reproduccion detenida",DEBUG_ENGINE);
-end;
+end;*/

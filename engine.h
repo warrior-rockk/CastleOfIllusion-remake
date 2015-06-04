@@ -92,6 +92,13 @@
 #define CHECKREGION_ALL         0		//Comprueba en toda la region
 #define CHECKREGION_DOWN        1		//Comprueba si sale de la region por abajo
 
+//estados de un proceso Bennu
+#define STATUS_NOEXISTS			0	// The specified process does not exist.
+#define STATUS_DEAD				1	// The specified process is dead.
+#define STATUS_ALIVE			2	// The specified process is alive.
+#define STATUS_SLEEPING			3	// The specified process is sleeping.
+#define STATUS_FROZEN			4	// The specified process is frozen.
+
 //Constantes del motor
 const
 	//Engine

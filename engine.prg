@@ -388,7 +388,7 @@ begin
 				game.state = LOADLEVEL;
 			end;
 			case ATTRACTMODE:
-				if (keyLoggerFinished)
+				if (controlLoggerFinished)
 					attractModeActive = false;
 					//apagamos pantalla
 					fade(0,0,0,cFadeTime);

@@ -32,9 +32,9 @@
 
 //Constantes
 const
-	ckeyCheckNumber 	= 6;		//Numero de teclas a comprobar
-	ckeyLoggerMaxFrames = 1000;		//Numero maximo de frames a grabar
-	cendRecordCode      = 128;      //Valor no asociado a tecla que indica fin de grabacion
+	cControlCheckNumber 	= 6;		//Numero de controles a comprobar
+	cControlLoggerMaxFrames = 1000;		//Numero maximo de frames a grabar
+	cendRecordCode     		= 128;      //Valor no asociado a control que indica fin de grabacion
 End;
 
 //Data Types
@@ -49,28 +49,22 @@ Global
 							_L_ALT,_L_CONTROL,_SPACE;	//configuracion de teclas
 	
 	//joystick
-	byte joyUse = 0;								//Seleccion Flanco
-	byte joyState[13][1];							//Mapa estados flanco anterior y actual
-	byte configuredButtons[7] = 10,11,12,13,3,2,9; //Configuracion de botones
+	byte joyUse = 0;									//Seleccion Flanco
+	byte joyState[13][1];								//Mapa estados flanco anterior y actual
+	byte configuredButtons[7] = 10,11,12,13,3,2,9; 		//Configuracion de botones
 	
-	//Keylogger
-	byte keyLogger[127];					//Array de teclas del keylogger
+	//Controls logger
+	byte controlLoggerRecording;				//flag de grabando controles
+	byte controlLoggerPlaying;					//flag de reproduciendo controles
+	byte controlLoggerFinished;					//flag de reproduccion finalizada
+	
 	byte controlLogger[6][3];					//Array de controles del controlLogger
 	
-	struct keyLoggerRecord					//Grabacion de teclas actual
-		int frameTime[ckeyLoggerMaxFrames];	//Marca de tiempo
-		byte keyCode[ckeyLoggerMaxFrames];	//Tecla pulsada
-		byte keyEvent[ckeyLoggerMaxFrames];  //Evento
+	struct controlLoggerRecord							//Grabacion de teclas actual
+		int frameTime[cControlLoggerMaxFrames];			//Marca de tiempo
+		byte controlCode[cControlLoggerMaxFrames];		//Tecla pulsada
+		byte controlEvent[cControlLoggerMaxFrames];  	//Evento
 	end;
-	byte keysCheck[ckeyCheckNumber] =	K_LEFT,	
-										K_RIGHT,
-										K_UP,
-										K_DOWN,
-										K_JUMP,
-										K_ACTION_ATACK;		//Array de teclas a comprobar
-	byte keyLoggerRecording;				//flag de grabando teclas
-	byte keyLoggerPlaying;					//flag de reproduciendo teclas
-	byte keyLoggerFinished;					//flag de reproduccion finalizada
 	
 End;
 
