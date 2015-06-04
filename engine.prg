@@ -109,7 +109,8 @@ begin
 		switch (game.state)
 			case SPLASH:
 				//mensaje hasta pulsar tecla
-				write(fntGame,cResx>>1,cResy>>1,ALIGN_CENTER,"CASTLE OF ILLUSION");
+				write(fntGame,cGameRegionW>>1,cGameRegionH>>1,ALIGN_CENTER,"CASTLE OF ILLUSION");
+				write(fntGame,cGameRegionW>>1,cGameRegionH,ALIGN_CENTER,"PRESS START BUTTON");
 				repeat
 					counterTime++;
 					if (counterTime >= cNumFPS*6)
