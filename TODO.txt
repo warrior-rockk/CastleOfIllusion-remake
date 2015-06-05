@@ -1,4 +1,12 @@
-BUGS:   -tiles que se quedan en negro al reiniciar nivel!! (activadas funciones para debuggearlo)
+BUGS:   -se queda score cuando gameover
+		-sonido de muerte cuando mueres por vacio no deberia sonar
+		-no deberia explotar tan pronto el pickedobjet al lanzarlo con techo debajo?
+		-el blend del player muerto siempre tiene que ser normal
+		-sonidos entidades estan funcionando mal
+		-no aparece el springboxplatform
+		-los proyectiles del cycleclown van muy rapido y muy seguido
+		-fadeooff en musica attract mode
+		-tiles que se quedan en negro al reiniciar nivel!! (activadas funciones para debuggearlo)
 		-no puedo cruzar por plataforma?
 		
 		-jarra se enganchó en la pared izquierda (al lanzarla o al caerse por tocar pompa?)
