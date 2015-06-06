@@ -787,7 +787,7 @@ begin
 					//si tenemos apertura
 					if (openDoor)
 						//tiempo apertura
-						if (clockTick)
+						if (tick100ms)
 							doorTime++;
 						end;
 						//tiempo cumplido
@@ -830,11 +830,11 @@ begin
 					//flag de cerrar
 					if (!openDoor)
 						//tiempo apertura
-						if (clockTick)
+						if (tick100ms)
 							doorTime--;
 						end;
 						//tiempo cumplido
-						if (doorTime <= 0)
+						if (doorTime <= 1)
 							//movemos los objetos puerta hacia abajo un tile
 							repeat
 								doorID = get_id(TYPE doorButton);
@@ -843,6 +843,7 @@ begin
 									doorID.this.fY += cTileSize;
 								end;
 							until (doorID == 0);
+							doorTime = 0;
 							//grafico inicial
 							graph = _graph;
 							//cambiamos de estado
