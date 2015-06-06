@@ -805,8 +805,10 @@ BEGIN
 				//subiendo
 				if (this.vY <= 0)
 					//reproducimos sonido estado
-					WGE_PlayEntityStateSnd(id,playerSound[JUMP_SND]);	
-				
+					if (this.prevState <> THROWING_STATE)
+						WGE_PlayEntityStateSnd(id,playerSound[JUMP_SND]);	
+					end;
+					
 					if (picked)
 						WGE_Animate(30,30,1,ANIM_LOOP);
 					else
@@ -989,8 +991,6 @@ begin
 	
 	this.fX = idPlayer.x;
 	this.fY = idPlayer.y;
-	
-	flags = idPlayer.flags;
 	
 	this.vX = 0;
 	this.vY = -4;

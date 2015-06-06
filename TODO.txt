@@ -1,14 +1,12 @@
-BUGS:   -al lanzar objeto saltando suena el salto despues de lanzar
-		-sonido de muerte cuando mueres por vacio no deberia sonar
+BUGS:   -sonido de muerte cuando mueres por vacio no deberia sonar
 		-no deberia explotar tan pronto el pickedobjet al lanzarlo con techo debajo?
-		-el blend del player muerto siempre tiene que ser normal
-		-no aparece el springboxplatform
 		-los proyectiles del cycleclown van muy rapido y muy seguido
-		-fadeooff en musica attract mode
 		-tiles que se quedan en negro al reiniciar nivel!! (activadas funciones para debuggearlo)
 		-no puedo cruzar por plataforma?
-		
+		-springbox hace sonido al impulsar??
+		-sonido al intentar cojer objeto encima? el de stairs?
 		-jarra se enganchó en la pared izquierda (al lanzarla o al caerse por tocar pompa?)
+		-que la doorbutton abra nada mas pulsar el boton
 		-no es practico  el margin de outregion de los objetos ya que no aparecen al salirte un poco
 		-definir mejor la animacion del player con trasition room horizontal segun si esta cogiendo objeto, saltando con objeto,etc..
 		

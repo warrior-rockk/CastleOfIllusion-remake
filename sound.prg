@@ -39,16 +39,20 @@ begin
 				sndChannel = cPlayerSndChn;
 			end;
 			default:
-				switch (getType(idEntity.father))
-					case (TYPE object):
-						sndChannel = cObjectSndChn;
+				if (exists(idEntity.father))
+					switch (getType(idEntity.father))
+						case (TYPE object):
+							sndChannel = cObjectSndChn;
+						end;
+						case (TYPE monster):
+							sndChannel = cMonsterSndChn;
+						end;
+						default:
+							sndChannel = cDefaultSndChn;
+						end;
 					end;
-					case (TYPE monster):
-						sndChannel = cMonsterSndChn;
-					end;
-					default:
-						sndChannel = cDefaultSndChn;
-					end;
+				else
+					sndChannel = cDefaultSndChn;
 				end;
 			end;
 		end;
@@ -76,16 +80,20 @@ begin
 				sndChannel = cPlayerSndChn;
 			end;
 			default:
-				switch (getType(idEntity.father))
-					case (TYPE object):
-						sndChannel = cObjectSndChn;
+				if (exists(idEntity.father))
+					switch (getType(idEntity.father))
+						case (TYPE object):
+							sndChannel = cObjectSndChn;
+						end;
+						case (TYPE monster):
+							sndChannel = cMonsterSndChn;
+						end;
+						default:
+							sndChannel = cDefaultSndChn;
+						end;
 					end;
-					case (TYPE monster):
-						sndChannel = cMonsterSndChn;
-					end;
-					default:
-						sndChannel = cDefaultSndChn;
-					end;
+				else
+					sndChannel = cDefaultSndChn;
 				end;
 			end;
 		end;
