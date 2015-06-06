@@ -383,6 +383,7 @@ begin
 				delete_text(all_text);
 				//cargamos nivel inicial
 				game.numLevel=0;
+				game.score = 0;
 				game.playerLife = game.playerMaxLife;
 				game.playerTries = 3;
 				game.state = LOADLEVEL;
@@ -391,7 +392,9 @@ begin
 				if (controlLoggerFinished || WGE_CheckControl(CTRL_START,E_PRESSED))
 					//apagamos pantalla
 					fade(0,0,0,cFadeTime);
-					while(fading) frame; end;
+					//detenemos sonido
+					fade_music_off(1000);
+					while(fading || is_playing_song()) frame; end;
 					//desactivamos flag
 					game.attractActive = false;
 					//limpiamos el nivel
