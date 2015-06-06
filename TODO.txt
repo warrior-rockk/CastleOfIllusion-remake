@@ -1,8 +1,8 @@
 BUGS:   -se queda score cuando gameover
+		-al lanzar objeto saltando suena el salto despues de lanzar
 		-sonido de muerte cuando mueres por vacio no deberia sonar
 		-no deberia explotar tan pronto el pickedobjet al lanzarlo con techo debajo?
 		-el blend del player muerto siempre tiene que ser normal
-		-sonidos entidades estan funcionando mal
 		-no aparece el springboxplatform
 		-los proyectiles del cycleclown van muy rapido y muy seguido
 		-fadeooff en musica attract mode

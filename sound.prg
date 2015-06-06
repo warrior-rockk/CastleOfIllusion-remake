@@ -38,14 +38,18 @@ begin
 			case (TYPE player):
 				sndChannel = cPlayerSndChn;
 			end;
-			case (TYPE object):
-				sndChannel = cObjectSndChn;
-			end;
-			case (TYPE monster):
-				sndChannel = cMonsterSndChn;
-			end;
 			default:
-				sndChannel = cDefaultSndChn;
+				switch (getType(idEntity.father))
+					case (TYPE object):
+						sndChannel = cObjectSndChn;
+					end;
+					case (TYPE monster):
+						sndChannel = cMonsterSndChn;
+					end;
+					default:
+						sndChannel = cDefaultSndChn;
+					end;
+				end;
 			end;
 		end;
 			
@@ -68,20 +72,21 @@ begin
 	if (idSound <> 0 )
 		//seteamos el canal de sonido segun entidad
 		switch (getType(idEntity))
-			case (TYPE WGE_Loop):
-				sndChannel = cGameSndChn;
-			end;
 			case (TYPE player):
 				sndChannel = cPlayerSndChn;
 			end;
-			case (TYPE object):
-				sndChannel = cObjectSndChn;
-			end;
-			case (TYPE monster):
-				sndChannel = cMonsterSndChn;
-			end;
 			default:
-				sndChannel = cDefaultSndChn;
+				switch (getType(idEntity.father))
+					case (TYPE object):
+						sndChannel = cObjectSndChn;
+					end;
+					case (TYPE monster):
+						sndChannel = cMonsterSndChn;
+					end;
+					default:
+						sndChannel = cDefaultSndChn;
+					end;
+				end;
 			end;
 		end;
 		

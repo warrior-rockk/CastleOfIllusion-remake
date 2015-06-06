@@ -764,7 +764,7 @@ begin
 					this.state = INVISIBLE_STATE;
 				end;
 				//reproducimos sonido
-				WGE_PlayEntityStateSnd(father,monsterSound[BUBBLE_SND]);
+				WGE_PlayEntityStateSnd(id,monsterSound[BUBBLE_SND]);
 			end;
 		end;
 		
@@ -1375,7 +1375,7 @@ begin
 				else
 					this.state = ATACK_STATE;	
 					//reproducimos sonido
-					WGE_PlayEntitySnd(father,monsterSound[EXPLODE_SND]);					
+					WGE_PlayEntitySnd(id,monsterSound[EXPLODE_SND]);					
 				end;
 			end;
 			case ATACK_STATE:							

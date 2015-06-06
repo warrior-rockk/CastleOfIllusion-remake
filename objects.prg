@@ -308,9 +308,9 @@ begin
 						colID.this.state = HURT_STATE;
 						//reproducimos sonido
 						if (isBitSet(this.props,OBJ_BREAKABLE))
-							WGE_PlayEntitySnd(father,objectSound[KILL_SND]);
+							WGE_PlayEntitySnd(id,objectSound[KILL_SND]);
 						else
-							WGE_PlayEntitySnd(father,objectSound[KILLSOLID_SND]);
+							WGE_PlayEntitySnd(id,objectSound[KILLSOLID_SND]);
 						end;
 					end;
 					
@@ -331,7 +331,7 @@ begin
 						//cambiamos de estado
 						this.state = DEAD_STATE;
 						//reproducimos sonido
-						WGE_PlayEntitySnd(father,objectSound[BREAK_SND]);
+						WGE_PlayEntitySnd(id,objectSound[BREAK_SND]);
 					end;
 				else
 					//si no ha colisionado y toca suelo, cambiamos de estado
@@ -537,38 +537,38 @@ begin
 						//incrementa puntuacion
 						game.score += cSmallCoinScore;
 						//reproducimos sonido
-						WGE_PlayEntitySnd(father,objectSound[PICKCOIN_SND]);
+						WGE_PlayEntitySnd(id,objectSound[PICKCOIN_SND]);
 					end;
 					if (isBitSet(this.props,OBJ_ITEM_BIG_COIN))
 						//incrementa puntuacion
 						game.score += cBigCoinScore;
 						//reproducimos sonido
-						WGE_PlayEntitySnd(father,objectSound[PICKCOIN_SND]);
+						WGE_PlayEntitySnd(id,objectSound[PICKCOIN_SND]);
 					end;
 					if (isBitSet(this.props,OBJ_ITEM_FOOD))
 						//incrementa 1 energia
 						game.playerLife ++;
 						//reproducimos sonido
-						WGE_PlayEntitySnd(father,objectSound[PICKITEM_SND]);
+						WGE_PlayEntitySnd(id,objectSound[PICKITEM_SND]);
 					end;
 					if (isBitSet(this.props,OBJ_ITEM_BIG_FOOD))
 						//incrementa toda la energia
 						game.playerLife = game.playerMaxLife;
 						//reproducimos sonido
-						WGE_PlayEntitySnd(father,objectSound[PICKITEM_SND]);
+						WGE_PlayEntitySnd(id,objectSound[PICKITEM_SND]);
 					end;
 					if (isBitSet(this.props,OBJ_ITEM_TRIE))
 						//incrementa 1 vida
 						game.playerTries++;
 						//reproducimos sonido
-						WGE_PlayEntitySnd(father,objectSound[PICKTRIE_SND]);
+						WGE_PlayEntitySnd(id,objectSound[PICKTRIE_SND]);
 					end;
 					if (isBitSet(this.props,OBJ_ITEM_STAR))
 						//añade una estrella a la vida
 						game.playerMaxLife += 1;
 						game.playerLife = game.playerMaxLife;
 						//reproducimos sonido
-						WGE_PlayEntitySnd(father,objectSound[PICKSTAR_SND]);
+						WGE_PlayEntitySnd(id,objectSound[PICKSTAR_SND]);
 					end;
 					if (isBitSet(this.props,OBJ_ITEM_GEM))
 						//fin del nivel actual
@@ -800,7 +800,7 @@ begin
 							//cambiamos estado
 							this.state = PUSHED_STATE;
 							//reproducimos sonido
-							WGE_PlayEntityStateSnd(father,objectSound[DOOR_SND]);
+							WGE_PlayEntityStateSnd(id,objectSound[DOOR_SND]);
 						end;
 					end;
 				end;
@@ -811,7 +811,7 @@ begin
 				//le quitamos grafico
 				graph = 0;
 				//reproducimos sonido
-				WGE_PlayEntityStateSnd(father,objectSound[DOOR_SND]);
+				WGE_PlayEntityStateSnd(id,objectSound[DOOR_SND]);
 				
 				//si se suelta el boton
 				if (idButton == 0 )
@@ -848,7 +848,7 @@ begin
 							//cambiamos de estado
 							this.state = IDLE_STATE;
 							//reproducimos sonido
-							WGE_PlayEntityStateSnd(father,objectSound[DOOR_SND]);
+							WGE_PlayEntityStateSnd(id,objectSound[DOOR_SND]);
 						end;
 					end;
 				end;
@@ -976,7 +976,7 @@ begin
 							//cambiamos estado
 							this.state = PUSHED_STATE;
 							//reproducimos sonido
-							WGE_PlayEntityStateSnd(father,objectSound[DOOR_SND]);
+							WGE_PlayEntityStateSnd(id,objectSound[DOOR_SND]);
 						end;
 					end;
 				end;
