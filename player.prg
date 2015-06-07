@@ -90,7 +90,7 @@ BEGIN
 		if (canMove)
 			
 			//direccion derecha
-			if (WGE_CheckControl(CTRL_RIGHT,E_PRESSED)) 
+			if (WGE_CheckControl(CTRL_RIGHT,E_PRESSED) && !onStairs) 
 				if (this.vX < velMaxX) 
 					this.vX+=accelx*(1-friction);
 				end;
@@ -98,7 +98,7 @@ BEGIN
 			end;
 			
 			//direccion izquierda
-			if (WGE_CheckControl(CTRL_LEFT,E_PRESSED)) 
+			if (WGE_CheckControl(CTRL_LEFT,E_PRESSED) && !onStairs) 
 				if (this.vX > -velMaxX) 
 					this.vX-=accelx*(1-friction);
 				end;
