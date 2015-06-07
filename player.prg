@@ -712,7 +712,7 @@ BEGIN
 			
 			//si no somos invencibles
 			if (!hurtDisabled)
-				//sthis.alto hacia atrás
+				//salto hacia atrás
 				hurtDisabled = true;				
 				isBitSet(flags,B_HMIRROR) ? this.vX = cHurtVelX : this.vX = -cHurtVelX;
 				this.vY = -cHurtVelY;
@@ -724,8 +724,14 @@ BEGIN
 					//reseteamos flags
 					picked = false;
 				end;
+				//si estabamos en escalera, no salta hacia atrás
+				if (onStairs)
+					onStairs = false;
+					this.vX = 0;
+				end;
 				//perdemos energia
 				game.playerLife--;
+				
 			end;	
 		end;
 		if (dead)
