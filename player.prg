@@ -901,6 +901,9 @@ BEGIN
 					this.state = PICKING_STATE;
 					failPick = false;
 				end;
+				say("a");
+				//reproducimos sonido
+				WGE_PlayEntityStateSnd(id,playerSound[NOPICK_SND]);
 			end;
 			case THROWING_STATE:
 				//reproducimos sonido estado

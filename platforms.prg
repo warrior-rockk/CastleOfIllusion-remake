@@ -541,9 +541,10 @@ begin
 					//impulsamos al player
 					if (memPlayerImpulse && WGE_CheckControl(CTRL_JUMP,E_PRESSED))						
 						idPlayer.this.vY = -cSpringBoxJumpImpulse;
-						
+						WGE_PlayEntitySnd(idPlayer,playerSound[JUMP_SND]);
 					elseif (idPlatform == father)
 						idPlayer.this.vY = -cSpringBoxImpulse;
+						WGE_PlayEntitySnd(idPlayer,playerSound[JUMP_SND]);
 					end;
 					memPlayerImpulse = false;
 				end;

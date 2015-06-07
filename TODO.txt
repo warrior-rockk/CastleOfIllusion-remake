@@ -3,8 +3,6 @@ BUGS:   -sonido de muerte cuando mueres por vacio no deberia sonar
 		-los proyectiles del cycleclown van muy rapido y muy seguido
 		-tiles que se quedan en negro al reiniciar nivel!! (activadas funciones para debuggearlo)
 		-no puedo cruzar por plataforma?
-		-springbox hace sonido al impulsar??si, el jump
-		-sonido al intentar cojer objeto encima? el de stairs?
 		-jarra se enganchó en la pared izquierda (al lanzarla o al caerse por tocar pompa?)
 		-que la doorbutton abra nada mas pulsar el boton
 		-no es practico  el margin de outregion de los objetos ya que no aparecen al salirte un poco

@@ -43,7 +43,7 @@
 #define PICK_SND				4
 #define STAIRS_SND				5
 #define THROW_SND				6
-
+#define NOPICK_SND				7
 
 Const
 	//Fisicas

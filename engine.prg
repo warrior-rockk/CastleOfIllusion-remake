@@ -37,11 +37,11 @@ begin
 	levelFiles[0].MusicFile = "mus\ToyLand.ogg";
 	levelFiles[0].MusicIntroEnd = 1.87;
 	//level 1
-	levelFiles[0].MapFile 	= "levels\ToyLand2\ToyLand2.bin";
-	levelFiles[0].DataFile 	= "levels\ToyLand2\ToyLand2.dat";
-	levelFiles[0].TileFile 	= "levels\ToyLand2\tiles.fpg";
-	levelFiles[0].MusicFile = "mus\ToyLand.ogg";
-	levelFiles[0].MusicIntroEnd = 1.87;
+	levelFiles[1].MapFile 	= "levels\ToyLand2\ToyLand2.bin";
+	levelFiles[1].DataFile 	= "levels\ToyLand2\ToyLand2.dat";
+	levelFiles[1].TileFile 	= "levels\ToyLand2\tiles.fpg";
+	levelFiles[1].MusicFile = "mus\ToyLand.ogg";
+	levelFiles[1].MusicIntroEnd = 1.87;
 	//level 2
 	levelFiles[2].MapFile 	= "levels\testRoom\testRoom.bin";
 	levelFiles[2].DataFile 	= "levels\testRoom\testRoom.dat";
@@ -1901,6 +1901,7 @@ begin
 	(playerSound[PICK_SND]		= WGE_LoadSound("snd\pick.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;	
 	(playerSound[STAIRS_SND]	= WGE_LoadSound("snd\stairs.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;	
 	(playerSound[THROW_SND] 	= WGE_LoadSound("snd\throw.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
+	(playerSound[NOPICK_SND] 	= WGE_LoadSound("snd\noPick.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
 	
 	//sonidos de objetos
 	(objectSound[BREAK_SND] 	= WGE_LoadSound("snd\break.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
