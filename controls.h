@@ -56,6 +56,10 @@ Global
 		byte controlEvent[cControlLoggerMaxFrames];  	//Evento
 	end;
 	
+	//string teclas
+	string keyStrings[100] = "","ESC","1","2","3","4","5","6","7","8","9","0","MINUS","PLUS","BACKSPACE","TAB","Q","W","E","R","T","Y","U","I","O","P","L_BRACHET","R_BRACHET","ENTER","CONTROL","A","S","D","F","G","H","J","K","L","SEMICOLON","APOSTROPHE","WAVE","L_SHIFT","BACKSLASH","Z","X","C","V","B","N","M","COMMA","POINT","SLASH","R_SHIFT","PRN_SCR","ALT","SPACE","CAPS_LOCK","F1","F2","F3","F4","F5","F6","F7","F8","F9","F10","NUM_LOCK","SCROLL_LOCK","HOME","UP","PGUP","C_MINUS","LEFT","C_CENTER","RIGHT","C_PLUS","END","DOWN","PGDN","INS","DEL","","","","F11","F12","LESS","EQUALS","GREATER","ASTERISK","R_ALT","R_CONTROL","L_ALT","L_CONTROL","MENU","L_WINDOWS","R_WINDOWS";
+	//string joyPad
+	string joyStrings[13] = "BT1","BT2","BT3","BT4","BT5","BT6","BT7","BT8","BT9","J_UP","J_DOWN","J_LEFT","J_RIGHT";
 End;
 
 //Variables locales
