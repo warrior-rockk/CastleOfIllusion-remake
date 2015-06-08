@@ -130,7 +130,7 @@ begin
 					if (index == cControlLoggerMaxFrames)
 						break;
 					end;
-					log("Grabado control "+i+" con evento "+controlLoggerRecord.controlEvent[index-1]+" en frame: "+controlFrameCounter+" e indice: "+index,DEBUG_ENGINE);
+					log("Grabado control "+controlStrings[i]+" con evento "+controlLoggerRecord.controlEvent[index-1]+" en frame: "+controlFrameCounter+" e indice: "+index,DEBUG_ENGINE);
 				end;
 			end;
 			
@@ -228,7 +228,7 @@ begin
 					if (index == cControlLoggerMaxFrames)
 						break;
 					end;
-					log("Reproducido control "+i+" con evento:"+controlLoggerRecord.controlEvent[index-1]+" en frame: "+controlFrameCounter+" e indice: "+index,DEBUG_ENGINE);
+					log("Reproducido control "+controlStrings[i]+" con evento:"+controlLoggerRecord.controlEvent[index-1]+" en frame: "+controlFrameCounter+" e indice: "+index,DEBUG_ENGINE);
 				end;
 			end;
 			
