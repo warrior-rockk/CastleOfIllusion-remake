@@ -27,6 +27,7 @@
 #define GAMEOVER        7
 #define CONTINUEGAME    8
 #define ATTRACTMODE     9
+#define TUTORIAL        10
 
 //Codigo del tile
 //bits del 0 al 4 del mapa de tiles
@@ -256,6 +257,8 @@ Global
 		byte boss;				//Flag de jefe
 		byte bossKilled;		//Flag de jefe muerto
 		byte attractActive;		//Flag de attract mode activo
+		byte tutorialActive;	//Flag de tutorial activo
+		controlLoggerPlayer idLogTutorial;
 		int numLevel;			//Nivel actual
 		int playerLife;			//vida del jugador
 		int playerMaxLife;      //vida maxima del jugador

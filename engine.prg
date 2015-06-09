@@ -30,24 +30,25 @@ begin
 	draw_SolidOnFall(mapSolidOnFall);
 	
 	//Archivos de los niveles
-	//level 0
-	levelFiles[0].MapFile 	= "levels\ToyLand\ToyLand.bin";
-	levelFiles[0].DataFile 	= "levels\ToyLand\ToyLand.dat";
-	levelFiles[0].TileFile 	= "levels\ToyLand\tiles.fpg";
-	levelFiles[0].MusicFile = "mus\ToyLand.ogg";
-	levelFiles[0].MusicIntroEnd = 1.87;
-	//level 1
-	levelFiles[1].MapFile 	= "levels\ToyLand2\ToyLand2.bin";
-	levelFiles[1].DataFile 	= "levels\ToyLand2\ToyLand2.dat";
-	levelFiles[1].TileFile 	= "levels\ToyLand2\tiles.fpg";
-	levelFiles[1].MusicFile = "mus\ToyLand.ogg";
-	levelFiles[1].MusicIntroEnd = 1.87;
-	//level 2
+	//level 0:tutorial
 	levelFiles[0].MapFile 	= "levels\testRoom\testRoom.bin";
 	levelFiles[0].DataFile 	= "levels\testRoom\testRoom.dat";
 	levelFiles[0].TileFile 	= "levels\testRoom\tiles.fpg";
 	levelFiles[0].MusicFile = "mus\ToyLand.ogg";
 	levelFiles[0].MusicIntroEnd = 1.87;
+	//level 1
+	levelFiles[1].MapFile 	= "levels\ToyLand\ToyLand.bin";
+	levelFiles[1].DataFile 	= "levels\ToyLand\ToyLand.dat";
+	levelFiles[1].TileFile 	= "levels\ToyLand\tiles.fpg";
+	levelFiles[1].MusicFile = "mus\ToyLand.ogg";
+	levelFiles[1].MusicIntroEnd = 1.87;
+	//level 2
+	levelFiles[2].MapFile 	= "levels\ToyLand2\ToyLand2.bin";
+	levelFiles[2].DataFile 	= "levels\ToyLand2\ToyLand2.dat";
+	levelFiles[2].TileFile 	= "levels\ToyLand2\tiles.fpg";
+	levelFiles[2].MusicFile = "mus\ToyLand.ogg";
+	levelFiles[2].MusicIntroEnd = 1.87;
+	
 	
 	//archivo graficos generales
 	fpgGame 	= fpg_load("gfx\game.fpg");	 
@@ -95,7 +96,7 @@ private
 	int idDeadPlayer;						//id del proceso muerte del player
 	byte memBoss;							//flag de boss activo
 	int counterTime;
-	controlLoggerPlayer idLogTutorial;
+	
 	string tutorialMsg;
 begin
 	priority = cMainPrior;
@@ -126,10 +127,16 @@ begin
 					if (counterTime >= cNumFPS*6)
 						game.attractActive = true;
 						counterTime=0;
+						game.numLevel = 1;
 					end;
 					frame;
 				until(WGE_CheckControl(CTRL_START,E_DOWN) || game.attractActive);
-							
+				
+				if (!game.attractActive)
+					game.idLogTutorial = controlLoggerPlayer("tutorial.rec");
+					game.tutorialActive = true;
+				end;
+				
 				//apagamos pantalla
 				fade(0,0,0,cFadeTime);
 				while(fading) frame; end;
@@ -185,10 +192,15 @@ begin
 				gameSignal(s_wakeup_tree);
 								
 				if (!game.attractActive)
-					game.state = PLAYLEVEL;
+					if (game.numLevel == 0)
+						
+						game.state = TUTORIAL;
+						
+					else
+						game.state = PLAYLEVEL;
+					end;
 				else
-					//controlLoggerPlayer("partida.rec");
-					idLogTutorial = controlLoggerPlayer("tutorial.rec");
+					controlLoggerPlayer("partida.rec");
 					game.state = ATTRACTMODE;
 				end;
 			end;
@@ -338,7 +350,7 @@ begin
 				
 				//paramos la musica del nivel
 				stop_song();
-				//reproducimo musica muerte
+				//reproducimo musica fin nivel
 				play_song(gameMusic[END_LEVEL_MUS],0);
 				//esperamos a que finalice
 				while (is_playing_song())
@@ -413,11 +425,28 @@ begin
 					//encendemos pantalla
 					fade(100,100,100,cFadeTime);
 					while(fading) frame; end;
+					game.numLevel = 0;
 					//pantalla inicial
 					game.state = SPLASH;
+				end;
+			end;
+			case TUTORIAL:
+				if (controlLoggerFinished || WGE_CheckControl(CTRL_START,E_PRESSED))
+					game.tutorialActive = false;
+					game.idLogTutorial = 0;
+					//apagamos pantalla
+					fade(0,0,0,cFadeTime);
+					//detenemos sonido
+					fade_music_off(1000);
+					while(fading || is_playing_song()) frame; end;
+					//limpiamos el nivel
+					clearLevel();
+					//cargamos el siguiente nivel				
+					game.numLevel++;		
+					game.state = LOADLEVEL;
 				else
 					//mensajes tutorial
-					write_var(fntGame,cGameRegionW>>1,cGameRegionH>>2,ALIGN_CENTER,tutorialMsg);
+					/*write_var(fntGame,cGameRegionW>>1,cGameRegionH>>2,ALIGN_CENTER,tutorialMsg);
 					
 					switch(idLogTutorial.controlFrameCounter)
 						case 1:
@@ -427,18 +456,18 @@ begin
 							tutorialMsg = "JUMP WITH "+keyStrings[configuredKeys[CTRL_JUMP]];
 						end;
 						case 601:
-							tutorialMsg = "PUSH "+keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+" WHEN JUMP TO ATACK";
+							tutorialMsg = keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+" WHEN JUMP TO ATACK";
 						end;
 						case 1000:
 							tutorialMsg = "PICK OBJECT WITH "+keyStrings[configuredKeys[CTRL_ACTION_ATACK]];
 						end;
 						case 1200:
-							tutorialMsg = "PUSH "+keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+" TO THROW OBJECT";
+							tutorialMsg = keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+" TO THROW OBJECT";
 						end;
 						case 1500:
 							tutorialMsg = "";
 						end;
-					end;
+					end;*/
 				end;
 			end;
 		end;
@@ -1787,7 +1816,7 @@ begin
 	y = cHUDRegionY;
 	
 	
-	if (!game.attractActive)
+	if (!game.attractActive && game.numLevel <> 0)
 		//grafico del HUD
 		graph = map_clone(fpgGame,1);
 		//cambiamos su centro
@@ -1805,7 +1834,35 @@ begin
 	end;
 	
 	loop
-		if (!game.attractActive)
+		if (game.idLogTutorial <> 0)
+			//tutorial
+			switch(game.idLogTutorial.controlFrameCounter)
+				case 1:
+					strMessage = "MOVE WITH " + keyStrings[configuredKeys[CTRL_LEFT]]+","+keyStrings[configuredKeys[CTRL_RIGHT]];
+				end;
+				case 280:
+					strMessage = "JUMP WITH "+keyStrings[configuredKeys[CTRL_JUMP]];
+				end;
+				case 601:
+					strMessage = keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+" WHEN JUMP TO ATACK";
+				end;
+				case 1000:
+					strMessage = "PICK OBJECT WITH "+keyStrings[configuredKeys[CTRL_ACTION_ATACK]];
+				end;
+				case 1200:
+					strMessage = keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+" TO THROW OBJECT";
+				end;
+				case 1500:
+					strMessage = "";
+				end;
+			end;
+		elseif(game.attractActive)
+			//Mensaje attractMode
+			if (tickClock(cNumFPS))
+				strMessage =="" ? strMessage = "PRESS START BUTTON" : strMessage = "";
+			end;	
+		else
+		
 			//Convertimos la puntuacion a string formato de 5 digitos
 			int2String(game.score,&strScore,5);
 			
@@ -1838,12 +1895,6 @@ begin
 			
 			//actualizamos la energia del player
 			prevPlayerLife = game.playerLife;
-		
-		else	
-			//Mensaje attractMode
-			if (tickClock(cNumFPS))
-				strMessage =="" ? strMessage = "PRESS START BUTTON" : strMessage = "";
-			end;	
 		end;
 		
 		frame;

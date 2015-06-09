@@ -238,7 +238,7 @@ begin
 		frame;
 	
 	//se comprueba con key porque WGE_Key esta deshabilitado en reproduccion
-	until (index == cControlLoggerMaxFrames || controlLoggerRecord.controlCode[index]  == cendRecordCode || key(_control) && key(_s) || !game.attractActive); 
+	until (index == cControlLoggerMaxFrames || controlLoggerRecord.controlCode[index]  == cendRecordCode || key(_control) && key(_s) || (!game.attractActive && !game.tutorialActive) ); 
 	
 	//limpiamos el buffer de reproduccion
 	for (i=0;i<cControlCheckNumber;i++)
