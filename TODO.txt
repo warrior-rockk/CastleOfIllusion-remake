@@ -1,4 +1,5 @@
-BUGS:   -sonido de muerte cuando mueres por vacio no deberia sonar
+BUGS:   -creo que un objeto breakable no explota al tocar el techo
+		-sonido de muerte cuando mueres por vacio no deberia sonar
 		-no deberia explotar tan pronto el pickedobjet al lanzarlo con techo debajo?
 		-los proyectiles del cycleclown van muy rapido y muy seguido
 		-tiles que se quedan en negro al reiniciar nivel!! (activadas funciones para debuggearlo)
@@ -24,7 +25,8 @@ PLATFORMS:
 OBJECTS: 
 		-el coin rebota mas rato y el giro va perdiendo velocidad
 		
-ENGINE: -en el WGE_LOOP, como se hace bucles con frame, no se ejecuta el contador de frames. ¿Es un problema??
+ENGINE: -que le pases como argumento los logs de debug (los niveles o el debug completo)
+		-en el WGE_LOOP, como se hace bucles con frame, no se ejecuta el contador de frames. ¿Es un problema??
 		-pasar todos los repeats de get_id a whiles
 		-Se puede llegar a configurar que al hacer un transition entre rooms, esten congelados, desaparezcan o sigan en movimiento las entidades.
 		 COn sleep desaparecen y queda como en master system pero con freeze se congelan y queda mas real.
