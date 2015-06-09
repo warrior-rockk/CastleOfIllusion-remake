@@ -64,7 +64,10 @@ Global
 	string controlStrings[6] = "UP","DOWN","LEFT","RIGHT","JUMP","ACTION_ATACK","START";
 End;
 
-//Variables locales
-Local
-	
-End;
+
+//Declares
+declare process controlLoggerPlayer(string _file)
+public
+	int controlFrameCounter;		//contador frames reproducción
+end
+end;

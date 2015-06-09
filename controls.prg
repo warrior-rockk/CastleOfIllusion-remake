@@ -172,7 +172,6 @@ end;
 //funcion que reproduce los controles grabados
 process controlLoggerPlayer(string _file)
 private
-	int controlFrameCounter;		//contador frames reproducción
 	int index;					//indice del registro
 	
 	int playerFile;				//archivo de reproduccion

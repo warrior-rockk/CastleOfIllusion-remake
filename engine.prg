@@ -43,11 +43,11 @@ begin
 	levelFiles[1].MusicFile = "mus\ToyLand.ogg";
 	levelFiles[1].MusicIntroEnd = 1.87;
 	//level 2
-	levelFiles[2].MapFile 	= "levels\testRoom\testRoom.bin";
-	levelFiles[2].DataFile 	= "levels\testRoom\testRoom.dat";
-	levelFiles[2].TileFile 	= "levels\testRoom\tiles.fpg";
-	levelFiles[2].MusicFile = "mus\ToyLand.ogg";
-	levelFiles[2].MusicIntroEnd = 1.87;
+	levelFiles[0].MapFile 	= "levels\testRoom\testRoom.bin";
+	levelFiles[0].DataFile 	= "levels\testRoom\testRoom.dat";
+	levelFiles[0].TileFile 	= "levels\testRoom\tiles.fpg";
+	levelFiles[0].MusicFile = "mus\ToyLand.ogg";
+	levelFiles[0].MusicIntroEnd = 1.87;
 	
 	//archivo graficos generales
 	fpgGame 	= fpg_load("gfx\game.fpg");	 
@@ -95,6 +95,8 @@ private
 	int idDeadPlayer;						//id del proceso muerte del player
 	byte memBoss;							//flag de boss activo
 	int counterTime;
+	controlLoggerPlayer idLogTutorial;
+	string tutorialMsg;
 begin
 	priority = cMainPrior;
 	
@@ -185,7 +187,8 @@ begin
 				if (!game.attractActive)
 					game.state = PLAYLEVEL;
 				else
-					controlLoggerPlayer("partida.rec");
+					//controlLoggerPlayer("partida.rec");
+					idLogTutorial = controlLoggerPlayer("tutorial.rec");
 					game.state = ATTRACTMODE;
 				end;
 			end;
@@ -412,6 +415,30 @@ begin
 					while(fading) frame; end;
 					//pantalla inicial
 					game.state = SPLASH;
+				else
+					//mensajes tutorial
+					write_var(fntGame,cGameRegionW>>1,cGameRegionH>>2,ALIGN_CENTER,tutorialMsg);
+					
+					switch(idLogTutorial.controlFrameCounter)
+						case 1:
+							tutorialMsg = "MOVE WITH " + keyStrings[configuredKeys[CTRL_LEFT]]+","+keyStrings[configuredKeys[CTRL_RIGHT]];
+						end;
+						case 280:
+							tutorialMsg = "JUMP WITH "+keyStrings[configuredKeys[CTRL_JUMP]];
+						end;
+						case 601:
+							tutorialMsg = "PUSH "+keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+" WHEN JUMP TO ATACK";
+						end;
+						case 1000:
+							tutorialMsg = "PICK OBJECT WITH "+keyStrings[configuredKeys[CTRL_ACTION_ATACK]];
+						end;
+						case 1200:
+							tutorialMsg = "PUSH "+keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+" TO THROW OBJECT";
+						end;
+						case 1500:
+							tutorialMsg = "";
+						end;
+					end;
 				end;
 			end;
 		end;
