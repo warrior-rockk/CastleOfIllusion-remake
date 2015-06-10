@@ -1,5 +1,4 @@
-BUGS:   -hacer efeciente mainLoop. HUD deberia crearse no en LOADLEVEL
-		-si no hay musica nivel, que no falle
+BUGS:   -si no hay musica nivel, que no falle
 		-creo que un objeto breakable no explota al tocar el techo
 		-sonido de muerte cuando mueres por vacio no deberia sonar
 		-no deberia explotar tan pronto el pickedobjet al lanzarlo con techo debajo?

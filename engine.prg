@@ -92,12 +92,15 @@ process WGE_Loop()
 private
 	int i; 									//Variables auxiliares
 	byte clockTickMem;						//Memoria Flanco Reloj
+	int counterTime;						//tiempo de paso
+	
 	int pauseText;							//Id texto de pausa
+	string textMsg;							//Texto mensajes
+	
 	int idDeadPlayer;						//id del proceso muerte del player
 	byte memBoss;							//flag de boss activo
-	int counterTime;
+	byte attractActive;						//modo Attractt activo
 	
-	string tutorialMsg;
 begin
 	priority = cMainPrior;
 	
@@ -121,22 +124,25 @@ begin
 			case SPLASH:
 				//mensaje hasta pulsar tecla
 				write(fntGame,cGameRegionW>>1,cGameRegionH>>1,ALIGN_CENTER,"CASTLE OF ILLUSION");
-				write(fntGame,cGameRegionW>>1,cGameRegionH,ALIGN_CENTER,"PRESS START BUTTON");
+				write_var(fntGame,cGameRegionW>>1,cGameRegionH,ALIGN_CENTER,textMsg);
+				
 				repeat
+					//mensaje
+					if (counterTime % 30 == 0)
+						textMsg =="" ? textMsg = "PRESS START BUTTON" : textMsg = "";
+					end;
+					
 					counterTime++;
-					if (counterTime >= cNumFPS*6)
-						game.attractActive = true;
-						counterTime=0;
+					//si pasan 10 segundos sin pulsar tecla
+					if (counterTime >= cNumFPS*10)
+						//activamos attractMode del nivel 1
+						attractActive = true;
 						game.numLevel = 1;
+						counterTime=0;					
 					end;
 					frame;
-				until(WGE_CheckControl(CTRL_START,E_DOWN) || game.attractActive);
-				
-				if (!game.attractActive)
-					game.idLogTutorial = controlLoggerPlayer("tutorial.rec");
-					game.tutorialActive = true;
-				end;
-				
+				until(WGE_CheckControl(CTRL_START,E_DOWN) || attractActive);
+								
 				//apagamos pantalla
 				fade(0,0,0,cFadeTime);
 				while(fading) frame; end;
@@ -166,9 +172,11 @@ begin
 				//Creamos el jugador
 				player();
 				
-				//creamos el HUD
-				HUD();
-															
+				//creamos el HUD (si no es attractMode o tutorial)
+				if (!attractActive && game.numLevel <> 0)
+					HUD();
+				end;
+				
 				//procesos congelados
 				gameSignal(s_freeze_tree);
 				
@@ -190,18 +198,21 @@ begin
 
 				//se despiertan los procesos
 				gameSignal(s_wakeup_tree);
-								
-				if (!game.attractActive)
-					if (game.numLevel == 0)
-						
-						game.state = TUTORIAL;
-						
-					else
-						game.state = PLAYLEVEL;
-					end;
-				else
+				
+				//Saltamos al estado correspondiente
+				if (attractActive)
+					//reproducimos partida AttractMode
 					controlLoggerPlayer("partida.rec");
+					write_var(fntGame,(cHUDRegionW >> 1),cHUDRegionY+cHUDTimeY,ALIGN_CENTER,textMsg);
 					game.state = ATTRACTMODE;
+				
+				elseif (game.numLevel == 0)
+					//reproducimos tutorial
+					controlLoggerPlayer("tutorial.rec");
+					write_var(fntGame,(cHUDRegionW >> 1),cHUDRegionY+cHUDTimeY,ALIGN_CENTER,textMsg);
+					game.state = TUTORIAL;				
+				else
+					game.state = PLAYLEVEL;
 				end;
 			end;
 			case PLAYLEVEL:
@@ -419,55 +430,62 @@ begin
 					fade_music_off(1000);
 					while(fading || is_playing_song()) frame; end;
 					//desactivamos flag
-					game.attractActive = false;
+					attractActive = false;
+					//paramos reproduccion si no hubiera parado
+					StopControlPlaying = true;
 					//limpiamos el nivel
 					clearLevel();
 					//encendemos pantalla
 					fade(100,100,100,cFadeTime);
 					while(fading) frame; end;
+					//iniciamos nivel
 					game.numLevel = 0;
 					//pantalla inicial
 					game.state = SPLASH;
+				else
+					//Mensaje attractMode
+					if (tickClock(cNumFPS))
+						textMsg =="" ? textMsg = "PRESS START BUTTON" : textMsg = "";
+					end;	
 				end;
 			end;
 			case TUTORIAL:
 				if (controlLoggerFinished || WGE_CheckControl(CTRL_START,E_PRESSED))
-					game.tutorialActive = false;
-					game.idLogTutorial = 0;
+					//paramos reproduccion
+					StopControlPlaying = true;
 					//apagamos pantalla
 					fade(0,0,0,cFadeTime);
 					//detenemos sonido
 					fade_music_off(1000);
-					while(fading || is_playing_song()) frame; end;
+					while(fading || is_playing_song()) frame; end;						
 					//limpiamos el nivel
 					clearLevel();
 					//cargamos el siguiente nivel				
 					game.numLevel++;		
+					//cambiamos de estado
 					game.state = LOADLEVEL;
 				else
 					//mensajes tutorial
-					/*write_var(fntGame,cGameRegionW>>1,cGameRegionH>>2,ALIGN_CENTER,tutorialMsg);
-					
-					switch(idLogTutorial.controlFrameCounter)
+					switch(controlPlayingFrame)
 						case 1:
-							tutorialMsg = "MOVE WITH " + keyStrings[configuredKeys[CTRL_LEFT]]+","+keyStrings[configuredKeys[CTRL_RIGHT]];
+							textMsg = "MOVE WITH -" + keyStrings[configuredKeys[CTRL_LEFT]]+","+keyStrings[configuredKeys[CTRL_RIGHT]]+"-";
 						end;
 						case 280:
-							tutorialMsg = "JUMP WITH "+keyStrings[configuredKeys[CTRL_JUMP]];
+							textMsg = "JUMP WITH -"+keyStrings[configuredKeys[CTRL_JUMP]]+"-";
 						end;
 						case 601:
-							tutorialMsg = keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+" WHEN JUMP TO ATACK";
+							textMsg = "-"+keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+"- WHEN JUMP TO ATACK";
 						end;
 						case 1000:
-							tutorialMsg = "PICK OBJECT WITH "+keyStrings[configuredKeys[CTRL_ACTION_ATACK]];
+							textMsg = "PICK OBJECT WITH -"+keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+"-";
 						end;
 						case 1200:
-							tutorialMsg = keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+" TO THROW OBJECT";
+							textMsg = "-"+keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+"- TO THROW OBJECT";
 						end;
 						case 1500:
-							tutorialMsg = "";
+							textMsg = "";
 						end;
-					end;*/
+					end;
 				end;
 			end;
 		end;
@@ -1814,89 +1832,54 @@ begin
 	//posicion del HUD
 	x = (cHUDRegionW >> 1);
 	y = cHUDRegionY;
-	
-	
-	if (!game.attractActive && game.numLevel <> 0)
-		//grafico del HUD
-		graph = map_clone(fpgGame,1);
-		//cambiamos su centro
-		map_info_set(file,graph,G_Y_CENTER,0);
 		
-		//mostramos string de puntuacion
-		write_var(fntGame,x+cHUDScoreX,y+cHUDScoreY,ALIGN_CENTER,strScore);
-		//mostramos string de vidas
-		write_var(fntGame,x+cHUDTriesX,y+cHUDTriesY,ALIGN_CENTER,strTries);
-		//mostramos tiempo nivel
-		write_var(fntGame,x+cHUDTimeX,y+cHUDTimeY,ALIGN_CENTER,strTime);
-	else
-		//mostramos mensaje
-		write_var(fntGame,x,y+cHUDTimeY,ALIGN_CENTER,strMessage);
-	end;
+	//grafico del HUD
+	graph = map_clone(fpgGame,1);
+	//cambiamos su centro
+	map_info_set(file,graph,G_Y_CENTER,0);
 	
+	//mostramos string de puntuacion
+	write_var(fntGame,x+cHUDScoreX,y+cHUDScoreY,ALIGN_CENTER,strScore);
+	//mostramos string de vidas
+	write_var(fntGame,x+cHUDTriesX,y+cHUDTriesY,ALIGN_CENTER,strTries);
+	//mostramos tiempo nivel
+	write_var(fntGame,x+cHUDTimeX,y+cHUDTimeY,ALIGN_CENTER,strTime);
+		
 	loop
-		if (game.idLogTutorial <> 0)
-			//tutorial
-			switch(game.idLogTutorial.controlFrameCounter)
-				case 1:
-					strMessage = "MOVE WITH " + keyStrings[configuredKeys[CTRL_LEFT]]+","+keyStrings[configuredKeys[CTRL_RIGHT]];
-				end;
-				case 280:
-					strMessage = "JUMP WITH "+keyStrings[configuredKeys[CTRL_JUMP]];
-				end;
-				case 601:
-					strMessage = keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+" WHEN JUMP TO ATACK";
-				end;
-				case 1000:
-					strMessage = "PICK OBJECT WITH "+keyStrings[configuredKeys[CTRL_ACTION_ATACK]];
-				end;
-				case 1200:
-					strMessage = keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+" TO THROW OBJECT";
-				end;
-				case 1500:
-					strMessage = "";
-				end;
-			end;
-		elseif(game.attractActive)
-			//Mensaje attractMode
-			if (tickClock(cNumFPS))
-				strMessage =="" ? strMessage = "PRESS START BUTTON" : strMessage = "";
-			end;	
-		else
 		
-			//Convertimos la puntuacion a string formato de 5 digitos
-			int2String(game.score,&strScore,5);
+		//Convertimos la puntuacion a string formato de 5 digitos
+		int2String(game.score,&strScore,5);
+		
+		//Convertimos las vidas a string formato de 2 digitos
+		int2String(game.playerTries,&strTries,2);
+		
+		//Convertimos el tiempo a string formato de 3 digitos
+		int2String(game.actualLevelTime,&strTime,3);
+		
+		//comprobamos si ha cambiado la vida del player para redibujar
+		if (prevPlayerLife <> game.playerLife)
+		
+			//copiamos el HUD vacío
+			map_del(0,graph);
+			graph = map_clone(0,1);
+			//reestablecemos el centro
+			map_info_set(file,graph,G_Y_CENTER,0);
 			
-			//Convertimos las vidas a string formato de 2 digitos
-			int2String(game.playerTries,&strTries,2);
-			
-			//Convertimos el tiempo a string formato de 3 digitos
-			int2String(game.actualLevelTime,&strTime,3);
-			
-			//comprobamos si ha cambiado la vida del player para redibujar
-			if (prevPlayerLife <> game.playerLife)
-			
-				//copiamos el HUD vacío
-				map_del(0,graph);
-				graph = map_clone(0,1);
-				//reestablecemos el centro
-				map_info_set(file,graph,G_Y_CENTER,0);
-				
-				//dibujamos las estrellas de energia
-				for (i=0;i<game.playerMaxLife;i++)
-					if (game.playerLife <= i)
-						//estrella apagada
-						map_put(0,graph,2,cHudLifeX+(cHUDLifeSize*i),cHudLifeY);
-					else
-						//estrella encendida
-						map_put(0,graph,3,cHudLifeX+(cHUDLifeSize*i),cHudLifeY);
-					end;
+			//dibujamos las estrellas de energia
+			for (i=0;i<game.playerMaxLife;i++)
+				if (game.playerLife <= i)
+					//estrella apagada
+					map_put(0,graph,2,cHudLifeX+(cHUDLifeSize*i),cHudLifeY);
+				else
+					//estrella encendida
+					map_put(0,graph,3,cHudLifeX+(cHUDLifeSize*i),cHudLifeY);
 				end;
 			end;
-			
-			//actualizamos la energia del player
-			prevPlayerLife = game.playerLife;
 		end;
 		
+		//actualizamos la energia del player
+		prevPlayerLife = game.playerLife;
+				
 		frame;
 	end;
 

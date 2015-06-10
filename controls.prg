@@ -179,6 +179,7 @@ private
 begin 
 	//iniciamos flags
 	controlLoggerFinished = false;
+	StopControlPlaying	  = false;
 	
 	//abrimos la reproduccion de archivo
 	if (_file <> "" && fexists(_file) )
@@ -213,7 +214,7 @@ begin
 				controlLogger[i][E_DOWN]	= false;
 				controlLogger[i][E_UP] 		= false;
 				//si el timestamp actual coincide con el registro y el control activo es el actual
-				if ( controlLoggerRecord.frameTime[index] == controlFrameCounter && 
+				if ( controlLoggerRecord.frameTime[index] == controlPlayingFrame && 
 					 controlLoggerRecord.controlCode[index]  == i )
 					//seteamos el control y su evento en el controlLogger
 					controlLogger[controlLoggerRecord.controlCode[index]][controlLoggerRecord.controlEvent[index]] = true;
@@ -227,18 +228,18 @@ begin
 					if (index == cControlLoggerMaxFrames)
 						break;
 					end;
-					log("Reproducido control "+controlStrings[i]+" con evento:"+controlLoggerRecord.controlEvent[index-1]+" en frame: "+controlFrameCounter+" e indice: "+index,DEBUG_ENGINE);
+					log("Reproducido control "+controlStrings[i]+" con evento:"+controlLoggerRecord.controlEvent[index-1]+" en frame: "+controlPlayingFrame+" e indice: "+index,DEBUG_ENGINE);
 				end;
 			end;
 			
-			controlFrameCounter ++;
+			controlPlayingFrame ++;
 
 		end;
 		
 		frame;
 	
 	//se comprueba con key porque WGE_Key esta deshabilitado en reproduccion
-	until (index == cControlLoggerMaxFrames || controlLoggerRecord.controlCode[index]  == cendRecordCode || key(_control) && key(_s) || (!game.attractActive && !game.tutorialActive) ); 
+	until (index == cControlLoggerMaxFrames || controlLoggerRecord.controlCode[index]  == cendRecordCode || key(_control) && key(_s) || StopControlPlaying ); 
 	
 	//limpiamos el buffer de reproduccion
 	for (i=0;i<cControlCheckNumber;i++)
@@ -247,8 +248,10 @@ begin
 		controlLogger[i][E_UP] 		= false;
 	end;
 	
+	//reiniciamos flags
 	controlLoggerPlaying = false;
 	controlLoggerFinished = true;
+	StopControlPlaying = false;
 	
 	log("Reproduccion detenida",DEBUG_ENGINE);
 end;

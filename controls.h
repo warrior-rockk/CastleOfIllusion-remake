@@ -45,8 +45,11 @@ Global
 	
 	//Controls logger
 	byte controlLoggerRecording;				//flag de grabando controles
+	
 	byte controlLoggerPlaying;					//flag de reproduciendo controles
 	byte controlLoggerFinished;					//flag de reproduccion finalizada
+	int controlPlayingFrame;					//numero de frame reproducido actual
+	byte StopControlPlaying;					//flag para detener la reproduccion
 	
 	byte controlLogger[6][3];					//Array de controles del controlLogger
 	
@@ -63,11 +66,3 @@ Global
 	//string controles
 	string controlStrings[6] = "UP","DOWN","LEFT","RIGHT","JUMP","ACTION_ATACK","START";
 End;
-
-
-//Declares
-declare process controlLoggerPlayer(string _file)
-public
-	int controlFrameCounter;		//contador frames reproducción
-end
-end;
