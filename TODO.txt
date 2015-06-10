@@ -1,5 +1,4 @@
-BUGS:   -si no hay musica nivel, que no falle
-		-creo que un objeto breakable no explota al tocar el techo
+BUGS:   -creo que un objeto breakable no explota al tocar el techo
 		-sonido de muerte cuando mueres por vacio no deberia sonar
 		-no deberia explotar tan pronto el pickedobjet al lanzarlo con techo debajo?
 		-los proyectiles del cycleclown van muy rapido y muy seguido

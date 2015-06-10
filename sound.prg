@@ -9,8 +9,10 @@
 //funcion que reproduce la musica del nivel
 function WGE_PlayMusicLevel()
 begin
-	play_song(level.idMusicLevel,0);
-	timer[cMusicTimer] = 0;
+	if (level.idMusicLevel > 0)
+		play_song(level.idMusicLevel,0);
+		timer[cMusicTimer] = 0;
+	end;
 end;
 
 //funcion que comprueba si el intro de la musica del nivel a finalizado
@@ -22,8 +24,10 @@ end;
 //funcion que repite la musica del nivel saltando el intro
 function WGE_RepeatMusicLevel()
 begin
-	WGE_PlayMusicLevel();
-	set_music_position(levelFiles[game.numLevel].MusicIntroEnd);
+	if (level.idMusicLevel > 0)
+		WGE_PlayMusicLevel();
+		set_music_position(levelFiles[game.numLevel].MusicIntroEnd);
+	end;
 end;
 
 //funcion que reproduce el sonido de estado de una entidad

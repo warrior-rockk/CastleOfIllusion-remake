@@ -34,8 +34,6 @@ begin
 	levelFiles[0].MapFile 	= "levels\testRoom\testRoom.bin";
 	levelFiles[0].DataFile 	= "levels\testRoom\testRoom.dat";
 	levelFiles[0].TileFile 	= "levels\testRoom\tiles.fpg";
-	levelFiles[0].MusicFile = "mus\ToyLand.ogg";
-	levelFiles[0].MusicIntroEnd = 1.87;
 	//level 1
 	levelFiles[1].MapFile 	= "levels\ToyLand\ToyLand.bin";
 	levelFiles[1].DataFile 	= "levels\ToyLand\ToyLand.dat";
