@@ -84,6 +84,7 @@
 #define PAUSE_SND				0
 #define TIMESCORE_SND           1
 #define STOPSCORE_SND			2
+#define COUNTDOWN_SND           3
 
 //musicas generales
 #define DEAD_MUS				0

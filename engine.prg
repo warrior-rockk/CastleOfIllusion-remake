@@ -232,6 +232,10 @@ begin
 				//cronometro nivel	
 				if ((clockCounter % cNumFps) == 0 && clockTick && !game.paused && level.levelTime <> 0)
 					game.actualLevelTime--;
+					//sonido cuenta atrás
+					if (game.actualLevelTime <= 30)
+						WGE_PlayEntitySnd(id,gameSound[COUNTDOWN_SND]);
+					end;
 				end;
 				
 				//pausa del juego
@@ -414,7 +418,7 @@ begin
 			case CONTINUEGAME:
 				delete_text(all_text);
 				//cargamos nivel inicial
-				game.numLevel=0;
+				game.numLevel=1;
 				game.score = 0;
 				game.playerLife = game.playerMaxLife;
 				game.playerTries = 3;
@@ -1947,10 +1951,9 @@ begin
 	
 	//sonidos generales
 	(gameSound[PAUSE_SND] 		= WGE_LoadSound("snd\pause.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
-		
-	
 	(gameSound[TIMESCORE_SND] 	= WGE_LoadSound("snd\timeScor.ogg")) 	<= 0 ? fileError = true : numSoundFiles++;
 	(gameSound[STOPSCORE_SND] 	= WGE_LoadSound("snd\endScore.ogg")) 	<= 0 ? fileError = true : numSoundFiles++;
+	(gameSound[COUNTDOWN_SND] 	= WGE_LoadSound("snd\count.ogg")) 	    <= 0 ? fileError = true : numSoundFiles++;
 	
     //sonidos del jugador
 	(playerSound[BOUNCE_SND] 	= WGE_LoadSound("snd\bounce.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;

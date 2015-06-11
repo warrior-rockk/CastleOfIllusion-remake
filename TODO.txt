@@ -8,7 +8,6 @@ BUGS:   -creo que un objeto breakable no explota al tocar el techo
 		-que la doorbutton abra nada mas pulsar el boton
 		-no es practico  el margin de outregion de los objetos ya que no aparecen al salirte un poco
 		-definir mejor la animacion del player con trasition room horizontal segun si esta cogiendo objeto, saltando con objeto,etc..
-		-sonido cuenta atras a los 30 segundos
 		
 TOYLAND: -determinar que contienen los items
 
