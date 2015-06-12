@@ -239,7 +239,7 @@ begin
 				end;
 				
 				//pausa del juego
-				if (WGE_CheckControl(CTRL_START,E_DOWN))
+				if (WGE_CheckControl(CTRL_START,E_DOWN) || (!window_status && !game.paused))
 					if (game.paused)
 						gameSignal(s_wakeup_tree);
 						delete_text(pauseText);
