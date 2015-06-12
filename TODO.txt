@@ -7,7 +7,9 @@ BUGS:   -sonido de muerte cuando mueres por vacio no deberia sonar
 		-que la doorbutton abra nada mas pulsar el boton
 		-no es practico  el margin de outregion de los objetos ya que no aparecen al salirte un poco
 		-definir mejor la animacion del player con trasition room horizontal segun si esta cogiendo objeto, saltando con objeto,etc..
-		
+		-Para que funcione bien en SO linux: 
+			1) nombres de carpetas, archivos y extensiones en minusculas (tambien en codigo)
+			2) paths usando "/" en vez de "\", aunque esto no molesta realmente
 TOYLAND: -determinar que contienen los items
 
 CONTROLS:  -implementar y controlar el numero de joysticks y el joystick seleccionado,numero botones,etc..
@@ -53,7 +55,6 @@ EDITOR: -flags de checks y player se trastocan si abro el proyecto de nuevo.¿no 
 		-COpiar y pegar varios tipos de entidades y varias a la vez
         -que no se seleccione el siguiente objeto cuando borramos uno
 		-desactivar autoscroll cuando movemos objeto??
-		-descomprimir los fpg!! zlib
 		-al darle a guardar como, lo guarda pero sigue abierto el original
 		-aparece texto NO_PERSISTENT cuando deberia ser PERSISTENT
 		
