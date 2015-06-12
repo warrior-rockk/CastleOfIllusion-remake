@@ -63,13 +63,13 @@ begin
 	end;
 	
 	//arriba
-	joyState[10][ joyUse ] 	= joy_getaxis(0,1) == -32768;
+	joyState[10][ joyUse ] 	= joy_getaxis(0,1) == -32768 	|| joy_gethat(0,0) == 1;
 	//abajo
-	joyState[11][ joyUse ] 	= joy_getaxis(0,1) ==  32767;
+	joyState[11][ joyUse ] 	= joy_getaxis(0,1) == 32767 	|| joy_gethat(0,0) == 4;
 	//izquierda
-	joyState[12][ joyUse ] 	= joy_getaxis(0,0) ==  -32768;
+	joyState[12][ joyUse ] 	= joy_getaxis(0,0) == -32768 	|| joy_gethat(0,0) == 8;
 	//derecha
-	joyState[13][ joyUse ] 	= joy_getaxis(0,0) == 32767;
+	joyState[13][ joyUse ] 	= joy_getaxis(0,0) == 32767 	|| joy_gethat(0,0) == 2;
 	
 end;
 
