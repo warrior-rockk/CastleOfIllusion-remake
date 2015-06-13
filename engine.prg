@@ -123,6 +123,8 @@ begin
 		//estado del juego
 		switch (game.state)
 			case SPLASH:
+				play_song(gameMusic[INTRO_MUS],0);
+				set_music_position(32);
 				
 				define_region(3,0,0,cGameRegionW,40);
 				define_region(4,0,40,cGameRegionW,16);
@@ -158,7 +160,7 @@ begin
 					scroll[5].x0+=((counterTime % 4) == 0) && (scroll[5].x0 < cGameRegionW+16);
 					
 					frame;
-				until(counterTime >= 700);
+				until(counterTime >= 650);
 				
 				//stop_scroll(1);
 				//stop_scroll(2);
@@ -2013,6 +2015,7 @@ begin
 	(gameMusic[DEAD_MUS]        = WGE_LoadMusic("mus\dead.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
 	(gameMusic[END_LEVEL_MUS]   = WGE_LoadMusic("mus\levelEnd.ogg")) 	<= 0 ? fileError = true : numSoundFiles++;
 	(gameMusic[BOSS_MUS]    	= WGE_LoadMusic("mus\boss.ogg"))		<= 0 ? fileError = true : numSoundFiles++;
+	(gameMusic[INTRO_MUS]    	= WGE_LoadMusic("mus\intro.ogg"))		<= 0 ? fileError = true : numSoundFiles++;
 	
 	//sonidos generales
 	(gameSound[PAUSE_SND] 		= WGE_LoadSound("snd\pause.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;

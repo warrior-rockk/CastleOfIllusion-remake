@@ -90,6 +90,7 @@
 #define DEAD_MUS				0
 #define END_LEVEL_MUS           1
 #define BOSS_MUS				3
+#define INTRO_MUS               4
 
 //parametros del checkInRegion
 #define CHECKREGION_ALL         0		//Comprueba en toda la region
