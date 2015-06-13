@@ -63,8 +63,10 @@ private
 int endAnimation; //flag de animacion terminada
 
 begin
-	region = cGameRegion;
-	ctype = c_scroll;
+	if (file <> fpgGame)
+		region = cGameRegion;
+		ctype = c_scroll;
+	end;
 	z = cZObject;
 
 	//lanzamos la animacion hasta que se acabe si el modo el ANIM_ONCE

@@ -137,13 +137,13 @@ const
 	//Pantalla
 	cNumFPS    	 	= 60;  					//Frames por segundo
 	cNumFPSDebug 	= 0;					//Frames por segundo en debug (CTRL+F)
-	cResX 			= 256; //320;			//Resolucion Horizontal Pantalla
+	cResX 			= 248;//256; //320;			//Resolucion Horizontal Pantalla
 	cResY 			= 300;  				//Resolucion Vertical Pantalla
 	cGameScroll 	= 0;    				//Numero Scroll
 	cGameRegion 	= 1;    				//Numero Region Pantalla Juego
 	cGameRegionX 	= 0;					//Region Horizontal Pantalla de juego (Representacion Mapeado) 
 	cGameRegionY 	= 0;					//Region Vertical Pantalla de juego (Representacion Mapeado)
-	cGameRegionW 	= 256;					//Region Horizontal Pantalla de juego (Representacion Mapeado) 
+	cGameRegionW 	= cResX;				//Region Horizontal Pantalla de juego (Representacion Mapeado) 
 	cGameRegionH 	= 160;					//Region Vertical Pantalla de juego (Representacion Mapeado)	
 	cFadeTime		= 5;					//Velocidad de los fundidos de pantalla (1..64)
 	cRoomScroll     = true;					//Flag para utilizar el scroll vertical como Master System (transiciones entre "rooms")

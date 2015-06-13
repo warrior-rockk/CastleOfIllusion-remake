@@ -99,6 +99,8 @@ private
 	byte memBoss;							//flag de boss activo
 	byte attractActive;						//modo Attractt activo
 	
+	int idAnim1;
+	int idAnim2;
 begin
 	priority = cMainPrior;
 	
@@ -120,9 +122,57 @@ begin
 		//estado del juego
 		switch (game.state)
 			case SPLASH:
+				
+				define_region(3,0,0,cGameRegionW,40);
+				define_region(4,0,40,cGameRegionW,16);
+				define_region(5,0,56,cGameRegionW,8);
+				define_region(6,0,64,cGameRegionW,72);
+				define_region(7,0,136,cGameRegionW,56);
+				
+				start_scroll(1,fpgGame,4,0,3,3);
+				start_scroll(2,fpgGame,5,0,4,3);
+				start_scroll(3,fpgGame,6,0,5,3);
+				start_scroll(4,fpgGame,7,0,6,3);
+				start_scroll(5,fpgGame,8,0,7,3);
+				
+				//scroll[cGameScroll].ratio = 100;
+				scroll[1].x0=162;
+				scroll[2].x0=161;
+				scroll[3].x0=196;
+				scroll[4].x0=64;
+				scroll[5].x0=154;
+				
+				idAnim1 = WGE_Animation(fpgGame,9,9,172,120,10,ANIM_LOOP);
+				idAnim2 = WGE_Animation(fpgGame,10,10,122,54,10,ANIM_LOOP);
+								
+				repeat
+					counterTime++;
+					
+					scroll[1].x0-=((counterTime % 1) == 0);
+					scroll[2].x0-=((counterTime % 2) == 0);
+					scroll[3].x0-=((counterTime % 3) == 0);
+					idAnim2.x   +=((counterTime % 8) == 0) && (scroll[4].x0 > 8);
+					scroll[4].x0-=((counterTime % 8) == 0) && (scroll[4].x0 > 8);
+					idAnim1.x   -=((counterTime % 4) == 0) && (scroll[5].x0 < cGameRegionW+16);
+					scroll[5].x0+=((counterTime % 4) == 0) && (scroll[5].x0 < cGameRegionW+16);
+					
+					frame;
+				until(counterTime >= 700);
+				
+				stop_scroll(1);
+				stop_scroll(2);
+				stop_scroll(3);
+				stop_scroll(4);
+				stop_scroll(5);
+				signal(idAnim1,s_kill);
+				signal(idAnim2,s_kill);
+				counterTime = 0;
+				
+				put(fpgGame,11,cResX>>1,192>>1);
+				
 				//mensaje hasta pulsar tecla
-				write(fntGame,cGameRegionW>>1,cGameRegionH>>1,ALIGN_CENTER,"CASTLE OF ILLUSION");
-				write_var(fntGame,cGameRegionW>>1,cGameRegionH,ALIGN_CENTER,textMsg);
+				//write(fntGame,cGameRegionW>>1,cGameRegionH>>1,ALIGN_CENTER,"CASTLE OF ILLUSION");
+				//write_var(fntGame,cGameRegionW>>1,cGameRegionH,ALIGN_CENTER,textMsg);
 				
 				repeat
 					//mensaje
@@ -140,11 +190,12 @@ begin
 					end;
 					frame;
 				until(WGE_CheckControl(CTRL_START,E_DOWN) || attractActive);
-								
+				
+				
 				//apagamos pantalla
 				fade(0,0,0,cFadeTime);
 				while(fading) frame; end;
-				
+				screen_clear();				
 				//eliminamos texto
 				delete_text(all_text);
 				
