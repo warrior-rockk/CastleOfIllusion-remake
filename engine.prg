@@ -101,6 +101,7 @@ private
 	
 	int idAnim1;
 	int idAnim2;
+	int idAnim3;
 begin
 	priority = cMainPrior;
 	
@@ -159,22 +160,27 @@ begin
 					frame;
 				until(counterTime >= 700);
 				
-				stop_scroll(1);
-				stop_scroll(2);
-				stop_scroll(3);
-				stop_scroll(4);
-				stop_scroll(5);
-				signal(idAnim1,s_kill);
-				signal(idAnim2,s_kill);
+				//stop_scroll(1);
+				//stop_scroll(2);
+				//stop_scroll(3);
+				//stop_scroll(4);
+				//stop_scroll(5);
+				//signal(idAnim1,s_kill);
+				//signal(idAnim2,s_kill);
 				counterTime = 0;
 				
-				put(fpgGame,11,cResX>>1,192>>1);
-				
+				//put(fpgGame,11,cResX>>1,192>>1);
+				idAnim3 = WGE_Animation(fpgGame,12,12,cResX>>1,192>>1,10,ANIM_LOOP);
+				idAnim3.z--;
 				//mensaje hasta pulsar tecla
 				//write(fntGame,cGameRegionW>>1,cGameRegionH>>1,ALIGN_CENTER,"CASTLE OF ILLUSION");
-				//write_var(fntGame,cGameRegionW>>1,cGameRegionH,ALIGN_CENTER,textMsg);
+				write_var(fntGame,cGameRegionW>>1,cGameRegionH>>1,ALIGN_CENTER,textMsg);
 				
 				repeat
+					scroll[1].x0-=((counterTime % 1) == 0);
+					scroll[2].x0-=((counterTime % 2) == 0);
+					scroll[3].x0-=((counterTime % 3) == 0);
+					
 					//mensaje
 					if (counterTime % 30 == 0)
 						textMsg =="" ? textMsg = "PRESS START BUTTON" : textMsg = "";
@@ -195,6 +201,14 @@ begin
 				//apagamos pantalla
 				fade(0,0,0,cFadeTime);
 				while(fading) frame; end;
+				stop_scroll(1);
+				stop_scroll(2);
+				stop_scroll(3);
+				stop_scroll(4);
+				stop_scroll(5);
+				signal(idAnim1,s_kill);
+				signal(idAnim2,s_kill);
+				signal(idAnim3,s_kill);
 				screen_clear();				
 				//eliminamos texto
 				delete_text(all_text);
