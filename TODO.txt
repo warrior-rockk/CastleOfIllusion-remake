@@ -1,4 +1,5 @@
-BUGS:   -sonido de muerte cuando mueres por vacio no deberia sonar
+BUGS:   -intentando corregir que objetos de collided cuando TOP, se me rompen los breakable en la mano.
+		-sonido de muerte cuando mueres por vacio no deberia sonar
 		-no deberia explotar tan pronto el pickedobjet al lanzarlo con techo debajo?
 		-los proyectiles del cycleclown van muy rapido y muy seguido
 		-tiles que se quedan en negro al reiniciar nivel!! (activadas funciones para debuggearlo)

@@ -102,6 +102,7 @@ private
 	int idAnim1;
 	int idAnim2;
 	int idAnim3;
+	byte paleta[3] = 100,50,100;
 begin
 	priority = cMainPrior;
 	
@@ -123,6 +124,7 @@ begin
 		//estado del juego
 		switch (game.state)
 			case SPLASH:
+				
 				play_song(gameMusic[INTRO_MUS],0);
 				set_music_position(32);
 				
@@ -147,9 +149,12 @@ begin
 				
 				idAnim1 = WGE_Animation(fpgGame,9,9,172,120,10,ANIM_LOOP);
 				idAnim2 = WGE_Animation(fpgGame,10,10,122,54,10,ANIM_LOOP);
-								
+				
+				
 				repeat
 					counterTime++;
+					pal_set(counterTime,1,&paleta);
+					pal_refresh();
 					
 					scroll[1].x0-=((counterTime % 1) == 0);
 					scroll[2].x0-=((counterTime % 2) == 0);
