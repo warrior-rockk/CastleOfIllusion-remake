@@ -177,7 +177,7 @@ begin
 				counterTime = 0;
 				
 				//put(fpgGame,11,cResX>>1,192>>1);
-				idAnim3 = WGE_Animation(fpgGame,12,12,cResX>>1,192>>1,10,ANIM_LOOP);
+				idAnim3 = WGE_Animation(fpgGame,11,11,cResX>>1,192>>1,10,ANIM_LOOP);
 				idAnim3.z--;
 				//mensaje hasta pulsar tecla
 				//write(fntGame,cGameRegionW>>1,cGameRegionH>>1,ALIGN_CENTER,"CASTLE OF ILLUSION");
