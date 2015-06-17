@@ -26,7 +26,8 @@ PLATFORMS:
 OBJECTS: 
 		-el coin rebota mas rato y el giro va perdiendo velocidad
 		
-ENGINE: -que le pases como argumento los logs de debug (los niveles o el debug completo)
+ENGINE: -separar correctamente lo que pertenece al engine general y lo que seria game concreto de castle
+		-que le pases como argumento los logs de debug (los niveles o el debug completo)
 		-en el WGE_LOOP, como se hace bucles con frame, no se ejecuta el contador de frames. ¿Es un problema??
 		-pasar todos los repeats de get_id a whiles
 		-Se puede llegar a configurar que al hacer un transition entre rooms, esten congelados, desaparezcan o sigan en movimiento las entidades.

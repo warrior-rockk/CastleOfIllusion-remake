@@ -426,10 +426,13 @@ begin
 				fade(100,100,100,cFadeTime);
 				while(fading) frame; end;
 				//mensaje hasta pulsar tecla
-				write(fntGame,cResx>>1,cResy>>1,ALIGN_CENTER,"GAME OVER");
+				write(fntGame,cResx>>1,cGameRegionH>>1,ALIGN_CENTER,"GAME OVER");
 				repeat
 					frame;
 				until(WGE_CheckControl(CTRL_START,E_DOWN));
+				//apagamos pantalla
+				fade(0,0,0,cFadeTime);
+				while(fading) frame; end;
 				//continuamos juego
 				game.state = CONTINUEGAME;
 			end;
@@ -440,7 +443,7 @@ begin
 				game.score = 0;
 				game.playerLife = game.playerMaxLife;
 				game.playerTries = 3;
-				game.state = LOADLEVEL;
+				game.state = SPLASH;
 			end;
 			case ATTRACTMODE:
 				if (controlLoggerFinished || WGE_CheckControl(CTRL_START,E_PRESSED))
