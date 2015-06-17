@@ -652,7 +652,7 @@ begin
 			//aplicamos la direccion de la colision
 			applyDirCollision(idEntity,colDir,&grounded);
 			//seteamos flag de colisionado
-			if (colDir == COLDER || colDir == COLIZQ || COLUP)
+			if (colDir == COLDER || colDir == COLIZQ || colDir == COLUP)
 				collided = true;
 			end;
 		end;
