@@ -9,7 +9,7 @@
 //Tareas de inicializacion del engine
 function WGE_Init()
 begin
-
+	
 	//Dibujamos mapas que componen las distintas figuras de tile
 	//que se usarán para comprobar las durezas de colision
 	mapBox = map_new(cTileSize,cTileSize,8);
@@ -581,7 +581,9 @@ begin
 	log("Se finaliza la ejecución",DEBUG_ENGINE);
 	log("FPS Max: "+maxFPS,DEBUG_ENGINE);
 	log("FPS Min: "+minFPS,DEBUG_ENGINE);
-	
+	#ifdef _VERSION
+		log("Version: "+_VERSION,DEBUG_ENGINE);
+	#endif
 	exit();
 		
 end;
@@ -2101,6 +2103,11 @@ begin
 		
 	//mensaje hasta pulsar tecla
 	write_var(fntGame,cGameRegionW>>1,cGameRegionH>>1,ALIGN_CENTER,textMsg);
+	
+	//version
+	#ifdef _VERSION
+		write(0,cResX-text_width(0,"v"+_VERSION),cResY-text_height(0,"v"+_VERSION),ALIGN_CENTER_LEFT,"v"+_VERSION);
+	#endif
 	
 	loop
 		//movemos planos nubes
