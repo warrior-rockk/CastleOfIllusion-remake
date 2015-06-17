@@ -71,7 +71,7 @@ begin
 	game.playerMaxLife  = 3;
 	game.score      	= 0;
 	game.numLevel       = 0;
-	game.state          = SPLASH;
+	game.state          = INTRO;
 	
 	//Arrancamos el loop del juego
 	WGE_Loop();
@@ -99,10 +99,7 @@ private
 	byte memBoss;							//flag de boss activo
 	byte attractActive;						//modo Attractt activo
 	
-	int idAnim1;
-	int idAnim2;
-	int idAnim3;
-	byte paleta[3] = 100,50,100;
+	byte introFinished;						//Flag de intro finalizada
 begin
 	priority = cMainPrior;
 	
@@ -123,77 +120,36 @@ begin
 			
 		//estado del juego
 		switch (game.state)
+			case INTRO:
+				//si no existe intro, la lanzamos
+				if (!exists(TYPE gameIntro) && !introFinished)
+					gameIntro(&introFinished);
+				end;
+				
+				//si acaba la intro o pulsamos tecla, saltamos a splash
+				if (introFinished )
+					game.state = SPLASH;
+				elseif (WGE_CheckControl(CTRL_START,E_DOWN))
+					//apagamos pantalla
+					fade(0,0,0,cFadeTime);
+					while(fading) frame; end;
+					//matamos el intro
+					signal(TYPE gameIntro,s_kill_tree);
+					//saltamos a splash
+					game.state = SPLASH;
+				end;
+			end;
 			case SPLASH:
+				//lanzamos el splash
+				gameSplash();
 				
-				play_song(gameMusic[INTRO_MUS],0);
-				set_music_position(32);
-				
-				define_region(3,0,0,cGameRegionW,40);
-				define_region(4,0,40,cGameRegionW,16);
-				define_region(5,0,56,cGameRegionW,8);
-				define_region(6,0,64,cGameRegionW,72);
-				define_region(7,0,136,cGameRegionW,56);
-				
-				start_scroll(1,fpgGame,4,0,3,3);
-				start_scroll(2,fpgGame,5,0,4,3);
-				start_scroll(3,fpgGame,6,0,5,3);
-				start_scroll(4,fpgGame,7,0,6,3);
-				start_scroll(5,fpgGame,8,0,7,3);
-				
-				//scroll[cGameScroll].ratio = 100;
-				scroll[1].x0=162;
-				scroll[2].x0=161;
-				scroll[3].x0=196;
-				scroll[4].x0=64;
-				scroll[5].x0=154;
-				
-				idAnim1 = WGE_Animation(fpgGame,9,9,172,120,10,ANIM_LOOP);
-				idAnim2 = WGE_Animation(fpgGame,10,10,122,54,10,ANIM_LOOP);
-				
-				
+				//encendemos pantalla
+				fade(100,100,100,cFadeTime);
+				while(fading) frame; end;
+					
 				repeat
 					counterTime++;
-					pal_set(counterTime,1,&paleta);
-					pal_refresh();
 					
-					scroll[1].x0-=((counterTime % 1) == 0);
-					scroll[2].x0-=((counterTime % 2) == 0);
-					scroll[3].x0-=((counterTime % 3) == 0);
-					idAnim2.x   +=((counterTime % 8) == 0) && (scroll[4].x0 > 8);
-					scroll[4].x0-=((counterTime % 8) == 0) && (scroll[4].x0 > 8);
-					idAnim1.x   -=((counterTime % 4) == 0) && (scroll[5].x0 < cGameRegionW+16);
-					scroll[5].x0+=((counterTime % 4) == 0) && (scroll[5].x0 < cGameRegionW+16);
-					
-					frame;
-				until(counterTime >= 650);
-				
-				//stop_scroll(1);
-				//stop_scroll(2);
-				//stop_scroll(3);
-				//stop_scroll(4);
-				//stop_scroll(5);
-				//signal(idAnim1,s_kill);
-				//signal(idAnim2,s_kill);
-				counterTime = 0;
-				
-				//put(fpgGame,11,cResX>>1,192>>1);
-				idAnim3 = WGE_Animation(fpgGame,11,11,cResX>>1,192>>1,10,ANIM_LOOP);
-				idAnim3.z--;
-				//mensaje hasta pulsar tecla
-				//write(fntGame,cGameRegionW>>1,cGameRegionH>>1,ALIGN_CENTER,"CASTLE OF ILLUSION");
-				write_var(fntGame,cGameRegionW>>1,cGameRegionH>>1,ALIGN_CENTER,textMsg);
-				
-				repeat
-					scroll[1].x0-=((counterTime % 1) == 0);
-					scroll[2].x0-=((counterTime % 2) == 0);
-					scroll[3].x0-=((counterTime % 3) == 0);
-					
-					//mensaje
-					if (counterTime % 30 == 0)
-						textMsg =="" ? textMsg = "PRESS START BUTTON" : textMsg = "";
-					end;
-					
-					counterTime++;
 					//si pasan 10 segundos sin pulsar tecla
 					if (counterTime >= cNumFPS*10)
 						//activamos attractMode del nivel 1
@@ -204,22 +160,12 @@ begin
 					frame;
 				until(WGE_CheckControl(CTRL_START,E_DOWN) || attractActive);
 				
-				
 				//apagamos pantalla
 				fade(0,0,0,cFadeTime);
 				while(fading) frame; end;
-				stop_scroll(1);
-				stop_scroll(2);
-				stop_scroll(3);
-				stop_scroll(4);
-				stop_scroll(5);
-				signal(idAnim1,s_kill);
-				signal(idAnim2,s_kill);
-				signal(idAnim3,s_kill);
-				screen_clear();				
-				//eliminamos texto
-				delete_text(all_text);
-				
+				//matamos el splash
+				signal(TYPE gameSplash,s_kill_tree);
+				//cambiamos de estado
 				game.state = LOADLEVEL;
 			end;
 			case MENU:
@@ -509,9 +455,6 @@ begin
 					StopControlPlaying = true;
 					//limpiamos el nivel
 					clearLevel();
-					//encendemos pantalla
-					fade(100,100,100,cFadeTime);
-					while(fading) frame; end;
 					//iniciamos nivel
 					game.numLevel = 0;
 					//pantalla inicial
@@ -2064,4 +2007,120 @@ begin
 	if (tickClock(cBlinkEntityTime))
 		isBitSet(idEntity.flags,B_ABLEND) ? unsetBit(idEntity.flags,B_ABLEND) : setBit(idEntity.flags,B_ABLEND);
 	end;
+end;
+
+//funcion que realiza animacion de introduccion. Devuelve 1 cuando termine
+process gameIntro(*introFinished)
+private
+	int introTime;					//Tiempo animacion
+	entity introAnimations[10];		//Array de animaciones	
+	
+begin
+	
+	//definimos regiones para el scroll de la intro
+	define_region(3,0,0,cGameRegionW,40);
+	define_region(4,0,40,cGameRegionW,16);
+	define_region(5,0,56,cGameRegionW,8);
+	define_region(6,0,64,cGameRegionW,72);
+	define_region(7,0,136,cGameRegionW,56);
+	//arrancamos los scrolls
+	start_scroll(1,fpgGame,4,0,3,3);
+	start_scroll(2,fpgGame,5,0,4,3);
+	start_scroll(3,fpgGame,6,0,5,3);
+	start_scroll(4,fpgGame,7,0,6,3);
+	start_scroll(5,fpgGame,8,0,7,3);
+	//definimos la posicion inicial de las capas de scroll
+	scroll[1].x0=162;
+	scroll[2].x0=161;
+	scroll[3].x0=196;
+	scroll[4].x0=64;
+	scroll[5].x0=154;
+	//creamos las animaciones estaticas
+	introAnimations[0] = WGE_GameAnimation(fpgGame,9,9,172,120,10,ANIM_LOOP);
+	introAnimations[1] = WGE_GameAnimation(fpgGame,10,10,122,54,10,ANIM_LOOP);
+	
+	//reproducimos musica intro
+	play_song(gameMusic[INTRO_MUS],0);
+	set_music_position(32);
+	
+	//hacemos el barrido de perspectiva hasta tiempo definido
+	repeat
+		introTime++;
+		//movemos las animaciones
+		introAnimations[0].x   -=((introTime % 4) == 0) && (scroll[5].x0 < cGameRegionW+16);
+		introAnimations[1].x   +=((introTime % 8) == 0) && (scroll[4].x0 > 8);
+		//movemos cada plano a distinta velocidad hasta su posicion
+		scroll[1].x0-=((introTime % 1) == 0);
+		scroll[2].x0-=((introTime % 2) == 0);
+		scroll[3].x0-=((introTime % 3) == 0);
+		scroll[4].x0-=((introTime % 8) == 0) && (scroll[4].x0 > 8);
+		scroll[5].x0+=((introTime % 4) == 0) && (scroll[5].x0 < cGameRegionW+16);
+		
+		frame;
+	until(introTime >= 650);
+	
+	//devolvemos animacion terminada
+	*introFinished = true;
+	
+	frame;
+	
+	//eliminamos los procesos animacion
+	signal(introAnimations[0],s_kill);
+	signal(introAnimations[1],s_kill);
+	
+end;
+
+//Proceso que muestra el splash en pantalla
+process gameSplash()
+private
+	entity gameAnimations[10];		//Array de animaciones	
+	int splashTime;					//Tiempo de splash
+	string textmsg;					//Texto Splash
+begin
+	//creamos los procesos de animacion
+	gameAnimations[0] = WGE_GameAnimation(fpgGame,9,9,54,120,10,ANIM_LOOP);
+	gameAnimations[1] = WGE_GameAnimation(fpgGame,10,10,178,54,10,ANIM_LOOP);
+	gameAnimations[2] = WGE_GameAnimation(fpgGame,11,11,cResX>>1,192>>1,10,ANIM_LOOP);
+	gameAnimations[2].z--;
+	
+	//arrancamos los scrolls
+	start_scroll(1,fpgGame,4,0,3,3);
+	start_scroll(2,fpgGame,5,0,4,3);
+	start_scroll(3,fpgGame,6,0,5,3);
+	start_scroll(4,fpgGame,7,0,6,3);
+	start_scroll(5,fpgGame,8,0,7,3);
+	//seteamos posicion scrolls
+	scroll[4].x0 = 8;
+	scroll[5].x0 = cGameRegionW+16;
+	
+		
+	//mensaje hasta pulsar tecla
+	write_var(fntGame,cGameRegionW>>1,cGameRegionH>>1,ALIGN_CENTER,textMsg);
+	
+	loop
+		//movemos planos nubes
+		scroll[1].x0-=((splashTime % 1) == 0);
+		scroll[2].x0-=((splashTime % 2) == 0);
+		scroll[3].x0-=((splashTime % 3) == 0);
+		
+		//mensaje
+		if (splashTime % 30 == 0)
+			textMsg =="" ? textMsg = "PRESS START BUTTON" : textMsg = "";
+		end;
+		
+		splashTime++;
+		
+		frame;
+	end;
+
+onexit:
+	//detenemos los scrolls
+	stop_scroll(1);
+	stop_scroll(2);
+	stop_scroll(3);
+	stop_scroll(4);
+	stop_scroll(5);
+	screen_clear();				
+	//eliminamos texto
+	delete_text(all_text);
 end;

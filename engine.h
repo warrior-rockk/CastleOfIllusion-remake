@@ -28,6 +28,7 @@
 #define CONTINUEGAME    8
 #define ATTRACTMODE     9
 #define TUTORIAL        10
+#define INTRO           11
 
 //Codigo del tile
 //bits del 0 al 4 del mapa de tiles

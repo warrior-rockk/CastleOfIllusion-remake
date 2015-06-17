@@ -35,7 +35,6 @@ ENGINE: -que le pases como argumento los logs de debug (los niveles o el debug c
 		-UpdateObject generalizarlo a updateentity para todos en engine.prg
 		-con screen_get puedo caputar la pantalla y hacer transiciones
 		-los estados posibles deberian diferenciarse por tipo de proceso a pesar de tener estados globales que tengan el mismo numero
-		-grabacion de como jugar en testrom
 		-Sustituir el escribir la posicion en el tile en debug con mostrar flotante la posicion o algo		
 		-efectos de paleta: relampagos,agua,etc..
 		-Tareas de inicializacion del engine:el mapa que esta en la posicion de mapStairs, se borra¿¿¿ ¿es por culpa de tener id 0 el 	sistema y el primer fpg?

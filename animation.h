@@ -16,3 +16,10 @@ public
 	_entityPublicData this;			//datos publicos de entidad
 end
 end
+
+//declaracion de proceso gameAnimation
+Declare Process WGE_GameAnimation(int file,int startFrame, int endFrame,int x,int y,int animationSpeed,int mode)
+public
+	_entityPublicData this;			//datos publicos de entidad
+end
+end

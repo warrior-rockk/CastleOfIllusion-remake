@@ -63,10 +63,30 @@ private
 int endAnimation; //flag de animacion terminada
 
 begin
-	if (file <> fpgGame)
-		region = cGameRegion;
-		ctype = c_scroll;
-	end;
+	
+	region = cGameRegion;
+	ctype = c_scroll;
+	
+	z = cZObject;
+
+	//lanzamos la animacion hasta que se acabe si el modo el ANIM_ONCE
+	repeat
+	
+		endAnimation = WGE_Animate(startFrame,endFrame,animationSpeed,mode);
+		
+		frame;
+	
+	until(endAnimation && mode == ANIM_ONCE)
+	
+end;
+
+//Funcion que crea un proceso en pantalla mostrando una animación pero no en la region de juego
+process WGE_GameAnimation(int file,int startFrame, int endFrame,int x,int y,int animationSpeed,int mode)
+private
+int endAnimation; //flag de animacion terminada
+
+begin
+	
 	z = cZObject;
 
 	//lanzamos la animacion hasta que se acabe si el modo el ANIM_ONCE
