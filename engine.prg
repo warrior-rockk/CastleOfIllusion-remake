@@ -288,9 +288,12 @@ begin
 				    //por tiempo a 0
 				   (game.actualLevelTime == 0 && level.levelTime <> 0)         ||
 				   //por salir de la region
-				   //out_region(idPlayer,cGameRegion) 
 				   !checkInRegion(idPlayer.x,idPlayer.y,idPlayer.this.ancho,idPlayer.this.alto<<1,CHECKREGION_DOWN)
 				   )									
+					//reproducimos sonido si no es muerte por region
+					if (!out_region(idPlayer,cGameRegion) )
+						WGE_PlayEntitySnd(id,playerSound[DEAD_SND]);
+					end;
 					//creamos el proceso/animacion muerte
 					idDeadPlayer = deadPlayer();
 					//matamos al player
@@ -298,8 +301,7 @@ begin
 					idPlayer = 0;
 					//restamos una vida
 					game.playerTries --;
-					//reproducimos sonido
-					WGE_PlayEntitySnd(id,playerSound[DEAD_SND]);
+					
 					//esperamos a que el proceso muerte desaparezca de pantalla
 					while(exists(idDeadPlayer))
 						frame;

@@ -1,7 +1,4 @@
-BUGS:   
-		-sonido de muerte cuando mueres por vacio no deberia sonar
-		-no deberia explotar tan pronto el pickedobjet al lanzarlo con techo debajo?
-		-los proyectiles del cycleclown van muy rapido y muy seguido
+BUGS:   -los proyectiles del cycleclown van muy rapido y muy seguido
 		-tiles que se quedan en negro al reiniciar nivel!! (activadas funciones para debuggearlo)
 		-no puedo cruzar por plataforma?
 		-jarra se enganchó en la pared izquierda (al lanzarla o al caerse por tocar pompa?)
