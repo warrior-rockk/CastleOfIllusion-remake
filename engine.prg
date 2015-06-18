@@ -100,6 +100,8 @@ private
 	byte attractActive;						//modo Attractt activo
 	
 	byte introFinished;						//Flag de intro finalizada
+	
+	int dialogMap;
 begin
 	priority = cMainPrior;
 	
@@ -166,9 +168,24 @@ begin
 				//matamos el splash
 				signal(TYPE gameSplash,s_kill_tree);
 				//cambiamos de estado
-				game.state = LOADLEVEL;
+				game.state = MENU;
 			end;
 			case MENU:
+				//encendemos pantalla
+				fade(100,100,100,cFadeTime);
+				while(fading) frame; end;
+				
+				//componemos un cuadro de dialogo
+				WGE_DrawDialog(cResX>>1,cResY>>1,50,50);
+				
+				repeat
+					frame;
+				until(WGE_CheckControl(CTRL_START,E_DOWN));
+				
+				//apagamos pantalla
+				fade(0,0,0,cFadeTime);
+				while(fading) frame; end;
+				game.state = LOADLEVEL;
 			end;
 			case LOADLEVEL:		
 				//Cargamos el mapeado del nivel
@@ -2135,4 +2152,55 @@ onexit:
 	screen_clear();				
 	//eliminamos texto
 	delete_text(all_text);
+end;
+
+//Funcion que dibuja un marco para cuadro dialogo
+process WGE_DrawDialog(int x,int y,int width,int height)
+private
+	int dialogTileSize = 3;	//tamaño de los tiles del dialogo
+	
+	int i;					//Var aux
+begin
+
+file = fpgGame;
+
+//tamaño minimo dialogo
+if (width < ((dialogTileSize * 3)+1))
+	width = (dialogTileSize * 3)+1;
+end;
+if (height < (dialogTileSize * 3)+1)
+	height = (dialogTileSize * 3)+1;
+end;
+
+//creamos grafico vacio
+graph = map_new(width,height,8);
+
+//dibujamos las esquinas
+map_put(fpgGame,graph,13,1,1);
+map_xput(fpgGame,graph,13,width-(dialogTileSize+1>>1),1,0,100,B_HMIRROR);
+map_xput(fpgGame,graph,13,1,height-(dialogTileSize+1>>1),0,100,B_VMIRROR);
+map_xput(fpgGame,graph,13,width-(dialogTileSize+1>>1),height-(dialogTileSize+1>>1),0,100,B_HMIRROR | B_VMIRROR);
+
+
+//dibujamos linea superior
+for (i=dialogTileSize+1;i<=width-dialogTileSize+1;i+=dialogTileSize)
+	map_put(fpgGame,graph,14,i,1);
+end;
+//dibujamos linea inferior
+for (i=dialogTileSize+1;i<=width-(dialogTileSize+1>>1);i+=dialogTileSize)
+	map_xput(fpgGame,graph,14,i,height-(dialogTileSize+1>>1),0,100,B_VMIRROR);
+end;
+//dibujamos linea lateral izquierda
+for (i=dialogTileSize+1;i<height-(dialogTileSize+1>>1);i+=dialogTileSize)
+	map_put(fpgGame,graph,15,1,i);
+end;
+//dibujamos linea lateral derecha
+for (i=dialogTileSize+1;i<height-(dialogTileSize+1>>1);i+=dialogTileSize)
+	map_xput(fpgGame,graph,15,width-(dialogTileSize+1>>1),i,0,100,B_HMIRROR);
+end;
+
+loop
+	frame;
+end;
+
 end;
