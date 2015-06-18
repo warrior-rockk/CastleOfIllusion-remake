@@ -1,4 +1,4 @@
-BUGS:   -los proyectiles del cycleclown van muy rapido y muy seguido (gravedad??)
+BUGS:   -fallo de enfoque al llegar a los limites de scroll horizontal. Reajusta en varios frames
 		-tiles que se quedan en negro al reiniciar nivel!! (activadas funciones para debuggearlo)
 		-no puedo cruzar por plataforma?
 		-jarra se enganchó en la pared izquierda (al lanzarla o al caerse por tocar pompa?)
@@ -23,7 +23,9 @@ PLATFORMS:
 OBJECTS: 
 		-el coin rebota mas rato y el giro va perdiendo velocidad
 		
-ENGINE: -separar correctamente lo que pertenece al engine general y lo que seria game concreto de castle
+ENGINE: -ningun proceso deberia poder acumular vY ni vX superiores a ciertos valores.
+		-crear variables de velocidad por defecto para poder asignar velocidades a las cosas proporcionales y desde un mismo lugar
+		-separar correctamente lo que pertenece al engine general y lo que seria game concreto de castle
 		-que le pases como argumento los logs de debug (los niveles o el debug completo)
 		-en el WGE_LOOP, como se hace bucles con frame, no se ejecuta el contador de frames. ¿Es un problema??
 		-pasar todos los repeats de get_id a whiles

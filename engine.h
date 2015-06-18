@@ -320,9 +320,11 @@ Global
 	#endif
 	byte mapUsesAlpha;				//Bit que indica que el mapa usa propiedad alpha (relentiza la carga)
 	//Fisicas
-	float gravity 			= 0.25; 	//Aceleracion gravedad
+	float gravity 			= 0.20; //0.25; 	//Aceleracion gravedad
 	float floorFriction 	= 0.85;		//Friccion suelo
 	float airFriction 		= 0.85;		//Friccion aire
+	float maxEntityVelY     = 4.0;		//Velocidad maxima Y global para todas las entidades
+	
 	//generales
 	int idButton;					//Identificador de proceso pulsando boton
 	int idKey;						//Identificar de proceso abriendo puerta
