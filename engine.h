@@ -29,6 +29,7 @@
 #define ATTRACTMODE     9
 #define TUTORIAL        10
 #define INTRO           11
+#define MENU_CONFIG     12
 
 //Codigo del tile
 //bits del 0 al 4 del mapa de tiles

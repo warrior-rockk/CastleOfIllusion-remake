@@ -176,10 +176,10 @@ begin
 				optionNum = 1;
 				
 				//componemos un cuadro de dialogo
-				WGE_DrawDialog(cResX>>1,cResY>>1,150,100);
+				WGE_DrawDialog(cResX>>1,cResY>>1,125,100);
 				
 				//escribimos las opciones
-				WGE_WriteDialogOptions(get_id(TYPE WGE_DrawDialog),"PLAY GAME;CONFIG;EXIT",optionNum);
+				WGE_WriteDialogOptions(get_id(TYPE WGE_DrawDialog),"PLAY GAME;CONFIG;EXIT;",optionNum);
 				
 				//encendemos pantalla
 				fade(100,100,100,cFadeTime);
@@ -191,13 +191,13 @@ begin
 					if (WGE_CheckControl(CTRL_DOWN,E_DOWN) && optionNum<3)
 						clear_screen();
 						optionNum++;
-						WGE_WriteDialogOptions(get_id(TYPE WGE_DrawDialog),"PLAY GAME;CONFIG;EXIT",optionNum);
+						WGE_WriteDialogOptions(get_id(TYPE WGE_DrawDialog),"PLAY GAME;CONFIG;EXIT;",optionNum);
 					end;
 					//subir opcion
 					if (WGE_CheckControl(CTRL_UP,E_DOWN) && optionNum>1)
 						clear_screen();
 						optionNum--;
-						WGE_WriteDialogOptions(get_id(TYPE WGE_DrawDialog),"PLAY GAME;CONFIG;EXIT",optionNum);
+						WGE_WriteDialogOptions(get_id(TYPE WGE_DrawDialog),"PLAY GAME;CONFIG;EXIT;",optionNum);
 					end;
 					//seleccionar opcion
 					if (WGE_CheckControl(CTRL_START,E_DOWN))
@@ -206,24 +206,53 @@ begin
 								//apagamos pantalla
 								fade(0,0,0,cFadeTime);
 								while(fading) frame; end;
-								//eliminamos menu y limpiamos pantalla
-								signal(TYPE WGE_DrawDialog,s_kill);
-								clear_screen();
-								delete_text(all_text);
-								optionNum = 0;
+								
 								//cambiamos de paso
 								game.state = LOADLEVEL;
 							end;
 							case 2: //Config
+								game.state = MENU_CONFIG;
 							end;
 							case 3: //Exit
 								WGE_Quit();
 							end;
 						end;
+						//eliminamos menu y limpiamos pantalla
+						signal(TYPE WGE_DrawDialog,s_kill);
+						clear_screen();
+						delete_text(all_text);
+						optionNum = 0;
 					end;
 					frame;
 				end;
 								
+			end;
+			case MENU_CONFIG:
+				//iniciamos la opcion del menu
+				optionNum = 1;
+				
+				//componemos un cuadro de dialogo
+				WGE_DrawDialog(cResX>>1,cResY>>1,150,150);
+				
+				//escribimos las opciones
+				WGE_WriteDialogOptions(get_id(TYPE WGE_DrawDialog),"VIDEO MODE;CONTROLS;SOUND VOLUME;MUSIC VOLUME;BACK;",optionNum);
+				
+				//gestion del menu
+				while (optionNum <> 0)
+					//bajar opcion
+					if (WGE_CheckControl(CTRL_DOWN,E_DOWN) && optionNum<5)
+						clear_screen();
+						optionNum++;
+						WGE_WriteDialogOptions(get_id(TYPE WGE_DrawDialog),"VIDEO MODE;CONTROLS;SOUND VOLUME;MUSIC VOLUME;BACK;",optionNum);
+					end;
+					//subir opcion
+					if (WGE_CheckControl(CTRL_UP,E_DOWN) && optionNum>1)
+						clear_screen();
+						optionNum--;
+						WGE_WriteDialogOptions(get_id(TYPE WGE_DrawDialog),"VIDEO MODE;CONTROLS;SOUND VOLUME;MUSIC VOLUME;BACK;",optionNum);
+					end;
+					frame;
+				end;
 			end;
 			case LOADLEVEL:		
 				//Cargamos el mapeado del nivel
@@ -2252,7 +2281,7 @@ end;
 function WGE_WriteDialogOptions(WGE_DrawDialog idDialog,string textOptions,int selected);
 private
 	//margenes 
-	int marginX = 40;
+	int marginX = 30;
 	int marginY = 20;
 	int cursorMarginX = 10;
 	
@@ -2264,7 +2293,8 @@ private
 	
 	char delimiterChar = ";"; 	//caracter delimitador
 	string textOption;			//texto actual
-	int startChar;				//comienzo texto
+	int startChar = 0;			//comienzo texto
+	int endChar  = 0;			//fin cadena
 	int optionNum = 1;			//numero de opcion
 begin
 	delete_text(all_text);
@@ -2275,7 +2305,7 @@ begin
 	
 	//obtenemos la primera opcion
 	textOption = substr(textOptions,0,find(textOptions,delimiterChar,0));
-		
+	
 	//si hay alguna opcion
 	if (textOption <> "")			
 		repeat
@@ -2286,13 +2316,17 @@ begin
 			//escribimos la opcion
 			write(fntGame,textPosX,textPosY,ALIGN_CENTER_LEFT,textOption);
 			//obtenemos la siguiente
-			startChar = find(textOptions,";",startChar) + 1;
-			textOption = substr(textOptions,startChar,startChar-find(textOptions,delimiterChar,startChar)+1);
+			startChar = find(textOptions,delimiterChar,startChar+1);
+			endChar   = find(textOptions,delimiterChar,startChar+1);
+			//componemos la cadena
+			textOption = substr(textOptions,startChar+1,endChar-startChar);
+			
 			//incrementamos la posicion Y del texto		
 			textPosY += text_height(fntGame,textOption)+padding;
 			//incrementamos el numero de opcion
 			optionNum++;
-		until (startChar == 0);
+		
+		until (endChar < 0);
 	end;
 	
 end;
