@@ -140,11 +140,7 @@ const
 	cNumFPS    	 	= 60;  					//Frames por segundo
 	cNumFPSDebug 	= 0;					//Frames por segundo en debug (CTRL+F)
 	cResX 			= 256;//248;//256; //320;			//Resolucion Horizontal Pantalla
-	#ifdef RELEASE
-		cResY       = 192;					//Resolucion Vertical Pantalla
-	#else
-		cResY 		= 300;  				//Resolucion Vertical Pantalla
-	#endif
+	cResY 		    = 192;					//Resolucion Vertical Pantalla	
 	cGameScroll 	= 0;    				//Numero Scroll
 	cGameRegion 	= 1;    				//Numero Region Pantalla Juego
 	cGameRegionX 	= 0;					//Region Horizontal Pantalla de juego (Representacion Mapeado) 

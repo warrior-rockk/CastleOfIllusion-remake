@@ -72,7 +72,7 @@ begin
 	game.score      	= 0;
 	game.numLevel       = 0;
 	game.state          = INTRO;
-	
+		
 	//Arrancamos el loop del juego
 	WGE_Loop();
 	
@@ -102,6 +102,7 @@ private
 	byte introFinished;						//Flag de intro finalizada
 	
 	int dialogMap;
+	int optionNum;
 begin
 	priority = cMainPrior;
 	
@@ -171,21 +172,58 @@ begin
 				game.state = MENU;
 			end;
 			case MENU:
+				//iniciamos la opcion del menu
+				optionNum = 1;
+				
+				//componemos un cuadro de dialogo
+				WGE_DrawDialog(cResX>>1,cResY>>1,150,100);
+				
+				//escribimos las opciones
+				WGE_WriteDialogOptions(get_id(TYPE WGE_DrawDialog),"PLAY GAME;CONFIG;EXIT",optionNum);
+				
 				//encendemos pantalla
 				fade(100,100,100,cFadeTime);
 				while(fading) frame; end;
 				
-				//componemos un cuadro de dialogo
-				WGE_DrawDialog(cResX>>1,cResY>>1,50,50);
-				
-				repeat
+				//gestion del menu
+				while (optionNum <> 0)
+					//bajar opcion
+					if (WGE_CheckControl(CTRL_DOWN,E_DOWN) && optionNum<3)
+						clear_screen();
+						optionNum++;
+						WGE_WriteDialogOptions(get_id(TYPE WGE_DrawDialog),"PLAY GAME;CONFIG;EXIT",optionNum);
+					end;
+					//subir opcion
+					if (WGE_CheckControl(CTRL_UP,E_DOWN) && optionNum>1)
+						clear_screen();
+						optionNum--;
+						WGE_WriteDialogOptions(get_id(TYPE WGE_DrawDialog),"PLAY GAME;CONFIG;EXIT",optionNum);
+					end;
+					//seleccionar opcion
+					if (WGE_CheckControl(CTRL_START,E_DOWN))
+						switch (optionNum)
+							case 1: //Play
+								//apagamos pantalla
+								fade(0,0,0,cFadeTime);
+								while(fading) frame; end;
+								//eliminamos menu y limpiamos pantalla
+								signal(TYPE WGE_DrawDialog,s_kill);
+								clear_screen();
+								delete_text(all_text);
+								optionNum = 0;
+								//cambiamos de paso
+								game.state = LOADLEVEL;
+							end;
+							case 2: //Config
+							end;
+							case 3: //Exit
+								WGE_Quit();
+							end;
+						end;
+					end;
 					frame;
-				until(WGE_CheckControl(CTRL_START,E_DOWN));
-				
-				//apagamos pantalla
-				fade(0,0,0,cFadeTime);
-				while(fading) frame; end;
-				game.state = LOADLEVEL;
+				end;
+								
 			end;
 			case LOADLEVEL:		
 				//Cargamos el mapeado del nivel
@@ -550,10 +588,11 @@ begin
 	//pantalla completa si compilamos RELEASE
 	#ifdef RELEASE
 		full_screen = true;
+		set_mode(cResX,cResY,8,MODE_WAITVSYNC);
+	#else
+		set_mode(cResX,300,8,MODE_WAITVSYNC);
 	#endif
 	
-	set_mode(cResX,cResY,8,MODE_WAITVSYNC);
-	//set_mode(992,600,8);
 	set_fps(cNumFPS,0);
 	//definimos la region del scroll
 	define_region(cGameRegion,cGameRegionX,cGameRegionY,cGameRegionW,cGameRegionH);
@@ -2155,7 +2194,10 @@ onexit:
 end;
 
 //Funcion que dibuja un marco para cuadro dialogo
-process WGE_DrawDialog(int x,int y,int width,int height)
+process WGE_DrawDialog(int x,int y,int _width,int _height)
+public
+	int width;
+	int height;
 private
 	int dialogTileSize = 3;	//tamaño de los tiles del dialogo
 	
@@ -2163,6 +2205,9 @@ private
 begin
 
 file = fpgGame;
+
+width = _width;
+height = _height;
 
 //tamaño minimo dialogo
 if (width < ((dialogTileSize * 3)+1))
@@ -2181,21 +2226,19 @@ map_xput(fpgGame,graph,13,width-(dialogTileSize+1>>1),1,0,100,B_HMIRROR);
 map_xput(fpgGame,graph,13,1,height-(dialogTileSize+1>>1),0,100,B_VMIRROR);
 map_xput(fpgGame,graph,13,width-(dialogTileSize+1>>1),height-(dialogTileSize+1>>1),0,100,B_HMIRROR | B_VMIRROR);
 
-
-//dibujamos linea superior
-for (i=dialogTileSize+1;i<=width-dialogTileSize+1;i+=dialogTileSize)
+//dibujamos lineas horizontales
+for (i=dialogTileSize+1;i<=width-dialogTileSize-1;i+=dialogTileSize)
+	//linea superior
 	map_put(fpgGame,graph,14,i,1);
-end;
-//dibujamos linea inferior
-for (i=dialogTileSize+1;i<=width-(dialogTileSize+1>>1);i+=dialogTileSize)
+	//linea inferior
 	map_xput(fpgGame,graph,14,i,height-(dialogTileSize+1>>1),0,100,B_VMIRROR);
 end;
-//dibujamos linea lateral izquierda
-for (i=dialogTileSize+1;i<height-(dialogTileSize+1>>1);i+=dialogTileSize)
+
+//dibujamos lineas verticales
+for (i=dialogTileSize+1;i<height-(dialogTileSize-1>>1);i+=dialogTileSize)
+	//lateral izquierda
 	map_put(fpgGame,graph,15,1,i);
-end;
-//dibujamos linea lateral derecha
-for (i=dialogTileSize+1;i<height-(dialogTileSize+1>>1);i+=dialogTileSize)
+	//lateral derecha
 	map_xput(fpgGame,graph,15,width-(dialogTileSize+1>>1),i,0,100,B_HMIRROR);
 end;
 
@@ -2203,4 +2246,53 @@ loop
 	frame;
 end;
 
+end;
+
+//funcion que escribe las opciones de un menu en la posicion correcta de un cuadro de dialogo
+function WGE_WriteDialogOptions(WGE_DrawDialog idDialog,string textOptions,int selected);
+private
+	//margenes 
+	int marginX = 40;
+	int marginY = 20;
+	int cursorMarginX = 10;
+	
+	int padding = 16;
+	
+	//posicion del texto
+	int textPosY;
+	int textPosX;
+	
+	char delimiterChar = ";"; 	//caracter delimitador
+	string textOption;			//texto actual
+	int startChar;				//comienzo texto
+	int optionNum = 1;			//numero de opcion
+begin
+	delete_text(all_text);
+	
+	//establecemos posicion inicial
+	textPosX = idDialog.x - (idDialog.width>>1) + marginX;
+	textPosY = idDialog.y - (idDialog.height>>1) + marginY;
+	
+	//obtenemos la primera opcion
+	textOption = substr(textOptions,0,find(textOptions,delimiterChar,0));
+		
+	//si hay alguna opcion
+	if (textOption <> "")			
+		repeat
+			//pintamos el cursor si esta la opcion seleccionada
+			if (optionNum == selected)
+				put(fpgGame,12,idDialog.x - (idDialog.width>>1)+cursorMarginX,textPosY);
+			end;
+			//escribimos la opcion
+			write(fntGame,textPosX,textPosY,ALIGN_CENTER_LEFT,textOption);
+			//obtenemos la siguiente
+			startChar = find(textOptions,";",startChar) + 1;
+			textOption = substr(textOptions,startChar,startChar-find(textOptions,delimiterChar,startChar)+1);
+			//incrementamos la posicion Y del texto		
+			textPosY += text_height(fntGame,textOption)+padding;
+			//incrementamos el numero de opcion
+			optionNum++;
+		until (startChar == 0);
+	end;
+	
 end;
