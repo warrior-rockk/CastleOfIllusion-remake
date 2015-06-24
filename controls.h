@@ -14,6 +14,7 @@
 #define	CTRL_JUMP	  			4
 #define	CTRL_ACTION_ATACK		5
 #define CTRL_START				6
+#define CTRL_ANY				7
 
 //Estados de un control
 #define E_PRESSED    0
@@ -32,6 +33,8 @@ End;
 	
 //Variables Globales
 Global
+	int lastControlEvent;							//Ultimo control pulsado
+	
 	//teclas
 	byte keyUse = 0;            						//Seleccion Flanco
     byte keyState[127][1];      						//Mapa estados en flanco anterior y actual

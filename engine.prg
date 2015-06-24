@@ -396,6 +396,7 @@ begin
 					if (WGE_CheckControl(CTRL_START,E_DOWN))
 						switch (optionNum)
 							case 1: //control UP
+								clear_screen();
 								WGE_WriteDialogOptions(idDialog,optionString,optionNum);
 								WGE_WriteDialogValues(idDialog,";PRESS KEY;",1,0);
 								WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_DOWN]]+";",2,0);
@@ -406,7 +407,19 @@ begin
 								WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_START]]+";",7,0);
 								repeat
 									frame;
-								until (WGE_CheckControl(CTRL_START,E_DOWN));
+								until (WGE_CheckControl(CTRL_ANY,E_DOWN));
+								configuredKeys[0] = lastControlEvent;
+								
+								clear_screen();
+								WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+								WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_UP]]+";",1,0);
+								WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_DOWN]]+";",2,0);
+								WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_LEFT]]+";",3,0);
+								WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_RIGHT]]+";",4,0);
+								WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_JUMP]]+";",5,0);
+								WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+";",6,0);
+								WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_START]]+";",7,0);
+								
 							end;
 							case 8: //Back
 								game.state = MENU_CONFIG;

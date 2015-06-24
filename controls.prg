@@ -23,10 +23,34 @@ end;
 
 //Funcion que devuelve el estado del control solicitado
 function WGE_CheckControl(int control,int event)
+private
+	byte anyEvent = false;
+	int i;
 begin
-	return (WGE_Key(configuredKeys[control],event)  	 && (!controlLoggerPlaying || control==CTRL_START)) ||
-	       (WGE_Button(configuredButtons[control],event) && (!controlLoggerPlaying || control==CTRL_START)) ||
-		   (controlLogger[control][event]				 &&  controlLoggerPlaying);
+	//si el control a chequear es un control especifico
+	if (control <> CTRL_ANY)
+		return (WGE_Key(configuredKeys[control],event)  	 && (!controlLoggerPlaying || control==CTRL_START)) ||
+			   (WGE_Button(configuredButtons[control],event) && (!controlLoggerPlaying || control==CTRL_START)) ||
+			   (controlLogger[control][event]				 &&  controlLoggerPlaying);
+	else //si es cualquier control
+		
+		//recorremos todas las teclas que se puede pulsar
+		for ( i = 0; i < 127; i++ )
+			if (WGE_Key(i,event))
+				anyEvent = true;
+				lastControlEvent = i;
+			end;
+		end;
+		//recorremos todos los botones que se puede pulsar
+		for ( i = 0; i < 13; i++ )
+			if (WGE_Button(i,event))
+				anyEvent = true;
+				lastControlEvent = i;
+			end;
+		end;
+				
+		return anyEvent;
+	end;
 end;
 
 //Funcion actualizacion estado de teclas
