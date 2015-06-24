@@ -349,15 +349,76 @@ begin
 				optionNum = 1;
 				
 				//componemos un cuadro de dialogo
-				idDialog = WGE_DrawDialog(cResX>>1,cResY>>1,200,180);
-				optionString = ";UP:;DOWN;LEFT:;RIGHT:;JUMP:;ATACK:;START:;";
+				idDialog = WGE_DrawDialog(cResX>>1,cResY>>1,200,190);
+				optionString = ";UP:;DOWN;LEFT:;RIGHT:;JUMP:;ATACK:;START:;BACK;";
 				
 				//escribimos las opciones
 				WGE_WriteDialogOptions(idDialog,optionString,optionNum);
-				WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_UP]]+";",1,1);
+				WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_UP]]+";",1,0);
+				WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_DOWN]]+";",2,0);
+				WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_LEFT]]+";",3,0);
+				WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_RIGHT]]+";",4,0);
+				WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_JUMP]]+";",5,0);
+				WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+";",6,0);
+				WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_START]]+";",7,0);
 				
 				//gestion del menu
 				while (optionNum <> 0)
+					//bajar opcion
+					if (WGE_CheckControl(CTRL_DOWN,E_DOWN) && optionNum<8)
+						clear_screen();
+						optionNum++;
+						//escribimos las opciones
+						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_UP]]+";",1,0);
+						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_DOWN]]+";",2,0);
+						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_LEFT]]+";",3,0);
+						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_RIGHT]]+";",4,0);
+						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_JUMP]]+";",5,0);
+						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+";",6,0);
+						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_START]]+";",7,0);
+					end;
+					//bajar opcion
+					if (WGE_CheckControl(CTRL_UP,E_DOWN) && optionNum>1)
+						clear_screen();
+						optionNum--;
+						//escribimos las opciones
+						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_UP]]+";",1,0);
+						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_DOWN]]+";",2,0);
+						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_LEFT]]+";",3,0);
+						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_RIGHT]]+";",4,0);
+						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_JUMP]]+";",5,0);
+						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+";",6,0);
+						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_START]]+";",7,0);
+					end;
+					//seleccionar opcion
+					if (WGE_CheckControl(CTRL_START,E_DOWN))
+						switch (optionNum)
+							case 1: //control UP
+								WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+								WGE_WriteDialogValues(idDialog,";PRESS KEY;",1,0);
+								WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_DOWN]]+";",2,0);
+								WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_LEFT]]+";",3,0);
+								WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_RIGHT]]+";",4,0);
+								WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_JUMP]]+";",5,0);
+								WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+";",6,0);
+								WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_START]]+";",7,0);
+								repeat
+									frame;
+								until (WGE_CheckControl(CTRL_START,E_DOWN));
+							end;
+							case 8: //Back
+								game.state = MENU_CONFIG;
+							end;
+						end;
+						//eliminamos menu y limpiamos pantalla
+						signal(TYPE WGE_DrawDialog,s_kill);
+						clear_screen();
+						delete_text(all_text);
+						optionNum = 0;
+					end;
+					
 					frame;
 				end;
 			end;
