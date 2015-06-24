@@ -30,6 +30,7 @@
 #define TUTORIAL        10
 #define INTRO           11
 #define MENU_CONFIG     12
+#define MENU_CONTROLS   13
 
 //Codigo del tile
 //bits del 0 al 4 del mapa de tiles
@@ -104,6 +105,11 @@
 #define STATUS_ALIVE			2	// The specified process is alive.
 #define STATUS_SLEEPING			3	// The specified process is sleeping.
 #define STATUS_FROZEN			4	// The specified process is frozen.
+
+//modos de video
+#define MODE_WINDOW				0
+#define	MODE_FULLSCREEN			1
+#define MODE_2XSCALE			2
 
 //Constantes del motor
 const
@@ -267,6 +273,12 @@ Global
 		int score;				//puntuación
 		int actualLevelTime;    //tiempo actual del nivel
 		byte shakeScroll;		//activar efecto temblor scroll
+	end;
+	//configuracion
+	struct config
+		int videoMode;
+		int soundVolume;
+		int musicVolume;
 	end;
 	int fpgGame;				//archivo de graficos globales
 	int fntGame;				//fuente general del juego

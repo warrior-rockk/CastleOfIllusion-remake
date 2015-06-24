@@ -72,7 +72,10 @@ begin
 	game.score      	= 0;
 	game.numLevel       = 0;
 	game.state          = INTRO;
-		
+	
+	//Cargamos la configuracion del juego
+	loadGameConfig();
+	
 	//Arrancamos el loop del juego
 	WGE_Loop();
 	
@@ -101,8 +104,10 @@ private
 	
 	byte introFinished;						//Flag de intro finalizada
 	
-	int dialogMap;
+	int idDialog;
 	int optionNum;
+	string optionString;
+	
 begin
 	priority = cMainPrior;
 	
@@ -176,10 +181,11 @@ begin
 				optionNum = 1;
 				
 				//componemos un cuadro de dialogo
-				WGE_DrawDialog(cResX>>1,cResY>>1,125,100);
+				idDialog = WGE_DrawDialog(cResX>>1,cResY>>1,125,100);
+				optionString = ";PLAY GAME;CONFIG;EXIT;";
 				
 				//escribimos las opciones
-				WGE_WriteDialogOptions(get_id(TYPE WGE_DrawDialog),"PLAY GAME;CONFIG;EXIT;",optionNum);
+				WGE_WriteDialogOptions(idDialog,optionString,optionNum);
 				
 				//encendemos pantalla
 				fade(100,100,100,cFadeTime);
@@ -191,13 +197,13 @@ begin
 					if (WGE_CheckControl(CTRL_DOWN,E_DOWN) && optionNum<3)
 						clear_screen();
 						optionNum++;
-						WGE_WriteDialogOptions(get_id(TYPE WGE_DrawDialog),"PLAY GAME;CONFIG;EXIT;",optionNum);
+						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
 					end;
 					//subir opcion
 					if (WGE_CheckControl(CTRL_UP,E_DOWN) && optionNum>1)
 						clear_screen();
 						optionNum--;
-						WGE_WriteDialogOptions(get_id(TYPE WGE_DrawDialog),"PLAY GAME;CONFIG;EXIT;",optionNum);
+						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
 					end;
 					//seleccionar opcion
 					if (WGE_CheckControl(CTRL_START,E_DOWN))
@@ -232,10 +238,14 @@ begin
 				optionNum = 1;
 				
 				//componemos un cuadro de dialogo
-				WGE_DrawDialog(cResX>>1,cResY>>1,150,150);
+				idDialog = WGE_DrawDialog(cResX>>1,cResY>>1,250,150);
+				optionString = ";VIDEO MODE:;CONTROLS;SOUND VOLUME:;MUSIC VOLUME:;BACK;";
 				
 				//escribimos las opciones
-				WGE_WriteDialogOptions(get_id(TYPE WGE_DrawDialog),"VIDEO MODE;CONTROLS;SOUND VOLUME;MUSIC VOLUME;BACK;",optionNum);
+				WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+				WGE_WriteDialogValues(idDialog,";WINDOW;2XSCALE;FULLSCREEN;",1,config.videoMode);
+				WGE_WriteDialogVariable(idDialog,0,100,config.soundVolume,3);
+				WGE_WriteDialogVariable(idDialog,0,100,config.musicVolume,4);
 				
 				//gestion del menu
 				while (optionNum <> 0)
@@ -243,14 +253,111 @@ begin
 					if (WGE_CheckControl(CTRL_DOWN,E_DOWN) && optionNum<5)
 						clear_screen();
 						optionNum++;
-						WGE_WriteDialogOptions(get_id(TYPE WGE_DrawDialog),"VIDEO MODE;CONTROLS;SOUND VOLUME;MUSIC VOLUME;BACK;",optionNum);
+						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+						WGE_WriteDialogValues(idDialog,";WINDOW;2XSCALE;FULLSCREEN;",1,config.videoMode);
+						WGE_WriteDialogVariable(idDialog,0,100,config.soundVolume,3);
+						WGE_WriteDialogVariable(idDialog,0,100,config.musicVolume,4);
 					end;
 					//subir opcion
 					if (WGE_CheckControl(CTRL_UP,E_DOWN) && optionNum>1)
 						clear_screen();
 						optionNum--;
-						WGE_WriteDialogOptions(get_id(TYPE WGE_DrawDialog),"VIDEO MODE;CONTROLS;SOUND VOLUME;MUSIC VOLUME;BACK;",optionNum);
+						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+						WGE_WriteDialogValues(idDialog,";WINDOW;2XSCALE;FULLSCREEN;",1,config.videoMode);
+						WGE_WriteDialogVariable(idDialog,0,100,config.soundVolume,3);
+						WGE_WriteDialogVariable(idDialog,0,100,config.musicVolume,4);
 					end;
+					//incrementar valor
+					if (WGE_CheckControl(CTRL_RIGHT,E_DOWN))
+						clear_screen();
+						switch (optionNum)
+							case 1:
+								if (config.videoMode < 2)
+									config.videoMode ++;
+								else
+									config.videoMode = 0;
+								end;
+							end;
+							case 3:
+								if (config.soundVolume < 100)
+									config.soundVolume += 5;
+								end;
+							end;
+							case 4:
+								if (config.musicVolume < 100)
+									config.musicVolume += 5;
+								end;
+							end;
+						end;
+						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+						WGE_WriteDialogValues(idDialog,";WINDOW;2XSCALE;FULLSCREEN;",1,config.videoMode);
+						WGE_WriteDialogVariable(idDialog,0,100,config.soundVolume,3);
+						WGE_WriteDialogVariable(idDialog,0,100,config.musicVolume,4);
+						
+						saveGameConfig();
+					end;
+					//decrementar valor
+					if (WGE_CheckControl(CTRL_LEFT,E_DOWN))
+						clear_screen();
+						switch (optionNum)
+							case 1:
+								if (config.videoMode > 0)
+									config.videoMode --;
+								else
+									config.videoMode = 2;
+								end;
+							end;
+							case 3:
+								if (config.soundVolume > 0)
+									config.soundVolume -= 5;
+								end;
+							end;
+							case 4:
+								if (config.musicVolume > 0)
+									config.musicVolume -= 5;
+								end;
+							end;
+						end;
+						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+						WGE_WriteDialogValues(idDialog,";WINDOW;2XSCALE;FULLSCREEN;",1,config.videoMode);
+						WGE_WriteDialogVariable(idDialog,0,100,config.soundVolume,3);
+						WGE_WriteDialogVariable(idDialog,0,100,config.musicVolume,4);
+						
+						saveGameConfig();
+					end;
+					//seleccionar opcion
+					if (WGE_CheckControl(CTRL_START,E_DOWN))
+						switch (optionNum)
+							case 2: //Controls
+								game.state = MENU_CONTROLS;
+							end;
+							case 5: //Back
+								game.state = MENU;
+							end;
+						end;
+						//eliminamos menu y limpiamos pantalla
+						signal(TYPE WGE_DrawDialog,s_kill);
+						clear_screen();
+						delete_text(all_text);
+						optionNum = 0;
+					end;
+					frame;
+				end;
+			end;
+			case MENU_CONTROLS:
+				//iniciamos la opcion del menu
+				optionNum = 1;
+				
+				//componemos un cuadro de dialogo
+				idDialog = WGE_DrawDialog(cResX>>1,cResY>>1,200,180);
+				optionString = ";UP:;DOWN;LEFT:;RIGHT:;JUMP:;ATACK:;START:;";
+				
+				//escribimos las opciones
+				WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+				WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_UP]]+";",1,1);
+				
+				//gestion del menu
+				while (optionNum <> 0)
 					frame;
 				end;
 			end;
@@ -2283,10 +2390,9 @@ private
 	//margenes 
 	int marginX = 30;
 	int marginY = 20;
-	int cursorMarginX = 10;
-	
 	int padding = 16;
-	
+	int cursorMarginX = 10;
+		
 	//posicion del texto
 	int textPosY;
 	int textPosX;
@@ -2303,30 +2409,156 @@ begin
 	textPosX = idDialog.x - (idDialog.width>>1) + marginX;
 	textPosY = idDialog.y - (idDialog.height>>1) + marginY;
 	
-	//obtenemos la primera opcion
-	textOption = substr(textOptions,0,find(textOptions,delimiterChar,0));
-	
-	//si hay alguna opcion
-	if (textOption <> "")			
-		repeat
-			//pintamos el cursor si esta la opcion seleccionada
-			if (optionNum == selected)
-				put(fpgGame,12,idDialog.x - (idDialog.width>>1)+cursorMarginX,textPosY);
-			end;
-			//escribimos la opcion
-			write(fntGame,textPosX,textPosY,ALIGN_CENTER_LEFT,textOption);
-			//obtenemos la siguiente
-			startChar = find(textOptions,delimiterChar,startChar+1);
-			endChar   = find(textOptions,delimiterChar,startChar+1);
-			//componemos la cadena
-			textOption = substr(textOptions,startChar+1,endChar-startChar);
-			
-			//incrementamos la posicion Y del texto		
-			textPosY += text_height(fntGame,textOption)+padding;
-			//incrementamos el numero de opcion
-			optionNum++;
+	//mientras queden opciones en el string
+	while(endChar >= 0) 
+		//establecemos caracter inicio y fin
+		startChar = find(textOptions,delimiterChar,endChar);
+		endChar   = find(textOptions,delimiterChar,startChar+1);
+		//obtenemos la cadena de la opcion
+		textOption = substr(textOptions,startChar+1,endChar-(startChar+1));
 		
-		until (endChar < 0);
+		//escribimos la cadena
+		write(fntGame,textPosX,textPosY,ALIGN_CENTER_LEFT,textOption);
+		
+		//pintamos el cursor si esta la opcion seleccionada
+		if (optionNum == selected)
+			put(fpgGame,12,idDialog.x - (idDialog.width>>1)+cursorMarginX,textPosY);
+		end;
+		
+		//incrementamos la posicion Y del texto		
+		textPosY += text_height(fntGame,textOption)+padding;
+		//incrementamos el numero de opcion
+		optionNum++;
+
+	end;
+end;
+
+//funcion que escribe los valores de seleccion de una opcion de menu
+function WGE_WriteDialogValues(WGE_DrawDialog idDialog,string textValues,int selected,int value);
+private
+	//margenes 
+	int marginX = 30;
+	int marginY = 20;
+	int cursorMarginX = 10;
+	
+	int padding = 16;
+	
+	//posicion del texto
+	int textPosY;
+	int textPosX;
+	
+	char delimiterChar = ";"; 	//caracter delimitador
+	string textValue;			//texto actual
+	int startChar = 0;			//comienzo texto
+	int endChar  = 0;			//fin cadena
+	int valueNum = 0;			//numero de valor
+begin
+	
+	//establecemos posicion inicial
+	textPosX = idDialog.x + (idDialog.width>>1) - text_width(fntGame,"00");
+	textPosY = idDialog.y - (idDialog.height>>1) + marginY;
+	
+	textPosY += (text_height(fntGame,textValues)+padding)*(selected-1);
+	
+	//mientras queden opciones en el string
+	while(endChar >= 0) 
+		//establecemos caracter inicio y fin
+		startChar = find(textValues,delimiterChar,endChar);
+		endChar   = find(textValues,delimiterChar,startChar+1);
+		//extraemos la cadena
+		textValue = substr(textValues,startChar+1,endChar-(startChar+1));
+		
+		//escribimos el valor seleccionado de la opcion actual
+		if (valueNum == value)
+			write(fntGame,textPosX,textPosY,ALIGN_CENTER_RIGHT,textValue);
+		end;
+		
+		//incrementamos el numero de opcion
+		valueNum++;
+
+	end;
+end;
+
+//funcion que escribe un valor numerico con maximo y minimo
+function WGE_WriteDialogVariable(WGE_DrawDialog idDialog,int minValue,int MaxValue,int value,int numOption)
+private
+	//margenes 
+	int marginX = 30;
+	int marginY = 20;
+	int cursorMarginX = 20;
+	
+	int padding = 16;
+	
+	//posicion del texto
+	int textPosY;
+	int textPosX;
+	
+begin
+
+	//establecemos posicion inicial
+	textPosX = idDialog.x + (idDialog.width>>1) - marginX;
+	textPosY = idDialog.y - (idDialog.height>>1) + marginY;
+	//establecemos posicion relativa
+	textPosY += (text_height(fntGame,value)+padding)*(numOption-1);
+	
+	//escribimos el valor
+	write(fntGame,textPosX,textPosY,ALIGN_CENTER_RIGHT,value);
+	
+	//pintamos flechas que indican los limites
+	if (value > minValue)
+		xput(fpgGame,12,textPosX-cursorMarginX-text_width(fntGame,"00"),textPosY,0,100,B_HMIRROR,0);
+	end;
+	if (value < maxValue)
+		//put(fpgGame,12,idDialog.x + (idDialog.width>>1)-cursorMarginX,textPosY);
+		put(fpgGame,12,textPosX+cursorMarginX,textPosY);
 	end;
 	
+end;
+
+//funcion para salvar la configuracion
+function saveGameConfig()
+private
+	int configFile;
+begin
+	
+	configFile = fopen("gameconfig.cfg",O_WRITE);
+	
+	//escribimos la configuracion
+	fwrite(configFile,config.videoMode);
+	fwrite(configFile,config.soundVolume);
+	fwrite(configFile,config.musicVolume);
+	
+	//cerramos el archivo
+	fclose(configFile);
+	
+	log("Archivo de configuración guardado",DEBUG_ENGINE);
+	
+end;
+
+//funcion para abrir la configuracion
+function loadGameConfig()
+private
+	int configFile;
+begin
+	//si existe el archivo de configuracion
+	if (fexists("gameconfig.cfg"))
+		//abrimos el archivo
+		configFile = fopen("gameconfig.cfg",O_READ);
+		
+		//escribimos la configuracion
+		fread(configFile,config.videoMode);
+		fread(configFile,config.soundVolume);
+		fread(configFile,config.musicVolume);
+		
+		//cerramos el archivo
+		fclose(configFile);
+		
+		log("Archivo de configuración leído",DEBUG_ENGINE);
+	else
+		config.videoMode = 0;
+		config.soundVolume = 100;
+		config.musicVolume = 100;
+		
+		log("No hay archivo de configuracion. Se cargan valores por defecto",DEBUG_ENGINE);
+	end;
 end;
