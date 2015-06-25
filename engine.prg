@@ -275,11 +275,13 @@ begin
 							case 3:
 								if (config.soundVolume < 100)
 									config.soundVolume += 5;
+									set_channel_volume(0,config.soundVolume);
 								end;
 							end;
 							case 4:
 								if (config.musicVolume < 100)
 									config.musicVolume += 5;
+									set_song_volume(config.musicVolume);
 								end;
 							end;
 						end;
@@ -298,11 +300,13 @@ begin
 							case 3:
 								if (config.soundVolume > 0)
 									config.soundVolume -= 5;
+									set_channel_volume(0,config.soundVolume);
 								end;
 							end;
 							case 4:
 								if (config.musicVolume > 0)
 									config.musicVolume -= 5;
+									set_song_volume(config.musicVolume);
 								end;
 							end;
 						end;
