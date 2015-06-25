@@ -110,8 +110,8 @@
 
 //modos de video
 #define MODE_WINDOW				0
-#define	MODE_FULLSCREEN			1
-#define MODE_2XSCALE			2
+#define	MODE_2XSCALE			1
+#define MODE_FULLSCREEN			2
 
 //Constantes del motor
 const

@@ -62,6 +62,9 @@ begin
 		WGE_Quit();
 	end;
 	
+	//Cargamos la configuracion del juego
+	loadGameConfig();
+	
 	//Iniciamos modo grafico
 	WGE_InitScreen();
 	
@@ -73,8 +76,7 @@ begin
 	game.numLevel       = 0;
 	game.state          = INTRO;
 	
-	//Cargamos la configuracion del juego
-	loadGameConfig();
+	
 	
 	//Arrancamos el loop del juego
 	WGE_Loop();
@@ -268,6 +270,7 @@ begin
 						switch (optionNum)
 							case 1:
 								config.videoMode < 2 ? config.videoMode ++ : config.videoMode = 0;
+								WGE_InitScreen();
 							end;
 							case 3:
 								if (config.soundVolume < 100)
@@ -290,6 +293,7 @@ begin
 						switch (optionNum)
 							case 1:
 								config.videoMode > 0 ? config.videoMode -- : config.videoMode = 2;
+								WGE_InitScreen();
 							end;
 							case 3:
 								if (config.soundVolume > 0)
@@ -916,13 +920,25 @@ begin
 	restore_type  = COMPLETE_RESTORE;
 	//dump_type    = COMPLETE_DUMP;
 	
-	scale_mode=SCALE_NORMAL2X; 
 	//Scale_resolution = 16801050;
 	//scale_resolution_aspectratio = SRA_STRETCH;
 	
-	//pantalla completa si compilamos RELEASE
+	switch (config.videoMode)
+		case MODE_WINDOW:
+			full_screen = false;
+			scale_mode=SCALE_NONE;
+		end;
+		case MODE_2XSCALE:
+			scale_mode=SCALE_NORMAL2X;
+		end;
+		case MODE_FULLSCREEN:
+			scale_mode=SCALE_NORMAL2X;
+			full_screen = true;
+		end;
+	end;
+	
+	//resolucion depende del modo de compilacion
 	#ifdef RELEASE
-		full_screen = true;
 		set_mode(cResX,cResY,8,MODE_WAITVSYNC);
 	#else
 		set_mode(cResX,300,8,MODE_WAITVSYNC);
