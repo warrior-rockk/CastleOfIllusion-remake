@@ -184,8 +184,7 @@ begin
 				idDialog = WGE_DrawDialog(cResX>>1,cResY>>1,125,100);
 				optionString = ";PLAY GAME;CONFIG;EXIT;";
 				
-				//escribimos las opciones
-				WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+				redrawMenu = true;
 				
 				//encendemos pantalla
 				fade(100,100,100,cFadeTime);
@@ -195,15 +194,13 @@ begin
 				while (optionNum <> 0)
 					//bajar opcion
 					if (WGE_CheckControl(CTRL_DOWN,E_DOWN) && optionNum<3)
-						clear_screen();
 						optionNum++;
-						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+						redrawMenu = true;
 					end;
 					//subir opcion
 					if (WGE_CheckControl(CTRL_UP,E_DOWN) && optionNum>1)
-						clear_screen();
 						optionNum--;
-						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+						redrawMenu = true;
 					end;
 					//seleccionar opcion
 					if (WGE_CheckControl(CTRL_START,E_DOWN))
@@ -229,6 +226,14 @@ begin
 						delete_text(all_text);
 						optionNum = 0;
 					end;
+					
+					if (redrawMenu)
+						clear_screen();
+						//escribimos las opciones
+						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+						redrawMenu = false;
+					end;
+					
 					frame;
 				end;
 								
@@ -241,42 +246,26 @@ begin
 				idDialog = WGE_DrawDialog(cResX>>1,cResY>>1,250,150);
 				optionString = ";VIDEO MODE:;CONTROLS;SOUND VOLUME:;MUSIC VOLUME:;BACK;";
 				
-				//escribimos las opciones
-				WGE_WriteDialogOptions(idDialog,optionString,optionNum);
-				WGE_WriteDialogValues(idDialog,";WINDOW;2XSCALE;FULLSCREEN;",1,config.videoMode);
-				WGE_WriteDialogVariable(idDialog,0,100,config.soundVolume,3);
-				WGE_WriteDialogVariable(idDialog,0,100,config.musicVolume,4);
+				//lo redibujamos inicialmente
+				redrawMenu	= true;
 				
 				//gestion del menu
 				while (optionNum <> 0)
 					//bajar opcion
 					if (WGE_CheckControl(CTRL_DOWN,E_DOWN) && optionNum<5)
-						clear_screen();
 						optionNum++;
-						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
-						WGE_WriteDialogValues(idDialog,";WINDOW;2XSCALE;FULLSCREEN;",1,config.videoMode);
-						WGE_WriteDialogVariable(idDialog,0,100,config.soundVolume,3);
-						WGE_WriteDialogVariable(idDialog,0,100,config.musicVolume,4);
+						redrawMenu = true;
 					end;
 					//subir opcion
 					if (WGE_CheckControl(CTRL_UP,E_DOWN) && optionNum>1)
-						clear_screen();
 						optionNum--;
-						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
-						WGE_WriteDialogValues(idDialog,";WINDOW;2XSCALE;FULLSCREEN;",1,config.videoMode);
-						WGE_WriteDialogVariable(idDialog,0,100,config.soundVolume,3);
-						WGE_WriteDialogVariable(idDialog,0,100,config.musicVolume,4);
+						redrawMenu = true;
 					end;
 					//incrementar valor
 					if (WGE_CheckControl(CTRL_RIGHT,E_DOWN))
-						clear_screen();
 						switch (optionNum)
 							case 1:
-								if (config.videoMode < 2)
-									config.videoMode ++;
-								else
-									config.videoMode = 0;
-								end;
+								config.videoMode < 2 ? config.videoMode ++ : config.videoMode = 0;
 							end;
 							case 3:
 								if (config.soundVolume < 100)
@@ -289,23 +278,16 @@ begin
 								end;
 							end;
 						end;
-						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
-						WGE_WriteDialogValues(idDialog,";WINDOW;2XSCALE;FULLSCREEN;",1,config.videoMode);
-						WGE_WriteDialogVariable(idDialog,0,100,config.soundVolume,3);
-						WGE_WriteDialogVariable(idDialog,0,100,config.musicVolume,4);
 						
 						saveGameConfig();
+						redrawMenu = true;
+						
 					end;
 					//decrementar valor
 					if (WGE_CheckControl(CTRL_LEFT,E_DOWN))
-						clear_screen();
 						switch (optionNum)
 							case 1:
-								if (config.videoMode > 0)
-									config.videoMode --;
-								else
-									config.videoMode = 2;
-								end;
+								config.videoMode > 0 ? config.videoMode -- : config.videoMode = 2;
 							end;
 							case 3:
 								if (config.soundVolume > 0)
@@ -318,31 +300,48 @@ begin
 								end;
 							end;
 						end;
-						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
-						WGE_WriteDialogValues(idDialog,";WINDOW;2XSCALE;FULLSCREEN;",1,config.videoMode);
-						WGE_WriteDialogVariable(idDialog,0,100,config.soundVolume,3);
-						WGE_WriteDialogVariable(idDialog,0,100,config.musicVolume,4);
 						
 						saveGameConfig();
+						redrawMenu = true;
+						
 					end;
 					//seleccionar opcion
 					if (WGE_CheckControl(CTRL_START,E_DOWN))
 						switch (optionNum)
 							case 2: //Controls
 								game.state = MENU_CONTROLS;
+								//salir del menu
+								optionNum = 0;
 							end;
 							case 5: //Back
 								game.state = MENU;
+								//salir del menu
+								optionNum = 0;
 							end;
 						end;
-						//eliminamos menu y limpiamos pantalla
-						signal(TYPE WGE_DrawDialog,s_kill);
-						clear_screen();
-						delete_text(all_text);
-						optionNum = 0;
 					end;
+					
+					//redibujamos menu
+					if (redrawMenu)
+						clear_screen();
+						//escribimos las opciones
+						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+						//escribimos los valores
+						WGE_WriteDialogValues(idDialog,";WINDOW;2XSCALE;FULLSCREEN;",1,config.videoMode);
+						WGE_WriteDialogVariable(idDialog,0,100,config.soundVolume,3);
+						WGE_WriteDialogVariable(idDialog,0,100,config.musicVolume,4);
+						//reiniciamos flag
+						redrawMenu = false;
+					end;
+					
 					frame;
 				end;
+				
+				//eliminamos menu y limpiamos pantalla
+				signal(TYPE WGE_DrawDialog,s_kill);
+				clear_screen();
+				delete_text(all_text);
+				optionNum = 0;
 			end;
 			case MENU_CONTROLS:
 				//iniciamos la opcion del menu
@@ -359,13 +358,11 @@ begin
 				while (optionNum <> 0)
 					//bajar opcion
 					if (WGE_CheckControl(CTRL_DOWN,E_DOWN) && optionNum<8)
-						clear_screen();
 						optionNum++;
 						redrawMenu = true;
 					end;
 					//bajar opcion
 					if (WGE_CheckControl(CTRL_UP,E_DOWN) && optionNum>1)
-						clear_screen();
 						optionNum--;
 						redrawMenu = true;
 					end;
@@ -382,22 +379,21 @@ begin
 								until (WGE_CheckControl(CTRL_ANY,E_DOWN));
 								//asignamos esa tecla a las teclas configuradas
 								configuredKeys[optionNum-1] = lastControlEvent;
+								saveGameConfig();
 								//redibujamos el menu
 								redrawMenu = true;
 							end;
 							case 8: //Back
 								game.state = MENU_CONFIG;
+								//salir del menu
+								optionNum = 0;
 							end;
-						end;
-						//eliminamos menu y limpiamos pantalla
-						signal(TYPE WGE_DrawDialog,s_kill);
-						clear_screen();
-						delete_text(all_text);
-						optionNum = 0;
+						end;	
 					end;
 					
 					//redibujamos menu
 					if (redrawMenu)
+						clear_screen();
 						//escribimos las opciones
 						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
 						//escribimos los valores
@@ -414,6 +410,11 @@ begin
 					
 					frame;
 				end;
+				
+				//eliminamos menu y limpiamos pantalla
+				signal(TYPE WGE_DrawDialog,s_kill);
+				clear_screen();
+				delete_text(all_text);
 			end;
 			case LOADLEVEL:		
 				//Cargamos el mapeado del nivel
@@ -2573,14 +2574,21 @@ end;
 function saveGameConfig()
 private
 	int configFile;
+	int i;
 begin
 	
 	configFile = fopen("gameconfig.cfg",O_WRITE);
 	
-	//escribimos la configuracion
+	//escribimos la configuracion general
 	fwrite(configFile,config.videoMode);
 	fwrite(configFile,config.soundVolume);
 	fwrite(configFile,config.musicVolume);
+	
+	//escribimos la configuracion de teclas y joyPad
+	for (i=0;i<cControlCheckNumber;i++)
+		fwrite(configFile,configuredKeys[i]);
+		fwrite(configFile,configuredButtons[i]);
+	end;
 	
 	//cerramos el archivo
 	fclose(configFile);
@@ -2593,16 +2601,23 @@ end;
 function loadGameConfig()
 private
 	int configFile;
+	int i;
 begin
 	//si existe el archivo de configuracion
 	if (fexists("gameconfig.cfg"))
 		//abrimos el archivo
 		configFile = fopen("gameconfig.cfg",O_READ);
 		
-		//escribimos la configuracion
+		//escribimos la configuracion general
 		fread(configFile,config.videoMode);
 		fread(configFile,config.soundVolume);
 		fread(configFile,config.musicVolume);
+		
+		//escribimos la configuracion de teclas y joyPad
+		for (i=0;i<cControlCheckNumber;i++)
+			fread(configFile,configuredKeys[i]);
+			fread(configFile,configuredButtons[i]);
+		end;
 		
 		//cerramos el archivo
 		fclose(configFile);
