@@ -133,3 +133,13 @@ begin
 	
 	return musicID;
 end;
+
+//funcion que setea el volumen de todos los canales
+function WGE_SetChannelsVolume(int volume)
+begin
+	set_channel_volume(cDefaultSndChn,volume*1.28);
+	set_channel_volume(cGameSndChn,volume*1.28);
+	set_channel_volume(cPlayerSndChn,volume*1.28);
+	set_channel_volume(cObjectSndChn,volume*1.28);
+	set_channel_volume(cMonsterSndChn,volume*1.28);
+end;

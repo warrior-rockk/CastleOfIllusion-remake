@@ -10,11 +10,11 @@
 const
 	cMusicTimer		= 1;					//Timer usado para el tiempo de musica
 	//canales de sonido
+	cDefaultSndChn  = 0;
 	cGameSndChn		= 1;
 	cPlayerSndChn   = 2;
 	cObjectSndChn 	= 3;
 	cMonsterSndChn  = 4;
-	cDefaultSndChn  = 5;
 End;
 
 Global

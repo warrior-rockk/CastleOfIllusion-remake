@@ -275,13 +275,13 @@ begin
 							case 3:
 								if (config.soundVolume < 100)
 									config.soundVolume += 5;
-									set_channel_volume(0,config.soundVolume);
+									WGE_SetChannelsVolume(config.soundVolume);
 								end;
 							end;
 							case 4:
 								if (config.musicVolume < 100)
 									config.musicVolume += 5;
-									set_song_volume(config.musicVolume);
+									set_song_volume(config.musicVolume*1.28);
 								end;
 							end;
 						end;
@@ -300,13 +300,13 @@ begin
 							case 3:
 								if (config.soundVolume > 0)
 									config.soundVolume -= 5;
-									set_channel_volume(0,config.soundVolume);
+									WGE_SetChannelsVolume(config.soundVolume);
 								end;
 							end;
 							case 4:
 								if (config.musicVolume > 0)
 									config.musicVolume -= 5;
-									set_song_volume(config.musicVolume);
+									set_song_volume(config.musicVolume*1.28);
 								end;
 							end;
 						end;
@@ -2754,8 +2754,12 @@ begin
 		
 		//escribimos la configuracion general
 		fread(configFile,config.videoMode);
+		
 		fread(configFile,config.soundVolume);
+		WGE_SetChannelsVolume(config.soundVolume);
+		
 		fread(configFile,config.musicVolume);
+		set_song_volume(config.musicVolume*1.28);
 		
 		//escribimos la configuracion de teclas y joyPad
 		for (i=0;i<cControlCheckNumber;i++)
@@ -2765,6 +2769,7 @@ begin
 		
 		//cerramos el archivo
 		fclose(configFile);
+		
 		
 		log("Archivo de configuración leído",DEBUG_ENGINE);
 	else
