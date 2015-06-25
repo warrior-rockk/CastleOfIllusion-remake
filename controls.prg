@@ -28,27 +28,33 @@ private
 	int i;
 begin
 	//si el control a chequear es un control especifico
-	if (control <> CTRL_ANY)
+	if (control <> CTRL_ANY && control <>CTRL_KEY_ANY && control <>CTRL_BUTTON_ANY)
 		return (WGE_Key(configuredKeys[control],event)  	 && (!controlLoggerPlaying || control==CTRL_START)) ||
 			   (WGE_Button(configuredButtons[control],event) && (!controlLoggerPlaying || control==CTRL_START)) ||
 			   (controlLogger[control][event]				 &&  controlLoggerPlaying);
 	else //si es cualquier control
 		
 		//recorremos todas las teclas que se puede pulsar
-		for ( i = 0; i < 127; i++ )
-			if (WGE_Key(i,event))
-				anyEvent = true;
-				lastControlEvent = i;
+		if (control == CTRL_ANY || control == CTRL_KEY_ANY)
+			for ( i = 0; i < 127; i++ )
+				if (WGE_Key(i,event))
+					anyEvent = true;
+					lastKeyEvent = i;
+				end;
 			end;
 		end;
-		//recorremos todos los botones que se puede pulsar
-		for ( i = 0; i < 13; i++ )
-			if (WGE_Button(i,event))
-				anyEvent = true;
-				lastControlEvent = i;
+		
+		//recorremos todas las teclas que se puede pulsar
+		if (control == CTRL_ANY || control == CTRL_BUTTON_ANY)
+			//recorremos todos los botones que se puede pulsar
+			for ( i = 0; i < 13; i++ )
+				if (WGE_Button(i,event))
+					anyEvent = true;
+					lastButtonEvent = i;
+				end;
 			end;
 		end;
-				
+		
 		return anyEvent;
 	end;
 end;

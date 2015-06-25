@@ -350,6 +350,65 @@ begin
 				optionNum = 1;
 				
 				//componemos opciones menu
+				optionString = ";KEYBOARD;GAMEPAD;BACK;";
+				
+				//componemos un cuadro de dialogo
+				idDialog = WGE_DrawDialog(cResX>>1,cResY>>1,150,(text_height(fntGame,optionString)*2)+(dialogTextMarginY*2)+(dialogTextPadding*2));
+				
+				//lo redibujamos inicialmente
+				redrawMenu	= true;
+				
+				//gestion del menu
+				while (optionNum <> 0)
+					//bajar opcion
+					if (WGE_CheckControl(CTRL_DOWN,E_DOWN) && optionNum<3)
+						optionNum++;
+						redrawMenu = true;
+					end;
+					//subir opcion
+					if (WGE_CheckControl(CTRL_UP,E_DOWN) && optionNum>1)
+						optionNum--;
+						redrawMenu = true;
+					end;
+					//seleccionar opcion
+					if (WGE_CheckControl(CTRL_START,E_DOWN))
+						switch (optionNum)
+							case 1: //Keyboard
+								//cambiamos de paso
+								game.state = MENU_KEYS;
+								optionNum = 0;
+							end;
+							case 2: //GamePad
+								game.state = MENU_BUTTONS;
+								optionNum = 0;
+							end;
+							case 3: //Back
+								game.state = MENU_CONFIG;
+								optionNum = 0;
+							end;
+						end;
+					end;
+					
+					if (redrawMenu)
+						clear_screen();
+						//escribimos las opciones
+						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+						redrawMenu = false;
+					end;
+					
+					frame;
+				end;
+				
+				//eliminamos menu y limpiamos pantalla
+				signal(TYPE WGE_DrawDialog,s_kill);
+				clear_screen();
+				delete_text(all_text);
+			end;
+			case MENU_KEYS:
+				//iniciamos la opcion del menu
+				optionNum = 1;
+				
+				//componemos opciones menu
 				optionString = ";UP:;DOWN;LEFT:;RIGHT:;JUMP:;ATACK:;START:;BACK;";
 				
 				//componemos un cuadro de dialogo
@@ -380,10 +439,13 @@ begin
 								//esperamos a que se pulse la nueva tecla
 								repeat
 									frame;
-								until (WGE_CheckControl(CTRL_ANY,E_DOWN));
-								//asignamos esa tecla a las teclas configuradas
-								configuredKeys[optionNum-1] = lastControlEvent;
-								saveGameConfig();
+								until (WGE_CheckControl(CTRL_KEY_ANY,E_DOWN));
+								//si no hemos cancelado el cambio
+								if (lastKeyEvent <> _ESC)
+									//asignamos esa tecla a las teclas configuradas
+									configuredKeys[optionNum-1] = lastKeyEvent;
+									saveGameConfig();
+								end;
 								//redibujamos el menu
 								redrawMenu = true;
 							end;
@@ -408,6 +470,84 @@ begin
 						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_JUMP]]+";",5,0);
 						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+";",6,0);
 						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_START]]+";",7,0);
+						//reseteamos flag
+						redrawMenu = false;
+					end;
+					
+					frame;
+				end;
+				
+				//eliminamos menu y limpiamos pantalla
+				signal(TYPE WGE_DrawDialog,s_kill);
+				clear_screen();
+				delete_text(all_text);
+			end;
+			case MENU_BUTTONS:
+				//iniciamos la opcion del menu
+				optionNum = 1;
+				
+				//componemos opciones menu
+				optionString = ";UP:;DOWN;LEFT:;RIGHT:;JUMP:;ATACK:;START:;BACK;";
+				
+				//componemos un cuadro de dialogo
+				idDialog = WGE_DrawDialog(cResX>>1,cResY>>1,200,(text_height(fntGame,optionString)*7)+(dialogTextMarginY*2)+(dialogTextPadding*7));
+				
+				//lo redibujamos inicialmente
+				redrawMenu	= true;
+				
+				//gestion del menu
+				while (optionNum <> 0)
+					//bajar opcion
+					if (WGE_CheckControl(CTRL_DOWN,E_DOWN) && optionNum<8)
+						optionNum++;
+						redrawMenu = true;
+					end;
+					//bajar opcion
+					if (WGE_CheckControl(CTRL_UP,E_DOWN) && optionNum>1)
+						optionNum--;
+						redrawMenu = true;
+					end;
+					//seleccionar opcion
+					if (WGE_CheckControl(CTRL_START,E_DOWN))
+						switch (optionNum)
+							case 1..7: //redefinir controles
+								WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+								//escribimos press key en el control a cambiar
+								WGE_WriteDialogValues(idDialog,";PRESS BUTTON;",optionNum,0);
+								//esperamos a que se pulse la nueva tecla
+								repeat
+									frame;
+								until (WGE_CheckControl(CTRL_BUTTON_ANY,E_DOWN) || WGE_Key(_ESC,E_DOWN));
+								//si no hemos cancelado el cambio
+								if (lastKeyEvent <> _ESC)
+									//asignamos esa tecla a las teclas configuradas
+									configuredButtons[optionNum-1] = lastButtonEvent;
+									saveGameConfig();
+								end;
+								//redibujamos el menu
+								redrawMenu = true;
+							end;
+							case 8: //Back
+								game.state = MENU_CONFIG;
+								//salir del menu
+								optionNum = 0;
+							end;
+						end;	
+					end;
+					
+					//redibujamos menu
+					if (redrawMenu)
+						clear_screen();
+						//escribimos las opciones
+						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+						//escribimos los valores
+						WGE_WriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_UP]]+";",1,0);
+						WGE_WriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_DOWN]]+";",2,0);
+						WGE_WriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_LEFT]]+";",3,0);
+						WGE_WriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_RIGHT]]+";",4,0);
+						WGE_WriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_JUMP]]+";",5,0);
+						WGE_WriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_ACTION_ATACK]]+";",6,0);
+						WGE_WriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_START]]+";",7,0);
 						//reseteamos flag
 						redrawMenu = false;
 					end;

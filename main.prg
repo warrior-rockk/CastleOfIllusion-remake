@@ -50,7 +50,7 @@ Begin
 	//Bucle principal
 	Loop
 		//salimos el juego
-		If(key(_esc)) 
+		if(key(_esc)) 
 			WGE_Quit();
 		End;
 		

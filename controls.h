@@ -15,6 +15,8 @@
 #define	CTRL_ACTION_ATACK		5
 #define CTRL_START				6
 #define CTRL_ANY				7
+#define CTRL_KEY_ANY            8
+#define CTRL_BUTTON_ANY         9
 
 //Estados de un control
 #define E_PRESSED    0
@@ -33,8 +35,8 @@ End;
 	
 //Variables Globales
 Global
-	int lastControlEvent;							//Ultimo control pulsado
-	
+	int lastKeyEvent;									//Ultima tecla pulsado
+	int lastButtonEvent;								//Ultimo boton pulsado
 	//teclas
 	byte keyUse = 0;            						//Seleccion Flanco
     byte keyState[127][1];      						//Mapa estados en flanco anterior y actual
@@ -65,7 +67,7 @@ Global
 	//string teclas
 	string keyStrings[100] = "","ESC","1","2","3","4","5","6","7","8","9","0","MINUS","PLUS","BACKSPACE","TAB","Q","W","E","R","T","Y","U","I","O","P","L_BRACHET","R_BRACHET","ENTER","CONTROL","A","S","D","F","G","H","J","K","L","SEMICOLON","APOSTROPHE","WAVE","L_SHIFT","BACKSLASH","Z","X","C","V","B","N","M","COMMA","POINT","SLASH","R_SHIFT","PRN_SCR","ALT","SPACE","CAPS_LOCK","F1","F2","F3","F4","F5","F6","F7","F8","F9","F10","NUM_LOCK","SCROLL_LOCK","HOME","UP","PGUP","C_MINUS","LEFT","C_CENTER","RIGHT","C_PLUS","END","DOWN","PGDN","INS","DEL","","","","F11","F12","LESS","EQUALS","GREATER","ASTERISK","R_ALT","R_CONTROL","L_ALT","L_CONTROL","MENU","L_WINDOWS","R_WINDOWS";
 	//string joyPad
-	string joyStrings[13] = "BT1","BT2","BT3","BT4","BT5","BT6","BT7","BT8","BT9","J_UP","J_DOWN","J_LEFT","J_RIGHT";
+	string joyStrings[13] = "BT1","BT2","BT3","BT4","BT5","BT6","BT7","BT8","BT9","BT10","J_UP","J_DOWN","J_LEFT","J_RIGHT";
 	//string controles
 	string controlStrings[6] = "UP","DOWN","LEFT","RIGHT","JUMP","ACTION_ATACK","START";
 End;

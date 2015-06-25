@@ -31,6 +31,8 @@
 #define INTRO           11
 #define MENU_CONFIG     12
 #define MENU_CONTROLS   13
+#define MENU_KEYS       14
+#define MENU_BUTTONS    15
 
 //Codigo del tile
 //bits del 0 al 4 del mapa de tiles
