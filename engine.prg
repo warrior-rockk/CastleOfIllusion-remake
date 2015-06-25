@@ -137,7 +137,7 @@ begin
 				//si acaba la intro o pulsamos tecla, saltamos a splash
 				if (introFinished )
 					game.state = SPLASH;
-				elseif (WGE_CheckControl(CTRL_START,E_DOWN))
+				elseif (WGE_CheckControl(CTRL_ANY,E_DOWN))
 					//apagamos pantalla
 					fade(0,0,0,cFadeTime);
 					while(fading) frame; end;
@@ -862,7 +862,7 @@ begin
 				end;
 			end;
 			case TUTORIAL:
-				if (controlLoggerFinished || WGE_CheckControl(CTRL_START,E_PRESSED))
+				if (controlLoggerFinished || WGE_CheckControl(CTRL_ANY,E_PRESSED))
 					//paramos reproduccion
 					StopControlPlaying = true;
 					//apagamos pantalla

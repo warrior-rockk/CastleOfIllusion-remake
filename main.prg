@@ -32,18 +32,6 @@ include "engine.h";      //archivo de definiciones,constantes y variables global
 Process main()
 Begin
 		
-	//level.playerx0 = 50;
-	//level.playery0 = 50;
-	/*level.playerx0 = 896;
-	level.playery0 = 672;
-	level.playerx0 =1166;
-	level.playery0 =100;
-	level.playerx0 =388;
-	level.playery0 =320;*/
-	//level.playerx0 =408;
-	//level.playery0 =640;
-	
-	
 	//Iniciamos el engine
 	WGE_Init();
 	
