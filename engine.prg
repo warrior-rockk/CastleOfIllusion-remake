@@ -107,7 +107,7 @@ private
 	int idDialog;
 	int optionNum;
 	string optionString;
-	
+	byte redrawMenu;
 begin
 	priority = cMainPrior;
 	
@@ -352,15 +352,8 @@ begin
 				idDialog = WGE_DrawDialog(cResX>>1,cResY>>1,200,190);
 				optionString = ";UP:;DOWN;LEFT:;RIGHT:;JUMP:;ATACK:;START:;BACK;";
 				
-				//escribimos las opciones
-				WGE_WriteDialogOptions(idDialog,optionString,optionNum);
-				WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_UP]]+";",1,0);
-				WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_DOWN]]+";",2,0);
-				WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_LEFT]]+";",3,0);
-				WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_RIGHT]]+";",4,0);
-				WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_JUMP]]+";",5,0);
-				WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+";",6,0);
-				WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_START]]+";",7,0);
+				//lo redibujamos inicialmente
+				redrawMenu	= true;
 				
 				//gestion del menu
 				while (optionNum <> 0)
@@ -368,58 +361,29 @@ begin
 					if (WGE_CheckControl(CTRL_DOWN,E_DOWN) && optionNum<8)
 						clear_screen();
 						optionNum++;
-						//escribimos las opciones
-						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
-						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_UP]]+";",1,0);
-						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_DOWN]]+";",2,0);
-						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_LEFT]]+";",3,0);
-						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_RIGHT]]+";",4,0);
-						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_JUMP]]+";",5,0);
-						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+";",6,0);
-						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_START]]+";",7,0);
+						redrawMenu = true;
 					end;
 					//bajar opcion
 					if (WGE_CheckControl(CTRL_UP,E_DOWN) && optionNum>1)
 						clear_screen();
 						optionNum--;
-						//escribimos las opciones
-						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
-						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_UP]]+";",1,0);
-						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_DOWN]]+";",2,0);
-						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_LEFT]]+";",3,0);
-						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_RIGHT]]+";",4,0);
-						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_JUMP]]+";",5,0);
-						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+";",6,0);
-						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_START]]+";",7,0);
+						redrawMenu = true;
 					end;
 					//seleccionar opcion
 					if (WGE_CheckControl(CTRL_START,E_DOWN))
 						switch (optionNum)
-							case 1: //control UP
-								clear_screen();
+							case 1..7: //redefinir controles
 								WGE_WriteDialogOptions(idDialog,optionString,optionNum);
-								WGE_WriteDialogValues(idDialog,";PRESS KEY;",1,0);
-								WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_DOWN]]+";",2,0);
-								WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_LEFT]]+";",3,0);
-								WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_RIGHT]]+";",4,0);
-								WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_JUMP]]+";",5,0);
-								WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+";",6,0);
-								WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_START]]+";",7,0);
+								//escribimos press key en el control a cambiar
+								WGE_WriteDialogValues(idDialog,";PRESS KEY;",optionNum,0);
+								//esperamos a que se pulse la nueva tecla
 								repeat
 									frame;
 								until (WGE_CheckControl(CTRL_ANY,E_DOWN));
-								configuredKeys[0] = lastControlEvent;
-								
-								clear_screen();
-								WGE_WriteDialogOptions(idDialog,optionString,optionNum);
-								WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_UP]]+";",1,0);
-								WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_DOWN]]+";",2,0);
-								WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_LEFT]]+";",3,0);
-								WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_RIGHT]]+";",4,0);
-								WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_JUMP]]+";",5,0);
-								WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+";",6,0);
-								WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_START]]+";",7,0);
-								
+								//asignamos esa tecla a las teclas configuradas
+								configuredKeys[optionNum-1] = lastControlEvent;
+								//redibujamos el menu
+								redrawMenu = true;
 							end;
 							case 8: //Back
 								game.state = MENU_CONFIG;
@@ -430,6 +394,22 @@ begin
 						clear_screen();
 						delete_text(all_text);
 						optionNum = 0;
+					end;
+					
+					//redibujamos menu
+					if (redrawMenu)
+						//escribimos las opciones
+						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+						//escribimos los valores
+						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_UP]]+";",1,0);
+						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_DOWN]]+";",2,0);
+						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_LEFT]]+";",3,0);
+						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_RIGHT]]+";",4,0);
+						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_JUMP]]+";",5,0);
+						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+";",6,0);
+						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_START]]+";",7,0);
+						//reseteamos flag
+						redrawMenu = false;
 					end;
 					
 					frame;
