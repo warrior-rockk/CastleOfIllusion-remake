@@ -189,6 +189,13 @@ const
 	
 	//Entidades
 	cBlinkEntityTime  = 2;					//Tiempo de parpadeo general entidades
+	
+	//Cuadros dialogo
+	dialogTextMarginX		= 30;			//Margen horizontal texto
+	dialogTextMarginY		= 10;//20;			//Margen Vertical texto
+	dialogTextPadding 		= 16;//16;			//Separacion vertical lineas
+	dialogCursorMarginX 	= 10;			//Margen cursor
+	
 End;
 
 //Data Types
