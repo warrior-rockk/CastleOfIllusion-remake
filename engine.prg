@@ -179,6 +179,11 @@ begin
 				game.state = MENU;
 			end;
 			case MENU:
+				//hacemos fade musica si seguía sonando
+				if (is_playing_song())
+					fade_music_off(1000);
+				end;
+				
 				//iniciamos la opcion del menu
 				optionNum = 1;
 				
