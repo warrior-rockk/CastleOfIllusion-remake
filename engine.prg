@@ -1750,19 +1750,12 @@ begin
 					if (idPlayer.x >= (scroll[0].x0 +  cGameRegionW - (cTileSize)))
 						doTransition = ROOM_TRANSITION_RIGHT;
 					end;
-					//si no hay roomTransition
+					//si no hay roomTransition, centramos scroll mientras no haya stopScroll o no estés en los limites para aplicarlo
 					if (doTransition == 0)		
-						//ajustamos scroll X si hay Stop Right
-						if  (stopScrollXR && scroll[cGameScroll].x0 < idPlayer.x - (cGameRegionW>>1) )
-							if (scroll[cGameScroll].x0%cTileSize <> 0)
-								scroll[cGameScroll].x0 -= cTileSize - (scroll[cGameScroll].x0%cTileSize);
-							end;
-						//ajustamos scroll X si hay Stop Left
-						elseif (stopScrollXL && scroll[cGameScroll].x0 > idPlayer.x - (cGameRegionW>>1) )
-							if (scroll[cGameScroll].x0%cTileSize <> 0)
-								scroll[cGameScroll].x0 += cTileSize - (scroll[cGameScroll].x0%cTileSize);
-							end;
-						else
+						if  (
+						    (!stopScrollXR || scroll[cGameScroll].x0 >= idPlayer.x - (cGameRegionW>>1)) &&
+							(!stopScrollXL || scroll[cGameScroll].x0 <= idPlayer.x - (cGameRegionW>>1))
+							)
 							//Posicion X para personaje en centro pantalla
 							scroll[cGameScroll].x0 = idPlayer.x - (cGameRegionW>>1);
 						end;

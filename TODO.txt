@@ -1,5 +1,4 @@
-BUGS:   -fallo de enfoque al llegar a los limites de scroll horizontal. Reajusta en varios frames
-		-tiles que se quedan en negro al reiniciar nivel!! (activadas funciones para debuggearlo)
+BUGS:   -tiles que se quedan en negro al reiniciar nivel!! (activadas funciones para debuggearlo)
 		-no puedo cruzar por plataforma?
 		-jarra se enganchó en la pared izquierda (al lanzarla o al caerse por tocar pompa?)
 		-que la doorbutton abra nada mas pulsar el boton
