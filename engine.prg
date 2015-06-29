@@ -875,7 +875,7 @@ begin
 				end;
 			end;
 			case TUTORIAL:
-				if (controlLoggerFinished || WGE_CheckControl(CTRL_ANY,E_PRESSED))
+				if (controlLoggerFinished || WGE_CheckControl(CTRL_ANY,E_DOWN))
 					//paramos reproduccion
 					StopControlPlaying = true;
 					//apagamos pantalla
