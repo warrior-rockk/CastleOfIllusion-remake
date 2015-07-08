@@ -37,7 +37,6 @@ ENGINE: -ningun proceso deberia poder acumular vY ni vX superiores a ciertos val
 		-Sustituir el escribir la posicion en el tile en debug con mostrar flotante la posicion o algo		
 		-efectos de paleta: relampagos,agua,etc..
 		-Tareas de inicializacion del engine:el mapa que esta en la posicion de mapStairs, se borra¿¿¿ ¿es por culpa de tener id 0 el 	sistema y el primer fpg?
-        -paleta del juego?
 
 DEBUG:escribir el log a archivo??. Se puede hacer en una bat que diriga la salida del ejectuable a archivo >
          -moverse por el mapeado con boton central raton y poder depositar al player

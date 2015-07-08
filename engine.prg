@@ -47,13 +47,15 @@ begin
 	levelFiles[2].MusicFile = "mus\ToyLand.ogg";
 	levelFiles[2].MusicIntroEnd = 1.87;
 	
+	//cargamos la paleta general del juego
+	load_pal("pal\game.pal");
 	
 	//archivo graficos generales
-	fpgGame 	= fpg_load("gfx\game.fpg");	 
+	fpgGame 	= fpg_load("gfx\game.fpg");
 	
 	//archivo del player
 	fpgPlayer 	= fpg_load("gfx\player.fpg");
-	
+		 
 	//fuente del juego
 	fntGame     = fnt_load("fnt\gameFont.fnt");
 	
