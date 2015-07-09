@@ -170,7 +170,7 @@ begin
 						counterTime=0;					
 					end;
 					frame;
-				until(WGE_CheckControl(CTRL_START,E_DOWN) || attractActive);
+				until(WGE_CheckControl(CTRL_ANY,E_DOWN) || attractActive);
 				
 				//apagamos pantalla
 				fade(0,0,0,cFadeTime);
@@ -178,7 +178,11 @@ begin
 				//matamos el splash
 				signal(TYPE gameSplash,s_kill_tree);
 				//cambiamos de estado
-				game.state = MENU;
+				if (attractActive)
+					game.state = LOADLEVEL;
+				else
+					game.state = MENU;
+				end;
 			end;
 			case MENU:
 				//hacemos fade musica si seguía sonando
