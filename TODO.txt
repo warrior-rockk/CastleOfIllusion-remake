@@ -21,7 +21,9 @@ PLATFORMS:
 OBJECTS: 
 		-el coin rebota mas rato y el giro va perdiendo velocidad
 		
-ENGINE: -ningun proceso deberia poder acumular vY ni vX superiores a ciertos valores.
+ENGINE: -textos con dos idiomas
+		-el generador de dialogos no funciona bien con las esquinas con distintos tamaños
+        -ningun proceso deberia poder acumular vY ni vX superiores a ciertos valores.
 		-crear variables de velocidad por defecto para poder asignar velocidades a las cosas proporcionales y desde un mismo lugar
 		-separar correctamente lo que pertenece al engine general y lo que seria game concreto de castle. Luego podria convertirse en una libreria .dcl
 		-que le pases como argumento los logs de debug (los niveles o el debug completo)

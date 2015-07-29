@@ -147,6 +147,8 @@ begin
 					while(fading) frame; end;
 					//matamos el intro
 					signal(TYPE gameIntro,s_kill_tree);
+					//limpiamos pantalla
+					screen_clear();
 					//saltamos a splash
 					game.state = SPLASH;
 				end;
@@ -668,6 +670,8 @@ begin
 				//pausa del juego
 				if (WGE_CheckControl(CTRL_START,E_DOWN) || (!window_status && !game.paused))
 					if (game.paused)
+						signal(idDialog,s_kill);
+						HUD();
 						gameSignal(s_wakeup_tree);
 						delete_text(pauseText);
 						game.paused = false;
@@ -676,7 +680,10 @@ begin
 						WGE_PlayEntitySnd(id,gameSound[PAUSE_SND]);
 					else
 						gameSignal(s_freeze_tree);
-						pauseText = write(fntGame,cResx>>1,cResy>>1,ALIGN_CENTER,"-PAUSED-");
+						signal(TYPE HUD,s_kill);
+						frame;
+						idDialog = WGE_DrawDialog(cResX>>1,cResY-15,cResX - 26,24);
+						pauseText = write(fntGame,cResX>>1,cResY-15,ALIGN_CENTER,"PAUSE");
 						game.paused = true;
 						pause_song();
 						//reproducimos sonido
@@ -2438,6 +2445,76 @@ private
 	entity introAnimations[10];		//Array de animaciones	
 	
 begin
+	//apagamos pantalla
+	fade(0,0,0,cFadeTime);
+	while(fading) frame; end;
+	screen_clear();
+	delete_text(all_text);
+	
+	//reproducimos musica intro
+	play_song(gameMusic[INTRO_MUS],0);
+		
+	//mostramos pantallas de introduccion
+	
+	WGE_Write(fntGame,cResX>>1,cResY>>1,ALIGN_CENTER,"ONCE UPON A MOUSE...");
+	
+	//encedemos pantalla
+	fade(100,100,100,cFadeTime);
+	while(fading) frame; end;
+	WGE_Wait(100);
+	//apagamos pantalla
+	fade(0,0,0,cFadeTime);
+	while(fading) frame; end;
+	screen_clear();
+	delete_text(all_text);
+	
+	put(fpgGame,16,cResX>>1,cResY>>1);
+	
+	//encedemos pantalla
+	fade(100,100,100,cFadeTime);
+	while(fading) frame; end;
+	WGE_Wait(100);
+	//apagamos pantalla
+	fade(0,0,0,cFadeTime);
+	while(fading) frame; end;
+	screen_clear();
+	delete_text(all_text);
+	
+	WGE_Write(fntGame,10,50,ALIGN_CENTER_LEFT,"     WELCOME TO VERA CITY,\nWHERE LIFE IS JOYFUL, AND\nEVERYONE LIVES IN PEACE.\nALL BUT ONE, THAT IS. ONE\nWHO IS JEALOUS OF MINNIE'S\nBEAUTY AND POPULARITY-THE\nWITCH MIZRABEL...");
+
+	//encedemos pantalla
+	fade(100,100,100,cFadeTime);
+	while(fading) frame; end;
+	WGE_Wait(100);
+	//apagamos pantalla
+	fade(0,0,0,cFadeTime);
+	while(fading) frame; end;
+	screen_clear();
+	delete_text(all_text);
+
+	put(fpgGame,17,cResX>>1,cResY>>1);
+		
+	//encedemos pantalla
+	fade(100,100,100,cFadeTime);
+	while(fading) frame; end;
+	WGE_Wait(100);
+	//apagamos pantalla
+	fade(0,0,0,cFadeTime);
+	while(fading) frame; end;
+	screen_clear();
+	delete_text(all_text);
+	
+	WGE_Write(fntGame,10,50,ALIGN_CENTER_LEFT,"  ...WHO ONE DAY CAME ON\nHER BROOM AND SWEPT MINNIE\nAWAY. MICKEY WAS TAKEN BY\nSURPRISE. HE DID THE ONLY\nTHING HE COULD.\nHE CHASED AFTER THE WITCH\nMIZRABEL ALL THE WAY TO\nTHE...");
+	
+	//encedemos pantalla
+	fade(100,100,100,cFadeTime);
+	while(fading) frame; end;
+	WGE_Wait(100);
+	//apagamos pantalla
+	fade(0,0,0,cFadeTime);
+	while(fading) frame; end;
+	screen_clear();
+	delete_text(all_text);
 	
 	//definimos regiones para el scroll de la intro
 	define_region(3,0,0,cGameRegionW,40);
@@ -2461,9 +2538,9 @@ begin
 	introAnimations[0] = WGE_GameAnimation(fpgGame,9,9,172,120,10,ANIM_LOOP);
 	introAnimations[1] = WGE_GameAnimation(fpgGame,10,10,122,54,10,ANIM_LOOP);
 	
-	//reproducimos musica intro
-	play_song(gameMusic[INTRO_MUS],0);
-	set_music_position(32);
+	//encedemos pantalla
+	fade(100,100,100,cFadeTime);
+	while(fading) frame; end;
 	
 	//hacemos el barrido de perspectiva hasta tiempo definido
 	repeat
@@ -2504,6 +2581,13 @@ begin
 	gameAnimations[1] = WGE_GameAnimation(fpgGame,10,10,178,54,10,ANIM_LOOP);
 	gameAnimations[2] = WGE_GameAnimation(fpgGame,11,11,cResX>>1,192>>1,10,ANIM_LOOP);
 	gameAnimations[2].z--;
+	
+	//definimos regiones para el scroll del splash
+	define_region(3,0,0,cGameRegionW,40);
+	define_region(4,0,40,cGameRegionW,16);
+	define_region(5,0,56,cGameRegionW,8);
+	define_region(6,0,64,cGameRegionW,72);
+	define_region(7,0,136,cGameRegionW,56);
 	
 	//arrancamos los scrolls
 	start_scroll(1,fpgGame,4,0,3,3);
@@ -2786,4 +2870,26 @@ begin
 		
 		log("No hay archivo de configuracion. Se cargan valores por defecto",DEBUG_ENGINE);
 	end;
+end;
+
+//Funcion propia para escribir textos que admite caracteres de retorno de carro para multilinea
+function WGE_Write(int fntFile,int x,int y,int align,string text)
+private
+	int breakPosition;
+	int startChar = 0;
+	int posY;
+begin
+	//Posicion inicial
+	posY = y;
+	
+	//buscamos retornos de carro en la cadena de texto
+	while ( (breakPosition = find(text,"\n",startChar)) >= 0 )
+		write(fntFile,x,posY,align,substr(text,startChar,breakPosition-startChar));
+		startChar = breakPosition + 2;
+		posy += dialogTextPadding;
+	end;
+	
+	//escribimos la ultima linea
+	write(fntFile,x,posY,align,substr(text,startChar,len(text)));
+	
 end;
