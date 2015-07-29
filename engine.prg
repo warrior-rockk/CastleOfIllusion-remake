@@ -2455,21 +2455,20 @@ begin
 	play_song(gameMusic[INTRO_MUS],0);
 		
 	//mostramos pantallas y texto de introduccion
-	
 	WGE_Write(fntGame,cResX>>1,cResY>>1,ALIGN_CENTER,"ONCE UPON A MOUSE...");
-	introMusicTransition(100);
+	introMusicTransition(2.0);
 		
 	put(fpgGame,16,cResX>>1,cResY>>1);
-	introMusicTransition(100);
+	introMusicTransition(4.0);
 	
 	WGE_Write(fntGame,10,50,ALIGN_CENTER_LEFT,"     WELCOME TO VERA CITY,\nWHERE LIFE IS JOYFUL, AND\nEVERYONE LIVES IN PEACE.\nALL BUT ONE, THAT IS. ONE\nWHO IS JEALOUS OF MINNIE'S\nBEAUTY AND POPULARITY-THE\nWITCH MIZRABEL...");
-	introMusicTransition(100);
+	introMusicTransition(6.0);
 	
 	put(fpgGame,17,cResX>>1,cResY>>1);
-	introMusicTransition(100);
+	introMusicTransition(8.0);
 	
 	WGE_Write(fntGame,10,50,ALIGN_CENTER_LEFT,"  ...WHO ONE DAY CAME ON\nHER BROOM AND SWEPT MINNIE\nAWAY. MICKEY WAS TAKEN BY\nSURPRISE. HE DID THE ONLY\nTHING HE COULD.\nHE CHASED AFTER THE WITCH\nMIZRABEL ALL THE WAY TO\nTHE...");
-	introMusicTransition(100);	
+	introMusicTransition(10.0);	
 		
 	//definimos regiones para el scroll de la intro
 	define_region(3,0,0,cGameRegionW,40);
@@ -2850,12 +2849,15 @@ begin
 end;
 
 //funcion que realiza una transicion fade off/on a una posicion de cancion dada
-function introMusicTransition(int musicPos)
+function introMusicTransition(float musicPos)
 begin
 	//encedemos pantalla
 	fade(100,100,100,cFadeTime);
 	while(fading) frame; end;
-	WGE_Wait(musicPos);
+	//WGE_Wait(musicPos);
+	while (timer[cMusicTimer] < (musicPos*100))
+		frame;
+	end;
 	//apagamos pantalla
 	fade(0,0,0,cFadeTime);
 	while(fading) frame; end;
