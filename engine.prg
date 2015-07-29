@@ -2445,7 +2445,7 @@ private
 	entity introAnimations[10];		//Array de animaciones	
 	
 begin
-	//apagamos pantalla
+	//apagamos y limpiamos la pantalla
 	fade(0,0,0,cFadeTime);
 	while(fading) frame; end;
 	screen_clear();
@@ -2454,68 +2454,23 @@ begin
 	//reproducimos musica intro
 	play_song(gameMusic[INTRO_MUS],0);
 		
-	//mostramos pantallas de introduccion
+	//mostramos pantallas y texto de introduccion
 	
 	WGE_Write(fntGame,cResX>>1,cResY>>1,ALIGN_CENTER,"ONCE UPON A MOUSE...");
-	
-	//encedemos pantalla
-	fade(100,100,100,cFadeTime);
-	while(fading) frame; end;
-	WGE_Wait(100);
-	//apagamos pantalla
-	fade(0,0,0,cFadeTime);
-	while(fading) frame; end;
-	screen_clear();
-	delete_text(all_text);
-	
+	introMusicTransition(100);
+		
 	put(fpgGame,16,cResX>>1,cResY>>1);
-	
-	//encedemos pantalla
-	fade(100,100,100,cFadeTime);
-	while(fading) frame; end;
-	WGE_Wait(100);
-	//apagamos pantalla
-	fade(0,0,0,cFadeTime);
-	while(fading) frame; end;
-	screen_clear();
-	delete_text(all_text);
+	introMusicTransition(100);
 	
 	WGE_Write(fntGame,10,50,ALIGN_CENTER_LEFT,"     WELCOME TO VERA CITY,\nWHERE LIFE IS JOYFUL, AND\nEVERYONE LIVES IN PEACE.\nALL BUT ONE, THAT IS. ONE\nWHO IS JEALOUS OF MINNIE'S\nBEAUTY AND POPULARITY-THE\nWITCH MIZRABEL...");
-
-	//encedemos pantalla
-	fade(100,100,100,cFadeTime);
-	while(fading) frame; end;
-	WGE_Wait(100);
-	//apagamos pantalla
-	fade(0,0,0,cFadeTime);
-	while(fading) frame; end;
-	screen_clear();
-	delete_text(all_text);
-
+	introMusicTransition(100);
+	
 	put(fpgGame,17,cResX>>1,cResY>>1);
-		
-	//encedemos pantalla
-	fade(100,100,100,cFadeTime);
-	while(fading) frame; end;
-	WGE_Wait(100);
-	//apagamos pantalla
-	fade(0,0,0,cFadeTime);
-	while(fading) frame; end;
-	screen_clear();
-	delete_text(all_text);
+	introMusicTransition(100);
 	
 	WGE_Write(fntGame,10,50,ALIGN_CENTER_LEFT,"  ...WHO ONE DAY CAME ON\nHER BROOM AND SWEPT MINNIE\nAWAY. MICKEY WAS TAKEN BY\nSURPRISE. HE DID THE ONLY\nTHING HE COULD.\nHE CHASED AFTER THE WITCH\nMIZRABEL ALL THE WAY TO\nTHE...");
-	
-	//encedemos pantalla
-	fade(100,100,100,cFadeTime);
-	while(fading) frame; end;
-	WGE_Wait(100);
-	//apagamos pantalla
-	fade(0,0,0,cFadeTime);
-	while(fading) frame; end;
-	screen_clear();
-	delete_text(all_text);
-	
+	introMusicTransition(100);	
+		
 	//definimos regiones para el scroll de la intro
 	define_region(3,0,0,cGameRegionW,40);
 	define_region(4,0,40,cGameRegionW,16);
@@ -2892,4 +2847,18 @@ begin
 	//escribimos la ultima linea
 	write(fntFile,x,posY,align,substr(text,startChar,len(text)));
 	
+end;
+
+//funcion que realiza una transicion fade off/on a una posicion de cancion dada
+function introMusicTransition(int musicPos)
+begin
+	//encedemos pantalla
+	fade(100,100,100,cFadeTime);
+	while(fading) frame; end;
+	WGE_Wait(musicPos);
+	//apagamos pantalla
+	fade(0,0,0,cFadeTime);
+	while(fading) frame; end;
+	screen_clear();
+	delete_text(all_text);
 end;
