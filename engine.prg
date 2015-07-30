@@ -263,9 +263,9 @@ begin
 				optionNum = 1;
 				
 				//componemos opciones menu
-				optionString = ";VIDEO MODE:;CONTROLS;SOUND VOLUME:;MUSIC VOLUME:;BACK;";
+				optionString = ";VIDEO MODE:;LANGUAGE:;CONTROLS;SOUND VOLUME:;MUSIC VOLUME:;BACK;";
 				//componemos un cuadro de dialogo
-				idDialog = WGE_DrawDialog(cResX>>1,cResY>>1,250,(text_height(fntGame,optionString)*4)+(dialogTextMarginY*2)+(dialogTextPadding*4));
+				idDialog = WGE_DrawDialog(cResX>>1,cResY>>1,250,(text_height(fntGame,optionString)*5)+(dialogTextMarginY*2)+(dialogTextPadding*5));
 				
 				//lo redibujamos inicialmente
 				redrawMenu	= true;
@@ -273,7 +273,7 @@ begin
 				//gestion del menu
 				while (optionNum <> 0)
 					//bajar opcion
-					if (WGE_CheckControl(CTRL_DOWN,E_DOWN) && optionNum<5)
+					if (WGE_CheckControl(CTRL_DOWN,E_DOWN) && optionNum<6)
 						optionNum++;
 						redrawMenu = true;
 					end;
@@ -289,13 +289,16 @@ begin
 								config.videoMode < 2 ? config.videoMode ++ : config.videoMode = 0;
 								WGE_InitScreen();
 							end;
-							case 3:
+							case 2:
+								config.lang == ENG_LANG ? config.lang = ESP_LANG : config.lang = ENG_LANG;
+							end;
+							case 4:
 								if (config.soundVolume < 100)
 									config.soundVolume += 5;
 									WGE_SetChannelsVolume(config.soundVolume);
 								end;
 							end;
-							case 4:
+							case 5:
 								if (config.musicVolume < 100)
 									config.musicVolume += 5;
 									set_song_volume(config.musicVolume*1.28);
@@ -314,13 +317,16 @@ begin
 								config.videoMode > 0 ? config.videoMode -- : config.videoMode = 2;
 								WGE_InitScreen();
 							end;
-							case 3:
+							case 2:
+								config.lang == ENG_LANG ? config.lang = ESP_LANG : config.lang = ENG_LANG;
+							end;
+							case 4:
 								if (config.soundVolume > 0)
 									config.soundVolume -= 5;
 									WGE_SetChannelsVolume(config.soundVolume);
 								end;
 							end;
-							case 4:
+							case 5:
 								if (config.musicVolume > 0)
 									config.musicVolume -= 5;
 									set_song_volume(config.musicVolume*1.28);
@@ -335,12 +341,12 @@ begin
 					//seleccionar opcion
 					if (WGE_CheckControl(CTRL_START,E_DOWN))
 						switch (optionNum)
-							case 2: //Controls
+							case 3: //Controls
 								game.state = MENU_CONTROLS;
 								//salir del menu
 								optionNum = 0;
 							end;
-							case 5: //Back
+							case 6: //Back
 								game.state = MENU;
 								//salir del menu
 								optionNum = 0;
@@ -355,8 +361,9 @@ begin
 						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
 						//escribimos los valores
 						WGE_WriteDialogValues(idDialog,";WINDOW;2XSCALE;FULLSCREEN;",1,config.videoMode);
-						WGE_WriteDialogVariable(idDialog,0,100,config.soundVolume,3);
-						WGE_WriteDialogVariable(idDialog,0,100,config.musicVolume,4);
+						WGE_WriteDialogValues(idDialog,";ENGLISH;ESPANOL;",2,config.lang);
+						WGE_WriteDialogVariable(idDialog,0,100,config.soundVolume,4);
+						WGE_WriteDialogVariable(idDialog,0,100,config.musicVolume,5);
 						//reiniciamos flag
 						redrawMenu = false;
 					end;
@@ -2774,6 +2781,7 @@ begin
 	
 	//escribimos la configuracion general
 	fwrite(configFile,config.videoMode);
+	fwrite(configFile,config.lang);
 	fwrite(configFile,config.soundVolume);
 	fwrite(configFile,config.musicVolume);
 	
@@ -2801,9 +2809,9 @@ begin
 		//abrimos el archivo
 		configFile = fopen("gameconfig.cfg",O_READ);
 		
-		//escribimos la configuracion general
+		//leemos la configuracion general
 		fread(configFile,config.videoMode);
-		
+		fread(configFile,config.lang);
 		fread(configFile,config.soundVolume);
 		WGE_SetChannelsVolume(config.soundVolume);
 		
@@ -2921,7 +2929,5 @@ begin
 	else
 		log("Falta el archivo de idioma ESP",DEBUG_ENGINE);	
 	end;
-	
-	config.lang = ESP_LANG;
 	
 end;
