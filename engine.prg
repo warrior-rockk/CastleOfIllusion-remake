@@ -200,7 +200,7 @@ begin
 				optionNum = 1;
 				
 				//componemos lista menu
-				optionString = ";PLAY GAME;CONFIG;EXIT;";
+				optionString = gameTexts[config.lang][MENU_TEXT];
 				//componemos un cuadro de dialogo
 				idDialog = WGE_DrawDialog(cResX>>1,cResY>>1,125,(text_height(fntGame,optionString)*2)+(dialogTextMarginY*2)+(dialogTextPadding*2));
 								
@@ -263,7 +263,7 @@ begin
 				optionNum = 1;
 				
 				//componemos opciones menu
-				optionString = ";VIDEO MODE:;LANGUAGE:;CONTROLS;SOUND VOLUME:;MUSIC VOLUME:;BACK;";
+				optionString = gameTexts[config.lang][CONFIG_TEXT];
 				//componemos un cuadro de dialogo
 				idDialog = WGE_DrawDialog(cResX>>1,cResY>>1,250,(text_height(fntGame,optionString)*5)+(dialogTextMarginY*2)+(dialogTextPadding*5));
 				
@@ -291,6 +291,7 @@ begin
 							end;
 							case 2:
 								config.lang == ENG_LANG ? config.lang = ESP_LANG : config.lang = ENG_LANG;
+								optionString = gameTexts[config.lang][CONFIG_TEXT];
 							end;
 							case 4:
 								if (config.soundVolume < 100)
@@ -319,6 +320,7 @@ begin
 							end;
 							case 2:
 								config.lang == ENG_LANG ? config.lang = ESP_LANG : config.lang = ENG_LANG;
+								optionString = gameTexts[config.lang][CONFIG_TEXT];
 							end;
 							case 4:
 								if (config.soundVolume > 0)
@@ -360,8 +362,8 @@ begin
 						//escribimos las opciones
 						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
 						//escribimos los valores
-						WGE_WriteDialogValues(idDialog,";WINDOW;2XSCALE;FULLSCREEN;",1,config.videoMode);
-						WGE_WriteDialogValues(idDialog,";ENGLISH;ESPANOL;",2,config.lang);
+						WGE_WriteDialogValues(idDialog,gameTexts[config.lang][CONFIG_VAL1_TEXT],1,config.videoMode);
+						WGE_WriteDialogValues(idDialog,gameTexts[config.lang][CONFIG_VAL2_TEXT],2,config.lang);
 						WGE_WriteDialogVariable(idDialog,0,100,config.soundVolume,4);
 						WGE_WriteDialogVariable(idDialog,0,100,config.musicVolume,5);
 						//reiniciamos flag
@@ -382,7 +384,7 @@ begin
 				optionNum = 1;
 				
 				//componemos opciones menu
-				optionString = ";KEYBOARD;GAMEPAD;BACK;";
+				optionString = gameTexts[config.lang][CONFIG_CONTROLS_TEXT];
 				
 				//componemos un cuadro de dialogo
 				idDialog = WGE_DrawDialog(cResX>>1,cResY>>1,150,(text_height(fntGame,optionString)*2)+(dialogTextMarginY*2)+(dialogTextPadding*2));
@@ -441,7 +443,7 @@ begin
 				optionNum = 1;
 				
 				//componemos opciones menu
-				optionString = ";UP:;DOWN;LEFT:;RIGHT:;JUMP:;ATACK:;START:;BACK;";
+				optionString = gameTexts[config.lang][CONFIG_CONTROLS_LIST_TEXT];
 				
 				//componemos un cuadro de dialogo
 				idDialog = WGE_DrawDialog(cResX>>1,cResY>>1,200,(text_height(fntGame,optionString)*7)+(dialogTextMarginY*2)+(dialogTextPadding*7));
@@ -467,7 +469,7 @@ begin
 							case 1..7: //redefinir controles
 								WGE_WriteDialogOptions(idDialog,optionString,optionNum);
 								//escribimos press key en el control a cambiar
-								WGE_WriteDialogValues(idDialog,";PRESS KEY;",optionNum,0);
+								WGE_WriteDialogValues(idDialog,gameTexts[config.lang][PRESS_KEY_TEXT],optionNum,0);
 								//esperamos a que se pulse la nueva tecla
 								repeat
 									frame;
@@ -519,7 +521,7 @@ begin
 				optionNum = 1;
 				
 				//componemos opciones menu
-				optionString = ";UP:;DOWN;LEFT:;RIGHT:;JUMP:;ATACK:;START:;BACK;";
+				optionString = optionString = gameTexts[config.lang][CONFIG_CONTROLS_LIST_TEXT];;
 				
 				//componemos un cuadro de dialogo
 				idDialog = WGE_DrawDialog(cResX>>1,cResY>>1,200,(text_height(fntGame,optionString)*7)+(dialogTextMarginY*2)+(dialogTextPadding*7));
@@ -545,7 +547,7 @@ begin
 							case 1..7: //redefinir controles
 								WGE_WriteDialogOptions(idDialog,optionString,optionNum);
 								//escribimos press key en el control a cambiar
-								WGE_WriteDialogValues(idDialog,";PRESS BUTTON;",optionNum,0);
+								WGE_WriteDialogValues(idDialog,gameTexts[config.lang][PRESS_BUTTON_TEXT],optionNum,0);
 								//esperamos a que se pulse la nueva tecla
 								repeat
 									frame;
@@ -694,7 +696,7 @@ begin
 						signal(TYPE HUD,s_kill);
 						frame;
 						idDialog = WGE_DrawDialog(cResX>>1,cResY-15,cResX - 26,24);
-						pauseText = write(fntGame,cResX>>1,cResY-15,ALIGN_CENTER,"PAUSE");
+						pauseText = write(fntGame,cResX>>1,cResY-15,ALIGN_CENTER,gameTexts[config.lang][PAUSE_TEXT]);
 						game.paused = true;
 						pause_song();
 						//reproducimos sonido
@@ -855,7 +857,7 @@ begin
 				fade(100,100,100,cFadeTime);
 				while(fading) frame; end;
 				//mensaje hasta pulsar tecla
-				write(fntGame,cResx>>1,cGameRegionH>>1,ALIGN_CENTER,"GAME OVER");
+				write(fntGame,cResx>>1,cGameRegionH>>1,ALIGN_CENTER,gameTexts[config.lang][GAMEOVER_TEXT]);
 				repeat
 					frame;
 				until(WGE_CheckControl(CTRL_START,E_DOWN));
@@ -894,7 +896,7 @@ begin
 				else
 					//Mensaje attractMode
 					if (tickClock(cNumFPS))
-						textMsg =="" ? textMsg = "PRESS START BUTTON" : textMsg = "";
+						textMsg =="" ? textMsg = gameTexts[config.lang][PRESS_START_TEXT] : textMsg = "";
 					end;	
 				end;
 			end;
@@ -917,19 +919,19 @@ begin
 					//mensajes tutorial
 					switch(controlPlayingFrame)
 						case 1:
-							textMsg = "MOVE WITH -" + keyStrings[configuredKeys[CTRL_LEFT]]+","+keyStrings[configuredKeys[CTRL_RIGHT]]+"-";
+							textMsg = gameTexts[config.lang][TUTORIAL1_TEXT] + keyStrings[configuredKeys[CTRL_LEFT]]+","+keyStrings[configuredKeys[CTRL_RIGHT]]+"-";
 						end;
 						case 280:
-							textMsg = "JUMP WITH -"+keyStrings[configuredKeys[CTRL_JUMP]]+"-";
+							textMsg = gameTexts[config.lang][TUTORIAL2_TEXT]+keyStrings[configuredKeys[CTRL_JUMP]]+"-";
 						end;
 						case 601:
-							textMsg = "-"+keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+"- WHEN JUMP TO ATACK";
+							textMsg = "-"+keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+gameTexts[config.lang][TUTORIAL3_TEXT];
 						end;
 						case 1000:
-							textMsg = "PICK OBJECT WITH -"+keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+"-";
+							textMsg = gameTexts[config.lang][TUTORIAL4_TEXT]+keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+"-";
 						end;
 						case 1200:
-							textMsg = "-"+keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+"- TO THROW OBJECT";
+							textMsg = "-"+keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+gameTexts[config.lang][TUTORIAL5_TEXT];
 						end;
 						case 1500:
 							textMsg = "";
@@ -2581,7 +2583,7 @@ begin
 		
 		//mensaje
 		if (splashTime % 30 == 0)
-			textMsg =="" ? textMsg = "PRESS START BUTTON" : textMsg = "";
+			textMsg =="" ? textMsg = gameTexts[config.lang][PRESS_START_TEXT] : textMsg = "";
 		end;
 		
 		splashTime++;
@@ -2607,9 +2609,10 @@ public
 	int width;
 	int height;
 private
-	int dialogTileSize = 3;	//tamaño de los tiles del dialogo
-	
-	int i;					//Var aux
+	int dialogTileSize 	= 3; 
+	int dialogColor 	= 12;
+	int dialogBackColor = 8;
+	int i;						//Var aux
 begin
 
 file = fpgGame;
@@ -2618,42 +2621,92 @@ width = _width;
 height = _height;
 
 //tamaño minimo dialogo
-if (width < ((dialogTileSize * 3)+1))
-	width = (dialogTileSize * 3)+1;
+if (width < (dialogTileSize * 2)+1)
+	width = (dialogTileSize * 2)+1;
 end;
-if (height < (dialogTileSize * 3)+1)
-	height = (dialogTileSize * 3)+1;
+if (height < (dialogTileSize * 2)+1)
+	height = (dialogTileSize * 2)+1;
 end;
 
 //creamos grafico vacio
 graph = map_new(width,height,8);
+map_clear(file,graph,dialogBackColor);
 
 //dibujamos las esquinas
-map_put(fpgGame,graph,13,1,1);
-map_xput(fpgGame,graph,13,width-(dialogTileSize+1>>1),1,0,100,B_HMIRROR);
-map_xput(fpgGame,graph,13,1,height-(dialogTileSize+1>>1),0,100,B_VMIRROR);
-map_xput(fpgGame,graph,13,width-(dialogTileSize+1>>1),height-(dialogTileSize+1>>1),0,100,B_HMIRROR | B_VMIRROR);
+drawCorner(file,graph,0,0,dialogColor,0);
+drawCorner(file,graph,width-dialogTileSize,0,dialogColor,B_HMIRROR);
+drawCorner(file,graph,0,height-dialogTileSize,dialogColor,B_VMIRROR);
+drawCorner(file,graph,width-dialogTileSize,height-dialogTileSize,dialogColor,B_HMIRROR | B_VMIRROR);
 
 //dibujamos lineas horizontales
-for (i=dialogTileSize+1;i<=width-dialogTileSize-1;i+=dialogTileSize)
-	//linea superior
-	map_put(fpgGame,graph,14,i,1);
-	//linea inferior
-	map_xput(fpgGame,graph,14,i,height-(dialogTileSize+1>>1),0,100,B_VMIRROR);
-end;
+drawing_map(file,graph);
+drawing_color(dialogColor);
 
-//dibujamos lineas verticales
-for (i=dialogTileSize+1;i<height-(dialogTileSize-1>>1);i+=dialogTileSize)
-	//lateral izquierda
-	map_put(fpgGame,graph,15,1,i);
-	//lateral derecha
-	map_xput(fpgGame,graph,15,width-(dialogTileSize+1>>1),i,0,100,B_HMIRROR);
-end;
+//linea superior
+draw_line(dialogTileSize,0,width-1-dialogTileSize,0);
+//linea inferior
+draw_line(dialogTileSize,height-1,width-dialogTileSize,height-1);
+//lateral izquierda
+draw_line(0,dialogTileSize,0,height-1-dialogTileSize);
+//lateral derecha
+draw_line(width-1,dialogTileSize,width-1,height-1-dialogTileSize);
 
 loop
 	frame;
 end;
 
+end;
+
+//funcion que dibuja una esquina para un cuadro de dialogo
+function drawCorner(file,graph,x,y,_color,flags)
+begin
+	if (flags == (B_HMIRROR | B_VMIRROR))
+		map_put_pixel(file,graph,x+2,y,_color);
+		map_put_pixel(file,graph,x+1,y+1,_color);
+		map_put_pixel(file,graph,x+2,y+1,_color);
+		map_put_pixel(file,graph,x,y+2,_color);
+		map_put_pixel(file,graph,x+1,y+2,_color);
+		//transparente
+		map_put_pixel(file,graph,x+2,y+2,0);
+	elseif (flags == B_VMIRROR)
+		map_put_pixel(file,graph,x,y,_color);
+		map_put_pixel(file,graph,x,y+1,_color);
+		map_put_pixel(file,graph,x+1,y+1,_color);
+		map_put_pixel(file,graph,x+1,y+2,_color);
+		map_put_pixel(file,graph,x+2,y+2,_color);
+		//transparente
+		map_put_pixel(file,graph,x,y+2,0);
+	elseif (flags == B_HMIRROR)
+		map_put_pixel(file,graph,x,y,_color);
+		map_put_pixel(file,graph,x+1,y,_color);	
+		map_put_pixel(file,graph,x+1,y+1,_color);
+		map_put_pixel(file,graph,x+2,y+1,_color);
+		map_put_pixel(file,graph,x+2,y+2,_color);
+		//transparente
+		map_put_pixel(file,graph,x+2,y,0);
+	else
+		map_put_pixel(file,graph,x+1,y,_color);
+		map_put_pixel(file,graph,x+2,y,_color);
+		map_put_pixel(file,graph,x,y+1,_color);
+		map_put_pixel(file,graph,x+1,y+1,_color);
+		map_put_pixel(file,graph,x,y+2,_color);
+		//transparente
+		map_put_pixel(file,graph,x,y,0);
+	end;
+	
+	/*
+	map_put_pixel(file,graph,x,y,_color);
+	map_put_pixel(file,graph,x+1,y,_color);
+	map_put_pixel(file,graph,x+2,y,_color);
+	
+	map_put_pixel(file,graph,x,y+1,_color);
+	map_put_pixel(file,graph,x+1,y+1,_color);
+	map_put_pixel(file,graph,x+2,y+1,_color);
+	
+	map_put_pixel(file,graph,x,y+2,_color);
+	map_put_pixel(file,graph,x+1,y+2,_color);
+	map_put_pixel(file,graph,x+2,y+2,_color);
+	*/
 end;
 
 //funcion que escribe las opciones de un menu en la posicion correcta de un cuadro de dialogo
