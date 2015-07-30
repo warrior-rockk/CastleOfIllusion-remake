@@ -407,6 +407,14 @@ public
 end
 end
 
+//declaracion de proceso dialogo
+declare process WGE_Dialog(int x,int y,int _width,int _height)
+public
+	int width;
+	int height;
+end
+end
+
 //definiciones del engine
 include "controls.h";		//funciones controles
 include "sound.h";			//funciones sonido

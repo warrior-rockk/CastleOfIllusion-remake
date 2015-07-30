@@ -111,7 +111,7 @@ private
 	
 	byte introFinished;						//Flag de intro finalizada
 	
-	int idDialog;
+	WGE_DrawDialog idDialog;
 	int optionNum;
 	string optionString;
 	byte redrawMenu;
@@ -202,7 +202,7 @@ begin
 				//componemos lista menu
 				optionString = gameTexts[config.lang][MENU_TEXT];
 				//componemos un cuadro de dialogo
-				idDialog = WGE_DrawDialog(cResX>>1,cResY>>1,125,(text_height(fntGame,optionString)*2)+(dialogTextMarginY*2)+(dialogTextPadding*2));
+				idDialog = WGE_Dialog(cResX>>1,cResY>>1,125,(text_height(fntGame,optionString)*2)+(dialogTextMarginY*2)+(dialogTextPadding*2));
 								
 				redrawMenu = true;
 				
@@ -241,14 +241,13 @@ begin
 							end;
 						end;
 						//eliminamos menu y limpiamos pantalla
-						signal(TYPE WGE_DrawDialog,s_kill);
+						signal(idDialog,s_kill);
 						clear_screen();
 						delete_text(all_text);
 						optionNum = 0;
 					end;
 					
 					if (redrawMenu)
-						clear_screen();
 						//escribimos las opciones
 						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
 						redrawMenu = false;
@@ -265,7 +264,7 @@ begin
 				//componemos opciones menu
 				optionString = gameTexts[config.lang][CONFIG_TEXT];
 				//componemos un cuadro de dialogo
-				idDialog = WGE_DrawDialog(cResX>>1,cResY>>1,250,(text_height(fntGame,optionString)*5)+(dialogTextMarginY*2)+(dialogTextPadding*5));
+				idDialog = WGE_Dialog(cResX>>1,cResY>>1,250,(text_height(fntGame,optionString)*5)+(dialogTextMarginY*2)+(dialogTextPadding*5));
 				
 				//lo redibujamos inicialmente
 				redrawMenu	= true;
@@ -358,7 +357,6 @@ begin
 					
 					//redibujamos menu
 					if (redrawMenu)
-						clear_screen();
 						//escribimos las opciones
 						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
 						//escribimos los valores
@@ -374,7 +372,7 @@ begin
 				end;
 				
 				//eliminamos menu y limpiamos pantalla
-				signal(TYPE WGE_DrawDialog,s_kill);
+				signal(idDialog,s_kill);
 				clear_screen();
 				delete_text(all_text);
 				optionNum = 0;
@@ -387,7 +385,7 @@ begin
 				optionString = gameTexts[config.lang][CONFIG_CONTROLS_TEXT];
 				
 				//componemos un cuadro de dialogo
-				idDialog = WGE_DrawDialog(cResX>>1,cResY>>1,150,(text_height(fntGame,optionString)*2)+(dialogTextMarginY*2)+(dialogTextPadding*2));
+				idDialog = WGE_Dialog(cResX>>1,cResY>>1,150,(text_height(fntGame,optionString)*2)+(dialogTextMarginY*2)+(dialogTextPadding*2));
 				
 				//lo redibujamos inicialmente
 				redrawMenu	= true;
@@ -424,7 +422,6 @@ begin
 					end;
 					
 					if (redrawMenu)
-						clear_screen();
 						//escribimos las opciones
 						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
 						redrawMenu = false;
@@ -434,7 +431,7 @@ begin
 				end;
 				
 				//eliminamos menu y limpiamos pantalla
-				signal(TYPE WGE_DrawDialog,s_kill);
+				signal(idDialog,s_kill);
 				clear_screen();
 				delete_text(all_text);
 			end;
@@ -446,7 +443,7 @@ begin
 				optionString = gameTexts[config.lang][CONFIG_CONTROLS_LIST_TEXT];
 				
 				//componemos un cuadro de dialogo
-				idDialog = WGE_DrawDialog(cResX>>1,cResY>>1,200,(text_height(fntGame,optionString)*7)+(dialogTextMarginY*2)+(dialogTextPadding*7));
+				idDialog = WGE_Dialog(cResX>>1,cResY>>1,200,(text_height(fntGame,optionString)*7)+(dialogTextMarginY*2)+(dialogTextPadding*7));
 				
 				//lo redibujamos inicialmente
 				redrawMenu	= true;
@@ -493,7 +490,6 @@ begin
 					
 					//redibujamos menu
 					if (redrawMenu)
-						clear_screen();
 						//escribimos las opciones
 						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
 						//escribimos los valores
@@ -512,7 +508,7 @@ begin
 				end;
 				
 				//eliminamos menu y limpiamos pantalla
-				signal(TYPE WGE_DrawDialog,s_kill);
+				signal(idDialog,s_kill);
 				clear_screen();
 				delete_text(all_text);
 			end;
@@ -524,7 +520,7 @@ begin
 				optionString = optionString = gameTexts[config.lang][CONFIG_CONTROLS_LIST_TEXT];;
 				
 				//componemos un cuadro de dialogo
-				idDialog = WGE_DrawDialog(cResX>>1,cResY>>1,200,(text_height(fntGame,optionString)*7)+(dialogTextMarginY*2)+(dialogTextPadding*7));
+				idDialog = WGE_Dialog(cResX>>1,cResY>>1,200,(text_height(fntGame,optionString)*7)+(dialogTextMarginY*2)+(dialogTextPadding*7));
 				
 				//lo redibujamos inicialmente
 				redrawMenu	= true;
@@ -571,7 +567,6 @@ begin
 					
 					//redibujamos menu
 					if (redrawMenu)
-						clear_screen();
 						//escribimos las opciones
 						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
 						//escribimos los valores
@@ -590,7 +585,7 @@ begin
 				end;
 				
 				//eliminamos menu y limpiamos pantalla
-				signal(TYPE WGE_DrawDialog,s_kill);
+				signal(idDialog,s_kill);
 				clear_screen();
 				delete_text(all_text);
 			end;
@@ -695,7 +690,7 @@ begin
 						gameSignal(s_freeze_tree);
 						signal(TYPE HUD,s_kill);
 						frame;
-						idDialog = WGE_DrawDialog(cResX>>1,cResY-15,cResX - 26,24);
+						//idDialog = WGE_DrawDialog(cResX>>1,cResY-15,cResX - 26,24,"",0);
 						pauseText = write(fntGame,cResX>>1,cResY-15,ALIGN_CENTER,gameTexts[config.lang][PAUSE_TEXT]);
 						game.paused = true;
 						pause_song();
@@ -2603,22 +2598,36 @@ onexit:
 	delete_text(all_text);
 end;
 
-//Funcion que dibuja un marco para cuadro dialogo
-process WGE_DrawDialog(int x,int y,int _width,int _height)
-public
-	int width;
-	int height;
-private
-	int dialogTileSize 	= 3; 
-	int dialogColor 	= 12;
-	int dialogBackColor = 8;
-	int i;						//Var aux
+//proceso dialogo
+process WGE_Dialog(int x,int y,int _width,int _height)
 begin
 
 file = fpgGame;
 
 width = _width;
 height = _height;
+
+
+//creamos grafico vacio
+graph = map_new(width,height,8);
+
+WGE_DrawDialog(file,graph,width,height);
+
+loop
+	frame;
+end;
+end;
+
+//Funcion que dibuja un marco para cuadro dialogo
+function WGE_DrawDialog(file,graph,int width,int height)
+private
+	int dialogTileSize 	= 3; 
+	int dialogColor 	= 12;
+	int dialogBackColor = 8;
+	int i;						//Var aux
+	int 
+begin
+
 
 //tamaño minimo dialogo
 if (width < (dialogTileSize * 2)+1)
@@ -2628,8 +2637,7 @@ if (height < (dialogTileSize * 2)+1)
 	height = (dialogTileSize * 2)+1;
 end;
 
-//creamos grafico vacio
-graph = map_new(width,height,8);
+//coloreamos el dialogo
 map_clear(file,graph,dialogBackColor);
 
 //dibujamos las esquinas
@@ -2638,10 +2646,9 @@ drawCorner(file,graph,width-dialogTileSize,0,dialogColor,B_HMIRROR);
 drawCorner(file,graph,0,height-dialogTileSize,dialogColor,B_VMIRROR);
 drawCorner(file,graph,width-dialogTileSize,height-dialogTileSize,dialogColor,B_HMIRROR | B_VMIRROR);
 
-//dibujamos lineas horizontales
+//dibujamos lineas  marco
 drawing_map(file,graph);
 drawing_color(dialogColor);
-
 //linea superior
 draw_line(dialogTileSize,0,width-1-dialogTileSize,0);
 //linea inferior
@@ -2650,10 +2657,7 @@ draw_line(dialogTileSize,height-1,width-dialogTileSize,height-1);
 draw_line(0,dialogTileSize,0,height-1-dialogTileSize);
 //lateral derecha
 draw_line(width-1,dialogTileSize,width-1,height-1-dialogTileSize);
-
-loop
-	frame;
-end;
+		
 
 end;
 
@@ -2710,7 +2714,7 @@ begin
 end;
 
 //funcion que escribe las opciones de un menu en la posicion correcta de un cuadro de dialogo
-function WGE_WriteDialogOptions(WGE_DrawDialog idDialog,string textOptions,int selected);
+function WGE_WriteDialogOptions(WGE_Dialog idDialog,string textOptions,int selected);
 private
 	//posicion del texto
 	int textPosY;
@@ -2722,7 +2726,10 @@ private
 	int endChar  = 0;			//fin cadena
 	int optionNum = 1;			//numero de opcion
 begin
+	//limpiamos textos
 	delete_text(all_text);
+	//redibujamos dialogo
+	WGE_DrawDialog(idDialog.file,idDialog.graph,idDialog.width,idDialog.height);
 	
 	//establecemos posicion inicial
 	textPosX = idDialog.x - (idDialog.width>>1) + dialogTextMarginX;
@@ -2741,7 +2748,7 @@ begin
 		
 		//pintamos el cursor si esta la opcion seleccionada
 		if (optionNum == selected)
-			put(fpgGame,12,idDialog.x - (idDialog.width>>1)+dialogCursorMarginX,textPosY);
+			map_put(fpgGame,idDialog.graph,12,dialogCursorMarginX,dialogTextMarginY+((optionNum-1)*(text_height(fntGame,textOption)+dialogTextPadding)));
 		end;
 		
 		//incrementamos la posicion Y del texto		
@@ -2756,7 +2763,7 @@ begin
 end;
 
 //funcion que escribe los valores de seleccion de una opcion de menu
-function WGE_WriteDialogValues(WGE_DrawDialog idDialog,string textValues,int selected,int value);
+function WGE_WriteDialogValues(WGE_Dialog idDialog,string textValues,int selected,int value);
 private
 	//posicion del texto
 	int textPosY;
@@ -2795,7 +2802,7 @@ begin
 end;
 
 //funcion que escribe un valor numerico con maximo y minimo
-function WGE_WriteDialogVariable(WGE_DrawDialog idDialog,int minValue,int MaxValue,int value,int numOption)
+function WGE_WriteDialogVariable(WGE_Dialog idDialog,int minValue,int MaxValue,int value,int numOption)
 private
 	//posicion del texto
 	int textPosY;
@@ -2814,11 +2821,14 @@ begin
 	
 	//pintamos flechas que indican los limites
 	if (value > minValue)
-		xput(fpgGame,12,textPosX-dialogCursorMarginX-text_width(fntGame,"00"),textPosY,0,100,B_HMIRROR,0);
+		//xput(fpgGame,12,textPosX-dialogCursorMarginX-text_width(fntGame,"00"),textPosY,0,100,B_HMIRROR,0);
+		map_xput(fpgGame,idDialog.graph,12,dialogCursorMarginX+5,textPosY,0,100,B_HMIRROR);
+		
 	end;
 	if (value < maxValue)
 		//put(fpgGame,12,idDialog.x + (idDialog.width>>1)-cursorMarginX,textPosY);
-		put(fpgGame,12,textPosX+dialogCursorMarginX,textPosY);
+		//put(fpgGame,12,textPosX+dialogCursorMarginX,textPosY);
+		map_put(fpgGame,idDialog.graph,12,dialogCursorMarginX,textPosY);
 	end;
 	
 end;
