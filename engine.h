@@ -113,6 +113,15 @@
 #define	MODE_2XSCALE			1
 #define MODE_FULLSCREEN			2
 
+//idiomas del juego
+#define ENG_LANG                0
+#define ESP_LANG                1
+
+//lista de textos
+#define INTRO1_TEXT             0
+#define INTRO2_TEXT             1
+#define INTRO3_TEXT             2
+
 //Constantes del motor
 const
 	//Engine
@@ -288,6 +297,7 @@ Global
 		int videoMode;
 		int soundVolume;
 		int musicVolume;
+		int lang;	
 	end;
 	int fpgGame;				//archivo de graficos globales
 	int fntGame;				//fuente general del juego
@@ -355,7 +365,9 @@ Global
 	int mapTriangle45;
 	int mapStairs;
 	int mapSolidOnFall;
-
+	
+	//idioma
+	string gameTexts[1][10];			//Tabla de idiomas de textos
 End;
 
 //Variables locales

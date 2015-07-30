@@ -67,6 +67,9 @@ begin
 	//Cargamos la configuracion del juego
 	loadGameConfig();
 	
+	//Cargamos los textos del juego
+	loadGameLang();
+	
 	//Iniciamos modo grafico
 	WGE_InitScreen();
 	
@@ -149,6 +152,7 @@ begin
 					signal(TYPE gameIntro,s_kill_tree);
 					//limpiamos pantalla
 					screen_clear();
+					delete_text(all_text);
 					//saltamos a splash
 					game.state = SPLASH;
 				end;
@@ -2455,20 +2459,20 @@ begin
 	play_song(gameMusic[INTRO_MUS],0);
 		
 	//mostramos pantallas y texto de introduccion
-	WGE_Write(fntGame,cResX>>1,cResY>>1,ALIGN_CENTER,"ONCE UPON A MOUSE...");
-	introMusicTransition(2.0);
+	WGE_Write(fntGame,cResX>>1,cResY>>1,ALIGN_CENTER,gameTexts[config.lang][INTRO1_TEXT]);
+	introMusicTransition(4.0);
 		
 	put(fpgGame,16,cResX>>1,cResY>>1);
-	introMusicTransition(4.0);
-	
-	WGE_Write(fntGame,10,50,ALIGN_CENTER_LEFT,"     WELCOME TO VERA CITY,\nWHERE LIFE IS JOYFUL, AND\nEVERYONE LIVES IN PEACE.\nALL BUT ONE, THAT IS. ONE\nWHO IS JEALOUS OF MINNIE'S\nBEAUTY AND POPULARITY-THE\nWITCH MIZRABEL...");
-	introMusicTransition(6.0);
-	
-	put(fpgGame,17,cResX>>1,cResY>>1);
 	introMusicTransition(8.0);
 	
-	WGE_Write(fntGame,10,50,ALIGN_CENTER_LEFT,"  ...WHO ONE DAY CAME ON\nHER BROOM AND SWEPT MINNIE\nAWAY. MICKEY WAS TAKEN BY\nSURPRISE. HE DID THE ONLY\nTHING HE COULD.\nHE CHASED AFTER THE WITCH\nMIZRABEL ALL THE WAY TO\nTHE...");
-	introMusicTransition(10.0);	
+	WGE_Write(fntGame,10,50,ALIGN_CENTER_LEFT,gameTexts[config.lang][INTRO2_TEXT]);
+	introMusicTransition(12.0);
+	
+	put(fpgGame,17,cResX>>1,cResY>>1);
+	introMusicTransition(16.0);
+	
+	WGE_Write(fntGame,10,50,ALIGN_CENTER_LEFT,gameTexts[config.lang][INTRO3_TEXT]);
+	introMusicTransition(20.0);	
 		
 	//definimos regiones para el scroll de la intro
 	define_region(3,0,0,cGameRegionW,40);
@@ -2863,4 +2867,61 @@ begin
 	while(fading) frame; end;
 	screen_clear();
 	delete_text(all_text);
+end;
+
+function loadGameLang()
+private
+	int langFile;		//archivo de idioma
+	int textIndex;		//indice del texto
+begin
+		
+	//Cargamos el idioma Ingles
+	
+	//si existe el archivo de idioma
+	if (fexists("lang/game-en.lng"))
+		//abrimos el archivo
+		langFile = fopen("lang/game-en.lng",O_READ);
+		
+		textIndex = 0;
+		
+		//recorremos las lineas del archivo
+		while (!feof(langFile))
+			gameTexts[ENG_LANG][textIndex] = fgets(langFile);
+			textIndex++;
+		end;
+		
+		//cerramos el archivo
+		fclose(langFile);
+		
+		log("Archivo de idioma ENG leído",DEBUG_ENGINE);
+	else
+		log("Falta el archivo de ENG",DEBUG_ENGINE);
+		WGE_Quit();
+	end;
+	
+	//Cargamos el idioma Español
+	
+	//si existe el archivo de idioma
+	if (fexists("lang/game-es.lng"))
+		//abrimos el archivo
+		langFile = fopen("lang/game-es.lng",O_READ);
+		
+		textIndex = 0;
+				
+		//recorremos las lineas del archivo
+		while (!feof(langFile))
+			gameTexts[ESP_LANG][textIndex] = fgets(langFile);
+			textIndex++;
+		end;
+		
+		//cerramos el archivo
+		fclose(langFile);
+		
+		log("Archivo de idioma ESP leído",DEBUG_ENGINE);
+	else
+		log("Falta el archivo de idioma ESP",DEBUG_ENGINE);	
+	end;
+	
+	config.lang = ESP_LANG;
+	
 end;
