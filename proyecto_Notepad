@@ -11,6 +11,7 @@
         <File name="controls.prg" />
         <File name="platforms.prg" />
         <File name="sound.prg" />
+        <File name="interface.prg" />
         <File name="engine.h" />
         <File name="player.h" />
         <File name="animation.h" />
@@ -21,6 +22,7 @@
         <File name="platforms.h" />
         <File name="sound.h" />
         <File name="objects.h" />
+        <File name="interface.h" />
         <File name="TODO.txt" />
     </Project>
 </NotepadPlus>
