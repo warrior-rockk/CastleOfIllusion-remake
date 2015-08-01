@@ -32,11 +32,12 @@
 #define TUTORIAL5_TEXT						16
 #define PAUSE_TEXT							17
 #define GAMEOVER_TEXT						18
+#define LAN_SEL_TEXT                        19
 
 //Constantes
 const
 	cNumLanguages	= 2; 			//Numero de idiomas
-	cNumGameTexts   = 19;			//Numero de textos
+	cNumGameTexts   = 20;			//Numero de textos
 	
 	//Cuadros dialogo
 	dialogTextMarginX		= 30;			//Margen horizontal texto

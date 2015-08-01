@@ -33,6 +33,7 @@
 #define MENU_CONTROLS   13
 #define MENU_KEYS       14
 #define MENU_BUTTONS    15
+#define LANG_SEL        16
 
 //Codigo del tile
 //bits del 0 al 4 del mapa de tiles
@@ -157,7 +158,7 @@ const
 	cGameRegionY 	= 0;					//Region Vertical Pantalla de juego (Representacion Mapeado)
 	cGameRegionW 	= cResX;				//Region Horizontal Pantalla de juego (Representacion Mapeado) 
 	cGameRegionH 	= 160;					//Region Vertical Pantalla de juego (Representacion Mapeado)	
-	cFadeTime		= 5;					//Velocidad de los fundidos de pantalla (1..64)
+	cFadeTime		= 3;					//Velocidad de los fundidos de pantalla (1..64)
 	cRoomScroll     = true;					//Flag para utilizar el scroll vertical como Master System (transiciones entre "rooms")
 	cTilesBetweenRooms  = 2;				//Numero de tiles transicion entre rooms
 	cVelRoomTransition  = 2;				//Velocidad transicion entre rooms
@@ -351,7 +352,7 @@ Global
 	int mapTriangle45;
 	int mapStairs;
 	int mapSolidOnFall;
-	
+	int firstRun;					//flag de primer arranque
 End;
 
 //Variables locales

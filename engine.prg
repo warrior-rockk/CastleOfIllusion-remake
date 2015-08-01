@@ -79,9 +79,9 @@ begin
 	game.playerMaxLife  = 3;
 	game.score      	= 0;
 	game.numLevel       = 0;
-	game.state          = INTRO;
 	
-	
+	//estado inicial
+	firstRun ? game.state = LANG_SEL : game.state = INTRO;
 	
 	//Arrancamos el loop del juego
 	WGE_Loop();
@@ -135,6 +135,87 @@ begin
 			
 		//estado del juego
 		switch (game.state)
+			case LANG_SEL:
+				//si es la primera ejecucion, elegimos idioma
+				firstRun = false;
+				
+				//iniciamos la opcion del menu
+				optionNum = 1;
+				
+				//componemos opciones menu
+				optionString = gameTexts[config.lang][LAN_SEL_TEXT];
+				//componemos un cuadro de dialogo
+				idDialog = WGE_Dialog(cResX>>1,cResY>>1,200,(text_height(fntGame,optionString)*2)+(dialogTextMarginY*2)+(dialogTextPadding*2));
+				
+				//lo redibujamos inicialmente
+				redrawMenu	= true;
+				
+				//gestion del menu
+				while (optionNum <> 0)
+					//bajar opcion
+					if (WGE_CheckControl(CTRL_DOWN,E_DOWN) && optionNum<2)
+						optionNum++;
+						redrawMenu = true;
+					end;
+					//subir opcion
+					if (WGE_CheckControl(CTRL_UP,E_DOWN) && optionNum>1)
+						optionNum--;
+						redrawMenu = true;
+					end;
+					//incrementar valor
+					if (WGE_CheckControl(CTRL_RIGHT,E_DOWN))
+						switch (optionNum)
+							case 1:
+								config.lang == ENG_LANG ? config.lang = ESP_LANG : config.lang = ENG_LANG;
+								optionString = gameTexts[config.lang][LAN_SEL_TEXT];
+							end;
+						end;
+						
+						saveGameConfig();
+						redrawMenu = true;						
+					end;
+					//decrementar valor
+					if (WGE_CheckControl(CTRL_LEFT,E_DOWN))
+						switch (optionNum)
+							case 1:
+								config.lang == ENG_LANG ? config.lang = ESP_LANG : config.lang = ENG_LANG;
+								optionString = gameTexts[config.lang][LAN_SEL_TEXT];
+							end;
+						end;
+						
+						saveGameConfig();
+						redrawMenu = true;						
+					end;
+					//seleccionar opcion
+					if (WGE_CheckControl(CTRL_START,E_DOWN))
+						switch (optionNum)
+							case 2: //Aceptar
+								game.state = INTRO;
+								//salir del menu
+								optionNum = 0;
+							end;
+						end;
+					end;
+					
+					//redibujamos menu
+					if (redrawMenu)
+						//escribimos las opciones
+						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+						//escribimos los valores
+						WGE_WriteDialogValues(idDialog,gameTexts[config.lang][CONFIG_VAL2_TEXT],1,config.lang);
+						//reiniciamos flag
+						redrawMenu = false;
+					end;
+					
+					frame;
+				end;
+				
+				//eliminamos menu y limpiamos pantalla
+				signal(idDialog,s_kill);
+				clear_screen();
+				delete_text(all_text);
+				optionNum = 0;
+			end;
 			case INTRO:
 				//si no existe intro, la lanzamos
 				if (!exists(TYPE gameIntro) && !introFinished)
@@ -2457,6 +2538,7 @@ private
 	entity introAnimations[10];		//Array de animaciones	
 	
 begin
+	
 	//apagamos y limpiamos la pantalla
 	fade(0,0,0,cFadeTime);
 	while(fading) frame; end;
@@ -2465,7 +2547,8 @@ begin
 	
 	//reproducimos musica intro
 	play_song(gameMusic[INTRO_MUS],0);
-		
+	timer[cMusicTimer] = 0;
+	
 	//mostramos pantallas y texto de introduccion
 	WGE_Write(fntGame,cResX>>1,cResY>>1,ALIGN_CENTER,gameTexts[config.lang][INTRO1_TEXT]);
 	introMusicTransition(4.0);
@@ -2474,10 +2557,10 @@ begin
 	introMusicTransition(8.0);
 	
 	WGE_Write(fntGame,10,50,ALIGN_CENTER_LEFT,gameTexts[config.lang][INTRO2_TEXT]);
-	introMusicTransition(16.0);
+	introMusicTransition(18.0);
 	
 	put(fpgGame,17,cResX>>1,cResY>>1);
-	introMusicTransition(20.0);
+	introMusicTransition(22.0);
 	
 	WGE_Write(fntGame,10,50,ALIGN_CENTER_LEFT,gameTexts[config.lang][INTRO3_TEXT]);
 	introMusicTransition(30.0);	
@@ -2505,7 +2588,7 @@ begin
 	introAnimations[1] = WGE_GameAnimation(fpgGame,10,10,122,54,10,ANIM_LOOP);
 	
 	//encedemos pantalla
-	WGE_Wait(200);
+	WGE_Wait(150);
 	fade(100,100,100,cFadeTime);
 	while(fading) frame; end;
 	
@@ -2523,7 +2606,7 @@ begin
 		scroll[5].x0+=((introTime % 4) == 0) && (scroll[5].x0 < cGameRegionW+16);
 		
 		frame;
-	until(introTime >= 800);
+	until(timer[cMusicTimer]>= 4550);//(introTime >= 800);
 	
 	//devolvemos animacion terminada
 	*introFinished = true;
@@ -2665,11 +2748,14 @@ begin
 		
 		log("Archivo de configuración leído",DEBUG_ENGINE);
 	else
-		config.videoMode = 0;
+		config.videoMode   = 1;
 		config.soundVolume = 100;
 		config.musicVolume = 100;
 		
 		log("No hay archivo de configuracion. Se cargan valores por defecto",DEBUG_ENGINE);
+		
+		//seteamos primer arranque
+		firstRun = true;
 	end;
 end;
 
