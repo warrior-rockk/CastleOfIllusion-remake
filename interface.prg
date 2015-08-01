@@ -233,14 +233,11 @@ begin
 	
 	//pintamos flechas que indican los limites
 	if (value > minValue)
-		//xput(fpgGame,12,textPosX-dialogCursorMarginX-text_width(fntGame,"00"),textPosY,0,100,B_HMIRROR,0);
-		map_xput(fpgGame,idDialog.graph,12,textPosX,textPosY,0,100,B_HMIRROR);
+		map_xput(fpgGame,idDialog.graph,12,idDialog.width-dialogTextMarginX-dialogCursorMarginX-text_width(fntGame,"00"),((text_height(fntGame,value)+dialogTextPadding)*(numOption-1))+dialogTextMarginY,0,100,B_HMIRROR);
 		
 	end;
 	if (value < maxValue)
-		//put(fpgGame,12,idDialog.x + (idDialog.width>>1)-cursorMarginX,textPosY);
-		//put(fpgGame,12,textPosX+dialogCursorMarginX,textPosY);
-		map_put(fpgGame,idDialog.graph,12,dialogCursorMarginX,textPosY);
+		map_put(fpgGame,idDialog.graph,12,idDialog.width-dialogTextMarginX+dialogCursorMarginX,((text_height(fntGame,value)+dialogTextPadding)*(numOption-1))+dialogTextMarginY);
 	end;
 	
 end;
