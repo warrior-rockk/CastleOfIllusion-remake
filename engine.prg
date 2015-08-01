@@ -145,6 +145,10 @@ begin
 				if (introFinished )
 					game.state = SPLASH;
 				elseif (WGE_CheckControl(CTRL_ANY,E_DOWN))
+					//hacemos fade musica si seguía sonando
+					if (is_playing_song())
+						fade_music_off(1000);
+					end;
 					//apagamos pantalla
 					fade(0,0,0,cFadeTime);
 					while(fading) frame; end;
@@ -2470,14 +2474,14 @@ begin
 	introMusicTransition(8.0);
 	
 	WGE_Write(fntGame,10,50,ALIGN_CENTER_LEFT,gameTexts[config.lang][INTRO2_TEXT]);
-	introMusicTransition(12.0);
-	
-	put(fpgGame,17,cResX>>1,cResY>>1);
 	introMusicTransition(16.0);
 	
+	put(fpgGame,17,cResX>>1,cResY>>1);
+	introMusicTransition(20.0);
+	
 	WGE_Write(fntGame,10,50,ALIGN_CENTER_LEFT,gameTexts[config.lang][INTRO3_TEXT]);
-	introMusicTransition(20.0);	
-		
+	introMusicTransition(30.0);	
+	
 	//definimos regiones para el scroll de la intro
 	define_region(3,0,0,cGameRegionW,40);
 	define_region(4,0,40,cGameRegionW,16);
@@ -2501,6 +2505,7 @@ begin
 	introAnimations[1] = WGE_GameAnimation(fpgGame,10,10,122,54,10,ANIM_LOOP);
 	
 	//encedemos pantalla
+	WGE_Wait(200);
 	fade(100,100,100,cFadeTime);
 	while(fading) frame; end;
 	
@@ -2518,7 +2523,7 @@ begin
 		scroll[5].x0+=((introTime % 4) == 0) && (scroll[5].x0 < cGameRegionW+16);
 		
 		frame;
-	until(introTime >= 650);
+	until(introTime >= 800);
 	
 	//devolvemos animacion terminada
 	*introFinished = true;
