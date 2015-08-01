@@ -147,7 +147,7 @@ begin
 				elseif (WGE_CheckControl(CTRL_ANY,E_DOWN))
 					//hacemos fade musica si seguía sonando
 					if (is_playing_song())
-						fade_music_off(1000);
+						fade_music_off(cFadeMusicTime);
 					end;
 					//apagamos pantalla
 					fade(0,0,0,cFadeTime);
@@ -197,7 +197,7 @@ begin
 			case MENU:
 				//hacemos fade musica si seguía sonando
 				if (is_playing_song())
-					fade_music_off(1000);
+					fade_music_off(cFadeMusicTime);
 				end;
 				
 				//iniciamos la opcion del menu
@@ -662,7 +662,7 @@ begin
 						WGE_RepeatMusicLevel();
 					end;
 				else
-					fade_music_off(1000);
+					fade_music_off(cFadeMusicTime);
 					if (!is_playing_song())
 						memBoss = true;
 						//reproducimo musica boss
@@ -880,7 +880,7 @@ begin
 					//apagamos pantalla
 					fade(0,0,0,cFadeTime);
 					//detenemos sonido
-					fade_music_off(1000);
+					fade_music_off(cFadeMusicTime);
 					while(fading || is_playing_song()) frame; end;
 					//desactivamos flag
 					attractActive = false;
@@ -906,7 +906,7 @@ begin
 					//apagamos pantalla
 					fade(0,0,0,cFadeTime);
 					//detenemos sonido
-					fade_music_off(1000);
+					fade_music_off(cFadeMusicTime);
 					while(fading || is_playing_song()) frame; end;						
 					//limpiamos el nivel
 					clearLevel();

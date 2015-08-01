@@ -9,6 +9,7 @@
 //Constantes
 const
 	cMusicTimer		= 1;					//Timer usado para el tiempo de musica
+	cFadeMusicTime  = 1000;					//Tiempo fade off sonido
 	//canales de sonido
 	cDefaultSndChn  = 0;
 	cGameSndChn		= 1;
