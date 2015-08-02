@@ -34,6 +34,7 @@
 #define MENU_KEYS       14
 #define MENU_BUTTONS    15
 #define LANG_SEL        16
+#define PRELUDE         17
 
 //Codigo del tile
 //bits del 0 al 4 del mapa de tiles

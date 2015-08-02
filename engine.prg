@@ -46,6 +46,11 @@ begin
 	levelFiles[2].TileFile 	= "levels\ToyLand2\tiles.fpg";
 	levelFiles[2].MusicFile = "mus\ToyLand.ogg";
 	levelFiles[2].MusicIntroEnd = 1.87;
+	//level 3
+	levelFiles[3].MapFile 	= "levels\CastleDoor\CastleDoor.bin";
+	levelFiles[3].DataFile 	= "levels\CastleDoor\CastleDoor.dat";
+	levelFiles[3].TileFile 	= "levels\CastleDoor\tiles.fpg";
+	//levelFiles[3].MusicFile = "mus\ToyLand.ogg";
 	
 	//cargamos la paleta general del juego
 	load_pal("pal\game.pal");
@@ -78,7 +83,7 @@ begin
 	game.playerLife 	= 3;
 	game.playerMaxLife  = 3;
 	game.score      	= 0;
-	game.numLevel       = 0;
+	game.numLevel       = 3;//0;
 	
 	//estado inicial
 	firstRun ? game.state = LANG_SEL : game.state = INTRO;
@@ -319,7 +324,7 @@ begin
 								while(fading) frame; end;
 								
 								//cambiamos de paso
-								game.state = LOADLEVEL;
+								game.state = PRELUDE; //LOADLEVEL;
 							end;
 							case 2: //Config
 								game.state = MENU_CONFIG;
@@ -707,6 +712,38 @@ begin
 				signal(idDialog,s_kill);
 				clear_screen();
 				delete_text(all_text);
+			end;
+			case PRELUDE:
+				//Cargamos el mapeado del nivel
+				WGE_LoadMapLevel(levelFiles[game.numLevel].MapFile,levelFiles[game.numLevel].TileFile);
+				//Cargamos el archivo de datos del nivel
+				WGE_LoadLevelData(levelFiles[game.numLevel].DataFile);
+				//Cargamos la musica del nivel
+				level.idMusicLevel = load_song(levelFiles[game.numLevel].MusicFile);
+								
+				//Iniciamos Scroll
+				WGE_InitScroll();
+				//Dibujamos el mapeado
+				WGE_DrawMap();
+				//Creamos el nivel cargado
+				WGE_CreateLevel();
+				
+				//Creamos el jugador
+				player();
+				
+				//encendemos pantalla
+				fade(100,100,100,cFadeTime);
+				while(fading) frame; end;
+				
+				controlLoggerPlayer("prelude.rec");
+				repeat
+					frame;
+				until(controlLoggerFinished);
+				
+				game.numLevel = 0;
+				
+				game.state = LOADLEVEL;
+				
 			end;
 			case LOADLEVEL:		
 				//Cargamos el mapeado del nivel
