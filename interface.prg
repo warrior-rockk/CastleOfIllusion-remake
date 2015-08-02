@@ -169,9 +169,7 @@ begin
 		optionNum++;
 
 	end;
-	
-	//cada vez que se redibuja el menu, reproducimos sonido
-	WGE_PlayEntitySnd(id,gameSound[COUNTDOWN_SND]);
+
 end;
 
 //funcion que escribe los valores de seleccion de una opcion de menu

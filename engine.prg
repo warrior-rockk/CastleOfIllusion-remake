@@ -203,6 +203,8 @@ begin
 						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
 						//escribimos los valores
 						WGE_WriteDialogValues(idDialog,gameTexts[config.lang][CONFIG_VAL2_TEXT],1,config.lang);
+						//cada vez que se redibuja el menu, reproducimos sonido
+						WGE_PlayEntitySnd(id,gameSound[MENU_SND]);
 						//reiniciamos flag
 						redrawMenu = false;
 					end;
@@ -288,8 +290,9 @@ begin
 				optionString = gameTexts[config.lang][MENU_TEXT];
 				//componemos un cuadro de dialogo
 				idDialog = WGE_Dialog(cResX>>1,cResY>>1,125,(text_height(fntGame,optionString)*2)+(dialogTextMarginY*2)+(dialogTextPadding*2));
-								
-				redrawMenu = true;
+				
+				//escribim,os las opciones
+				WGE_WriteDialogOptions(idDialog,optionString,optionNum);				
 				
 				//encendemos pantalla
 				fade(100,100,100,cFadeTime);
@@ -335,6 +338,8 @@ begin
 					if (redrawMenu)
 						//escribimos las opciones
 						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+						//cada vez que se redibuja el menu, reproducimos sonido
+						WGE_PlayEntitySnd(id,gameSound[MENU_SND]);
 						redrawMenu = false;
 					end;
 					
@@ -351,9 +356,14 @@ begin
 				//componemos un cuadro de dialogo
 				idDialog = WGE_Dialog(cResX>>1,cResY>>1,250,(text_height(fntGame,optionString)*5)+(dialogTextMarginY*2)+(dialogTextPadding*5));
 				
-				//lo redibujamos inicialmente
-				redrawMenu	= true;
-				
+				//escribimos las opciones
+				WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+				//escribimos los valores
+				WGE_WriteDialogValues(idDialog,gameTexts[config.lang][CONFIG_VAL1_TEXT],1,config.videoMode);
+				WGE_WriteDialogValues(idDialog,gameTexts[config.lang][CONFIG_VAL2_TEXT],2,config.lang);
+				WGE_WriteDialogVariable(idDialog,0,100,config.soundVolume,4);
+				WGE_WriteDialogVariable(idDialog,0,100,config.musicVolume,5);
+						
 				//gestion del menu
 				while (optionNum <> 0)
 					//bajar opcion
@@ -449,6 +459,8 @@ begin
 						WGE_WriteDialogValues(idDialog,gameTexts[config.lang][CONFIG_VAL2_TEXT],2,config.lang);
 						WGE_WriteDialogVariable(idDialog,0,100,config.soundVolume,4);
 						WGE_WriteDialogVariable(idDialog,0,100,config.musicVolume,5);
+						//cada vez que se redibuja el menu, reproducimos sonido
+						WGE_PlayEntitySnd(id,gameSound[MENU_SND]);
 						//reiniciamos flag
 						redrawMenu = false;
 					end;
@@ -472,8 +484,8 @@ begin
 				//componemos un cuadro de dialogo
 				idDialog = WGE_Dialog(cResX>>1,cResY>>1,150,(text_height(fntGame,optionString)*2)+(dialogTextMarginY*2)+(dialogTextPadding*2));
 				
-				//lo redibujamos inicialmente
-				redrawMenu	= true;
+				//escribimos las opciones
+				WGE_WriteDialogOptions(idDialog,optionString,optionNum);
 				
 				//gestion del menu
 				while (optionNum <> 0)
@@ -509,6 +521,8 @@ begin
 					if (redrawMenu)
 						//escribimos las opciones
 						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+						//cada vez que se redibuja el menu, reproducimos sonido
+						WGE_PlayEntitySnd(id,gameSound[MENU_SND]);
 						redrawMenu = false;
 					end;
 					
@@ -530,8 +544,16 @@ begin
 				//componemos un cuadro de dialogo
 				idDialog = WGE_Dialog(cResX>>1,cResY>>1,200,(text_height(fntGame,optionString)*7)+(dialogTextMarginY*2)+(dialogTextPadding*7));
 				
-				//lo redibujamos inicialmente
-				redrawMenu	= true;
+				//escribimos las opciones
+				WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+				//escribimos los valores
+				WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_UP]]+";",1,0);
+				WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_DOWN]]+";",2,0);
+				WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_LEFT]]+";",3,0);
+				WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_RIGHT]]+";",4,0);
+				WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_JUMP]]+";",5,0);
+				WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+";",6,0);
+				WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_START]]+";",7,0);
 				
 				//gestion del menu
 				while (optionNum <> 0)
@@ -585,6 +607,8 @@ begin
 						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_JUMP]]+";",5,0);
 						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+";",6,0);
 						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_START]]+";",7,0);
+						//cada vez que se redibuja el menu, reproducimos sonido
+						WGE_PlayEntitySnd(id,gameSound[MENU_SND]);
 						//reseteamos flag
 						redrawMenu = false;
 					end;
@@ -607,8 +631,16 @@ begin
 				//componemos un cuadro de dialogo
 				idDialog = WGE_Dialog(cResX>>1,cResY>>1,200,(text_height(fntGame,optionString)*7)+(dialogTextMarginY*2)+(dialogTextPadding*7));
 				
-				//lo redibujamos inicialmente
-				redrawMenu	= true;
+				//escribimos las opciones
+				WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+				//escribimos los valores
+				WGE_WriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_UP]]+";",1,0);
+				WGE_WriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_DOWN]]+";",2,0);
+				WGE_WriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_LEFT]]+";",3,0);
+				WGE_WriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_RIGHT]]+";",4,0);
+				WGE_WriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_JUMP]]+";",5,0);
+				WGE_WriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_ACTION_ATACK]]+";",6,0);
+				WGE_WriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_START]]+";",7,0);
 				
 				//gestion del menu
 				while (optionNum <> 0)
@@ -662,6 +694,8 @@ begin
 						WGE_WriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_JUMP]]+";",5,0);
 						WGE_WriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_ACTION_ATACK]]+";",6,0);
 						WGE_WriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_START]]+";",7,0);
+						//cada vez que se redibuja el menu, reproducimos sonido
+						WGE_PlayEntitySnd(id,gameSound[MENU_SND]);
 						//reseteamos flag
 						redrawMenu = false;
 					end;
@@ -2492,6 +2526,7 @@ begin
 	(gameSound[TIMESCORE_SND] 	= WGE_LoadSound("snd\timeScor.ogg")) 	<= 0 ? fileError = true : numSoundFiles++;
 	(gameSound[STOPSCORE_SND] 	= WGE_LoadSound("snd\endScore.ogg")) 	<= 0 ? fileError = true : numSoundFiles++;
 	(gameSound[COUNTDOWN_SND] 	= WGE_LoadSound("snd\count.ogg")) 	    <= 0 ? fileError = true : numSoundFiles++;
+	(gameSound[MENU_SND]	 	= WGE_LoadSound("snd\menu.ogg")) 	    <= 0 ? fileError = true : numSoundFiles++;
 	
     //sonidos del jugador
 	(playerSound[BOUNCE_SND] 	= WGE_LoadSound("snd\bounce.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
