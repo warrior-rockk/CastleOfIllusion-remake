@@ -150,7 +150,7 @@ begin
 				//componemos opciones menu
 				optionString = gameTexts[config.lang][LAN_SEL_TEXT];
 				//componemos un cuadro de dialogo
-				idDialog = WGE_Dialog(cResX>>1,cResY>>1,200,(text_height(fntGame,optionString)*2)+(dialogTextMarginY*2)+(dialogTextPadding*2));
+				idDialog = WGE_Dialog(cResX>>1,cResY>>1,200,(text_height(fntGame,optionString)*2)+(dialogTextMarginY*2)+(dialogMenuPadding*2));
 				
 				//lo redibujamos inicialmente
 				redrawMenu	= true;
@@ -294,7 +294,7 @@ begin
 				//componemos lista menu
 				optionString = gameTexts[config.lang][MENU_TEXT];
 				//componemos un cuadro de dialogo
-				idDialog = WGE_Dialog(cResX>>1,cResY>>1,125,(text_height(fntGame,optionString)*2)+(dialogTextMarginY*2)+(dialogTextPadding*2));
+				idDialog = WGE_Dialog(cResX>>1,cResY>>1,125,(text_height(fntGame,optionString)*2)+(dialogTextMarginY*2)+(dialogMenuPadding*2));
 				
 				//escribim,os las opciones
 				WGE_WriteDialogOptions(idDialog,optionString,optionNum);				
@@ -359,7 +359,7 @@ begin
 				//componemos opciones menu
 				optionString = gameTexts[config.lang][CONFIG_TEXT];
 				//componemos un cuadro de dialogo
-				idDialog = WGE_Dialog(cResX>>1,cResY>>1,250,(text_height(fntGame,optionString)*5)+(dialogTextMarginY*2)+(dialogTextPadding*5));
+				idDialog = WGE_Dialog(cResX>>1,cResY>>1,250,(text_height(fntGame,optionString)*5)+(dialogTextMarginY*2)+(dialogMenuPadding*5));
 				
 				//escribimos las opciones
 				WGE_WriteDialogOptions(idDialog,optionString,optionNum);
@@ -487,7 +487,7 @@ begin
 				optionString = gameTexts[config.lang][CONFIG_CONTROLS_TEXT];
 				
 				//componemos un cuadro de dialogo
-				idDialog = WGE_Dialog(cResX>>1,cResY>>1,150,(text_height(fntGame,optionString)*2)+(dialogTextMarginY*2)+(dialogTextPadding*2));
+				idDialog = WGE_Dialog(cResX>>1,cResY>>1,150,(text_height(fntGame,optionString)*2)+(dialogTextMarginY*2)+(dialogMenuPadding*2));
 				
 				//escribimos las opciones
 				WGE_WriteDialogOptions(idDialog,optionString,optionNum);
@@ -547,7 +547,7 @@ begin
 				optionString = gameTexts[config.lang][CONFIG_CONTROLS_LIST_TEXT];
 				
 				//componemos un cuadro de dialogo
-				idDialog = WGE_Dialog(cResX>>1,cResY>>1,200,(text_height(fntGame,optionString)*7)+(dialogTextMarginY*2)+(dialogTextPadding*7));
+				idDialog = WGE_Dialog(cResX>>1,cResY>>1,200,(text_height(fntGame,optionString)*7)+(dialogTextMarginY*2)+(dialogMenuPadding*7));
 				
 				//escribimos las opciones
 				WGE_WriteDialogOptions(idDialog,optionString,optionNum);
@@ -634,7 +634,7 @@ begin
 				optionString = optionString = gameTexts[config.lang][CONFIG_CONTROLS_LIST_TEXT];;
 				
 				//componemos un cuadro de dialogo
-				idDialog = WGE_Dialog(cResX>>1,cResY>>1,200,(text_height(fntGame,optionString)*7)+(dialogTextMarginY*2)+(dialogTextPadding*7));
+				idDialog = WGE_Dialog(cResX>>1,cResY>>1,200,(text_height(fntGame,optionString)*7)+(dialogTextMarginY*2)+(dialogMenuPadding*7));
 				
 				//escribimos las opciones
 				WGE_WriteDialogOptions(idDialog,optionString,optionNum);
@@ -740,6 +740,18 @@ begin
 					frame;
 				until(controlLoggerFinished);
 				
+				signal(idPlayer,s_freeze);
+				
+				idDialog = WGE_Dialog(cResX>>1,cHUDRegionY+(cHUDRegionH>>1),cHUDRegionW-10,25);
+				WGE_Write(fntGame,10,cHUDRegionY+(25>>1),ALIGN_CENTER_LEFT,"YOU MUST FIND THE SEVEN\nGEMS OF THE RAINBOW.");
+				repeat
+					frame;
+				until(WGE_CheckControl(CTRL_ANY,E_DOWN));
+				delete_text(all_text);
+				WGE_Write(fntGame,10,cHUDRegionY+(25>>1),ALIGN_CENTER_LEFT,"THE WILL GIVE YOU THE\nPOWER TO OVERCOME MIZRABEL.");
+				repeat
+					frame;
+				until(WGE_CheckControl(CTRL_ANY,E_DOWN));
 				game.numLevel = 0;
 				
 				game.state = LOADLEVEL;

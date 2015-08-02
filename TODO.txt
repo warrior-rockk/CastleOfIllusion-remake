@@ -1,4 +1,5 @@
-BUGS:   -tiles que se quedan en negro al reiniciar nivel!! (activadas funciones para debuggearlo)
+BUGS:   -si estas cerca del borde del mapeado sin tiles solidos, hace autoscrollX!!
+	     -tiles que se quedan en negro al reiniciar nivel!! (activadas funciones para debuggearlo)
 		-jarra se enganchó en la pared izquierda (al lanzarla o al caerse por tocar pompa?)
 		-que la doorbutton abra nada mas pulsar el boton
 		-no es practico  el margin de outregion de los objetos ya que no aparecen al salirte un poco
@@ -21,7 +22,7 @@ PLATFORMS:
 OBJECTS: 
 		-el coin rebota mas rato y el giro va perdiendo velocidad
 		
-ENGINE: -Si no hay archivo de configuracion, que te pida el idioma al arrancar
+ENGINE: -Limpiar las utilidades de creacion de niveles/pngfpg para que sea mas generica y ejecutable
 		-ningun proceso deberia poder acumular vY ni vX superiores a ciertos valores.
 		-crear variables de velocidad por defecto para poder asignar velocidades a las cosas proporcionales y desde un mismo lugar
 		-separar correctamente lo que pertenece al engine general y lo que seria game concreto de castle. Luego podria convertirse en una libreria .dcl

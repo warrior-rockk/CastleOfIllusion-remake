@@ -20,7 +20,7 @@ begin
 	while ( (breakPosition = find(text,"\n",startChar)) >= 0 )
 		write(fntFile,x,posY,align,substr(text,startChar,breakPosition-startChar));
 		startChar = breakPosition + 2;
-		posy += dialogTextPadding;
+		posy += text_height(fntGame,text) + dialogTextPadding;
 	end;
 	
 	//escribimos la ultima linea
@@ -160,11 +160,11 @@ begin
 		
 		//pintamos el cursor si esta la opcion seleccionada
 		if (optionNum == selected)
-			map_put(fpgGame,idDialog.graph,12,dialogCursorMarginX,dialogTextMarginY+((optionNum-1)*(text_height(fntGame,textOption)+dialogTextPadding)));
+			map_put(fpgGame,idDialog.graph,12,dialogCursorMarginX,dialogTextMarginY+((optionNum-1)*(text_height(fntGame,textOption)+dialogMenuPadding)));
 		end;
 		
 		//incrementamos la posicion Y del texto		
-		textPosY += text_height(fntGame,textOption)+dialogTextPadding;
+		textPosY += text_height(fntGame,textOption)+dialogMenuPadding;
 		//incrementamos el numero de opcion
 		optionNum++;
 
@@ -190,7 +190,7 @@ begin
 	textPosX = idDialog.x + (idDialog.width>>1) - text_width(fntGame,"00");
 	textPosY = idDialog.y - (idDialog.height>>1) + dialogTextMarginY;
 	
-	textPosY += (text_height(fntGame,textValues)+dialogTextPadding)*(selected-1);
+	textPosY += (text_height(fntGame,textValues)+dialogMenuPadding)*(selected-1);
 	
 	//mientras queden opciones en el string
 	while(endChar >= 0) 
@@ -224,18 +224,18 @@ begin
 	textPosX = idDialog.x + (idDialog.width>>1) - dialogTextMarginX;
 	textPosY = idDialog.y - (idDialog.height>>1) + dialogTextMarginY;
 	//establecemos posicion relativa
-	textPosY += (text_height(fntGame,value)+dialogTextPadding)*(numOption-1);
+	textPosY += (text_height(fntGame,value)+dialogMenuPadding)*(numOption-1);
 	
 	//escribimos el valor
 	write(fntGame,textPosX,textPosY,ALIGN_CENTER_RIGHT,value);
 	
 	//pintamos flechas que indican los limites
 	if (value > minValue)
-		map_xput(fpgGame,idDialog.graph,12,idDialog.width-dialogTextMarginX-dialogCursorMarginX-text_width(fntGame,"00"),((text_height(fntGame,value)+dialogTextPadding)*(numOption-1))+dialogTextMarginY,0,100,B_HMIRROR);
+		map_xput(fpgGame,idDialog.graph,12,idDialog.width-dialogTextMarginX-dialogCursorMarginX-text_width(fntGame,"00"),((text_height(fntGame,value)+dialogMenuPadding)*(numOption-1))+dialogTextMarginY,0,100,B_HMIRROR);
 		
 	end;
 	if (value < maxValue)
-		map_put(fpgGame,idDialog.graph,12,idDialog.width-dialogTextMarginX+dialogCursorMarginX,((text_height(fntGame,value)+dialogTextPadding)*(numOption-1))+dialogTextMarginY);
+		map_put(fpgGame,idDialog.graph,12,idDialog.width-dialogTextMarginX+dialogCursorMarginX,((text_height(fntGame,value)+dialogMenuPadding)*(numOption-1))+dialogTextMarginY);
 	end;
 	
 end;

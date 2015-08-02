@@ -42,7 +42,8 @@ const
 	//Cuadros dialogo
 	dialogTextMarginX		= 30;			//Margen horizontal texto
 	dialogTextMarginY		= 10;			//Margen Vertical texto
-	dialogTextPadding 		= 16;			//Separacion vertical lineas
+	dialogTextPadding 		= 0;			//Separacion vertical lineas
+	dialogMenuPadding       = 16; 			//Separacion vertical lineas menu
 	dialogCursorMarginX 	= 10;			//Margen cursor
 End;
 
