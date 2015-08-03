@@ -223,6 +223,7 @@ Type _tile
 	byte tileProf;				//Propiedad del tile: Profundidad
 	byte tileAlpha;             //Propiedad del tile: Opacidad
 	byte tileCode; 				//Codigo del tile
+	byte refresh;				//flag de actualizar tile
 end;
 
 //Vector

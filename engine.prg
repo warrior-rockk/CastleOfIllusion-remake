@@ -743,6 +743,8 @@ begin
 				
 				//Creamos el jugador
 				player();
+				//congelamos al personaje
+				signal(idPlayer,s_freeze);
 				
 				//creamos animacion "OldMan"
 				WGE_Animation(fpgGame,13,13,130,112,0,ANIM_LOOP);
@@ -752,6 +754,7 @@ begin
 				while(fading) frame; end;
 				
 				//reproducimos animacion player
+				signal(idPlayer,s_wakeup);
 				controlLoggerPlayer("prelude.rec");
 				repeat
 					frame;
@@ -768,32 +771,38 @@ begin
 						frame;
 					until(WGE_CheckControl(CTRL_ANY,E_DOWN));
 				end;
+				//eliminamos cuadro de texto
+				delete_text(all_text);
+				signal(idDialog,s_kill);
+				
 				//parpadea y desaparece el "old man"
 				repeat
 					blinkEntity(get_id(TYPE WGE_Animation));
 					frame;
 				until (tickClock(cNumFPS*3));
-				
 				signal(TYPE WGE_Animation,s_kill);
+				
+				//retardo
+				WGE_Wait(50);
 				
 				//subimos la puerta cambiando los tiles correspondientes
 				from i=7 to 5 step -1;
-					tileMap[i][10].tileGraph = 999;
-					tileMap[i][11].tileGraph = 999;
-					tileMap[i][12].tileGraph = 999;
-				
-					signal(TYPE pTile,s_kill);
-					WGE_DrawMap();
-				
+					WGE_ReplaceTile(i,10,999);
+					WGE_ReplaceTile(i,11,999);
+					WGE_ReplaceTile(i,12,999);
+					//reproducimos sonido
+					WGE_PlayEntitySnd(id,objectSound[DOOR_SND]);
+					//retardo				
 					WGE_Wait(50);
 				end;
 				
+				//reproducimos animacion player
 				signal(idPlayer,s_wakeup);
-				//controlLoggerRecorder("prelude2.rec");
 				controlLoggerPlayer("prelude2.rec");
 				repeat
 					frame;
 				until(controlLoggerFinished);
+				
 				//congelamos al personaje
 				signal(idPlayer,s_freeze);
 				//apagamos pantalla
@@ -801,12 +810,14 @@ begin
 				//detenemos sonido
 				fade_music_off(cFadeMusicTime);
 				while(fading || is_playing_song()) frame; end;
+				
 				//limpiamos el nivel
 				clearLevel();
-				signal(idDialog,s_kill);
+				
 				//iniciamos nivel
 				game.numLevel = 0;
-								
+				
+				//cambio de estado				
 				game.state = LOADLEVEL;
 				
 			end;
@@ -1371,7 +1382,8 @@ Begin
 				tileMap[i][j].tileProf 	= isBitSet(mapTileCode,BIT_TILE_DELANTE);
 				tileMap[i][j].tileAlpha = isBitSet(mapTileCode,BIT_TILE_ALPHA);
 				tileMap[i][j].tileCode 	= mapTileCode & 31;	
-
+				tileMap[i][j].refresh 	= false;
+				
 				//Comprobamos si algun tile usa alpha
 				if (tileMap[i][j].tileAlpha) mapUsesAlpha = 1; end;
 							
@@ -1633,7 +1645,13 @@ BEGIN
 			redraw = 1;
 		end;
 		
-			
+		//si se activa flag de actualizar tile
+		if (tileExists(i,j))
+			if (tileMap[i][j].refresh)
+				redraw = true;
+			end;
+		end;
+		
 		//Redibujamos el tile
 		if (redraw)
 			//posicion
@@ -1666,6 +1684,9 @@ BEGIN
 				else
 					z = cZMap1;
 				end;
+				
+				//bajamos flag actualizacion
+				if (tileMap[i][j].refresh) tileMap[i][j].refresh = false; end;
 			else
 				//tile no existente
 				graph = 79; //intentando debuggear el fallo de tile en negro
@@ -1684,7 +1705,9 @@ BEGIN
 				map_put(file,graph,write_in_map(0,j,3),this.ancho>>1,8);
 			end;
 			
+			//bajamos flags
 			redraw = 0;		
+						
 		end;
 		
 		//Comprobacion codigos de tile
@@ -1714,6 +1737,13 @@ BEGIN
 		frame;
 	
 	end;
+end;
+
+//funcion que cambia el grafico de un tile
+function WGE_ReplaceTile(i,j,tileGraph)
+begin
+	tileMap[i][j].tileGraph = tileGraph;
+	tileMap[i][j].refresh = true;
 end;
 
 //Cargamos datos del nivel
