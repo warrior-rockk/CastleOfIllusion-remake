@@ -755,6 +755,7 @@ begin
 				
 				//reproducimos animacion player
 				signal(idPlayer,s_wakeup);
+				
 				controlLoggerPlayer("prelude.rec");
 				repeat
 					frame;
@@ -783,7 +784,7 @@ begin
 				signal(TYPE WGE_Animation,s_kill);
 				
 				//retardo
-				WGE_Wait(50);
+				WGE_Wait(80);
 				
 				//subimos la puerta cambiando los tiles correspondientes
 				from i=7 to 5 step -1;
@@ -2014,12 +2015,12 @@ begin
 					//Posicion X para personaje en centro pantalla
 					scroll[cGameScroll].x0 = idPlayer.x - (cGameRegionW>>1);
 				else
-					//Posicion X: al llegar a la mitad del primer tile izquierdo de la pantalla, transicion room
-					if (idPlayer.x <= (scroll[0].x0 + (cTileSize)))
+					//Posicion X: al llegar a la mitad del primer tile izquierdo de la pantalla y que no estes al borde:transicion room
+					if (idPlayer.x <= (scroll[0].x0 + (cTileSize)) && scroll[cGameScroll].x0 > 0)
 						doTransition = ROOM_TRANSITION_LEFT;
 					end;
-					//Posicion X: al llegar a la mitad del ultimo tile izquierdo de la pantalla, transicion room
-					if (idPlayer.x >= (scroll[0].x0 +  cGameRegionW - (cTileSize)))
+					//Posicion X: al llegar a la mitad del ultimo tile izquierdo de la pantalla y que no sea el ultimo del mapa, transicion room
+					if (idPlayer.x >= (scroll[0].x0 +  cGameRegionW - (cTileSize)) && (scroll[cGameScroll].x0+cGameRegionW) < (level.numTilesX*cTileSize)) 
 						doTransition = ROOM_TRANSITION_RIGHT;
 					end;
 					//si no hay roomTransition, centramos scroll mientras no haya stopScroll o no estés en los limites para aplicarlo
@@ -2403,7 +2404,7 @@ begin
 			end;
 		end;
 	else
-		return NO_SOLID;
+		return NO_SOLID; 
 	end;
 end;
 

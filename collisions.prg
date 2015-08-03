@@ -284,6 +284,9 @@ Begin
 					end;
 				end;
 			end;
+		else
+			//si no existe, se considera solido
+			return dist;
 		end;
 				
 		//Incrementamos distancia
