@@ -749,6 +749,9 @@ begin
 				//creamos animacion "OldMan"
 				WGE_Animation(fpgGame,13,13,130,112,0,ANIM_LOOP);
 				
+				//reproducimos musica preludio
+				play_song(gameMusic[DOORSELECT_MUS],0);
+	
 				//encendemos pantalla
 				fade(100,100,100,cFadeTime);
 				while(fading) frame; end;
@@ -2653,6 +2656,7 @@ begin
 	(gameMusic[END_LEVEL_MUS]   = WGE_LoadMusic("mus\levelEnd.ogg")) 	<= 0 ? fileError = true : numSoundFiles++;
 	(gameMusic[BOSS_MUS]    	= WGE_LoadMusic("mus\boss.ogg"))		<= 0 ? fileError = true : numSoundFiles++;
 	(gameMusic[INTRO_MUS]    	= WGE_LoadMusic("mus\intro.ogg"))		<= 0 ? fileError = true : numSoundFiles++;
+	(gameMusic[DOORSELECT_MUS] 	= WGE_LoadMusic("mus\castleDoor.ogg"))  <= 0 ? fileError = true : numSoundFiles++;
 	
 	//sonidos generales
 	(gameSound[PAUSE_SND] 		= WGE_LoadSound("snd\pause.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
