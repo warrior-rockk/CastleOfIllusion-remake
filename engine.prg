@@ -750,7 +750,7 @@ begin
 				WGE_Animation(fpgGame,13,13,130,112,0,ANIM_LOOP);
 				
 				//reproducimos musica preludio
-				play_song(gameMusic[DOORSELECT_MUS],0);
+				play_song(gameMusic[DOORSELECT_MUS],1);
 	
 				//encendemos pantalla
 				fade(100,100,100,cFadeTime);
