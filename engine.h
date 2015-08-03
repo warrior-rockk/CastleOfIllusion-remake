@@ -13,7 +13,7 @@
 #define setBit(a,b)     ( a |= b )								//Setear un bit
 #define unsetBit(a,b)   ( a &=~ b )								//Quitar un bit
 #define isType(a,b)     (a.reserved.process_type == b) 			//Funcion para comprobar tipo proceso
-#define getType(a)      (a.reserved.process_type)				//devuelve el estado de un proceso
+#define getType(a)      (a.reserved.process_type)				//devuelve el tipo de un proceso
 #define tickClock(a)    ((clockCounter % a) == 0 && clockTick)	//Funcion que devuelve flanco de numero de frames especificados
 #define tick100ms       ((clockCounter % (cNumFPS/10)) == 0 && clockTick) //Flanco de 100ms
 

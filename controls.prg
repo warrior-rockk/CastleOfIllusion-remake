@@ -282,6 +282,7 @@ begin
 	controlLoggerPlaying = false;
 	controlLoggerFinished = true;
 	StopControlPlaying = false;
+	controlPlayingFrame = 0;
 	
 	log("Reproduccion detenida",DEBUG_ENGINE);
 end;

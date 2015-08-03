@@ -33,11 +33,15 @@
 #define PAUSE_TEXT							17
 #define GAMEOVER_TEXT						18
 #define LAN_SEL_TEXT                        19
+#define PRELUDE1_TEXT						20
+#define PRELUDE2_TEXT						21
+#define PRELUDE3_TEXT						22
+#define PRELUDE4_TEXT						23
 
 //Constantes
 const
 	cNumLanguages	= 2; 			//Numero de idiomas
-	cNumGameTexts   = 20;			//Numero de textos
+	cNumGameTexts   = 24;			//Numero de textos
 	
 	//Cuadros dialogo
 	dialogTextMarginX		= 30;			//Margen horizontal texto
@@ -45,6 +49,8 @@ const
 	dialogTextPadding 		= 0;			//Separacion vertical lineas
 	dialogMenuPadding       = 16; 			//Separacion vertical lineas menu
 	dialogCursorMarginX 	= 10;			//Margen cursor
+	cDialogColor 			= 12;			//Color de las lineas
+	cDialogBackColor 		= 3;			//Color de fondo 
 End;
 
 //variables globales

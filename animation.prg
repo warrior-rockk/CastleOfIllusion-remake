@@ -17,6 +17,9 @@ begin
 	animFinished = false;
 	idFather = father.id;
 	
+	//no puede tener velocidad 0
+	if (animationSpeed == 0) animationSpeed = 1; end;
+	
 	//si el proceso cambia de estado, se reseta cuenta
 	if ( idFather.this.prevState <> idFather.this.state )
 		idFather.this.frameCount = 0;
@@ -68,7 +71,10 @@ begin
 	ctype = c_scroll;
 	
 	z = cZObject;
-
+	
+	//no puede tener velocidad 0
+	if (animationSpeed == 0) animationSpeed = 1; end;
+	
 	//lanzamos la animacion hasta que se acabe si el modo el ANIM_ONCE
 	repeat
 	

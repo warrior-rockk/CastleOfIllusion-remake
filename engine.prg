@@ -88,6 +88,9 @@ begin
 	//estado inicial
 	firstRun ? game.state = LANG_SEL : game.state = INTRO;
 	
+	//Arrancamos el reloj del juego
+	WGE_Clock();
+	
 	//Arrancamos el loop del juego
 	WGE_Loop();
 	
@@ -100,11 +103,34 @@ begin
 	#endif
 end;
 
+//funcion que gestiona el flanco de reloj
+process WGE_Clock()
+private
+	byte clockTickMem;						//Memoria Flanco Reloj
+begin
+	loop
+		//contador de reloj por frames.A 60 fps = 16ms 
+		clockCounter++;
+
+		//Flanco de reloj segun intervalo escogido
+		if (clockCounter % cTimeInterval == 0) 
+			if (!clockTickMem)
+				clockTick = true;
+				clockTickMem = true;
+			end;
+		else
+			clockTick = false;
+			clockTickMem = false;
+		end;
+		
+		frame;
+	end;
+end;
+
 //Bucle principal del engine que controla el juego
 process WGE_Loop()
 private
 	int i; 									//Variables auxiliares
-	byte clockTickMem;						//Memoria Flanco Reloj
 	int counterTime;						//tiempo de paso
 	
 	int pauseText;							//Id texto de pausa
@@ -124,20 +150,7 @@ begin
 	priority = cMainPrior;
 	
 	loop
-		//contador de reloj por frames.A 60 fps = 16ms 
-		clockCounter++;
-
-		//Flanco de reloj segun intervalo escogido
-		if (clockCounter % cTimeInterval == 0) 
-			if (!clockTickMem)
-				clockTick = true;
-				clockTickMem = true;
-			end;
-		else
-			clockTick = false;
-			clockTickMem = false;
-		end;
-			
+					
 		//estado del juego
 		switch (game.state)
 			case LANG_SEL:
@@ -731,29 +744,69 @@ begin
 				//Creamos el jugador
 				player();
 				
+				//creamos animacion "OldMan"
+				WGE_Animation(fpgGame,13,13,130,112,0,ANIM_LOOP);
+				
 				//encendemos pantalla
 				fade(100,100,100,cFadeTime);
 				while(fading) frame; end;
 				
+				//reproducimos animacion player
 				controlLoggerPlayer("prelude.rec");
 				repeat
 					frame;
 				until(controlLoggerFinished);
-				
+				//congelamos al personaje
 				signal(idPlayer,s_freeze);
 				
+				//mostramos los textos del preludio
 				idDialog = WGE_Dialog(cResX>>1,cHUDRegionY+(cHUDRegionH>>1),cHUDRegionW-10,25);
-				WGE_Write(fntGame,10,cHUDRegionY+(25>>1),ALIGN_CENTER_LEFT,"YOU MUST FIND THE SEVEN\nGEMS OF THE RAINBOW.");
+				from i=PRELUDE1_TEXT to PRELUDE4_TEXT;
+					delete_text(all_text);
+					WGE_Write(fntGame,10,cHUDRegionY+(25>>1),ALIGN_CENTER_LEFT,gameTexts[config.lang][i]);
+					repeat
+						frame;
+					until(WGE_CheckControl(CTRL_ANY,E_DOWN));
+				end;
+				//parpadea y desaparece el "old man"
 				repeat
+					blinkEntity(get_id(TYPE WGE_Animation));
 					frame;
-				until(WGE_CheckControl(CTRL_ANY,E_DOWN));
-				delete_text(all_text);
-				WGE_Write(fntGame,10,cHUDRegionY+(25>>1),ALIGN_CENTER_LEFT,"THE WILL GIVE YOU THE\nPOWER TO OVERCOME MIZRABEL.");
-				repeat
-					frame;
-				until(WGE_CheckControl(CTRL_ANY,E_DOWN));
-				game.numLevel = 0;
+				until (tickClock(cNumFPS*3));
 				
+				signal(TYPE WGE_Animation,s_kill);
+				
+				//subimos la puerta cambiando los tiles correspondientes
+				from i=7 to 5 step -1;
+					tileMap[i][10].tileGraph = 999;
+					tileMap[i][11].tileGraph = 999;
+					tileMap[i][12].tileGraph = 999;
+				
+					signal(TYPE pTile,s_kill);
+					WGE_DrawMap();
+				
+					WGE_Wait(50);
+				end;
+				
+				signal(idPlayer,s_wakeup);
+				//controlLoggerRecorder("prelude2.rec");
+				controlLoggerPlayer("prelude2.rec");
+				repeat
+					frame;
+				until(controlLoggerFinished);
+				//congelamos al personaje
+				signal(idPlayer,s_freeze);
+				//apagamos pantalla
+				fade(0,0,0,cFadeTime);
+				//detenemos sonido
+				fade_music_off(cFadeMusicTime);
+				while(fading || is_playing_song()) frame; end;
+				//limpiamos el nivel
+				clearLevel();
+				signal(idDialog,s_kill);
+				//iniciamos nivel
+				game.numLevel = 0;
+								
 				game.state = LOADLEVEL;
 				
 			end;

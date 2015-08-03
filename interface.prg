@@ -50,8 +50,6 @@ end;
 function WGE_DrawDialog(file,graph,int width,int height)
 private
 	int dialogTileSize 	= 3; 	//tamaño del motivo de las esquinas
-	int dialogColor 	= 12;	//Color de las lineas
-	int dialogBackColor = 8;	//Color de fondo
 	int i;						//Var aux
 begin
 
@@ -64,17 +62,17 @@ if (height < (dialogTileSize * 2)+1)
 end;
 
 //coloreamos el dialogo
-map_clear(file,graph,dialogBackColor);
+map_clear(file,graph,cDialogBackColor);
 
 //dibujamos las esquinas
-drawCorner(file,graph,0,0,dialogColor,0);
-drawCorner(file,graph,width-dialogTileSize,0,dialogColor,B_HMIRROR);
-drawCorner(file,graph,0,height-dialogTileSize,dialogColor,B_VMIRROR);
-drawCorner(file,graph,width-dialogTileSize,height-dialogTileSize,dialogColor,B_HMIRROR | B_VMIRROR);
+drawCorner(file,graph,0,0,cDialogColor,0);
+drawCorner(file,graph,width-dialogTileSize,0,cDialogColor,B_HMIRROR);
+drawCorner(file,graph,0,height-dialogTileSize,cDialogColor,B_VMIRROR);
+drawCorner(file,graph,width-dialogTileSize,height-dialogTileSize,cDialogColor,B_HMIRROR | B_VMIRROR);
 
 //dibujamos lineas  marco
 drawing_map(file,graph);
-drawing_color(dialogColor);
+drawing_color(cDialogColor);
 //linea superior
 draw_line(dialogTileSize,0,width-1-dialogTileSize,0);
 //linea inferior
