@@ -99,7 +99,6 @@
 #define END_LEVEL_MUS           1
 #define BOSS_MUS				3
 #define INTRO_MUS               4
-#define DOORSELECT_MUS			5
 
 //parametros del checkInRegion
 #define CHECKREGION_ALL         0		//Comprueba en toda la region

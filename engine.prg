@@ -34,24 +34,24 @@ begin
 	levelFiles[0].MapFile 	= "levels\testRoom\testRoom.bin";
 	levelFiles[0].DataFile 	= "levels\testRoom\testRoom.dat";
 	levelFiles[0].TileFile 	= "levels\testRoom\tiles.fpg";
-	//level 1
-	levelFiles[1].MapFile 	= "levels\ToyLand\ToyLand.bin";
-	levelFiles[1].DataFile 	= "levels\ToyLand\ToyLand.dat";
-	levelFiles[1].TileFile 	= "levels\ToyLand\tiles.fpg";
-	levelFiles[1].MusicFile = "mus\ToyLand.ogg";
-	levelFiles[1].MusicIntroEnd = 1.87;
+	//level 1:preludio
+	levelFiles[1].MapFile 	= "levels\CastleDoor\CastleDoor.bin";
+	levelFiles[1].DataFile 	= "levels\CastleDoor\CastleDoor.dat";
+	levelFiles[1].TileFile 	= "levels\CastleDoor\tiles.fpg";
+	levelFiles[1].MusicFile = "mus\castleDoor.ogg";
 	//level 2
-	levelFiles[2].MapFile 	= "levels\ToyLand2\ToyLand2.bin";
-	levelFiles[2].DataFile 	= "levels\ToyLand2\ToyLand2.dat";
-	levelFiles[2].TileFile 	= "levels\ToyLand2\tiles.fpg";
+	levelFiles[2].MapFile 	= "levels\ToyLand\ToyLand.bin";
+	levelFiles[2].DataFile 	= "levels\ToyLand\ToyLand.dat";
+	levelFiles[2].TileFile 	= "levels\ToyLand\tiles.fpg";
 	levelFiles[2].MusicFile = "mus\ToyLand.ogg";
 	levelFiles[2].MusicIntroEnd = 1.87;
 	//level 3
-	levelFiles[3].MapFile 	= "levels\CastleDoor\CastleDoor.bin";
-	levelFiles[3].DataFile 	= "levels\CastleDoor\CastleDoor.dat";
-	levelFiles[3].TileFile 	= "levels\CastleDoor\tiles.fpg";
-	//levelFiles[3].MusicFile = "mus\ToyLand.ogg";
-	
+	levelFiles[3].MapFile 	= "levels\ToyLand2\ToyLand2.bin";
+	levelFiles[3].DataFile 	= "levels\ToyLand2\ToyLand2.dat";
+	levelFiles[3].TileFile 	= "levels\ToyLand2\tiles.fpg";
+	levelFiles[3].MusicFile = "mus\ToyLand.ogg";
+	levelFiles[3].MusicIntroEnd = 1.87;
+		
 	//cargamos la paleta general del juego
 	load_pal("pal\game.pal");
 	
@@ -83,7 +83,7 @@ begin
 	game.playerLife 	= 3;
 	game.playerMaxLife  = 3;
 	game.score      	= 0;
-	game.numLevel       = 3;//0;
+	game.numLevel       = 0;
 	
 	//estado inicial
 	firstRun ? game.state = LANG_SEL : game.state = INTRO;
@@ -337,7 +337,7 @@ begin
 								while(fading) frame; end;
 								
 								//cambiamos de paso
-								game.state = PRELUDE; //LOADLEVEL;
+								game.state = LOADLEVEL;
 							end;
 							case 2: //Config
 								game.state = MENU_CONFIG;
@@ -727,6 +727,9 @@ begin
 				delete_text(all_text);
 			end;
 			case PRELUDE:
+				//cargamos el nivel prelude
+				game.numLevel = 1;
+				
 				//Cargamos el mapeado del nivel
 				WGE_LoadMapLevel(levelFiles[game.numLevel].MapFile,levelFiles[game.numLevel].TileFile);
 				//Cargamos el archivo de datos del nivel
@@ -749,16 +752,12 @@ begin
 				//creamos animacion "OldMan"
 				WGE_Animation(fpgGame,13,13,130,112,0,ANIM_LOOP);
 				
-				//reproducimos musica preludio
-				play_song(gameMusic[DOORSELECT_MUS],1);
-	
 				//encendemos pantalla
 				fade(100,100,100,cFadeTime);
 				while(fading) frame; end;
 				
 				//reproducimos animacion player
 				signal(idPlayer,s_wakeup);
-				
 				controlLoggerPlayer("prelude.rec");
 				repeat
 					frame;
@@ -783,11 +782,11 @@ begin
 				repeat
 					blinkEntity(get_id(TYPE WGE_Animation));
 					frame;
-				until (tickClock(cNumFPS*3));
+				until (tickClock(cNumFPS*4));
 				signal(TYPE WGE_Animation,s_kill);
 				
 				//retardo
-				WGE_Wait(80);
+				WGE_Wait(60);
 				
 				//subimos la puerta cambiando los tiles correspondientes
 				from i=7 to 5 step -1;
@@ -819,7 +818,7 @@ begin
 				clearLevel();
 				
 				//iniciamos nivel
-				game.numLevel = 0;
+				game.numLevel = 2;
 				
 				//cambio de estado				
 				game.state = LOADLEVEL;
@@ -1142,10 +1141,9 @@ begin
 					while(fading || is_playing_song()) frame; end;						
 					//limpiamos el nivel
 					clearLevel();
-					//cargamos el siguiente nivel				
-					game.numLevel++;		
+						
 					//cambiamos de estado
-					game.state = LOADLEVEL;
+					game.state = PRELUDE;
 				else
 					//mensajes tutorial
 					switch(controlPlayingFrame)
@@ -2656,7 +2654,6 @@ begin
 	(gameMusic[END_LEVEL_MUS]   = WGE_LoadMusic("mus\levelEnd.ogg")) 	<= 0 ? fileError = true : numSoundFiles++;
 	(gameMusic[BOSS_MUS]    	= WGE_LoadMusic("mus\boss.ogg"))		<= 0 ? fileError = true : numSoundFiles++;
 	(gameMusic[INTRO_MUS]    	= WGE_LoadMusic("mus\intro.ogg"))		<= 0 ? fileError = true : numSoundFiles++;
-	(gameMusic[DOORSELECT_MUS] 	= WGE_LoadMusic("mus\castleDoor.ogg"))  <= 0 ? fileError = true : numSoundFiles++;
 	
 	//sonidos generales
 	(gameSound[PAUSE_SND] 		= WGE_LoadSound("snd\pause.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;

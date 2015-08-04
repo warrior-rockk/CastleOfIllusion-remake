@@ -1,4 +1,6 @@
-BUGS:   -tiles que se quedan en negro al reiniciar nivel!! (activadas funciones para debuggearlo)
+BUGS:   -las musicas de nivel deberian cargarse en el load_files??
+		-llamar a las funciones WGE_Loop wgeLoop,etc..
+         -tiles que se quedan en negro al reiniciar nivel!! (activadas funciones para debuggearlo)
 		-jarra se enganchó en la pared izquierda (al lanzarla o al caerse por tocar pompa?)
 		-que la doorbutton abra nada mas pulsar el boton
 		-no es practico  el margin de outregion de los objetos ya que no aparecen al salirte un poco
