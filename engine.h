@@ -37,6 +37,7 @@
 #define PRELUDE         17
 #define LEVEL_SELECT    18
 #define INITLEVEL		19
+#define RESTARTGAME     20
 
 //Codigo del tile
 //bits del 0 al 4 del mapa de tiles

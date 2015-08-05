@@ -88,10 +88,10 @@ begin
 	game.playerLife 	= 3;
 	game.playerMaxLife  = 3;
 	game.score      	= 0;
-	game.numLevel       = PRELUDE_LEVEL;
+	game.numLevel       = TOYLAND_LEVEL; //TUTORIAL_LEVEL;
 	
 	//estado inicial
-	firstRun ? game.state = LANG_SEL : game.state = INTRO;
+	firstRun ? game.state = LANG_SEL : game.state = LOADLEVEL; //INTRO;
 	
 	//Arrancamos el reloj del juego
 	WGE_Clock();
@@ -329,8 +329,6 @@ begin
 							case 1: //Play
 								//apagamos pantalla
 								wgeFadeOut(FADE_SCREEN);
-								//seteamos nivel tutorial
-								game.numLevel = TUTORIAL_LEVEL;
 								//cambiamos de paso
 								game.state = LOADLEVEL;
 							end;
@@ -833,9 +831,9 @@ begin
 					signal(idPlayer,s_freeze);
 					//apagamos pantalla y sonido
 					wgeFadeOut(FADE_SCREEN | FADE_MUSIC);
-					
 					//limpiamos el nivel
 					clearLevel();
+					
 				end;
 			end;
 			case LOADLEVEL:		
@@ -879,6 +877,12 @@ begin
 					case LEVEL_SELECT_LEVEL:
 						//encendemos pantalla
 						wgeFadeIn(FADE_SCREEN);
+						
+						//si no suena la musica, la reproducimos
+						if (!is_playing_song())
+							//reproducimos la musica del nivel
+							WGE_PlayMusicLevel();
+						end;
 						
 						//comprobamos si hay algun nivel completado para "tapiar" puerta
 						from i=0 TO cNumLevels;
@@ -973,30 +977,6 @@ begin
 					end;
 				end;
 				
-				//pausa del juego
-				if (WGE_CheckControl(CTRL_START,E_DOWN) || (!window_status && !game.paused))
-					if (game.paused)
-						signal(idDialog,s_kill);
-						HUD();
-						gameSignal(s_wakeup_tree);
-						delete_text(pauseText);
-						game.paused = false;
-						resume_song();
-						//reproducimos sonido
-						WGE_PlayEntitySnd(id,gameSound[PAUSE_SND]);
-					else
-						gameSignal(s_freeze_tree);
-						signal(TYPE HUD,s_kill);
-						frame;
-						//idDialog = WGE_DrawDialog(cResX>>1,cResY-15,cResX - 26,24,"",0);
-						pauseText = write(fntGame,cResX>>1,cResY-15,ALIGN_CENTER,gameTexts[config.lang][PAUSE_TEXT]);
-						game.paused = true;
-						pause_song();
-						//reproducimos sonido
-						WGE_PlayEntitySnd(id,gameSound[PAUSE_SND]);
-					end;
-				end;
-				
 				//fin del nivel actual
 				if (game.endLevel)
 					game.state = LEVELENDED;
@@ -1047,6 +1027,102 @@ begin
 						//reiniciamos el nivel
 						game.state = RESTARTLEVEL;
 					end;
+				end;
+				
+				//pausa del juego
+				if ((WGE_CheckControl(CTRL_START,E_DOWN) || !window_status ) && !game.paused )
+					game.paused = true;
+					//congelamos procesos
+					gameSignal(s_freeze_tree);
+					//quitamos el HUD
+					signal(TYPE HUD,s_kill);
+					frame;
+					//pausamos musica
+					pause_song();
+					//reproducimos sonido
+					WGE_PlayEntitySnd(id,gameSound[PAUSE_SND]);
+					
+					//iniciamos la opcion del menu
+					optionNum = 1;
+			
+					//componemos lista menu
+					optionString = ";RESUME;RESTART;EXIT;"; //gameTexts[config.lang][MENU_TEXT];
+					//componemos un cuadro de dialogo
+					idDialog = WGE_Dialog(cResX>>1,cResY>>1,125,(text_height(fntGame,optionString)*2)+(dialogTextMarginY*2)+(dialogMenuPadding*2));
+					
+					//escribimos las opciones
+					WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+					
+					//texto pausa
+					pauseText = write(fntGame,cResX>>1,cResY-15,ALIGN_CENTER,gameTexts[config.lang][PAUSE_TEXT]);
+				end;
+				
+				//Menu Pausa
+				if (game.paused)
+					//bajar opcion
+					if (WGE_CheckControl(CTRL_DOWN,E_DOWN) && optionNum<3)
+						optionNum++;
+						redrawMenu = true;
+					end;
+					//subir opcion
+					if (WGE_CheckControl(CTRL_UP,E_DOWN) && optionNum>1)
+						optionNum--;
+						redrawMenu = true;
+					end;
+					//seleccionar opcion
+					if (WGE_CheckControl(CTRL_START,E_DOWN))
+						switch (optionNum)
+							case 1: //Resume
+								optionNum = 0;
+								signal(idDialog,s_kill);
+								delete_text(all_text);
+								HUD();
+								gameSignal(s_wakeup_tree);
+								
+								game.paused = false;
+								resume_song();
+								//reproducimos sonido
+								WGE_PlayEntitySnd(id,gameSound[PAUSE_SND]);
+							end;
+							case 2: //Restart
+								optionNum = 0;
+								signal(idDialog,s_kill);
+								delete_text(all_text);
+								game.paused = false;
+								stop_song();
+								//apagamos pantalla
+								wgeFadeOut(FADE_SCREEN);
+								//limpiamos el nivel
+								clearLevel();
+								//volvemos a la seleccion de puertas				
+								game.numLevel = LEVEL_SELECT_LEVEL;		
+								game.state = LOADLEVEL;
+							end;
+							case 3: //Exit
+								optionNum = 0;
+								game.paused = false;
+								signal(idDialog,s_kill);
+								delete_text(all_text);
+								stop_song();
+								//apagamos pantalla
+								wgeFadeOut(FADE_SCREEN);
+								//limpiamos el nivel
+								clearLevel();
+								//continuamos juego
+								game.state = RESTARTGAME;
+							end;
+						end;
+					end;
+					
+					if (redrawMenu)
+						//escribimos las opciones
+						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+						//texto pausa
+						pauseText = write(fntGame,cResX>>1,cResY-15,ALIGN_CENTER,gameTexts[config.lang][PAUSE_TEXT]);
+						//cada vez que se redibuja el menu, reproducimos sonido
+						WGE_PlayEntitySnd(id,gameSound[MENU_SND]);
+						redrawMenu = false;
+					end;					
 				end;
 				
 			end;
@@ -1160,6 +1236,13 @@ begin
 				delete_text(all_text);
 				//cargamos nivel inicial
 				game.numLevel=LEVEL_SELECT_LEVEL;
+				game.score = 0;
+				game.playerLife = game.playerMaxLife;
+				game.playerTries = 3;
+				game.state = SPLASH;
+			end;
+			case RESTARTGAME:
+				game.numLevel=PRELUDE_LEVEL;
 				game.score = 0;
 				game.playerLife = game.playerMaxLife;
 				game.playerTries = 3;
@@ -3073,12 +3156,13 @@ end;
 //funcion que hace fade out de la pantalla y/o musica
 function wgeFadeOut(int fadeType)
 begin
+	
 	//fade pantalla si se ha seleccionado
 	if (isBitSet(fadeType,FADE_SCREEN))
 		fade(0,0,0,cFadeTime);
 	end;
-	//fade musica si se ha seleccionado
-	if (isBitSet(fadeType,FADE_MUSIC))
+	//fade musica si se ha seleccionado y hay musica en marcha
+	if (isBitSet(fadeType,FADE_MUSIC) && is_playing_song())
 		fade_music_off(cFadeMusicTime);
 	end;
 	//bucle hasta que termine cada fade
@@ -3086,6 +3170,7 @@ begin
 	        ||
 	       (is_playing_song() && isBitSet(fadeType,FADE_MUSIC))
 		 ) 
-		 frame; 
+		  frame; 
 	end;
+
 end;
