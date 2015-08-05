@@ -39,18 +39,23 @@ begin
 	levelFiles[1].DataFile 	= "levels\CastleDoor\CastleDoor.dat";
 	levelFiles[1].TileFile 	= "levels\CastleDoor\tiles.fpg";
 	levelFiles[1].MusicFile = "mus\castleDoor.ogg";
-	//level 2
-	levelFiles[2].MapFile 	= "levels\ToyLand\ToyLand.bin";
-	levelFiles[2].DataFile 	= "levels\ToyLand\ToyLand.dat";
-	levelFiles[2].TileFile 	= "levels\ToyLand\tiles.fpg";
-	levelFiles[2].MusicFile = "mus\ToyLand.ogg";
-	levelFiles[2].MusicIntroEnd = 1.87;
+	//level 1:doorSelect
+	levelFiles[2].MapFile 	= "levels\levelDoors\levelDoors.bin";
+	levelFiles[2].DataFile 	= "levels\levelDoors\levelDoors.dat";
+	levelFiles[2].TileFile 	= "levels\levelDoors\tiles.fpg";
+	levelFiles[2].MusicFile = "mus\castleDoor.ogg";
 	//level 3
-	levelFiles[3].MapFile 	= "levels\ToyLand2\ToyLand2.bin";
-	levelFiles[3].DataFile 	= "levels\ToyLand2\ToyLand2.dat";
-	levelFiles[3].TileFile 	= "levels\ToyLand2\tiles.fpg";
+	levelFiles[3].MapFile 	= "levels\ToyLand\ToyLand.bin";
+	levelFiles[3].DataFile 	= "levels\ToyLand\ToyLand.dat";
+	levelFiles[3].TileFile 	= "levels\ToyLand\tiles.fpg";
 	levelFiles[3].MusicFile = "mus\ToyLand.ogg";
 	levelFiles[3].MusicIntroEnd = 1.87;
+	//level 3
+	levelFiles[4].MapFile 	= "levels\ToyLand2\ToyLand2.bin";
+	levelFiles[4].DataFile 	= "levels\ToyLand2\ToyLand2.dat";
+	levelFiles[4].TileFile 	= "levels\ToyLand2\tiles.fpg";
+	levelFiles[4].MusicFile = "mus\ToyLand.ogg";
+	levelFiles[4].MusicIntroEnd = 1.87;
 		
 	//cargamos la paleta general del juego
 	load_pal("pal\game.pal");
@@ -752,6 +757,9 @@ begin
 				//creamos animacion "OldMan"
 				WGE_Animation(fpgGame,13,13,130,112,0,ANIM_LOOP);
 				
+				//reproducimos la musica del nivel
+				WGE_PlayMusicLevel();
+				
 				//encendemos pantalla
 				fade(100,100,100,cFadeTime);
 				while(fading) frame; end;
@@ -817,11 +825,59 @@ begin
 				//limpiamos el nivel
 				clearLevel();
 				
-				//iniciamos nivel
+								
+				//cambio de estado				
+				game.state = LEVEL_SELECT;
+				
+			end;
+			case LEVEL_SELECT:
+				//cargamos el nivel LevelDoors
 				game.numLevel = 2;
 				
-				//cambio de estado				
-				game.state = LOADLEVEL;
+				//Cargamos el mapeado del nivel
+				WGE_LoadMapLevel(levelFiles[game.numLevel].MapFile,levelFiles[game.numLevel].TileFile);
+				//Cargamos el archivo de datos del nivel
+				WGE_LoadLevelData(levelFiles[game.numLevel].DataFile);
+				
+				//Iniciamos Scroll
+				WGE_InitScroll();
+				//Dibujamos el mapeado
+				WGE_DrawMap();
+				//Creamos el nivel cargado
+				WGE_CreateLevel();
+				
+				//Creamos el jugador
+				player();
+				
+				//encendemos pantalla
+				fade(100,100,100,cFadeTime);
+				while(fading) frame; end;
+				
+				//seleccion de nivel
+				loop
+					if (WGE_CheckControl(CTRL_UP,E_DOWN) && colCheckAABB(idPlayer,79,108,30,40,INFOONLY))
+						//congelamos al personaje
+						signal(idPlayer,s_freeze);
+						//apagamos pantalla
+						fade(0,0,0,cFadeTime);
+						//detenemos sonido
+						fade_music_off(cFadeMusicTime);
+						while(fading || is_playing_song()) frame; end;
+						
+						//limpiamos el nivel
+						clearLevel();
+						
+						//iniciamos nivel
+						game.numLevel = 3;
+						
+						//cambio de estado				
+						game.state = LOADLEVEL;
+						
+						break;
+					end;
+					
+					frame;
+				end;
 				
 			end;
 			case LOADLEVEL:		
