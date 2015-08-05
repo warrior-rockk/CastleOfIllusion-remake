@@ -37,11 +37,12 @@
 #define PRELUDE2_TEXT						21
 #define PRELUDE3_TEXT						22
 #define PRELUDE4_TEXT						23
+#define MENU_PAUSE_TEXT						24
 
 //Constantes
 const
 	cNumLanguages	= 2; 			//Numero de idiomas
-	cNumGameTexts   = 24;			//Numero de textos
+	cNumGameTexts   = 25;			//Numero de textos
 	
 	//Cuadros dialogo
 	dialogTextMarginX		= 30;			//Margen horizontal texto

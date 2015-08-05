@@ -1046,9 +1046,9 @@ begin
 					optionNum = 1;
 			
 					//componemos lista menu
-					optionString = ";RESUME;RESTART;EXIT;"; //gameTexts[config.lang][MENU_TEXT];
+					optionString = gameTexts[config.lang][MENU_PAUSE_TEXT];
 					//componemos un cuadro de dialogo
-					idDialog = WGE_Dialog(cResX>>1,cResY>>1,125,(text_height(fntGame,optionString)*2)+(dialogTextMarginY*2)+(dialogMenuPadding*2));
+					idDialog = WGE_Dialog(cResX>>1,cResY>>1,150,(text_height(fntGame,optionString)*2)+(dialogTextMarginY*2)+(dialogMenuPadding*2));
 					
 					//escribimos las opciones
 					WGE_WriteDialogOptions(idDialog,optionString,optionNum);
