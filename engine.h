@@ -118,13 +118,17 @@
 #define	MODE_2XSCALE			1
 #define MODE_FULLSCREEN			2
 
-
 //identificadores de los niveles
 #define PRELUDE_LEVEL			1
 #define TUTORIAL_LEVEL			2
 #define LEVEL_SELECT_LEVEL		3
 #define TOYLAND_LEVEL			4
 #define TOYLAND_2_LEVEL			5
+
+//Estado de los niveles
+#define LEVEL_UNCOMPLETED       0
+#define LEVEL_COMPLETED         1
+#define LEVEL_DOOR_CLOSED       2
 
 //Tipos de fade
 #define FADE_SCREEN             1
@@ -209,6 +213,8 @@ const
 	//Entidades
 	cBlinkEntityTime  = 2;					//Tiempo de parpadeo general entidades
 	
+	//General
+	cNumLevels        = 5;					//Numero niveles
 End;
 
 //Data Types
@@ -282,18 +288,19 @@ Global
 	float scrollfX;				//Posicion X Float del scroll
 	//juego
 	struct game
-		int state;              //estado del juego
-		byte paused;			//Flag de pausa
-		byte endLevel;			//Flag de fin de nivel
-		byte boss;				//Flag de jefe
-		byte bossKilled;		//Flag de jefe muerto
-		int numLevel;			//Nivel actual
-		int playerLife;			//vida del jugador
-		int playerMaxLife;      //vida maxima del jugador
-		int playerTries;		//vidas del jugador
-		int score;				//puntuación
-		int actualLevelTime;    //tiempo actual del nivel
-		byte shakeScroll;		//activar efecto temblor scroll
+		int state;              		//estado del juego
+		byte paused;					//Flag de pausa
+		byte endLevel;					//Flag de fin de nivel
+		byte boss;						//Flag de jefe
+		byte bossKilled;				//Flag de jefe muerto
+		int numLevel;					//Nivel actual
+		int playerLife;					//vida del jugador
+		int playerMaxLife;      		//vida maxima del jugador
+		int playerTries;				//vidas del jugador
+		int score;						//puntuación
+		int actualLevelTime;    		//tiempo actual del nivel
+		int levelStatus[cNumLevels];	//estado de los niveles
+		byte shakeScroll;				//activar efecto temblor scroll
 	end;
 	//configuracion
 	struct config

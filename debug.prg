@@ -69,9 +69,10 @@ begin
 		
 		//saltar nivel
 		if (WGE_Key(_n,E_DOWN) && game.state == PLAYLEVEL)
+			game.actualLevelTime = 1;
 			game.endLevel = true;
 		end;
-		
+				
 		//Tareas de entrada al modo debug
 		if (debugMode && not actDebugMode)
 			//creamos el cursor

@@ -800,6 +800,7 @@ begin
 				
 			end;
 			case LEVEL_SELECT:			
+								
 				//comprobacion entrada puertas
 				if (WGE_CheckControl(CTRL_UP,E_DOWN))  
 					//Puerta 1
@@ -878,6 +879,30 @@ begin
 					case LEVEL_SELECT_LEVEL:
 						//encendemos pantalla
 						wgeFadeIn(FADE_SCREEN);
+						
+						//comprobamos si hay algun nivel completado para "tapiar" puerta
+						from i=0 TO cNumLevels;
+							switch (i)
+								case TOYLAND_LEVEL:
+									//si esta completado
+									if (game.levelStatus[i] == LEVEL_COMPLETED)
+										//lanzamos animacion de tapiar
+										WGE_Animation(fpgGame,18,22,145,96,10,ANIM_ONCE);
+										game.levelStatus[i] = LEVEL_DOOR_CLOSED;
+									end;
+									//si ya está tapiado
+									if (game.levelStatus[i] == LEVEL_DOOR_CLOSED)
+										//cambiamos los tiles por tapiado
+										WGE_ReplaceTile(5,8,16);
+										WGE_ReplaceTile(5,9,17);
+										WGE_ReplaceTile(6,8,1);
+										WGE_ReplaceTile(6,9,1);
+										WGE_ReplaceTile(7,8,1);
+										WGE_ReplaceTile(7,9,1);
+									end;
+								end;
+							end;
+						end;
 						
 						//se despiertan los procesos
 						gameSignal(s_wakeup_tree);
@@ -1106,8 +1131,11 @@ begin
 				//espera
 				WGE_Wait(100);
 				
-				//cargamos el siguiente nivel				
-				game.numLevel++;		
+				//marcamos el nivel como completado
+				game.levelStatus[game.numLevel] = LEVEL_COMPLETED;
+				
+				//volvemos a la seleccion de puertas				
+				game.numLevel = LEVEL_SELECT_LEVEL;		
 				game.state = LOADLEVEL;
 				
 			end;
