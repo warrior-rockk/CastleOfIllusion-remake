@@ -126,6 +126,10 @@
 #define TOYLAND_LEVEL			4
 #define TOYLAND_2_LEVEL			5
 
+//Tipos de fade
+#define FADE_SCREEN             1
+#define FADE_MUSIC 	            2
+
 //Constantes del motor
 const
 	//Engine

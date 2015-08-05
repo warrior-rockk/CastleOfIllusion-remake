@@ -27,6 +27,7 @@ private
 	byte anyEvent = false;
 	int i;
 begin
+
 	//si el control a chequear es un control especifico
 	if (control <> CTRL_ANY && control <>CTRL_KEY_ANY && control <>CTRL_BUTTON_ANY)
 		return (WGE_Key(configuredKeys[control],event)  	 && (!controlLoggerPlaying || control==CTRL_START)) ||

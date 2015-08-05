@@ -251,13 +251,8 @@ begin
 				if (introFinished )
 					game.state = SPLASH;
 				elseif (WGE_CheckControl(CTRL_ANY,E_DOWN))
-					//hacemos fade musica si seguía sonando
-					if (is_playing_song())
-						fade_music_off(cFadeMusicTime);
-					end;
-					//apagamos pantalla
-					fade(0,0,0,cFadeTime);
-					while(fading) frame; end;
+					//hacemos fade
+					wgeFadeOut(FADE_SCREEN | FADE_MUSIC);
 					//matamos el intro
 					signal(TYPE gameIntro,s_kill_tree);
 					//limpiamos pantalla
@@ -272,8 +267,7 @@ begin
 				gameSplash();
 				
 				//encendemos pantalla
-				fade(100,100,100,cFadeTime);
-				while(fading) frame; end;
+				wgeFadeIn(FADE_SCREEN);
 					
 				repeat
 					counterTime++;
@@ -289,8 +283,7 @@ begin
 				until(WGE_CheckControl(CTRL_ANY,E_DOWN) || attractActive);
 				
 				//apagamos pantalla
-				fade(0,0,0,cFadeTime);
-				while(fading) frame; end;
+				wgeFadeOut(FADE_SCREEN);
 				//matamos el splash
 				signal(TYPE gameSplash,s_kill_tree);
 				//cambiamos de estado
@@ -302,9 +295,7 @@ begin
 			end;
 			case MENU:
 				//hacemos fade musica si seguía sonando
-				if (is_playing_song())
-					fade_music_off(cFadeMusicTime);
-				end;
+				wgeFadeOut(FADE_MUSIC);
 				
 				//iniciamos la opcion del menu
 				optionNum = 1;
@@ -318,8 +309,7 @@ begin
 				WGE_WriteDialogOptions(idDialog,optionString,optionNum);				
 				
 				//encendemos pantalla
-				fade(100,100,100,cFadeTime);
-				while(fading) frame; end;
+				wgeFadeIn(FADE_SCREEN);
 				
 				//gestion del menu
 				while (optionNum <> 0)
@@ -338,8 +328,7 @@ begin
 						switch (optionNum)
 							case 1: //Play
 								//apagamos pantalla
-								fade(0,0,0,cFadeTime);
-								while(fading) frame; end;
+								wgeFadeOut(FADE_SCREEN);
 								//seteamos nivel tutorial
 								game.numLevel = TUTORIAL_LEVEL;
 								//cambiamos de paso
@@ -741,8 +730,7 @@ begin
 				WGE_PlayMusicLevel();
 				
 				//encendemos pantalla
-				fade(100,100,100,cFadeTime);
-				while(fading) frame; end;
+				wgeFadeIn(FADE_SCREEN);
 				
 				//se despiertan los procesos
 				gameSignal(s_wakeup_tree);
@@ -799,9 +787,9 @@ begin
 				
 				//congelamos al personaje
 				signal(idPlayer,s_freeze);
+				
 				//apagamos pantalla
-				fade(0,0,0,cFadeTime);
-				while(fading) frame; end;
+				wgeFadeOut(FADE_SCREEN);
 				
 				//limpiamos el nivel
 				clearLevel();
@@ -842,11 +830,8 @@ begin
 				if (game.state <> LEVEL_SELECT)
 					//congelamos al personaje
 					signal(idPlayer,s_freeze);
-					//apagamos pantalla
-					fade(0,0,0,cFadeTime);
-					//detenemos sonido
-					fade_music_off(cFadeMusicTime);
-					while(fading || is_playing_song()) frame; end;
+					//apagamos pantalla y sonido
+					wgeFadeOut(FADE_SCREEN | FADE_MUSIC);
 					
 					//limpiamos el nivel
 					clearLevel();
@@ -877,8 +862,7 @@ begin
 				switch (game.numLevel)
 					case TUTORIAL_LEVEL:
 						//encendemos pantalla
-						fade(100,100,100,cFadeTime);
-						while(fading) frame; end;
+						wgeFadeIn(FADE_SCREEN);
 						
 						//se despiertan los procesos
 						gameSignal(s_wakeup_tree);
@@ -893,8 +877,7 @@ begin
 					end;
 					case LEVEL_SELECT_LEVEL:
 						//encendemos pantalla
-						fade(100,100,100,cFadeTime);
-						while(fading) frame; end;
+						wgeFadeIn(FADE_SCREEN);
 						
 						//se despiertan los procesos
 						gameSignal(s_wakeup_tree);
@@ -927,8 +910,7 @@ begin
 				WGE_PlayMusicLevel();
 								
 				//encendemos pantalla
-				fade(100,100,100,cFadeTime);
-				while(fading) frame; end;
+				wgeFadeIn(FADE_SCREEN);
 				
 				//esperamos fin intro
 				while (!WGE_MusicIntroEnded())
@@ -949,7 +931,7 @@ begin
 						WGE_RepeatMusicLevel();
 					end;
 				else
-					fade_music_off(cFadeMusicTime);
+					wgeFadeOut(FADE_MUSIC);
 					if (!is_playing_song())
 						memBoss = true;
 						//reproducimo musica boss
@@ -1046,9 +1028,7 @@ begin
 			case RESTARTLEVEL:
 				log("Reiniciando nivel",DEBUG_ENGINE);
 				
-				//apagamos pantalla
-				fade(0,0,0,cFadeTime);
-				while(fading) frame; end;
+				wgeFadeOut(FADE_SCREEN);
 								
 				//reiniciamos el nivel
 				WGE_RestartLevel();
@@ -1074,8 +1054,7 @@ begin
 				WGE_PlayMusicLevel();
 				
 				//encendemos pantalla
-				fade(100,100,100,cFadeTime);
-				while(fading) frame; end;
+				wgeFadeIn(FADE_SCREEN);
 				
 				//esperamos fin intro
 				while (!WGE_MusicIntroEnded())
@@ -1120,8 +1099,7 @@ begin
 				WGE_Wait(100);
 				
 				//apagamos pantalla
-				fade(0,0,0,cFadeTime);
-				while(fading) frame; end;
+				wgeFadeOut(FADE_SCREEN);
 				
 				//limpiamos el nivel
 				clearLevel();
@@ -1135,21 +1113,18 @@ begin
 			end;
 			case GAMEOVER:
 				//apagamos pantalla
-				fade(0,0,0,cFadeTime);
-				while(fading) frame; end;
+				wgeFadeOut(FADE_SCREEN);
 				//limpiamos el nivel
 				clearLevel();
 				//encendemos pantalla
-				fade(100,100,100,cFadeTime);
-				while(fading) frame; end;
+				wgeFadeIn(FADE_SCREEN);
 				//mensaje hasta pulsar tecla
 				write(fntGame,cResx>>1,cGameRegionH>>1,ALIGN_CENTER,gameTexts[config.lang][GAMEOVER_TEXT]);
 				repeat
 					frame;
 				until(WGE_CheckControl(CTRL_START,E_DOWN));
 				//apagamos pantalla
-				fade(0,0,0,cFadeTime);
-				while(fading) frame; end;
+				wgeFadeOut(FADE_SCREEN);
 				//continuamos juego
 				game.state = CONTINUEGAME;
 			end;
@@ -1164,11 +1139,8 @@ begin
 			end;
 			case ATTRACTMODE:
 				if (controlLoggerFinished || WGE_CheckControl(CTRL_START,E_PRESSED))
-					//apagamos pantalla
-					fade(0,0,0,cFadeTime);
-					//detenemos sonido
-					fade_music_off(cFadeMusicTime);
-					while(fading || is_playing_song()) frame; end;
+					//apagamos pantalla y sonido
+					wgeFadeOut(FADE_SCREEN | FADE_MUSIC);
 					//desactivamos flag
 					attractActive = false;
 					//paramos reproduccion si no hubiera parado
@@ -1190,11 +1162,8 @@ begin
 				if (controlLoggerFinished || WGE_CheckControl(CTRL_ANY,E_DOWN))
 					//paramos reproduccion
 					StopControlPlaying = true;
-					//apagamos pantalla
-					fade(0,0,0,cFadeTime);
-					//detenemos sonido
-					fade_music_off(cFadeMusicTime);
-					while(fading || is_playing_song()) frame; end;						
+					//apagamos pantalla y sonido
+					wgeFadeOut(FADE_SCREEN | FADE_MUSIC);						
 					//limpiamos el nivel
 					clearLevel();
 						
@@ -2765,10 +2734,11 @@ private
 	entity introAnimations[10];		//Array de animaciones	
 	
 begin
+	//el porque de este primer frame es interesante. Si no lo ponemos, no liberamos al proceso Loop debido a que en este proceso llamaremos a funciones que enclavan bucles frame y, si no ha sido ejecutada por primera vez un frame en este proceso, y por consiguiente, no hemos vuelto al proceso Loop ha hacer su primer frame, ese proceso Loop se queda en estado WAIT colgado.
+	frame;
 	
 	//apagamos y limpiamos la pantalla
-	fade(0,0,0,cFadeTime);
-	while(fading) frame; end;
+	wgeFadeOut(FADE_SCREEN);
 	screen_clear();
 	delete_text(all_text);
 	
@@ -2816,8 +2786,7 @@ begin
 	
 	//encedemos pantalla
 	WGE_Wait(150);
-	fade(100,100,100,cFadeTime);
-	while(fading) frame; end;
+	wgeFadeIn(FADE_SCREEN);
 	
 	//hacemos el barrido de perspectiva hasta tiempo definido
 	repeat
@@ -2992,13 +2961,15 @@ begin
 	//encedemos pantalla
 	fade(100,100,100,cFadeTime);
 	while(fading) frame; end;
-	//WGE_Wait(musicPos);
+	
+	//esperamos la marca de tiempo
 	while (timer[cMusicTimer] < (musicPos*100))
 		frame;
 	end;
 	//apagamos pantalla
 	fade(0,0,0,cFadeTime);
 	while(fading) frame; end;
+	
 	screen_clear();
 	delete_text(all_text);
 end;
@@ -3056,4 +3027,37 @@ begin
 		log("Falta el archivo de idioma ESP",DEBUG_ENGINE);	
 	end;
 	
+end;
+
+//funcion que hace fade in de la pantalla (no existe fade in de musica)
+function wgeFadeIn(int fadeType)
+begin
+	//fade pantalla si se ha seleccionado
+	if (isBitSet(fadeType,FADE_SCREEN))
+		fade(100,100,100,cFadeTime);
+	end;
+	//bucle hasta que termine el fade
+	while(fading && isBitSet(fadeType,FADE_SCREEN)) 
+	    frame; 
+	end;
+end;
+
+//funcion que hace fade out de la pantalla y/o musica
+function wgeFadeOut(int fadeType)
+begin
+	//fade pantalla si se ha seleccionado
+	if (isBitSet(fadeType,FADE_SCREEN))
+		fade(0,0,0,cFadeTime);
+	end;
+	//fade musica si se ha seleccionado
+	if (isBitSet(fadeType,FADE_MUSIC))
+		fade_music_off(cFadeMusicTime);
+	end;
+	//bucle hasta que termine cada fade
+	while( (fading            && isBitSet(fadeType,FADE_SCREEN)) 
+	        ||
+	       (is_playing_song() && isBitSet(fadeType,FADE_MUSIC))
+		 ) 
+		 frame; 
+	end;
 end;
