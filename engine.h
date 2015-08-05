@@ -36,6 +36,7 @@
 #define LANG_SEL        16
 #define PRELUDE         17
 #define LEVEL_SELECT    18
+#define INITLEVEL		19
 
 //Codigo del tile
 //bits del 0 al 4 del mapa de tiles

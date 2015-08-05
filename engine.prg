@@ -733,29 +733,7 @@ begin
 				delete_text(all_text);
 			end;
 			case PRELUDE:
-				/*
-				//cargamos el nivel prelude
-				game.numLevel = PRELUDE_LEVEL;
 				
-				//Cargamos el mapeado del nivel
-				WGE_LoadMapLevel(levelFiles[game.numLevel].MapFile,levelFiles[game.numLevel].TileFile);
-				//Cargamos el archivo de datos del nivel
-				WGE_LoadLevelData(levelFiles[game.numLevel].DataFile);
-				//Cargamos la musica del nivel
-				level.idMusicLevel = load_song(levelFiles[game.numLevel].MusicFile);
-								
-				//Iniciamos Scroll
-				WGE_InitScroll();
-				//Dibujamos el mapeado
-				WGE_DrawMap();
-				//Creamos el nivel cargado
-				WGE_CreateLevel();
-				
-				//Creamos el jugador
-				player();
-				//congelamos al personaje
-				signal(idPlayer,s_freeze);
-				*/
 				//creamos animacion "OldMan"
 				WGE_Animation(fpgGame,13,13,130,112,0,ANIM_LOOP);
 				
@@ -766,8 +744,10 @@ begin
 				fade(100,100,100,cFadeTime);
 				while(fading) frame; end;
 				
+				//se despiertan los procesos
+				gameSignal(s_wakeup_tree);
+				
 				//reproducimos animacion player
-				signal(idPlayer,s_wakeup);
 				controlLoggerPlayer("prelude.rec");
 				repeat
 					frame;
@@ -821,89 +801,56 @@ begin
 				signal(idPlayer,s_freeze);
 				//apagamos pantalla
 				fade(0,0,0,cFadeTime);
-				//detenemos sonido
-				fade_music_off(cFadeMusicTime);
-				while(fading || is_playing_song()) frame; end;
+				while(fading) frame; end;
 				
 				//limpiamos el nivel
 				clearLevel();
-				
 								
 				//cambio de estado	
 				game.numLevel 	= LEVEL_SELECT_LEVEL;
 				game.state 		= LOADLEVEL;
 				
 			end;
-			case LEVEL_SELECT:
-				//cargamos el nivel LevelDoors
-				/*game.numLevel = LEVEL_SELECT_LEVEL;
-				
-				//Cargamos el mapeado del nivel
-				WGE_LoadMapLevel(levelFiles[game.numLevel].MapFile,levelFiles[game.numLevel].TileFile);
-				//Cargamos el archivo de datos del nivel
-				WGE_LoadLevelData(levelFiles[game.numLevel].DataFile);
-				
-				//Iniciamos Scroll
-				WGE_InitScroll();
-				//Dibujamos el mapeado
-				WGE_DrawMap();
-				//Creamos el nivel cargado
-				WGE_CreateLevel();
-				
-				//Creamos el jugador
-				player();
-				
-				//encendemos pantalla
-				fade(100,100,100,cFadeTime);
-				while(fading) frame; end;*/
-				
-				//seleccion de nivel
-				loop
-					//comprobacion entrada puertas
-					if (WGE_CheckControl(CTRL_UP,E_DOWN))  
-					    //Puerta 1
-						if (colCheckAABB(idPlayer,79,108,30,40,INFOONLY))
-							//iniciamos nivel
-							//game.numLevel = 3;
-							//cambio de estado				
-							//game.state = LOADLEVEL;
-							log("Nivel no implementado",DEBUG_ENGINE);
-						end;
-						//Puerta 2
-						if (colCheckAABB(idPlayer,143,108,30,40,INFOONLY))
-							//iniciamos nivel
-							game.numLevel = TOYLAND_LEVEL;
-							//cambio de estado				
-							game.state = LOADLEVEL;
-						end;
-						//Puerta 3
-						if (colCheckAABB(idPlayer,208,108,30,40,INFOONLY))
-							//iniciamos nivel
-							//game.numLevel = 3;
-							//cambio de estado				
-							//game.state = LOADLEVEL;
-							log("Nivel no implementado",DEBUG_ENGINE);
-						end;
+			case LEVEL_SELECT:			
+				//comprobacion entrada puertas
+				if (WGE_CheckControl(CTRL_UP,E_DOWN))  
+					//Puerta 1
+					if (colCheckAABB(idPlayer,79,108,30,40,INFOONLY))
+						//iniciamos nivel
+						//game.numLevel = 3;
+						//cambio de estado				
+						//game.state = LOADLEVEL;
+						log("Nivel no implementado",DEBUG_ENGINE);
 					end;
-					
-					if (game.state <> LEVEL_SELECT)
-						//congelamos al personaje
-						signal(idPlayer,s_freeze);
-						//apagamos pantalla
-						fade(0,0,0,cFadeTime);
-						//detenemos sonido
-						fade_music_off(cFadeMusicTime);
-						while(fading || is_playing_song()) frame; end;
-						
-						//limpiamos el nivel
-						clearLevel();
-						
-						break;
+					//Puerta 2
+					if (colCheckAABB(idPlayer,143,108,30,40,INFOONLY))
+						//iniciamos nivel
+						game.numLevel = TOYLAND_LEVEL;
+						//cambio de estado				
+						game.state = LOADLEVEL;
 					end;
-					
-					frame;
+					//Puerta 3
+					if (colCheckAABB(idPlayer,208,108,30,40,INFOONLY))
+						//iniciamos nivel
+						//game.numLevel = 3;
+						//cambio de estado				
+						//game.state = LOADLEVEL;
+						log("Nivel no implementado",DEBUG_ENGINE);
+					end;
 				end;
 				
+				if (game.state <> LEVEL_SELECT)
+					//congelamos al personaje
+					signal(idPlayer,s_freeze);
+					//apagamos pantalla
+					fade(0,0,0,cFadeTime);
+					//detenemos sonido
+					fade_music_off(cFadeMusicTime);
+					while(fading || is_playing_song()) frame; end;
+					
+					//limpiamos el nivel
+					clearLevel();
+				end;
 			end;
 			case LOADLEVEL:		
 				//Cargamos el mapeado del nivel
@@ -923,21 +870,62 @@ begin
 				//Creamos el jugador
 				player();
 				
-				//creamos el HUD (si no es attractMode o tutorial o preludio)
-				if (!attractActive && game.numLevel <> TUTORIAL_LEVEL && game.numLevel <> PRELUDE_LEVEL)
-					HUD();
-				end;
-				
 				//procesos congelados
 				gameSignal(s_freeze_tree);
 				
+				//Saltamos al estado correspondiente			
+				switch (game.numLevel)
+					case TUTORIAL_LEVEL:
+						//encendemos pantalla
+						fade(100,100,100,cFadeTime);
+						while(fading) frame; end;
+						
+						//se despiertan los procesos
+						gameSignal(s_wakeup_tree);
+						
+						//reproducimos tutorial
+						controlLoggerPlayer("tutorial.rec");
+						write_var(fntGame,(cHUDRegionW >> 1),cHUDRegionY+cHUDTimeY,ALIGN_CENTER,textMsg);
+						game.state = TUTORIAL;				
+					end;
+					case PRELUDE_LEVEL:
+						game.state = PRELUDE;				
+					end;
+					case LEVEL_SELECT_LEVEL:
+						//encendemos pantalla
+						fade(100,100,100,cFadeTime);
+						while(fading) frame; end;
+						
+						//se despiertan los procesos
+						gameSignal(s_wakeup_tree);
+						
+						//cambiamos de estado
+						game.state = LEVEL_SELECT;
+					end;
+					default:
+						if (attractActive)
+							//reproducimos partida AttractMode
+							controlLoggerPlayer("partida.rec");
+							write_var(fntGame,(cHUDRegionW >> 1),cHUDRegionY+cHUDTimeY,ALIGN_CENTER,textMsg);
+							game.state = ATTRACTMODE;
+						else
+							game.state = INITLEVEL;
+						end;
+					end;
+				end;
+			end;
+			case INITLEVEL:
+				//creamos el HUD (si no es attractMode)
+				if (!attractActive)
+					HUD();
+				end;
 				//variables de reinicio de nivel
 				game.playerLife		 = game.playerMaxLife;
 				game.actualLevelTime = level.levelTime;
 				
 				//reproducimos la musica del nivel
 				WGE_PlayMusicLevel();
-				
+								
 				//encendemos pantalla
 				fade(100,100,100,cFadeTime);
 				while(fading) frame; end;
@@ -950,31 +938,8 @@ begin
 				//se despiertan los procesos
 				gameSignal(s_wakeup_tree);
 				
-				//Saltamos al estado correspondiente			
-				switch (game.numLevel)
-					case TUTORIAL_LEVEL:
-						//reproducimos tutorial
-						controlLoggerPlayer("tutorial.rec");
-						write_var(fntGame,(cHUDRegionW >> 1),cHUDRegionY+cHUDTimeY,ALIGN_CENTER,textMsg);
-						game.state = TUTORIAL;				
-					end;
-					case PRELUDE_LEVEL:
-						game.state = PRELUDE;				
-					end;
-					case LEVEL_SELECT_LEVEL:
-						game.state = LEVEL_SELECT;
-					end;
-					default:
-						if (attractActive)
-							//reproducimos partida AttractMode
-							controlLoggerPlayer("partida.rec");
-							write_var(fntGame,(cHUDRegionW >> 1),cHUDRegionY+cHUDTimeY,ALIGN_CENTER,textMsg);
-							game.state = ATTRACTMODE;
-						else
-							game.state = PLAYLEVEL;
-						end;
-					end;
-				end;
+				//cambiamos de estado
+				game.state = PLAYLEVEL;
 			end;
 			case PLAYLEVEL:
 				
