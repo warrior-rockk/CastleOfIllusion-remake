@@ -30,32 +30,32 @@ begin
 	draw_SolidOnFall(mapSolidOnFall);
 	
 	//Archivos de los niveles
-	//level 0:tutorial
-	levelFiles[0].MapFile 	= "levels\testRoom\testRoom.bin";
-	levelFiles[0].DataFile 	= "levels\testRoom\testRoom.dat";
-	levelFiles[0].TileFile 	= "levels\testRoom\tiles.fpg";
-	//level 1:preludio
-	levelFiles[1].MapFile 	= "levels\CastleDoor\CastleDoor.bin";
-	levelFiles[1].DataFile 	= "levels\CastleDoor\CastleDoor.dat";
-	levelFiles[1].TileFile 	= "levels\CastleDoor\tiles.fpg";
-	levelFiles[1].MusicFile = "mus\castleDoor.ogg";
-	//level 1:doorSelect
-	levelFiles[2].MapFile 	= "levels\levelDoors\levelDoors.bin";
-	levelFiles[2].DataFile 	= "levels\levelDoors\levelDoors.dat";
-	levelFiles[2].TileFile 	= "levels\levelDoors\tiles.fpg";
-	levelFiles[2].MusicFile = "mus\castleDoor.ogg";
-	//level 3
-	levelFiles[3].MapFile 	= "levels\ToyLand\ToyLand.bin";
-	levelFiles[3].DataFile 	= "levels\ToyLand\ToyLand.dat";
-	levelFiles[3].TileFile 	= "levels\ToyLand\tiles.fpg";
-	levelFiles[3].MusicFile = "mus\ToyLand.ogg";
-	levelFiles[3].MusicIntroEnd = 1.87;
-	//level 3
-	levelFiles[4].MapFile 	= "levels\ToyLand2\ToyLand2.bin";
-	levelFiles[4].DataFile 	= "levels\ToyLand2\ToyLand2.dat";
-	levelFiles[4].TileFile 	= "levels\ToyLand2\tiles.fpg";
-	levelFiles[4].MusicFile = "mus\ToyLand.ogg";
-	levelFiles[4].MusicIntroEnd = 1.87;
+	//tutorial
+	levelFiles[TUTORIAL_LEVEL].MapFile 			= "levels\testRoom\testRoom.bin";
+	levelFiles[TUTORIAL_LEVEL].DataFile 		= "levels\testRoom\testRoom.dat";
+	levelFiles[TUTORIAL_LEVEL].TileFile 		= "levels\testRoom\tiles.fpg";
+	//preludio	
+	levelFiles[PRELUDE_LEVEL].MapFile 			= "levels\CastleDoor\CastleDoor.bin";
+	levelFiles[PRELUDE_LEVEL].DataFile 			= "levels\CastleDoor\CastleDoor.dat";
+	levelFiles[PRELUDE_LEVEL].TileFile 			= "levels\CastleDoor\tiles.fpg";
+	levelFiles[PRELUDE_LEVEL].MusicFile 		= "mus\castleDoor.ogg";
+	//doorSelect	
+	levelFiles[LEVEL_SELECT_LEVEL].MapFile 		= "levels\levelDoors\levelDoors.bin";
+	levelFiles[LEVEL_SELECT_LEVEL].DataFile 	= "levels\levelDoors\levelDoors.dat";
+	levelFiles[LEVEL_SELECT_LEVEL].TileFile 	= "levels\levelDoors\tiles.fpg";
+	levelFiles[LEVEL_SELECT_LEVEL].MusicFile	= "mus\castleDoor.ogg";
+	//Toyland	
+	levelFiles[TOYLAND_LEVEL].MapFile 			= "levels\ToyLand\ToyLand.bin";
+	levelFiles[TOYLAND_LEVEL].DataFile 			= "levels\ToyLand\ToyLand.dat";
+	levelFiles[TOYLAND_LEVEL].TileFile 			= "levels\ToyLand\tiles.fpg";
+	levelFiles[TOYLAND_LEVEL].MusicFile 		= "mus\ToyLand.ogg";
+	levelFiles[TOYLAND_LEVEL].MusicIntroEnd 	= 1.87;
+	//Toyland Act 2
+	levelFiles[TOYLAND_2_LEVEL].MapFile 		= "levels\ToyLand2\ToyLand2.bin";
+	levelFiles[TOYLAND_2_LEVEL].DataFile 		= "levels\ToyLand2\ToyLand2.dat";
+	levelFiles[TOYLAND_2_LEVEL].TileFile 		= "levels\ToyLand2\tiles.fpg";
+	levelFiles[TOYLAND_2_LEVEL].MusicFile 		= "mus\ToyLand.ogg";
+	levelFiles[TOYLAND_2_LEVEL].MusicIntroEnd 	= 1.87;
 		
 	//cargamos la paleta general del juego
 	load_pal("pal\game.pal");
@@ -88,7 +88,7 @@ begin
 	game.playerLife 	= 3;
 	game.playerMaxLife  = 3;
 	game.score      	= 0;
-	game.numLevel       = 0;
+	game.numLevel       = PRELUDE_LEVEL;
 	
 	//estado inicial
 	firstRun ? game.state = LANG_SEL : game.state = INTRO;
@@ -280,9 +280,9 @@ begin
 					
 					//si pasan 10 segundos sin pulsar tecla
 					if (counterTime >= cNumFPS*10)
-						//activamos attractMode del nivel 1
+						//activamos attractMode del nivel ToyLand
 						attractActive = true;
-						game.numLevel = 1;
+						game.numLevel = TOYLAND_LEVEL;
 						counterTime=0;					
 					end;
 					frame;
@@ -340,7 +340,8 @@ begin
 								//apagamos pantalla
 								fade(0,0,0,cFadeTime);
 								while(fading) frame; end;
-								
+								//seteamos nivel tutorial
+								game.numLevel = TUTORIAL_LEVEL;
 								//cambiamos de paso
 								game.state = LOADLEVEL;
 							end;
@@ -732,8 +733,9 @@ begin
 				delete_text(all_text);
 			end;
 			case PRELUDE:
+				/*
 				//cargamos el nivel prelude
-				game.numLevel = 1;
+				game.numLevel = PRELUDE_LEVEL;
 				
 				//Cargamos el mapeado del nivel
 				WGE_LoadMapLevel(levelFiles[game.numLevel].MapFile,levelFiles[game.numLevel].TileFile);
@@ -753,7 +755,7 @@ begin
 				player();
 				//congelamos al personaje
 				signal(idPlayer,s_freeze);
-				
+				*/
 				//creamos animacion "OldMan"
 				WGE_Animation(fpgGame,13,13,130,112,0,ANIM_LOOP);
 				
@@ -787,6 +789,7 @@ begin
 				signal(idDialog,s_kill);
 				
 				//parpadea y desaparece el "old man"
+				clockCounter = 0;
 				repeat
 					blinkEntity(get_id(TYPE WGE_Animation));
 					frame;
@@ -826,13 +829,14 @@ begin
 				clearLevel();
 				
 								
-				//cambio de estado				
-				game.state = LEVEL_SELECT;
+				//cambio de estado	
+				game.numLevel 	= LEVEL_SELECT_LEVEL;
+				game.state 		= LOADLEVEL;
 				
 			end;
 			case LEVEL_SELECT:
 				//cargamos el nivel LevelDoors
-				game.numLevel = 2;
+				/*game.numLevel = LEVEL_SELECT_LEVEL;
 				
 				//Cargamos el mapeado del nivel
 				WGE_LoadMapLevel(levelFiles[game.numLevel].MapFile,levelFiles[game.numLevel].TileFile);
@@ -851,11 +855,38 @@ begin
 				
 				//encendemos pantalla
 				fade(100,100,100,cFadeTime);
-				while(fading) frame; end;
+				while(fading) frame; end;*/
 				
 				//seleccion de nivel
 				loop
-					if (WGE_CheckControl(CTRL_UP,E_DOWN) && colCheckAABB(idPlayer,79,108,30,40,INFOONLY))
+					//comprobacion entrada puertas
+					if (WGE_CheckControl(CTRL_UP,E_DOWN))  
+					    //Puerta 1
+						if (colCheckAABB(idPlayer,79,108,30,40,INFOONLY))
+							//iniciamos nivel
+							//game.numLevel = 3;
+							//cambio de estado				
+							//game.state = LOADLEVEL;
+							log("Nivel no implementado",DEBUG_ENGINE);
+						end;
+						//Puerta 2
+						if (colCheckAABB(idPlayer,143,108,30,40,INFOONLY))
+							//iniciamos nivel
+							game.numLevel = TOYLAND_LEVEL;
+							//cambio de estado				
+							game.state = LOADLEVEL;
+						end;
+						//Puerta 3
+						if (colCheckAABB(idPlayer,208,108,30,40,INFOONLY))
+							//iniciamos nivel
+							//game.numLevel = 3;
+							//cambio de estado				
+							//game.state = LOADLEVEL;
+							log("Nivel no implementado",DEBUG_ENGINE);
+						end;
+					end;
+					
+					if (game.state <> LEVEL_SELECT)
 						//congelamos al personaje
 						signal(idPlayer,s_freeze);
 						//apagamos pantalla
@@ -866,12 +897,6 @@ begin
 						
 						//limpiamos el nivel
 						clearLevel();
-						
-						//iniciamos nivel
-						game.numLevel = 3;
-						
-						//cambio de estado				
-						game.state = LOADLEVEL;
 						
 						break;
 					end;
@@ -898,8 +923,8 @@ begin
 				//Creamos el jugador
 				player();
 				
-				//creamos el HUD (si no es attractMode o tutorial)
-				if (!attractActive && game.numLevel <> 0)
+				//creamos el HUD (si no es attractMode o tutorial o preludio)
+				if (!attractActive && game.numLevel <> TUTORIAL_LEVEL && game.numLevel <> PRELUDE_LEVEL)
 					HUD();
 				end;
 				
@@ -925,20 +950,30 @@ begin
 				//se despiertan los procesos
 				gameSignal(s_wakeup_tree);
 				
-				//Saltamos al estado correspondiente
-				if (attractActive)
-					//reproducimos partida AttractMode
-					controlLoggerPlayer("partida.rec");
-					write_var(fntGame,(cHUDRegionW >> 1),cHUDRegionY+cHUDTimeY,ALIGN_CENTER,textMsg);
-					game.state = ATTRACTMODE;
-				
-				elseif (game.numLevel == 0)
-					//reproducimos tutorial
-					controlLoggerPlayer("tutorial.rec");
-					write_var(fntGame,(cHUDRegionW >> 1),cHUDRegionY+cHUDTimeY,ALIGN_CENTER,textMsg);
-					game.state = TUTORIAL;				
-				else
-					game.state = PLAYLEVEL;
+				//Saltamos al estado correspondiente			
+				switch (game.numLevel)
+					case TUTORIAL_LEVEL:
+						//reproducimos tutorial
+						controlLoggerPlayer("tutorial.rec");
+						write_var(fntGame,(cHUDRegionW >> 1),cHUDRegionY+cHUDTimeY,ALIGN_CENTER,textMsg);
+						game.state = TUTORIAL;				
+					end;
+					case PRELUDE_LEVEL:
+						game.state = PRELUDE;				
+					end;
+					case LEVEL_SELECT_LEVEL:
+						game.state = LEVEL_SELECT;
+					end;
+					default:
+						if (attractActive)
+							//reproducimos partida AttractMode
+							controlLoggerPlayer("partida.rec");
+							write_var(fntGame,(cHUDRegionW >> 1),cHUDRegionY+cHUDTimeY,ALIGN_CENTER,textMsg);
+							game.state = ATTRACTMODE;
+						else
+							game.state = PLAYLEVEL;
+						end;
+					end;
 				end;
 			end;
 			case PLAYLEVEL:
@@ -1156,7 +1191,7 @@ begin
 			case CONTINUEGAME:
 				delete_text(all_text);
 				//cargamos nivel inicial
-				game.numLevel=1;
+				game.numLevel=LEVEL_SELECT_LEVEL;
 				game.score = 0;
 				game.playerLife = game.playerMaxLife;
 				game.playerTries = 3;
@@ -1199,7 +1234,9 @@ begin
 					clearLevel();
 						
 					//cambiamos de estado
-					game.state = PRELUDE;
+					game.numLevel = PRELUDE_LEVEL;
+					//game.state = PRELUDE;
+					game.state = LOADLEVEL;
 				else
 					//mensajes tutorial
 					switch(controlPlayingFrame)

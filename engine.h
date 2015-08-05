@@ -118,6 +118,13 @@
 #define MODE_FULLSCREEN			2
 
 
+//identificadores de los niveles
+#define PRELUDE_LEVEL			1
+#define TUTORIAL_LEVEL			2
+#define LEVEL_SELECT_LEVEL		3
+#define TOYLAND_LEVEL			4
+#define TOYLAND_2_LEVEL			5
+
 //Constantes del motor
 const
 	//Engine
