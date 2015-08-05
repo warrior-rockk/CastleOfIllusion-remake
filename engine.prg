@@ -812,7 +812,7 @@ begin
 						log("Nivel no implementado",DEBUG_ENGINE);
 					end;
 					//Puerta 2
-					if (colCheckAABB(idPlayer,143,108,30,40,INFOONLY))
+					if (colCheckAABB(idPlayer,143,108,30,40,INFOONLY) && game.levelStatus[TOYLAND_LEVEL] == LEVEL_UNCOMPLETED)
 						//iniciamos nivel
 						game.numLevel = TOYLAND_LEVEL;
 						//cambio de estado				
