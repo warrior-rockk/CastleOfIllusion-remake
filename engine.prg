@@ -56,7 +56,13 @@ begin
 	levelFiles[TOYLAND_2_LEVEL].TileFile 		= "levels\ToyLand2\tiles.fpg";
 	levelFiles[TOYLAND_2_LEVEL].MusicFile 		= "mus\ToyLand.ogg";
 	levelFiles[TOYLAND_2_LEVEL].MusicIntroEnd 	= 1.87;
-		
+	//Woods
+	levelFiles[WOODS_LEVEL].MapFile 			= "levels\Woods\Woods.bin";
+	levelFiles[WOODS_LEVEL].DataFile 			= "levels\Woods\Woods.dat";
+	levelFiles[WOODS_LEVEL].TileFile 			= "levels\Woods\tiles.fpg";
+	levelFiles[WOODS_LEVEL].MusicFile 			= "mus\Woods.ogg";
+	levelFiles[WOODS_LEVEL].MusicIntroEnd 		= 0.0;
+	
 	//cargamos la paleta general del juego
 	load_pal("pal\game.pal");
 	
@@ -801,15 +807,14 @@ begin
 								
 				//comprobacion entrada puertas
 				if (WGE_CheckControl(CTRL_UP,E_DOWN))  
-					//Puerta 1
-					if (colCheckAABB(idPlayer,79,108,30,40,INFOONLY))
+					//Puerta 1: Woods
+					if (colCheckAABB(idPlayer,79,108,30,40,INFOONLY) && game.levelStatus[WOODS_LEVEL] == LEVEL_UNCOMPLETED)
 						//iniciamos nivel
-						//game.numLevel = 3;
+						game.numLevel = WOODS_LEVEL;
 						//cambio de estado				
-						//game.state = LOADLEVEL;
-						log("Nivel no implementado",DEBUG_ENGINE);
+						game.state = LOADLEVEL;
 					end;
-					//Puerta 2
+					//Puerta 2: Toyland
 					if (colCheckAABB(idPlayer,143,108,30,40,INFOONLY) && game.levelStatus[TOYLAND_LEVEL] == LEVEL_UNCOMPLETED)
 						//iniciamos nivel
 						game.numLevel = TOYLAND_LEVEL;
@@ -875,8 +880,6 @@ begin
 						game.state = PRELUDE;				
 					end;
 					case LEVEL_SELECT_LEVEL:
-						//encendemos pantalla
-						wgeFadeIn(FADE_SCREEN);
 						
 						//si no suena la musica, la reproducimos
 						if (!is_playing_song())
@@ -884,15 +887,40 @@ begin
 							WGE_PlayMusicLevel();
 						end;
 						
+						//desperamos los tiles para hacer replace
+						signal(TYPE pTile,s_wakeup);
+						
 						//comprobamos si hay algun nivel completado para "tapiar" puerta
 						from i=0 TO cNumLevels;
 							switch (i)
+								case WOODS_LEVEL:
+									//si esta completado
+									if (game.levelStatus[i] == LEVEL_COMPLETED)
+										//lanzamos animacion de tapiar
+										WGE_Animation(fpgGame,18,22,81,96,10,ANIM_ONCE);
+										game.levelStatus[i] = LEVEL_DOOR_CLOSED;
+										idPlayer.this.fX	= 81;
+										idPlayer.x 			= 81;
+									end;
+									//si ya está tapiado
+									if (game.levelStatus[i] == LEVEL_DOOR_CLOSED)
+										//cambiamos los tiles por tapiado
+										WGE_ReplaceTile(5,4,16);
+										WGE_ReplaceTile(5,5,17);
+										WGE_ReplaceTile(6,4,1);
+										WGE_ReplaceTile(6,5,1);
+										WGE_ReplaceTile(7,4,1);
+										WGE_ReplaceTile(7,5,1);
+									end;
+								end;
 								case TOYLAND_LEVEL:
 									//si esta completado
 									if (game.levelStatus[i] == LEVEL_COMPLETED)
 										//lanzamos animacion de tapiar
 										WGE_Animation(fpgGame,18,22,145,96,10,ANIM_ONCE);
 										game.levelStatus[i] = LEVEL_DOOR_CLOSED;
+										idPlayer.this.fX	= 145;
+										idPlayer.x 			= 145;
 									end;
 									//si ya está tapiado
 									if (game.levelStatus[i] == LEVEL_DOOR_CLOSED)
@@ -907,6 +935,9 @@ begin
 								end;
 							end;
 						end;
+						
+						//encendemos pantalla
+						wgeFadeIn(FADE_SCREEN);
 						
 						//se despiertan los procesos
 						gameSignal(s_wakeup_tree);

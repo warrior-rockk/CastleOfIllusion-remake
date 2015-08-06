@@ -125,6 +125,7 @@
 #define LEVEL_SELECT_LEVEL		3
 #define TOYLAND_LEVEL			4
 #define TOYLAND_2_LEVEL			5
+#define WOODS_LEVEL             6
 
 //Estado de los niveles
 #define LEVEL_UNCOMPLETED       0
@@ -215,7 +216,7 @@ const
 	cBlinkEntityTime  = 2;					//Tiempo de parpadeo general entidades
 	
 	//General
-	cNumLevels        = 5;					//Numero niveles
+	cNumLevels        = 6;					//Numero niveles
 End;
 
 //Data Types
@@ -343,7 +344,7 @@ Global
 		#endif
 	End;
 	//archivos de los niveles
-	struct levelFiles[10]
+	struct levelFiles[cNumLevels]
 		string MapFile;			//archivo binario del mapa
 		string DataFile;		//archivo binario datos del nivel
 		string TileFile;		//archivo grafico de los tiles del mapa
