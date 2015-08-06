@@ -126,6 +126,7 @@
 #define TOYLAND_LEVEL			4
 #define TOYLAND_2_LEVEL			5
 #define WOODS_LEVEL             6
+#define CANDYLAND_LEVEL         7
 
 //Estado de los niveles
 #define LEVEL_UNCOMPLETED       0
@@ -217,7 +218,7 @@ const
 	cBlinkEntityTime  = 2;					//Tiempo de parpadeo general entidades
 	
 	//General
-	cNumLevels        = 6;					//Numero niveles
+	cNumLevels        = 7;					//Numero niveles
 End;
 
 //Data Types

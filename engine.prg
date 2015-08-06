@@ -62,6 +62,12 @@ begin
 	levelFiles[WOODS_LEVEL].TileFile 			= "levels\Woods\tiles.fpg";
 	levelFiles[WOODS_LEVEL].MusicFile 			= "mus\Woods.ogg";
 	levelFiles[WOODS_LEVEL].MusicIntroEnd 		= 0.0;
+	//Candyland
+	levelFiles[CANDYLAND_LEVEL].MapFile 		= "levels\CandyLand\CandyLand.bin";
+	levelFiles[CANDYLAND_LEVEL].DataFile 		= "levels\CandyLand\CandyLand.dat";
+	levelFiles[CANDYLAND_LEVEL].TileFile 		= "levels\CandyLand\tiles.fpg";
+	levelFiles[CANDYLAND_LEVEL].MusicFile 		= "mus\candyland.ogg";
+	levelFiles[CANDYLAND_LEVEL].MusicIntroEnd 	= 0.0;
 	
 	//cargamos la paleta general del juego
 	load_pal("pal\game.pal");
@@ -94,7 +100,7 @@ begin
 	game.playerLife 	= 3;
 	game.playerMaxLife  = 3;
 	game.score      	= 0;
-	game.numLevel       = WOODS_LEVEL; //TUTORIAL_LEVEL;
+	game.numLevel       = CANDYLAND_LEVEL; //TUTORIAL_LEVEL;
 	
 	//estado inicial
 	firstRun ? game.state = LANG_SEL : game.state = LOADLEVEL; //INTRO;
@@ -826,12 +832,11 @@ begin
 						game.state = LOADLEVEL;
 					end;
 					//Puerta 3
-					if (colCheckAABB(idPlayer,208,108,30,40,INFOONLY))
+					if (colCheckAABB(idPlayer,208,108,30,40,INFOONLY) && game.levelStatus[CANDYLAND_LEVEL] == LEVEL_UNCOMPLETED)
 						//iniciamos nivel
-						//game.numLevel = 3;
+						game.numLevel = CANDYLAND_LEVEL;
 						//cambio de estado				
-						//game.state = LOADLEVEL;
-						log("Nivel no implementado",DEBUG_ENGINE);
+						game.state = LOADLEVEL;
 					end;
 				end;
 				
@@ -906,6 +911,11 @@ begin
 									levelDoorX = 145;
 									levelDoorY = 96;
 									startDoorTile = 8;
+								end;
+								case CANDYLAND_LEVEL:
+									levelDoorX = 209;
+									levelDoorY = 96;
+									startDoorTile = 12;
 								end;
 							end;
 							//si esta completado
