@@ -144,6 +144,10 @@ private
 	int i; 									//Variables auxiliares
 	int counterTime;						//tiempo de paso
 	
+	int levelDoorX;							//Posicion X de la puerta de seleccion nivel
+	int levelDoorY;							//Posicion Y de la puerta de seleccion nivel
+	int startDoorTile;						//Numero inicial de tile que representa la puerta
+	
 	int pauseText;							//Id texto de pausa
 	string textMsg;							//Texto mensajes
 	
@@ -894,45 +898,33 @@ begin
 						from i=0 TO cNumLevels;
 							switch (i)
 								case WOODS_LEVEL:
-									//si esta completado
-									if (game.levelStatus[i] == LEVEL_COMPLETED)
-										//lanzamos animacion de tapiar
-										WGE_Animation(fpgGame,18,22,81,96,10,ANIM_ONCE);
-										game.levelStatus[i] = LEVEL_DOOR_CLOSED;
-										idPlayer.this.fX	= 81;
-										idPlayer.x 			= 81;
-									end;
-									//si ya está tapiado
-									if (game.levelStatus[i] == LEVEL_DOOR_CLOSED)
-										//cambiamos los tiles por tapiado
-										WGE_ReplaceTile(5,4,16);
-										WGE_ReplaceTile(5,5,17);
-										WGE_ReplaceTile(6,4,1);
-										WGE_ReplaceTile(6,5,1);
-										WGE_ReplaceTile(7,4,1);
-										WGE_ReplaceTile(7,5,1);
-									end;
+									levelDoorX = 81;
+									levelDoorY = 96;
+									startDoorTile = 4;
 								end;
 								case TOYLAND_LEVEL:
-									//si esta completado
-									if (game.levelStatus[i] == LEVEL_COMPLETED)
-										//lanzamos animacion de tapiar
-										WGE_Animation(fpgGame,18,22,145,96,10,ANIM_ONCE);
-										game.levelStatus[i] = LEVEL_DOOR_CLOSED;
-										idPlayer.this.fX	= 145;
-										idPlayer.x 			= 145;
-									end;
-									//si ya está tapiado
-									if (game.levelStatus[i] == LEVEL_DOOR_CLOSED)
-										//cambiamos los tiles por tapiado
-										WGE_ReplaceTile(5,8,16);
-										WGE_ReplaceTile(5,9,17);
-										WGE_ReplaceTile(6,8,1);
-										WGE_ReplaceTile(6,9,1);
-										WGE_ReplaceTile(7,8,1);
-										WGE_ReplaceTile(7,9,1);
-									end;
+									levelDoorX = 145;
+									levelDoorY = 96;
+									startDoorTile = 8;
 								end;
+							end;
+							//si esta completado
+							if (game.levelStatus[i] == LEVEL_COMPLETED)
+								//lanzamos animacion de tapiar
+								WGE_Animation(fpgGame,18,22,levelDoorX,levelDoorY,10,ANIM_ONCE);
+								game.levelStatus[i] = LEVEL_DOOR_CLOSED;
+								idPlayer.this.fX	= levelDoorX;
+								idPlayer.x 			= levelDoorX;
+							end;
+							//si ya está tapiado
+							if (game.levelStatus[i] == LEVEL_DOOR_CLOSED)
+								//cambiamos los tiles por tapiado
+								WGE_ReplaceTile(5,startDoorTile,16);
+								WGE_ReplaceTile(5,startDoorTile+1,17);
+								WGE_ReplaceTile(6,startDoorTile,1);
+								WGE_ReplaceTile(6,startDoorTile+1,1);
+								WGE_ReplaceTile(7,startDoorTile,1);
+								WGE_ReplaceTile(7,startDoorTile+1,1);
 							end;
 						end;
 						
