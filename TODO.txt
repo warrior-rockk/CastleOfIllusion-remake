@@ -1,4 +1,5 @@
-BUGS:   -las musicas de nivel deberian cargarse en el load_files??
+BUGS:   -la ultima modificacion de hacer solidos en horizontal (checkVectorX) que no se ven, hace que al saltar por el borde superior me detenga
+		-las musicas de nivel deberian cargarse en el load_files??
 		-llamar a las funciones WGE_Loop wgeLoop,etc..
          -tiles que se quedan en negro al reiniciar nivel!! (activadas funciones para debuggearlo)
 		-jarra se enganchó en la pared izquierda (al lanzarla o al caerse por tocar pompa?)

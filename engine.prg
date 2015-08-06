@@ -94,7 +94,7 @@ begin
 	game.playerLife 	= 3;
 	game.playerMaxLife  = 3;
 	game.score      	= 0;
-	game.numLevel       = TOYLAND_LEVEL; //TUTORIAL_LEVEL;
+	game.numLevel       = WOODS_LEVEL; //TUTORIAL_LEVEL;
 	
 	//estado inicial
 	firstRun ? game.state = LANG_SEL : game.state = LOADLEVEL; //INTRO;
@@ -2379,7 +2379,7 @@ begin
 			scroll[0].y0 += cVelRoomTransition * dir;
 			
 			//movemos animacion player
-			animPlayer.this.vY = (cVelRoomTransition*cVelRoomTransFactor)*dir;
+			animPlayer.this.vY = (cVelRoomTransition*cVelRoomTransFactorY)*dir;
 			animPlayer.this.fY += animPlayer.this.vY;
 			positionToInt(animPlayer);
 			//actualizamos la posicion del player para no dar muerte por region
@@ -2387,7 +2387,7 @@ begin
 			
 			//movemos animacion objeto si lo llevaras
 			if (animObject <> 0 )
-				animObject.this.vY = (cVelRoomTransition*cVelRoomTransFactor)*dir;
+				animObject.this.vY = (cVelRoomTransition*cVelRoomTransFactorY)*dir;
 				animObject.this.fY += animObject.this.vY;
 				positionToInt(animObject);
 			end;
@@ -2411,7 +2411,7 @@ begin
 			scroll[0].x0 += cVelRoomTransition * dir;
 			
 			//movemos animacion player
-			animPlayer.this.vX = (cVelRoomTransition*cVelRoomTransFactor)*dir;
+			animPlayer.this.vX = (cVelRoomTransition*cVelRoomTransFactorX)*dir;
 			animPlayer.this.fX += animPlayer.this.vX;
 			positionToInt(animPlayer);
 			//actualizamos la posicion del player para no dar muerte por region
@@ -2419,7 +2419,7 @@ begin
 			
 			//movemos animacion objeto
 			if (animObject <> 0 )
-				animObject.this.vY = (cVelRoomTransition*cVelRoomTransFactor)*dir;
+				animObject.this.vY = (cVelRoomTransition*cVelRoomTransFactorX)*dir;
 				animObject.this.fY += animObject.this.vY;
 				positionToInt(animObject);
 			end;
@@ -2552,14 +2552,14 @@ begin
 			end;
 			//Colisiones lateral izquierdas
 			case COLIZQ:
-				return tileMap[posY][posX].tileCode == SOLID ||
+				return tileMap[posY][posX].tileCode == SOLID       ||
 					   tileMap[posY][posX].tileCode == NO_SCROLL_L ||
 					   tileMap[posY][posX].tileCode == NO_SCROLL_R;
 					  
 			end;
 			//Colisiones lateral derechas
 			case COLDER:
-				return tileMap[posY][posX].tileCode == SOLID ||
+				return tileMap[posY][posX].tileCode == SOLID       ||
 					   tileMap[posY][posX].tileCode == NO_SCROLL_L ||
 					   tileMap[posY][posX].tileCode == NO_SCROLL_R;
 					   

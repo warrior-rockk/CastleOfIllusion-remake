@@ -183,7 +183,8 @@ const
 	cRoomScroll     = true;					//Flag para utilizar el scroll vertical como Master System (transiciones entre "rooms")
 	cTilesBetweenRooms  = 2;				//Numero de tiles transicion entre rooms
 	cVelRoomTransition  = 2;				//Velocidad transicion entre rooms
-	cVelRoomTransFactor = 0.25;				//Factor velocidad transicion entre rooms para el player
+	cVelRoomTransFactorX = 0.15; 			//Factor velocidad X transicion entre rooms para el player
+	cVelRoomTransFactorY = 0.25;			//Factor velocidad Y transicion entre rooms para el player
 	cVelShakeScroll     = 2;				//Velocidad efecto shakeScroll
 	
 	//HUD
