@@ -988,6 +988,8 @@ begin
 						memBoss = true;
 						//reproducimo musica boss
 						play_song(gameMusic[BOSS_MUS],-1);
+						//encerramos la boss zone
+						closeBossRoom();
 					end;
 				end;
 				
@@ -1003,6 +1005,7 @@ begin
 				//fin del nivel actual
 				if (game.endLevel)
 					game.state = LEVELENDED;
+					memBoss = false;
 				end;
 				
 				//muerte del jugador 
@@ -1026,7 +1029,8 @@ begin
 					idPlayer = 0;
 					//restamos una vida
 					game.playerTries --;
-					
+					//bajamos flag boss
+					memBoss = false;
 					//esperamos a que el proceso muerte desaparezca de pantalla
 					while(exists(idDeadPlayer))
 						frame;
@@ -1112,6 +1116,7 @@ begin
 								signal(idDialog,s_kill);
 								delete_text(all_text);
 								game.paused = false;
+								memBoss = false;
 								stop_song();
 								//apagamos pantalla
 								wgeFadeOut(FADE_SCREEN);
@@ -1124,6 +1129,7 @@ begin
 							case 3: //Exit
 								optionNum = 0;
 								game.paused = false;
+								memBoss = false;
 								signal(idDialog,s_kill);
 								delete_text(all_text);
 								stop_song();
@@ -1485,6 +1491,14 @@ Begin
 		log("No existe el fichero de mapa: " + file_,DEBUG_ENGINE);
 		WGE_Quit();
 	end;
+	
+	//Limpiamos la memoria dinamica
+	#ifdef DYNAMIC_MEM
+		free(tileMap);
+	#endif
+	
+	//liberamos archivos cargados
+	if (level.fpgTiles <> 0 ) unload_fpg(level.fpgTiles); end;
 	
 	//leemos el archivo de mapa
 	levelMapFile = fopen(file_,O_READ);
@@ -2092,7 +2106,8 @@ Begin
 	if (exists(idPlayer)) 
 		signal(idPlayer,s_kill);
 	end;		
-	
+	//Cargamos el mapeado del nivel por si se ha modificado en runtime
+	WGE_LoadMapLevel(levelFiles[game.numLevel].MapFile,levelFiles[game.numLevel].TileFile);
 	//arrancamos el control de scroll
 	WGE_ControlScroll();
 	//dibujamos el mapa
@@ -3196,4 +3211,44 @@ begin
 		  frame; 
 	end;
 
+end;
+
+//Proceso que cambia los tiles de una Boss Room para encerrar al player
+process closeBossRoom()
+begin
+	//esperamos a que el player este vivo
+	while( get_status(idPlayer) <> STATUS_ALIVE )
+		frame;
+	end;
+	//reemplazamos los tiles necesarios para encerrar al player segun el nivel
+	switch (game.numlevel)
+		case WOODS_LEVEL:
+			WGE_ReplaceTile(36,80,104);
+			tileMap[36][80].tileCode = SOLID;
+			WGE_Wait(20);
+			WGE_ReplaceTile(37,80,104);
+			tileMap[37][80].tileCode = SOLID;
+			WGE_Wait(20);
+			WGE_ReplaceTile(38,80,104);
+			tileMap[38][80].tileCode = SOLID;
+			WGE_Wait(20);
+			WGE_ReplaceTile(39,80,104);
+			tileMap[39][80].tileCode = SOLID;
+			WGE_Wait(20);
+		end;
+		case TOYLAND_LEVEL:
+			WGE_ReplaceTile(29,63,3);
+			tileMap[29][63].tileCode = SOLID;
+			WGE_Wait(20);
+			WGE_ReplaceTile(30,63,3);
+			tileMap[30][63].tileCode = SOLID;
+			WGE_Wait(20);
+			WGE_ReplaceTile(31,63,3);
+			tileMap[31][63].tileCode = SOLID;
+			WGE_Wait(20);
+			WGE_ReplaceTile(32,63,3);
+			tileMap[32][63].tileCode = SOLID;
+			WGE_Wait(20);
+		end;
+	end;
 end;
