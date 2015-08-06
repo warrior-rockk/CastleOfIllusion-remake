@@ -285,8 +285,10 @@ Begin
 				end;
 			end;
 		else
-			//si no existe, se considera solido
-			return dist;
+			//si no existe, se considera solido si es limite del mapeado
+			if (colVector.vStart.x <= 0 || colVector.vStart.x >= level.numTilesX*cTileSize)
+				return dist;
+			end;
 		end;
 				
 		//Incrementamos distancia
