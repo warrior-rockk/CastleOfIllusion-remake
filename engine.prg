@@ -1913,6 +1913,20 @@ BEGIN
 				if (tileMap[i][j].tileCode == BOSS_ZONE)
 					game.boss = true;
 				end;
+				//comprobamos autoScroll
+				if (tileMap[i][j].tileCode == AUTOSCROLL_R)
+					level.levelFlags.autoScrollX = 1;
+				end;
+				//comprobamos autoScroll
+				if (tileMap[i][j].tileCode == AUTOSCROLL_L)
+					level.levelFlags.autoScrollX = 2;
+				end;
+				//comprobamos autoScroll
+				if (tileMap[i][j].tileCode == AUTOSCROLL_STOP)
+					level.levelFlags.autoScrollX = 0;
+					stopScrollXR = true;
+					stopScrollXL = true;
+				end;
 			end;
 		end;
 			
@@ -2192,7 +2206,7 @@ begin
 		//movimiento automatico si está activo
 		if (level.levelflags.autoScrollX)
 			//incrementamos la posicion float
-			scrollfX += level.levelflags.velAutoScrollX;
+			scrollfX += cVelAutoScroll;
 		else
 			//Si el jugador ya está en ejecución, lo enfocamos
 			if (exists(idPlayer) )

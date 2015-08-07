@@ -58,18 +58,24 @@
 //				Tipo 14: Pendiente 135º
 //				Tipo 15: Pendiente 45*
 //				Tipo 16: Detencion Scroll Y
+//				Tipo 17: AutoScroll a Derechas
+//				Tipo 18: AutoScroll a Izquierdas
+//				Tipo 19: Stop AutoScroll
 //              ..31
-#define NO_SOLID      0
-#define SOLID         1
-#define BOSS_ZONE     2
-#define STAIRS        5
-#define TOP_STAIRS    6
-#define SOLID_ON_FALL 9
-#define NO_SCROLL_R   12
-#define NO_SCROLL_L   13
-#define SLOPE_135     14
-#define SLOPE_45      15
-#define NO_SCROLL_Y   16
+#define NO_SOLID      		0
+#define SOLID         		1
+#define BOSS_ZONE     		2
+#define STAIRS        		5
+#define TOP_STAIRS    		6
+#define SOLID_ON_FALL 		9
+#define NO_SCROLL_R   		12
+#define NO_SCROLL_L   		13
+#define SLOPE_135     		14
+#define SLOPE_45      		15
+#define NO_SCROLL_Y   		16
+#define AUTOSCROLL_R  		17
+#define AUTOSCROLL_L  		18
+#define AUTOSCROLL_STOP 	19
 
 //Propiedades de tile
 //bit 7:Opacidad del tile.0:el tile es cuadrado 1:el tile tiene transparencia
@@ -187,6 +193,7 @@ const
 	cVelRoomTransFactorX = 0.15; 			//Factor velocidad X transicion entre rooms para el player
 	cVelRoomTransFactorY = 0.25;			//Factor velocidad Y transicion entre rooms para el player
 	cVelShakeScroll     = 2;				//Velocidad efecto shakeScroll
+	cVelAutoScroll      = 0.2;				//Velocidad AutoScroll
 	
 	//HUD
 	cHUDRegion  	= 2;    				//Numero Region informacion juego
@@ -334,8 +341,7 @@ Global
 		int fpgObjects;				//Identificador del archivo de graficos de los objetos del nivel
 		int fpgMonsters;			//Identificador del archivo de graficos de los monstruos del nivel
 		struct levelFlags			//Flags de nivel
-			byte  autoScrollX;   		//Scroll con movimiento X automático
-			float velAutoScrollX; 		//Velocidad autoscroll X automático
+			byte  autoScrollX;   	//Scroll con movimiento X automático (0:Parado 1:A derechas 2:a Izquierdas)
 		end;
 		int idMusicLevel;
 		int numCheckPoints;			//Numero checkpoints del nivel
