@@ -365,7 +365,7 @@ BEGIN
 		
 		//Recorremos la lista de puntos a comprobar
 		for (i=0;i<cNumColPoints;i++)
-				
+			
 			//lanzamos comprobacion de terreno con los puntos de colision
 			dir = colCheckTileTerrain(ID,i);
 			
@@ -373,7 +373,7 @@ BEGIN
 			applyDirCollision(ID,dir,&grounded);
 			
 		end;
-
+				
 		//lanzamos comprobacion con procesos objeto
 		repeat
 			
@@ -546,8 +546,12 @@ BEGIN
 			scroll[cGameScroll].x0 += scrollfX - scroll[cGameScroll].x0;
 						
 			//lanzamos comprobacion de colision con el scroll vertical
-			dir = colCheckAABB(id,scroll[cGameScroll].x0 + cGameRegionW,scroll[cGameScroll].y0 + (cGameRegionH>>1),1,cGameRegionH,HORIZONTALAXIS);
-
+			if (level.levelflags.autoScrollX == 1)
+				dir = colCheckAABB(id,scroll[cGameScroll].x0,scroll[cGameScroll].y0 + (cGameRegionH>>1),1,cGameRegionH,HORIZONTALAXIS);
+			else
+				dir = colCheckAABB(id,scroll[cGameScroll].x0 + cGameRegionW,scroll[cGameScroll].y0 + (cGameRegionH>>1),1,cGameRegionH,HORIZONTALAXIS);
+			end;
+			
 			//si colisionamos con el scroll y el terreno, morimos aplastados
 			if (dir <> NOCOL && getTileCode(id,CENTER_POINT) <> NO_SOLID)
 				dead = true;

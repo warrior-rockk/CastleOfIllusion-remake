@@ -100,10 +100,10 @@ begin
 	game.playerLife 	= 3;
 	game.playerMaxLife  = 3;
 	game.score      	= 0;
-	game.numLevel       = CANDYLAND_LEVEL; //TUTORIAL_LEVEL;
+	game.numLevel       = TUTORIAL_LEVEL;
 	
 	//estado inicial
-	firstRun ? game.state = LANG_SEL : game.state = LOADLEVEL; //INTRO;
+	firstRun ? game.state = LANG_SEL : game.state = INTRO;
 	
 	//Arrancamos el reloj del juego
 	WGE_Clock();
@@ -2205,8 +2205,8 @@ begin
 		
 		//movimiento automatico si está activo
 		if (level.levelflags.autoScrollX)
-			//incrementamos la posicion float
-			scrollfX += cVelAutoScroll;
+			//incrementamos/decrementamos la posicion float
+			level.levelflags.autoScrollX == 1 ? scrollfX += cVelAutoScroll : scrollfX -= cVelAutoScroll;
 		else
 			//Si el jugador ya está en ejecución, lo enfocamos
 			if (exists(idPlayer) )
@@ -2616,9 +2616,9 @@ begin
 	if (idEntity <> idPlayer)
 		return true;
 	else
-		return (posY*cTileSize) >= scroll[cGameScroll].y0 &&
+		return ((posY*cTileSize)+cTileSize) >= scroll[cGameScroll].y0 &&
 			   (posY*cTileSize) <= scroll[cGameScroll].y0+cGameRegionH &&
-			   (posX*cTileSize) >= scroll[cGameScroll].x0 &&
+			   ((posX*cTileSize)+cTileSize) >= scroll[cGameScroll].x0 &&
 			   (posX*cTileSize) <= scroll[cGameScroll].x0+cGameRegionW;
 	end;
 end;
