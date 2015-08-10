@@ -1828,6 +1828,7 @@ process pTile(int i,int j)
 private	
 	byte tileColor;		//Color del tile (modo debug)
 	byte redraw = 1;	//Flag redibujar y posicionar el tile
+	byte actualFrame;	//Frame actual de animacion
 BEGIN
 	//definimos propiedades iniciales
 	this.alto = cTileSize;
@@ -1836,6 +1837,7 @@ BEGIN
 	region = cGameRegion;
 	priority = cTilePrior;
 	file = level.fpgTiles;
+	actualFrame = 0;
 	
 	//modo sin graficos
 	if (file<0)
@@ -1892,12 +1894,25 @@ BEGIN
 			redraw = 1;
 		end;
 		
-		//si se activa flag de actualizar tile
+		//Comprobaciones tile existente
 		if (tileExists(i,j))
+			//si se activa flag de actualizar tile
 			if (tileMap[i][j].refresh)
 				redraw = true;
 			end;
+			//gestion de animacion Tile
+			if (tileMap[i][j].NumAnimation <> 0)
+				if (tickClock(cNumFPS))
+					if (actualFrame < tileAnimations.tileAnimTable[tileMap[i][j].NumAnimation-1].numFrames-1)
+						actualFrame++;
+					else
+						actualFrame = 0;
+					end;
+					graph = tileAnimations.tileAnimTable[tileMap[i][j].NumAnimation-1].frameGraph[actualFrame];
+				end;
+			end;
 		end;
+		
 		
 		//Redibujamos el tile
 		if (redraw)
@@ -1907,12 +1922,12 @@ BEGIN
 			
 			//grafico
 			if (tileExists(i,j))
-				
 				//Dibujamos su grafico (o una caja si no hay archivo)
 				if (file>=0)
 					//comprobamos si tiene animacion
 					if (tileMap[i][j].NumAnimation <> 0)
-						graph = tileAnimations.tileAnimTable[tileMap[i][j].NumAnimation-1].frameGraph[1];
+						actualFrame = 0;
+						graph = tileAnimations.tileAnimTable[tileMap[i][j].NumAnimation-1].frameGraph[actualFrame];
 					else
 						graph = tileMap[i][j].tileGraph;
 					end;
