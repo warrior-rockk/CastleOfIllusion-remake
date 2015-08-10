@@ -100,10 +100,10 @@ begin
 	game.playerLife 	= 3;
 	game.playerMaxLife  = 3;
 	game.score      	= 0;
-	game.numLevel       = TUTORIAL_LEVEL;
+	game.numLevel       = CANDYLAND_LEVEL; //TUTORIAL_LEVEL;
 	
 	//estado inicial
-	firstRun ? game.state = LANG_SEL : game.state = INTRO;
+	firstRun ? game.state = LANG_SEL : game.state = LOADLEVEL; //INTRO;
 	
 	//Arrancamos el reloj del juego
 	WGE_Clock();
@@ -1552,6 +1552,10 @@ Begin
 				log("Fallo leyendo grafico de tiles ("+j+","+i+") en: " + file_,DEBUG_ENGINE);
 				WGE_Quit();
 			end;
+			//comprobamos si tiene animacion
+			if (tileMap[i][j].tileGraph > 128)
+				tileMap[i][j].numAnimation = (255 - tileMap[i][j].tileGraph)+1;
+			end;
 		end;
 	end;
 	
@@ -1580,6 +1584,62 @@ Begin
 	
 	//Si algun tile usa alpha, lo inicializamos
 	if (mapUsesAlpha) WGE_InitAlpha(); end;
+	
+	//leemos numero de animaciones
+	fread(levelMapFile,tileAnimations.numAnimations);
+	
+	//si existe alguna animacion
+	if ( tileAnimations.numAnimations > 0 )
+		//Creamos la matriz dinamica de las secuencias de animacion
+		#ifdef DYNAMIC_MEM
+			tileAnimations.tileAnimTable = calloc(tileAnimations.numAnimations,sizeof(_tileAnimation));
+			
+			//comprobamos el direccionamiento
+			if ( tileAnimations.tileAnimTable == NULL )
+				log("Fallo alocando memoria dinámica (tileAnimations)",DEBUG_ENGINE);
+				WGE_Quit();
+			end;
+		#endif
+		
+		//Cargamos las secuencias de animacion
+		for (i=0;i<tileAnimations.numAnimations;i++)
+			if (fread(levelMapFile,tileAnimations.tileAnimTable[i].numFrames)  == 0)
+				log("Fallo leyendo numero de frames secuencia ("+i+") en: " + file_,DEBUG_ENGINE);
+				WGE_Quit();
+			end;
+			//Creamos la matriz dinamica de los graficos de los frames de animacion
+			#ifdef DYNAMIC_MEM
+				tileAnimations.tileAnimTable[i].frameGraph = calloc(tileAnimations.tileAnimTable[i].numFrames,sizeof(byte));
+				
+				//comprobamos el direccionamiento
+				if ( tileAnimations.tileAnimTable.frameGraph == NULL )
+					log("Fallo alocando memoria dinámica (tileAnimTable.frameGraph) en secuencia"+i,DEBUG_ENGINE);
+					WGE_Quit();
+				end;
+			#endif
+			//Creamos la matriz dinamica de la duracion de cada frame de animacion
+			#ifdef DYNAMIC_MEM
+				tileAnimations.tileAnimTable[i].frameTime = calloc(tileAnimations.tileAnimTable[i].numFrames,sizeof(byte));
+				
+				//comprobamos el direccionamiento
+				if ( tileAnimations.tileAnimTable.frameTime == NULL )
+					log("Fallo alocando memoria dinámica (tileAnimTable.frameTime) en secuencia"+i,DEBUG_ENGINE);
+					WGE_Quit();
+				end;
+			#endif
+			//Cargamos los frames de la secuencia actual
+			for (j=0;j<tileAnimations.tileAnimTable[i].numFrames;j++)
+				if (fread(levelMapFile,tileAnimations.tileAnimTable[i].frameGraph[j])  == 0)
+					log("Fallo leyendo grafico de frames secuencia ("+i+") en numero de frame ("+j+"): " + file_,DEBUG_ENGINE);
+					WGE_Quit();
+				end;
+				if (fread(levelMapFile,tileAnimations.tileAnimTable[i].frameTime[j])  == 0)
+					log("Fallo leyendo duracion de frames secuencia ("+i+") en numero de frame ("+j+"): " + file_,DEBUG_ENGINE);
+					WGE_Quit();
+				end;
+			end;
+		end;
+	end;
 	
 	//cerramos el archivo
 	fclose(levelMapFile);
@@ -1850,7 +1910,12 @@ BEGIN
 				
 				//Dibujamos su grafico (o una caja si no hay archivo)
 				if (file>=0)
-					graph = tileMap[i][j].tileGraph;
+					//comprobamos si tiene animacion
+					if (tileMap[i][j].NumAnimation <> 0)
+						graph = tileAnimations.tileAnimTable[tileMap[i][j].NumAnimation-1].frameGraph[1];
+					else
+						graph = tileMap[i][j].tileGraph;
+					end;
 				else
 					tileColor = tileMap[i][j].tileGraph;
 				end;

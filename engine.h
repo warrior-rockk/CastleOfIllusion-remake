@@ -67,6 +67,7 @@
 #define BOSS_ZONE     		2
 #define STAIRS        		5
 #define TOP_STAIRS    		6
+#define WATER               8
 #define SOLID_ON_FALL 		9
 #define NO_SCROLL_R   		12
 #define NO_SCROLL_L   		13
@@ -253,7 +254,23 @@ Type _tile
 	byte tileProf;				//Propiedad del tile: Profundidad
 	byte tileAlpha;             //Propiedad del tile: Opacidad
 	byte tileCode; 				//Codigo del tile
+	byte NumAnimation;			//Numero de animacion (0: Sin animacion)
 	byte refresh;				//flag de actualizar tile
+end;
+
+//Animaciones de tiles
+Type _TileAnimation
+	byte numFrames;        	//numero de frames totales de la animacion
+	#ifdef DYNAMIC_MEM
+		byte* frameGraph;   	//array dinamico del grafico del frame
+	#else
+		byte  frameGraph;		//Array estatico del grafico del frame
+	#endif
+	#ifdef DYNAMIC_MEM
+		byte* frameTime;   		//array dinamico de duracion del frame
+	#else
+		byte  frameTime;		//Array estatico de duracion del frame
+	#endif
 end;
 
 //Vector
@@ -289,6 +306,7 @@ Type _checkPoint
 	int _flags;
 end;	
 
+	
 //Variables Globales
 Global
 	//engine
@@ -360,12 +378,21 @@ Global
 		float  MusicIntroEnd;	//Posicion en segundos con centesimas del final del intro de la musica	
 	end;
 	#ifdef DYNAMIC_MEM
-		_tile** tileMap;  	        //Matriz Dinamica del mapa de tiles del nivel
-		_path* paths;				//Array Dinamico de paths
+		_tile** tileMap;  	        				//Matriz Dinamica del mapa de tiles del nivel
+		_path* paths;								//Array Dinamico de paths
+		struct tileAnimations
+			byte 			numAnimations;			//Numero de animaciones
+			_tileAnimation* tileAnimTable; 			//Array dinamico de animaciones de tile
+		end;
 	#else
-		_tile tileMap[1000][1000];	//Matriz Estatica del mapa de tiles del nivel
-		_path paths[100];           //Array Estatico de paths
+		_tile tileMap[1000][1000];					//Matriz Estatica del mapa de tiles del nivel
+		_path paths[100];           				//Array Estatico de paths
+		struct tileAnimations
+			byte 			numAnimations;			//Numero de animaciones
+			_tileAnimation 	tileAnimTable[100]; 	//Array estatico de animaciones de tile
+		end;		
 	#endif
+	
 	byte mapUsesAlpha;				//Bit que indica que el mapa usa propiedad alpha (relentiza la carga)
 	//Fisicas
 	float gravity 			= 0.20; //0.25; 	//Aceleracion gravedad
