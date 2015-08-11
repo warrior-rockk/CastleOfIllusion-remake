@@ -17,6 +17,7 @@ byte  onStairs;				//Flag de en escaleras
 byte  crouched;				//Flag de agachado
 byte  on45Slope;			//Flag en pendiente 45 grados
 byte  on135Slope;			//Flag en pendiente 135 grados
+byte  onWater;				//Flag de en agua
 byte  sloping;              //Resbalando por una pendiente
 byte  atacking;             //Flag de atacando
 byte  picking;				//Flag de recogiendo
@@ -29,6 +30,7 @@ byte  hurtDisabled;			//Flag de invencible
 byte  dead; 				//Flag de muerto
 float velMaxX;				//Velocidad Maxima Horizontal
 float accelX;				//Aceleracion Maxima Horizontal
+float velMaxY;				//Velocidad Maxima Vertical
 float accelY;				//Aceleracion Maxima Vertical
 float friction;				//Friccion local
 int	  dir;					//Direccion de la colision
@@ -107,11 +109,22 @@ BEGIN
 			
 			//boton salto
 			if (WGE_CheckControl(CTRL_JUMP,E_PRESSED))
-				//si no esta en escalera
-				if(!onStairs)			
+				if (onStairs)	//si esta en escalera
+					//caemos de la escalera
+					onStairs = false;
+					longJump = true;
+					grounded = false;
+				//si esta en el agua
+				elseif(onWater)	//si no esta en escalera
+					if (WGE_CheckControl(CTRL_JUMP,E_DOWN)) 
+						jumping = true;
+						grounded = false;
+						this.vY = -accelY;
+					end;
+				else
 					//salto con E_DOWN
 					if (WGE_CheckControl(CTRL_JUMP,E_DOWN)) 
-						if(!jumping && (grounded || onStairs)) 
+						if(!jumping && grounded) 
 							jumping = true;
 							grounded = false;
 							this.vY = -accelY;
@@ -122,11 +135,6 @@ BEGIN
 						this.vY -= cPlayerPowerJumpFactor;
 						jumpPower++;					
 					end;
-				else
-					//caemos de la escalera
-					onStairs = false;
-					longJump = true;
-					grounded = false;
 				end;
 			else
 				//salto largo realizado
@@ -239,6 +247,8 @@ BEGIN
 		//valor friccion local
 		if (sloping && (on45Slope || on135Slope))
 			friction = 1;
+		elseif(onWater)
+			friction = waterFriction;
 		elseif (grounded)
 			friction = floorFriction;
 		else
@@ -254,12 +264,12 @@ BEGIN
 		//gravedad
 		if (!onStairs)
 			//limitamos la velocidad Y maxima
-			if (abs(this.vY) < cPlayerVelMaxY) 
+			if (abs(this.vY) < velMaxY) 
 				this.vY += gravity;
 			end;
 		end;
 		
-		//Cambio velocidades y aceleracion en rampas
+		//Cambio velocidades y aceleracion en rampas y agua
 		if (cSlopesEnabled)
 			
 			//Control Rampas
@@ -269,6 +279,8 @@ BEGIN
 			on45Slope  = getTileCode(id,RIGHT_DOWN_POINT) == SLOPE_45 || 
 						 getTileCode(id,DOWN_R_POINT) == SLOPE_45     || 
 						 getTileCode(id,CENTER_DOWN_POINT) == SLOPE_45;
+			
+			onWater    = getTileCode(id,CENTER_POINT) == WATER;
 			
 			//si estoy en una rampa de 45 grados
 			if (on45Slope)
@@ -318,10 +330,30 @@ BEGIN
 						accelx  = cPlayerAccelXSlopeDown;
 					end;
 				end;
+			//si estoy en el agua
+			elseif (onWater)
+				velMaxX = cPlayerWaterVelMaxX;
+				accelX 	= cPlayerWaterAccelX;
+				velMaxY = cPlayerWaterVelMaxY;
+				accelY 	= cPlayerWaterAccelY;
+				//en agua, incrementamos salto
+				if (jumping)
+					this.vY += -cPlayerWaterJumpFactor;
+				end;
+				//limitamos la velocidad X actual
+				if (abs(this.vX) > velMaxX)
+					this.vX = velMaxX * (abs(this.vX)/this.vX);
+				end;
+				//limitamos la velocidad Y actual
+				if (abs(this.vY) > velMaxY)
+					this.vY = velMaxY * (abs(this.vY)/this.vY);
+				end;
 			//si no, restauro consignas velocidades
 			else
 				velMaxX = cPlayerVelMaxX;
 				accelX 	= cPlayerAccelX;
+				velMaxY = cPlayerVelMaxY;
+				accelY 	= cPlayerAccelY;
 				sloping = false;
 			end;
 		end;
