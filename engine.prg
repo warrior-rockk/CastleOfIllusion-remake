@@ -1639,6 +1639,13 @@ Begin
 				end;
 			end;
 		end;
+		//Cargamos los codigos de tile de las animaciones
+		for (i=0;i<tileAnimations.numAnimations;i++)
+			if (fread(levelMapFile,tileAnimations.tileAnimTable[i].tileCode)  == 0)
+				log("Fallo leyendo codigo de tile de secuencia ("+i+") + " + file_,DEBUG_ENGINE);
+				WGE_Quit();
+			end;
+		end;
 	end;
 	
 	//cerramos el archivo
@@ -1904,7 +1911,10 @@ BEGIN
 			end;
 			//gestion de animacion Tile
 			if (tileMap[i][j].NumAnimation <> 0)
+				//actualizamos grafico
 				graph = tileAnimations.tileAnimTable[tileMap[i][j].NumAnimation-1].frameGraph[tileAnimations.tileAnimTable[tileMap[i][j].NumAnimation-1].actualFrame];
+				//actualizamos codigo
+				tileMap[i][j].tileCode = tileAnimations.tileAnimTable[tileMap[i][j].NumAnimation-1].tileCode;
 			end;
 		end;
 				
@@ -1920,7 +1930,10 @@ BEGIN
 				if (file>=0)
 					//comprobamos si tiene animacion
 					if (tileMap[i][j].NumAnimation <> 0)
+						//actualizamos grafico
 						graph = tileAnimations.tileAnimTable[tileMap[i][j].NumAnimation-1].frameGraph[tileAnimations.tileAnimTable[tileMap[i][j].NumAnimation-1].actualFrame];
+						//actualizamos codigo
+						tileMap[i][j].tileCode = tileAnimations.tileAnimTable[tileMap[i][j].NumAnimation-1].tileCode;
 					else
 						graph = tileMap[i][j].tileGraph;
 					end;

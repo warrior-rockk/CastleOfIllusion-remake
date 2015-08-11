@@ -260,8 +260,9 @@ end;
 
 //Animaciones de tiles
 Type _TileAnimation
-	byte numFrames;        	//numero de frames totales de la animacion
-	byte actualFrame;		//frame actual de reproduccion
+	byte numFrames;        		//numero de frames totales de la animacion
+	byte actualFrame;			//frame actual de reproduccion
+	byte tileCode;				//Codigo del tile cuando es animacion
 	#ifdef DYNAMIC_MEM
 		byte* frameGraph;   	//array dinamico del grafico del frame
 	#else
