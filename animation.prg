@@ -105,3 +105,25 @@ begin
 	until(endAnimation && mode == ANIM_ONCE)
 	
 end;
+
+//proceso que actualiza los frames de las animaciones de tiles para que vayan sincronizadas
+process WGE_UpdateTileAnimations()
+private
+	int actualAnimation;	//animacion actual
+begin
+loop
+	//recorremos todas las animaciones
+	for (actualAnimation = 0;actualAnimation < tileAnimations.numAnimations;actualAnimation++)
+		if (tickClock(30))
+			//incrementamos el frame actual o volvemos al inicio
+			if (tileAnimations.tileAnimTable[actualAnimation].actualFrame < tileAnimations.tileAnimTable[actualAnimation].numFrames-1)
+				tileAnimations.tileAnimTable[actualAnimation].actualFrame++;
+			else
+				tileAnimations.tileAnimTable[actualAnimation].actualFrame = 0;
+			end;
+		end;
+	end;
+	
+	frame;
+end;
+end;

@@ -1818,6 +1818,8 @@ Begin
 
 	log("Mapa dibujado correctamente. Creados "+numTilesDraw+" tiles",DEBUG_ENGINE);
 	
+	//lanzamos proceso actualizador animaciones de tiles
+	WGE_UpdateTileAnimations();
 End;
 
 //Proceso tile
@@ -1902,18 +1904,10 @@ BEGIN
 			end;
 			//gestion de animacion Tile
 			if (tileMap[i][j].NumAnimation <> 0)
-				if (tickClock(cNumFPS))
-					if (actualFrame < tileAnimations.tileAnimTable[tileMap[i][j].NumAnimation-1].numFrames-1)
-						actualFrame++;
-					else
-						actualFrame = 0;
-					end;
-					graph = tileAnimations.tileAnimTable[tileMap[i][j].NumAnimation-1].frameGraph[actualFrame];
-				end;
+				graph = tileAnimations.tileAnimTable[tileMap[i][j].NumAnimation-1].frameGraph[tileAnimations.tileAnimTable[tileMap[i][j].NumAnimation-1].actualFrame];
 			end;
 		end;
-		
-		
+				
 		//Redibujamos el tile
 		if (redraw)
 			//posicion
@@ -1926,8 +1920,7 @@ BEGIN
 				if (file>=0)
 					//comprobamos si tiene animacion
 					if (tileMap[i][j].NumAnimation <> 0)
-						actualFrame = 0;
-						graph = tileAnimations.tileAnimTable[tileMap[i][j].NumAnimation-1].frameGraph[actualFrame];
+						graph = tileAnimations.tileAnimTable[tileMap[i][j].NumAnimation-1].frameGraph[tileAnimations.tileAnimTable[tileMap[i][j].NumAnimation-1].actualFrame];
 					else
 						graph = tileMap[i][j].tileGraph;
 					end;
