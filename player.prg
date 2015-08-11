@@ -124,14 +124,18 @@ BEGIN
 				else
 					//salto con E_DOWN
 					if (WGE_CheckControl(CTRL_JUMP,E_DOWN)) 
-						if(!jumping && grounded) 
+						if((!jumping && grounded) || getTileCode(id,CENTER_DOWN_POINT) == WATER)
 							jumping = true;
 							grounded = false;
-							this.vY = -accelY;
+							if (getTileCode(id,CENTER_DOWN_POINT) == WATER)
+								this.vY = -cPlayerExitWaterAccelY;
+							else
+								this.vY = -accelY;
+							end;
 						end;
 					end;
 					//incremento del poder del salto con pulsacion larga
-					if (!longJump && !grounded && jumpPower <= cPlayerMaxPowerJump && clockTick)
+					if (!longJump && (!grounded || getTileCode(id,CENTER_DOWN_POINT) == WATER) && jumpPower <= cPlayerMaxPowerJump && clockTick)
 						this.vY -= cPlayerPowerJumpFactor;
 						jumpPower++;					
 					end;
@@ -651,13 +655,7 @@ BEGIN
 			
 			//parpadeo si invencible
 			blinkEntity(id);
-			/*if (clockTick)
-				if (isBitSet(idPlayer.flags,B_ABLEND))
-					unsetBit(idPlayer.flags,B_ABLEND);
-				else	
-					setBit(idPlayer.flags,B_ABLEND);
-				end;
-			end;*/
+			
 		else
 			hurtDisabledCounter = 0;
 			unsetBit(idPlayer.flags,B_ABLEND);

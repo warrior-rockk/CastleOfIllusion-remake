@@ -60,9 +60,10 @@ Const
 	cPlayerDecelXSlopeUp    = 0.1;			//Factor deceleracion X al subir rampa
 	
 	cPlayerAccelY			= 2.2;//3;		//Aceleracion Player Y salto
-	cPlayerWaterAccelY		= 1.5;			//Aceleracion Player Y salto
+	cPlayerWaterAccelY		= 1.5;			//Aceleracion Player Y salto en agua
+	cPlayerExitWaterAccelY	= 3.5;			//Aceleracion Player Y salto salir del agua
 	cPlayerVelMaxY          = 10;			//Velocidad Maxima Y Player
-	cPlayerWaterVelMaxY     = 4;			//Velocidad Maxima Y Player
+	cPlayerWaterVelMaxY     = 4;			//Velocidad Maxima Y Player en agua
 	cPlayerVelYStairs       = 1;			//Velocidad movimiento en escalera
 	cPlayerAtackBounce      = 2.3;//4;      //Rebote al romper objet/atacar
 	cPlayerPowerAtackBounce = 1.02;//1.4;   //Extra de rebote al romper/atacar
