@@ -837,6 +837,8 @@ BEGIN
 			case FALL_STATE:
 				if (picked)
 					WGE_Animate(31,31,1,ANIM_LOOP);
+				elseif (onWater)
+					WGE_Animate(73,76,10,ANIM_LOOP);
 				else
 					WGE_Animate(11,11,1,ANIM_LOOP);
 				end;
