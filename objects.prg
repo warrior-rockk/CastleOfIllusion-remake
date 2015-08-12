@@ -961,7 +961,7 @@ begin
 					//si tenemos apertura
 					if (openDoor)
 						//tiempo apertura
-						if (clockTick)
+						if (tick100ms)
 							doorTime++;
 						end;
 						//tiempo cumplido
@@ -1092,7 +1092,7 @@ begin
 					//flag de cerrar
 					if (!openDoor)
 						//tiempo apertura
-						if (clockTick)
+						if (tick100ms)
 							doorTime++;
 						end;
 						//tiempo cumplido
