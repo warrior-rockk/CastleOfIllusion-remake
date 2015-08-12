@@ -198,7 +198,7 @@ const
 	cVelRoomTransFactorX = 0.15; 			//Factor velocidad X transicion entre rooms para el player
 	cVelRoomTransFactorY = 0.25;			//Factor velocidad Y transicion entre rooms para el player
 	cVelShakeScroll     = 2;				//Velocidad efecto shakeScroll
-	cVelAutoScroll      = 0.2;				//Velocidad AutoScroll
+	cVelAutoScroll      = 0.6;				//Velocidad AutoScroll
 	
 	//HUD
 	cHUDRegion  	= 2;    				//Numero Region informacion juego

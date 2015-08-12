@@ -2057,9 +2057,14 @@ BEGIN
 				end;
 				//comprobamos autoScroll
 				if (tileMap[i][j].tileCode == AUTOSCROLL_STOP)
-					level.levelFlags.autoScrollX = 0;
-					stopScrollXR = true;
-					stopScrollXL = true;
+					//si el autoscroll es a derechas
+					if (
+					   (level.levelFlags.autoScrollX == 1 && scroll[cGameScroll].x0+cGameRegionW >= ((j*cTileSize)+cHalfTSize))
+					   ||
+					   (level.levelFlags.autoScrollX == 2 && scroll[cGameScroll].x0 <= ((j*cTileSize)-cHalfTSize))
+						)
+							level.levelFlags.autoScrollX = 0;
+					end;
 				end;
 			end;
 		end;
