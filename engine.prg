@@ -2212,10 +2212,12 @@ end
 Begin
     //detenemos los procesos
 	signal(TYPE WGE_ControlScroll,s_kill_tree);
+	signal(TYPE WGE_UpdateTileAnimations,s_kill_tree);
 	signal(TYPE pTile,s_kill_tree);
 	if (exists(idPlayer)) 
 		signal(idPlayer,s_kill);
-	end;		
+	end;	
+	
 	//Cargamos el mapeado del nivel por si se ha modificado en runtime
 	WGE_LoadMapLevel(levelFiles[game.numLevel].MapFile,levelFiles[game.numLevel].TileFile);
 	//arrancamos el control de scroll
@@ -2767,6 +2769,7 @@ end;
 function gameSignal(int _signal)
 begin
 	signal(TYPE WGE_ControlScroll,_signal);
+	signal(TYPE WGE_UpdateTileAnimations,_signal);
 	signal(TYPE pTile,_signal);
 	if (exists(idPlayer) ) 
 		signal(idPlayer,_signal);
@@ -2799,6 +2802,7 @@ begin
 		free(platforms);
 		//free(paths);
 		free(tileMap);
+		free(tileAnimations);
 	#endif
 	
 	//liberamos archivos cargados

@@ -111,7 +111,8 @@ process WGE_UpdateTileAnimations()
 private
 	int actualAnimation;	//animacion actual
 begin
-loop
+//finalizamos el proceso si no hay animaciones en el mapa
+while(tileAnimations.numAnimations > 0 )
 	//recorremos todas las animaciones
 	for (actualAnimation = 0;actualAnimation < tileAnimations.numAnimations;actualAnimation++)
 		if (tickClock(30))
