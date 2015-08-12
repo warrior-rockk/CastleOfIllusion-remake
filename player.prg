@@ -412,7 +412,6 @@ BEGIN
 				
 		//lanzamos comprobacion con procesos objeto
 		repeat
-			
 			//obtenemos siguiente colision
 			colID = get_id(TYPE object);
 			
@@ -421,6 +420,7 @@ BEGIN
 			
 			//colisiones verticales con procesos
 			dir = colCheckProcess(id,colID,VERTICALAXIS);
+					
 			//aplicamos la direccion de la colision
 			applyDirCollision(ID,dir,&grounded);
 			
@@ -440,9 +440,6 @@ BEGIN
 					//matamos al objeto
 					colID.this.state = DEAD_STATE;
 				else
-					//corregimos la Y truncamos this.fY
-					y = this.fY;
-					this.fY = y;
 					//seteamos flag idButton si la colision es con un boton
 					if (grounded && isType(colID.son,TYPE button))
 						idButton = ID;
@@ -464,7 +461,6 @@ BEGIN
 			applyDirCollision(ID,dir,&grounded);
 			
 		until (colID == 0);
-		
 		
 		//lanzamos comprobacion con procesos plataforma
 		repeat
@@ -595,7 +591,7 @@ BEGIN
 		end;
 		
 		//Fin colisiones ==============================
-		
+				
 		//Actualizar velocidades
 		if (grounded)
 			this.vY = 0;

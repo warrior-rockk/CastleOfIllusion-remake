@@ -2799,8 +2799,8 @@ begin
 	//movemos si la posicion a cambiado partes enteras
 	idEntity.x+= idEntity.this.fX - idEntity.x;
 		
-	//en vertical,la asignacion es directa	
-	idEntity.y = idEntity.this.fY;
+	//movemos si la posicion a cambiado partes enteras
+	idEntity.y+= idEntity.this.fy - idEntity.y;
 end;
 
 //funcion que actualiza las velocidades y la posicion de un proceso
