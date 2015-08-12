@@ -1,5 +1,4 @@
-BUGS:   -el editor se ralla con los tiles animacion
-		-las musicas de nivel deberian cargarse en el load_files??
+BUGS:   -las musicas de nivel deberian cargarse en el load_files??
 		-llamar a las funciones WGE_Loop wgeLoop,etc..
          -tiles que se quedan en negro al reiniciar nivel!! (activadas funciones para debuggearlo)
 		-jarra se enganchó en la pared izquierda (al lanzarla o al caerse por tocar pompa?)
@@ -57,6 +56,6 @@ EDITOR: -flags de checks y player se trastocan si abro el proyecto de nuevo.¿no 
         -que no se seleccione el siguiente objeto cuando borramos uno
 		-desactivar autoscroll cuando movemos objeto??
 		-al darle a guardar como, lo guarda pero sigue abierto el original
-		-aparece texto NO_PERSISTENT cuando deberia ser PERSISTENT
+		
 		
 		

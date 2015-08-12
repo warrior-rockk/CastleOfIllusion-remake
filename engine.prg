@@ -1992,7 +1992,7 @@ BEGIN
 					tileMap[i][j].tileCode == NO_SCROLL_R ? stopScrollXR = true : stopScrollXL = true;
 				end;
 				//comprobamos codigo detencion Y
-				if (tileMap[i][j].tileCode == NO_SCROLL_Y)
+				if (tileMap[i][j].tileCode == NO_SCROLL_Y || tileMap[i][j].tileCode == WATER )
 					stopScrollY = true;
 				end;
 				//comprobamos Boss Zone
