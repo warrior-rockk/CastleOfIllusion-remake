@@ -1,4 +1,6 @@
-BUGS:   -las musicas de nivel deberian cargarse en el load_files??
+BUGS:   -el stop autoscroll debe parar al final del tile o principio segun direccion
+		-fallo con posicion float Y. Se ve en plataforma portal candyland y en subirse a llave en toyland
+		-las musicas de nivel deberian cargarse en el load_files??
 		-llamar a las funciones WGE_Loop wgeLoop,etc..
          -tiles que se quedan en negro al reiniciar nivel!! (activadas funciones para debuggearlo)
 		-jarra se enganchó en la pared izquierda (al lanzarla o al caerse por tocar pompa?)

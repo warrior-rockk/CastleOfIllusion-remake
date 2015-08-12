@@ -147,7 +147,7 @@ end;
 //Bucle principal del engine que controla el juego
 process WGE_Loop()
 private
-	int i; 									//Variables auxiliares
+	int i,j; 									//Variables auxiliares
 	int counterTime;						//tiempo de paso
 	
 	int levelDoorX;							//Posicion X de la puerta de seleccion nivel
@@ -1026,7 +1026,7 @@ begin
 				    //por tiempo a 0
 				   (game.actualLevelTime == 0 && level.levelTime <> 0)         ||
 				   //por salir de la region
-				   !checkInRegion(idPlayer.x,idPlayer.y,idPlayer.this.ancho,idPlayer.this.alto<<1,CHECKREGION_DOWN)
+				   (!checkInRegion(idPlayer.x,idPlayer.y,idPlayer.this.ancho,idPlayer.this.alto<<1,CHECKREGION_DOWN) && !game.teleport)
 				   )									
 					//reproducimos sonido si no es muerte por region
 					if (!out_region(idPlayer,cGameRegion) )
@@ -1162,6 +1162,49 @@ begin
 						WGE_PlayEntitySnd(id,gameSound[MENU_SND]);
 						redrawMenu = false;
 					end;					
+				end;
+				
+				//teletransporte
+				if (game.teleport && !checkInRegion(idPlayer.x,idPlayer.y,idPlayer.this.ancho,idPlayer.this.alto<<1,CHECKREGION_DOWN))
+					//Congelamos los procesos
+					gameSignal(s_freeze_tree);
+					
+					//apagamos la pantalla
+					wgeFadeOut(FADE_SCREEN);
+										
+					//buscamos la salida del portal en el mapeado
+					for (i=0;i < level.numTilesY;i++)
+						for (j=0;j < level.numTilesX;j++)
+							if (tilemap[i][j].tileCode == PORTAL_OUT)
+								//cambiamos posicion de inicio a salida portal
+								level.playerx0   = j*cTileSize;
+								level.playery0   = i*cTileSize;
+								break;
+							end;
+						end;
+					end;
+					//Reiniciamos el nivel
+					WGE_RestartLevel();
+					
+					//se despiertan los procesos para
+					//actualizar el restart
+					gameSignal(s_wakeup_tree);
+				
+					//frame para actualizar los procesos
+					frame;
+				
+					//creamos al player
+					idPlayer = player();
+				
+					//congelamos los procesos de nuevo
+					gameSignal(s_freeze_tree);
+	
+					//encendemos la pantalla
+					wgeFadeIn(FADE_SCREEN);
+					//despertamos los procesos
+					gameSignal(s_wakeup_tree);
+					//bajamos flag teleport
+					game.teleport = false;
 				end;
 				
 			end;
@@ -1992,13 +2035,18 @@ BEGIN
 					tileMap[i][j].tileCode == NO_SCROLL_R ? stopScrollXR = true : stopScrollXL = true;
 				end;
 				//comprobamos codigo detencion Y
-				if (tileMap[i][j].tileCode == NO_SCROLL_Y || tileMap[i][j].tileCode == WATER )
+				if (tileMap[i][j].tileCode == NO_SCROLL_Y || tileMap[i][j].tileCode == WATER ||
+				    tileMap[i][j].tileCode == PORTAL_IN   || tileMap[i][j].tileCode == PORTAL_OUT )
 					stopScrollY = true;
 				end;
 				//comprobamos Boss Zone
 				if (tileMap[i][j].tileCode == BOSS_ZONE)
 					game.boss = true;
 				end;
+				//comprobaciones portal entrada
+				if (tileMap[i][j].tileCode == PORTAL_IN)
+					game.teleport = true;
+				end;		
 				//comprobamos autoScroll
 				if (tileMap[i][j].tileCode == AUTOSCROLL_R)
 					level.levelFlags.autoScrollX = 1;

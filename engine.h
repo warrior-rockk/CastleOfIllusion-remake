@@ -61,6 +61,8 @@
 //				Tipo 17: AutoScroll a Derechas
 //				Tipo 18: AutoScroll a Izquierdas
 //				Tipo 19: Stop AutoScroll
+//				Tipo 20: Entrada Portal
+//				Tipo 21: Salida Portal
 //              ..31
 #define NO_SOLID      		0
 #define SOLID         		1
@@ -77,6 +79,8 @@
 #define AUTOSCROLL_R  		17
 #define AUTOSCROLL_L  		18
 #define AUTOSCROLL_STOP 	19
+#define PORTAL_IN		 	20
+#define PORTAL_OUT		 	21
 
 //Propiedades de tile
 //bit 7:Opacidad del tile.0:el tile es cuadrado 1:el tile tiene transparencia
@@ -324,6 +328,7 @@ Global
 		byte endLevel;					//Flag de fin de nivel
 		byte boss;						//Flag de jefe
 		byte bossKilled;				//Flag de jefe muerto
+		byte teleport;					//Flag de teleportacion entre portales
 		int numLevel;					//Nivel actual
 		int playerLife;					//vida del jugador
 		int playerMaxLife;      		//vida maxima del jugador
