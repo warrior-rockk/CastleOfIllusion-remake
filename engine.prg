@@ -1404,9 +1404,17 @@ begin
 	restore_type  = COMPLETE_RESTORE;
 	//dump_type    = COMPLETE_DUMP;
 	
-	//Scale_resolution = 16801050;
-	//scale_resolution_aspectratio = SRA_STRETCH;
+	//Scale_resolution = 19201080;
+	//scale_resolution_aspectratio = SRA_STRETCH; //SRA_PRESERVE
 	
+	//Establecemos titulo ventana
+	set_title("Castle of Illusion Remake");
+	
+	//set_icon (mapa fpg 32x32)
+	//mode_is_ok ( <INT width> , <INT height> , <INT depth>, <INT flags> )
+	//POINTER get_modes ( <INT depth>, <INT flags> )
+	
+	//INT get_desktop_size ( <INT POINTER width>, <INT POINTER height> )
 	switch (config.videoMode)
 		case MODE_WINDOW:
 			full_screen = false;
