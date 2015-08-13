@@ -1436,6 +1436,7 @@ begin
 		set_mode(cResX,300,8,MODE_WAITVSYNC);
 	#endif
 	
+	//seteamos fps
 	set_fps(cNumFPS,0);
 	//definimos la region del scroll
 	define_region(cGameRegion,cGameRegionX,cGameRegionY,cGameRegionW,cGameRegionH);
@@ -3268,7 +3269,7 @@ begin
 		
 		log("Archivo de configuración leído",DEBUG_ENGINE);
 	else
-		config.videoMode   = 1;
+		config.videoMode   = 2;
 		config.soundVolume = 100;
 		config.musicVolume = 100;
 		
