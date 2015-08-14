@@ -1401,10 +1401,12 @@ begin
 	//Complete restore para evitar "flickering" (no funciona)
 	//hay un bug con una combinacion de scalemode y restore_type. Si no pongo complete restore y
 	//uso scale mode, se cuelga al pasar al modo debug por ejemplo
-	restore_type  = COMPLETE_RESTORE;
+	restore_type  = COMPLETE_RESTORE; //no provoca diferencia de fps
 	//dump_type    = COMPLETE_DUMP;
 	
+	//hay relevancia de caída de frames segun mas grande es la resolucion de scale
 	//Scale_resolution = 19201080;
+	//no hay caida de frames de un modo de aspectratio al otro
 	//scale_resolution_aspectratio = SRA_STRETCH; //SRA_PRESERVE
 	
 	//Establecemos titulo ventana
@@ -1433,11 +1435,12 @@ begin
 	#ifdef RELEASE
 		set_mode(cResX,cResY,8,MODE_WAITVSYNC);
 	#else
-		set_mode(cResX,300,8,MODE_WAITVSYNC);
+		//set_mode(cResX,300,8);
+		set_mode(cResX,300,8,MODE_WAITVSYNC);//MODE_WAITVSYNC FIJA LOS FRAMES A 60
 	#endif
 	
 	//seteamos fps
-	set_fps(cNumFPS,0);
+	set_fps(60,0);
 	//definimos la region del scroll
 	define_region(cGameRegion,cGameRegionX,cGameRegionY,cGameRegionW,cGameRegionH);
 	//definimos la region del HUD
