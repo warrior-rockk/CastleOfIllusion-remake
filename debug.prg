@@ -7,7 +7,7 @@
 // ========================================================================
 
 //Rutina de debug
-process WGE_Debug()
+process wgeDebug()
 private
 	byte actDebugMode = 0;					//Modo debug activado
 	int idDebugText[cMaxDebugInfo-1];		//Textos debug
@@ -26,12 +26,12 @@ begin
 		end;
 		
 		//activacion/desactivacion del debugMode
-		if (key(_control) && WGE_Key(_d,E_DOWN))
+		if (key(_control) && wgeKey(_d,E_DOWN))
 			debugMode = not debugMode;
 		end;
 		
 		//Seteo de fps a 0
-		if (key(_control) && WGE_Key(_f,E_DOWN))
+		if (key(_control) && wgeKey(_f,E_DOWN))
 			if (FPS==cNumFPS)
 				set_fps(cNumFPSDebug,0);
 				log("Pasamos a "+cNumFPSDebug+" FPS",DEBUG_ENGINE);
@@ -45,17 +45,17 @@ begin
 		end;
 
 		//Subida/Bajada de fps
-		If (WGE_Key(_C_MINUS,E_DOWN))
+		If (wgeKey(_C_MINUS,E_DOWN))
 			set_fps(fps-10,0);
 			log("Pasamos a "+fps+" FPS",DEBUG_ENGINE);
 		end;
-		If (WGE_Key(_C_PLUS,E_DOWN))
+		If (wgeKey(_C_PLUS,E_DOWN))
 			set_fps(fps+10,0);
 			log("Pasamos a "+fps+" FPS",DEBUG_ENGINE);
 		end;
 
 		//reiniciar nivel
-		if (WGE_Key(_r,E_DOWN) && game.state == PLAYLEVEL)
+		if (wgeKey(_r,E_DOWN) && game.state == PLAYLEVEL)
 			//matamos al player
 			if (exists(idPlayer))
 				signal(idPlayer,s_kill);
@@ -68,7 +68,7 @@ begin
 		end;
 		
 		//saltar nivel
-		if (WGE_Key(_n,E_DOWN) && game.state == PLAYLEVEL)
+		if (wgeKey(_n,E_DOWN) && game.state == PLAYLEVEL)
 			game.actualLevelTime = 1;
 			game.endLevel = true;
 		end;
@@ -76,9 +76,9 @@ begin
 		//Tareas de entrada al modo debug
 		if (debugMode && not actDebugMode)
 			//creamos el cursor
-			idCursor = WGE_DebugCursor();
+			idCursor = wgeDebugCursor();
 			//creamos frame de la region
-			WGE_RegionFrame();
+			wgeRegionFrame();
 			//mostramos informacion de debug
 			idDebugText[0] = write_int(0,cDebugInfoX,cDebugInfoY,0,&fps);
 			idDebugText[1] = write_int(0,cDebugInfoX,cDebugInfoY+10,0,&idCursor.x);
@@ -135,12 +135,12 @@ begin
 		end;
 	
 		//test: grabar keylogger
-		if (WGE_Key(_control,E_PRESSED) && WGE_Key(_g,E_DOWN))
+		if (wgeKey(_control,E_PRESSED) && wgeKey(_g,E_DOWN))
 			controlLoggerRecorder("partida.rec");
 		end;
 		
 		//test: reproducir keylogger
-		if (WGE_Key(_control,E_PRESSED) && WGE_Key(_p,E_DOWN))
+		if (wgeKey(_control,E_PRESSED) && wgeKey(_p,E_DOWN))
 			controlLoggerPlayer("partida.rec");
 		end;
 		
@@ -163,34 +163,34 @@ begin
 		end;
 		case DEBUG_PLAYER:
 			if (tracePlayer)
-				say (header + "WGE_Player: " + texto);
+				say (header + "wgePlayer: " + texto);
 			end;
 		end;
 		case DEBUG_TILES:
 			if (traceTiles)
-				say (header + "WGE_Tiles: " + texto);
+				say (header + "wgeTiles: " + texto);
 			end;
 		end;
 		case DEBUG_MONSTERS:
 			if (traceMonsters)
-				say (header + "WGE_Monsters: " + texto);
+				say (header + "wgeMonsters: " + texto);
 			end;
 		end;
 		case DEBUG_OBJECTS:
 			if (traceOBJECTS)
-				say (header + "WGE_Objects: " + texto);
+				say (header + "wgeObjects: " + texto);
 			end;
 		end;
 		case DEBUG_SOUND:
 			if (traceSOUND)
-				say (header + "WGE_Sound: " + texto);
+				say (header + "wgeSound: " + texto);
 			end;
 		end;
 	end;
 	
 end;
 
-process WGE_DebugCursor()
+process wgeDebugCursor()
 private
 	int cursorMap;	//Id grafico  cursor
 	int posTileX;	//posicion X Tile Clicado
@@ -240,7 +240,7 @@ begin
 				    " fuera del mapeado",DEBUG_TILES);
 			end;
 			
-			WGE_Wait(20);
+			wgeWait(20);
 			
 		end;
 		
@@ -251,14 +251,14 @@ begin
 			idObj.this.vX = 2;
 			idObj.this.vY = -2;
 			
-			WGE_Wait(20);
+			wgeWait(20);
 		end;
 		
 		//posicionar personaje en cursor
 		if (key(_p))
 			idPlayer.this.fX = x;
 			idPlayer.this.fY = y;
-			WGE_Wait(20);
+			wgeWait(20);
 		end;
 		
 		frame;
@@ -272,7 +272,7 @@ end;
 
 //Grafico que encuadra la region actual
 //para probar como aparecen los tiles
-process WGE_RegionFrame()
+process wgeRegionFrame()
 begin
 	
 	region = cGameRegion;

@@ -7,7 +7,7 @@
 // ========================================================================
 
 //funcion que reproduce la musica del nivel
-function WGE_PlayMusicLevel()
+function wgePlayMusicLevel()
 begin
 	if (level.idMusicLevel > 0)
 		play_song(level.idMusicLevel,0);
@@ -16,22 +16,22 @@ begin
 end;
 
 //funcion que comprueba si el intro de la musica del nivel a finalizado
-function int WGE_MusicIntroEnded()
+function int wgeMusicIntroEnded()
 begin
 	return timer[cMusicTimer] >= (levelFiles[game.numLevel].MusicIntroEnd*100);
 end;
 
 //funcion que repite la musica del nivel saltando el intro
-function WGE_RepeatMusicLevel()
+function wgeRepeatMusicLevel()
 begin
 	if (level.idMusicLevel > 0)
-		WGE_PlayMusicLevel();
+		wgePlayMusicLevel();
 		set_music_position(levelFiles[game.numLevel].MusicIntroEnd);
 	end;
 end;
 
 //funcion que reproduce el sonido de estado de una entidad
-function WGE_PlayEntityStateSnd(entity idEntity,int idSound)
+function wgePlayEntityStateSnd(entity idEntity,int idSound)
 private
 	int sndChannel;		//canal de sonido para reproducir
 begin
@@ -72,7 +72,7 @@ begin
 end;
 
 //funcion que reproduce un sonido de una entidad
-function WGE_PlayEntitySnd(entity idEntity,int idSound)
+function wgePlayEntitySnd(entity idEntity,int idSound)
 private
 	int sndChannel;		//canal de sonido para reproducir
 begin
@@ -111,7 +111,7 @@ begin
 end;
 
 //funcion para cargar archivo de sonido
-function int WGE_LoadSound(string soundFile)
+function int wgeLoadSound(string soundFile)
 private
 	int soundID;	//identificador del sonido
 begin
@@ -123,7 +123,7 @@ begin
 end;
 
 //funcion para cargar archivo de musica
-function int WGE_LoadMusic(string musicFile)
+function int wgeLoadMusic(string musicFile)
 private
 	int musicID;	//identificador del sonido
 begin
@@ -135,7 +135,7 @@ begin
 end;
 
 //funcion que setea el volumen de todos los canales
-function WGE_SetChannelsVolume(int volume)
+function wgeSetChannelsVolume(int volume)
 begin
 	set_channel_volume(cDefaultSndChn,volume*1.28);
 	set_channel_volume(cGameSndChn,volume*1.28);

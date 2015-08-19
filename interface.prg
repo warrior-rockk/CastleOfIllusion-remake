@@ -7,7 +7,7 @@
 // ========================================================================
 
 //Funcion propia para escribir textos que admite caracteres de retorno de carro para multilinea
-function WGE_Write(int fntFile,int x,int y,int align,string text)
+function wgeWrite(int fntFile,int x,int y,int align,string text)
 private
 	int breakPosition;	
 	int startChar = 0;
@@ -29,7 +29,7 @@ begin
 end;
 
 //proceso que crea un cuadro de dialogo vacío
-process WGE_Dialog(int x,int y,int _width,int _height)
+process wgeDialog(int x,int y,int _width,int _height)
 begin
 
 file = fpgGame;
@@ -39,7 +39,7 @@ height = _height;
 //creamos grafico vacio
 graph = map_new(width,height,8);
 //dibujamos el dialogo
-WGE_DrawDialog(file,graph,width,height);
+wgeDrawDialog(file,graph,width,height);
 
 loop
 	frame;
@@ -47,7 +47,7 @@ end;
 end;
 
 //Funcion que dibuja el cuadro de dialogo
-function WGE_DrawDialog(file,graph,int width,int height)
+function wgeDrawDialog(file,graph,int width,int height)
 private
 	int dialogTileSize 	= 3; 	//tamaño del motivo de las esquinas
 	int i;						//Var aux
@@ -124,7 +124,7 @@ begin
 end;
 
 //funcion que escribe las opciones de un menu en la posicion correcta de un cuadro de dialogo
-function WGE_WriteDialogOptions(WGE_Dialog idDialog,string textOptions,int selected);
+function wgeWriteDialogOptions(wgeDialog idDialog,string textOptions,int selected);
 private
 	//posicion del texto
 	int textPosY;
@@ -139,7 +139,7 @@ begin
 	//limpiamos textos
 	delete_text(all_text);
 	//redibujamos dialogo
-	WGE_DrawDialog(idDialog.file,idDialog.graph,idDialog.width,idDialog.height);
+	wgeDrawDialog(idDialog.file,idDialog.graph,idDialog.width,idDialog.height);
 	
 	//establecemos posicion inicial
 	textPosX = idDialog.x - (idDialog.width>>1) + dialogTextMarginX;
@@ -171,7 +171,7 @@ begin
 end;
 
 //funcion que escribe los valores de seleccion de una opcion de menu
-function WGE_WriteDialogValues(WGE_Dialog idDialog,string textValues,int selected,int value);
+function wgeWriteDialogValues(wgeDialog idDialog,string textValues,int selected,int value);
 private
 	//posicion del texto
 	int textPosY;
@@ -210,7 +210,7 @@ begin
 end;
 
 //funcion que escribe un valor numerico con maximo y minimo
-function WGE_WriteDialogVariable(WGE_Dialog idDialog,int minValue,int MaxValue,int value,int numOption)
+function wgeWriteDialogVariable(wgeDialog idDialog,int minValue,int MaxValue,int value,int numOption)
 private
 	//posicion del texto
 	int textPosY;

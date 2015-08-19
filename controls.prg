@@ -5,11 +5,11 @@
 //
 //  Funciones controles
 //
-//  Rutina contenida en WGE_Key basado en código de SplinterGU
+//  Rutina contenida en wgeKey basado en código de SplinterGU
 // ========================================================================
 
 //Proceso encargado de actualizar el estado de los controles
-process WGE_UpdateControls()
+process wgeUpdateControls()
 begin
 	loop
 		//actualizamos el estado de las teclas
@@ -22,7 +22,7 @@ begin
 end;
 
 //Funcion que devuelve el estado del control solicitado
-function WGE_CheckControl(int control,int event)
+function wgeCheckControl(int control,int event)
 private
 	byte anyEvent = false;
 	int i;
@@ -30,15 +30,15 @@ begin
 
 	//si el control a chequear es un control especifico
 	if (control <> CTRL_ANY && control <>CTRL_KEY_ANY && control <>CTRL_BUTTON_ANY)
-		return (WGE_Key(configuredKeys[control],event)  	 && (!controlLoggerPlaying || control==CTRL_START)) ||
-			   (WGE_Button(configuredButtons[control],event) && (!controlLoggerPlaying || control==CTRL_START)) ||
+		return (wgeKey(configuredKeys[control],event)  	 && (!controlLoggerPlaying || control==CTRL_START)) ||
+			   (wgeButton(configuredButtons[control],event) && (!controlLoggerPlaying || control==CTRL_START)) ||
 			   (controlLogger[control][event]				 &&  controlLoggerPlaying);
 	else //si es cualquier control
 		
 		//recorremos todas las teclas que se puede pulsar
 		if (control == CTRL_ANY || control == CTRL_KEY_ANY)
 			for ( i = 0; i < 127; i++ )
-				if (WGE_Key(i,event))
+				if (wgeKey(i,event))
 					anyEvent = true;
 					lastKeyEvent = i;
 				end;
@@ -49,7 +49,7 @@ begin
 		if (control == CTRL_ANY || control == CTRL_BUTTON_ANY)
 			//recorremos todos los botones que se puede pulsar
 			for ( i = 0; i < 13; i++ )
-				if (WGE_Button(i,event))
+				if (wgeButton(i,event))
 					anyEvent = true;
 					lastButtonEvent = i;
 				end;
@@ -74,7 +74,7 @@ begin
 end;	
 
 //Funcion que devuelve el estado de la tecla solicitado
-function WGE_Key(byte k,int event)
+function wgeKey(byte k,int event)
 begin
 return ((event==E_DOWN)?(  keyState[ k ][ keyUse ] && !keyState[ k ][ keyUse ^ 1 ] ): \
 		(event==E_UP  )?( !keyState[ k ][ keyUse ] &&  keyState[ k ][ keyUse ^ 1 ] ): \
@@ -105,7 +105,7 @@ begin
 end;
 
 //Funcion que devuelve el estado del boton solicitado
-function WGE_Button(byte b,int event)
+function wgeButton(byte b,int event)
 begin
 return ((event==E_DOWN)?(  joyState[ b ][ keyUse ] && !joyState[ b ][ keyUse ^ 1 ] ): \
 		(event==E_UP  )?( !joyState[ b ][ keyUse ] &&  joyState[ b ][ keyUse ^ 1 ] ): \
@@ -143,14 +143,14 @@ begin
 			//comprobamos todos los controles disponibles
 			for (i=0;i<=cControlCheckNumber;i++)
 				//si se ha presionado un control
-				if (WGE_CheckControl(i,E_PRESSED))
+				if (wgeCheckControl(i,E_PRESSED))
 					//registramos el control con el frametimestamp
 					controlLoggerRecord.frameTime[index] = controlFrameCounter;
 					controlLoggerRecord.controlCode[index]   = i;
 					//registramos el tipo de evento
-					if (WGE_CheckControl(i,E_DOWN))
+					if (wgeCheckControl(i,E_DOWN))
 						controlLoggerRecord.controlEvent[index]  	 = E_DOWN;
-					elseif (WGE_CheckControl(i,E_UP))
+					elseif (wgeCheckControl(i,E_UP))
 						controlLoggerRecord.controlEvent[index]  = E_UP;
 					else
 						controlLoggerRecord.controlEvent[index]  = E_PRESSED;
@@ -171,7 +171,7 @@ begin
 		
 		frame;
 	
-	until(index == cControlLoggerMaxFrames || WGE_Key(_control,E_PRESSED) && WGE_Key(_s,E_DOWN));
+	until(index == cControlLoggerMaxFrames || wgeKey(_control,E_PRESSED) && wgeKey(_s,E_DOWN));
 	
 	//marcamos fin de grabacion si no llegó al maximo
 	if (index < cControlLoggerMaxFrames)
@@ -269,7 +269,7 @@ begin
 		
 		frame;
 	
-	//se comprueba con key porque WGE_Key esta deshabilitado en reproduccion
+	//se comprueba con key porque wgeKey esta deshabilitado en reproduccion
 	until (index == cControlLoggerMaxFrames || controlLoggerRecord.controlCode[index]  == cendRecordCode || key(_control) && key(_s) || StopControlPlaying ); 
 	
 	//limpiamos el buffer de reproduccion
@@ -334,7 +334,7 @@ begin
 		
 		frame;
 	
-	until(index == ckeyLoggerMaxFrames || WGE_Key(_control,E_PRESSED) && WGE_Key(_s,E_DOWN));
+	until(index == ckeyLoggerMaxFrames || wgeKey(_control,E_PRESSED) && wgeKey(_s,E_DOWN));
 	
 	//marcamos fin de grabacion si no llegó al maximo
 	if (index < ckeyLoggerMaxFrames)
@@ -412,7 +412,7 @@ begin
 
 		frame;
 	
-	//se comprueba con key porque WGE_Key esta deshabilitado en reproduccion
+	//se comprueba con key porque wgeKey esta deshabilitado en reproduccion
 	until (index == ckeyLoggerMaxFrames || keyLoggerRecord.keyCode[index]  == cendRecordCode || key(_control) && key(_s)); 
 	
 	//limpiamos el buffer de reproduccion

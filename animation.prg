@@ -9,7 +9,7 @@
 //Funciona que anima el proceso que lo llama cambiando
 //su grafico en cada llamada a la velocidad especificada
 //Devuelve true cuando vuelve a empezar la animacion
-function int WGE_Animate(int startFrame, int endFrame, int animationSpeed,int mode)
+function int wgeAnimate(int startFrame, int endFrame, int animationSpeed,int mode)
 private
 byte animFinished;	//flag de animacion terminada
 entity idFather;	//entidad del proceso padre
@@ -61,7 +61,7 @@ begin
 end;
 
 //Funcion que crea un proceso en pantalla mostrando una animación
-process WGE_Animation(int file,int startFrame, int endFrame,int x,int y,int animationSpeed,int mode)
+process wgeAnimation(int file,int startFrame, int endFrame,int x,int y,int animationSpeed,int mode)
 private
 int endAnimation; //flag de animacion terminada
 
@@ -78,7 +78,7 @@ begin
 	//lanzamos la animacion hasta que se acabe si el modo el ANIM_ONCE
 	repeat
 	
-		endAnimation = WGE_Animate(startFrame,endFrame,animationSpeed,mode);
+		endAnimation = wgeAnimate(startFrame,endFrame,animationSpeed,mode);
 		
 		frame;
 	
@@ -87,7 +87,7 @@ begin
 end;
 
 //Funcion que crea un proceso en pantalla mostrando una animación pero no en la region de juego
-process WGE_GameAnimation(int file,int startFrame, int endFrame,int x,int y,int animationSpeed,int mode)
+process wgeGameAnimation(int file,int startFrame, int endFrame,int x,int y,int animationSpeed,int mode)
 private
 int endAnimation; //flag de animacion terminada
 
@@ -98,7 +98,7 @@ begin
 	//lanzamos la animacion hasta que se acabe si el modo el ANIM_ONCE
 	repeat
 	
-		endAnimation = WGE_Animate(startFrame,endFrame,animationSpeed,mode);
+		endAnimation = wgeAnimate(startFrame,endFrame,animationSpeed,mode);
 		
 		frame;
 	
@@ -107,7 +107,7 @@ begin
 end;
 
 //proceso que actualiza los frames de las animaciones de tiles para que vayan sincronizadas
-process WGE_UpdateTileAnimations()
+process wgeUpdateTileAnimations()
 private
 	int actualAnimation;	//animacion actual
 begin

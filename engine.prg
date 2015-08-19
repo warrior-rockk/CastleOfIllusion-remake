@@ -7,7 +7,7 @@
 // ========================================================================
 
 //Tareas de inicializacion del engine
-function WGE_Init()
+function wgeInit()
 begin
 	
 	//Dibujamos mapas que componen las distintas figuras de tile
@@ -83,7 +83,7 @@ begin
 	
 	//archivos de sonido
 	if (!loadSoundFiles())
-		WGE_Quit();
+		wgeQuit();
 	end;
 	
 	//Cargamos la configuracion del juego
@@ -93,7 +93,7 @@ begin
 	loadGameLang();
 	
 	//Iniciamos modo grafico
-	WGE_InitScreen();
+	wgeInitScreen();
 	
 	//iniciamos variables juego
 	game.playerTries 	= 3;
@@ -106,22 +106,22 @@ begin
 	firstRun ? game.state = LANG_SEL : game.state = LOADLEVEL; //INTRO;
 	
 	//Arrancamos el reloj del juego
-	WGE_Clock();
+	wgeClock();
 	
 	//Arrancamos el loop del juego
-	WGE_Loop();
+	wgeLoop();
 	
 	//Llamomos a updateControls
-	WGE_UpdateControls();
+	wgeUpdateControls();
 	
 	//Arrancamos rutinas debug si esta definido
 	#ifdef USE_DEBUG
-		WGE_Debug();
+		wgeDebug();
 	#endif
 end;
 
 //funcion que gestiona el flanco de reloj
-process WGE_Clock()
+process wgeClock()
 private
 	byte clockTickMem;						//Memoria Flanco Reloj
 begin
@@ -145,7 +145,7 @@ begin
 end;
 
 //Bucle principal del engine que controla el juego
-process WGE_Loop()
+process wgeLoop()
 private
 	int i,j; 									//Variables auxiliares
 	int counterTime;						//tiempo de paso
@@ -163,7 +163,7 @@ private
 	
 	byte introFinished;						//Flag de intro finalizada
 	
-	WGE_DrawDialog idDialog;
+	wgeDrawDialog idDialog;
 	int optionNum;
 	string optionString;
 	byte redrawMenu;
@@ -184,7 +184,7 @@ begin
 				//componemos opciones menu
 				optionString = gameTexts[config.lang][LAN_SEL_TEXT];
 				//componemos un cuadro de dialogo
-				idDialog = WGE_Dialog(cResX>>1,cResY>>1,200,(text_height(fntGame,optionString)*2)+(dialogTextMarginY*2)+(dialogMenuPadding*2));
+				idDialog = wgeDialog(cResX>>1,cResY>>1,200,(text_height(fntGame,optionString)*2)+(dialogTextMarginY*2)+(dialogMenuPadding*2));
 				
 				//lo redibujamos inicialmente
 				redrawMenu	= true;
@@ -192,17 +192,17 @@ begin
 				//gestion del menu
 				while (optionNum <> 0)
 					//bajar opcion
-					if (WGE_CheckControl(CTRL_DOWN,E_DOWN) && optionNum<2)
+					if (wgeCheckControl(CTRL_DOWN,E_DOWN) && optionNum<2)
 						optionNum++;
 						redrawMenu = true;
 					end;
 					//subir opcion
-					if (WGE_CheckControl(CTRL_UP,E_DOWN) && optionNum>1)
+					if (wgeCheckControl(CTRL_UP,E_DOWN) && optionNum>1)
 						optionNum--;
 						redrawMenu = true;
 					end;
 					//incrementar valor
-					if (WGE_CheckControl(CTRL_RIGHT,E_DOWN))
+					if (wgeCheckControl(CTRL_RIGHT,E_DOWN))
 						switch (optionNum)
 							case 1:
 								config.lang == ENG_LANG ? config.lang = ESP_LANG : config.lang = ENG_LANG;
@@ -214,7 +214,7 @@ begin
 						redrawMenu = true;						
 					end;
 					//decrementar valor
-					if (WGE_CheckControl(CTRL_LEFT,E_DOWN))
+					if (wgeCheckControl(CTRL_LEFT,E_DOWN))
 						switch (optionNum)
 							case 1:
 								config.lang == ENG_LANG ? config.lang = ESP_LANG : config.lang = ENG_LANG;
@@ -226,7 +226,7 @@ begin
 						redrawMenu = true;						
 					end;
 					//seleccionar opcion
-					if (WGE_CheckControl(CTRL_START,E_DOWN))
+					if (wgeCheckControl(CTRL_START,E_DOWN))
 						switch (optionNum)
 							case 2: //Aceptar
 								game.state = INTRO;
@@ -239,11 +239,11 @@ begin
 					//redibujamos menu
 					if (redrawMenu)
 						//escribimos las opciones
-						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+						wgeWriteDialogOptions(idDialog,optionString,optionNum);
 						//escribimos los valores
-						WGE_WriteDialogValues(idDialog,gameTexts[config.lang][CONFIG_VAL2_TEXT],1,config.lang);
+						wgeWriteDialogValues(idDialog,gameTexts[config.lang][CONFIG_VAL2_TEXT],1,config.lang);
 						//cada vez que se redibuja el menu, reproducimos sonido
-						WGE_PlayEntitySnd(id,gameSound[MENU_SND]);
+						wgePlayEntitySnd(id,gameSound[MENU_SND]);
 						//reiniciamos flag
 						redrawMenu = false;
 					end;
@@ -266,7 +266,7 @@ begin
 				//si acaba la intro o pulsamos tecla, saltamos a splash
 				if (introFinished )
 					game.state = SPLASH;
-				elseif (WGE_CheckControl(CTRL_ANY,E_DOWN))
+				elseif (wgeCheckControl(CTRL_ANY,E_DOWN))
 					//hacemos fade
 					wgeFadeOut(FADE_SCREEN | FADE_MUSIC);
 					//matamos el intro
@@ -296,7 +296,7 @@ begin
 						counterTime=0;					
 					end;
 					frame;
-				until(WGE_CheckControl(CTRL_ANY,E_DOWN) || attractActive);
+				until(wgeCheckControl(CTRL_ANY,E_DOWN) || attractActive);
 				
 				//apagamos pantalla
 				wgeFadeOut(FADE_SCREEN);
@@ -319,10 +319,10 @@ begin
 				//componemos lista menu
 				optionString = gameTexts[config.lang][MENU_TEXT];
 				//componemos un cuadro de dialogo
-				idDialog = WGE_Dialog(cResX>>1,cResY>>1,125,(text_height(fntGame,optionString)*2)+(dialogTextMarginY*2)+(dialogMenuPadding*2));
+				idDialog = wgeDialog(cResX>>1,cResY>>1,125,(text_height(fntGame,optionString)*2)+(dialogTextMarginY*2)+(dialogMenuPadding*2));
 				
 				//escribim,os las opciones
-				WGE_WriteDialogOptions(idDialog,optionString,optionNum);				
+				wgeWriteDialogOptions(idDialog,optionString,optionNum);				
 				
 				//encendemos pantalla
 				wgeFadeIn(FADE_SCREEN);
@@ -330,17 +330,17 @@ begin
 				//gestion del menu
 				while (optionNum <> 0)
 					//bajar opcion
-					if (WGE_CheckControl(CTRL_DOWN,E_DOWN) && optionNum<3)
+					if (wgeCheckControl(CTRL_DOWN,E_DOWN) && optionNum<3)
 						optionNum++;
 						redrawMenu = true;
 					end;
 					//subir opcion
-					if (WGE_CheckControl(CTRL_UP,E_DOWN) && optionNum>1)
+					if (wgeCheckControl(CTRL_UP,E_DOWN) && optionNum>1)
 						optionNum--;
 						redrawMenu = true;
 					end;
 					//seleccionar opcion
-					if (WGE_CheckControl(CTRL_START,E_DOWN))
+					if (wgeCheckControl(CTRL_START,E_DOWN))
 						switch (optionNum)
 							case 1: //Play
 								//apagamos pantalla
@@ -352,7 +352,7 @@ begin
 								game.state = MENU_CONFIG;
 							end;
 							case 3: //Exit
-								WGE_Quit();
+								wgeQuit();
 							end;
 						end;
 						//eliminamos menu y limpiamos pantalla
@@ -364,9 +364,9 @@ begin
 					
 					if (redrawMenu)
 						//escribimos las opciones
-						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+						wgeWriteDialogOptions(idDialog,optionString,optionNum);
 						//cada vez que se redibuja el menu, reproducimos sonido
-						WGE_PlayEntitySnd(id,gameSound[MENU_SND]);
+						wgePlayEntitySnd(id,gameSound[MENU_SND]);
 						redrawMenu = false;
 					end;
 					
@@ -381,34 +381,34 @@ begin
 				//componemos opciones menu
 				optionString = gameTexts[config.lang][CONFIG_TEXT];
 				//componemos un cuadro de dialogo
-				idDialog = WGE_Dialog(cResX>>1,cResY>>1,250,(text_height(fntGame,optionString)*5)+(dialogTextMarginY*2)+(dialogMenuPadding*5));
+				idDialog = wgeDialog(cResX>>1,cResY>>1,250,(text_height(fntGame,optionString)*5)+(dialogTextMarginY*2)+(dialogMenuPadding*5));
 				
 				//escribimos las opciones
-				WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+				wgeWriteDialogOptions(idDialog,optionString,optionNum);
 				//escribimos los valores
-				WGE_WriteDialogValues(idDialog,gameTexts[config.lang][CONFIG_VAL1_TEXT],1,config.videoMode);
-				WGE_WriteDialogValues(idDialog,gameTexts[config.lang][CONFIG_VAL2_TEXT],2,config.lang);
-				WGE_WriteDialogVariable(idDialog,0,100,config.soundVolume,4);
-				WGE_WriteDialogVariable(idDialog,0,100,config.musicVolume,5);
+				wgeWriteDialogValues(idDialog,gameTexts[config.lang][CONFIG_VAL1_TEXT],1,config.videoMode);
+				wgeWriteDialogValues(idDialog,gameTexts[config.lang][CONFIG_VAL2_TEXT],2,config.lang);
+				wgeWriteDialogVariable(idDialog,0,100,config.soundVolume,4);
+				wgeWriteDialogVariable(idDialog,0,100,config.musicVolume,5);
 						
 				//gestion del menu
 				while (optionNum <> 0)
 					//bajar opcion
-					if (WGE_CheckControl(CTRL_DOWN,E_DOWN) && optionNum<6)
+					if (wgeCheckControl(CTRL_DOWN,E_DOWN) && optionNum<6)
 						optionNum++;
 						redrawMenu = true;
 					end;
 					//subir opcion
-					if (WGE_CheckControl(CTRL_UP,E_DOWN) && optionNum>1)
+					if (wgeCheckControl(CTRL_UP,E_DOWN) && optionNum>1)
 						optionNum--;
 						redrawMenu = true;
 					end;
 					//incrementar valor
-					if (WGE_CheckControl(CTRL_RIGHT,E_DOWN))
+					if (wgeCheckControl(CTRL_RIGHT,E_DOWN))
 						switch (optionNum)
 							case 1:
 								config.videoMode < 2 ? config.videoMode ++ : config.videoMode = 0;
-								WGE_InitScreen();
+								wgeInitScreen();
 							end;
 							case 2:
 								config.lang == ENG_LANG ? config.lang = ESP_LANG : config.lang = ENG_LANG;
@@ -417,7 +417,7 @@ begin
 							case 4:
 								if (config.soundVolume < 100)
 									config.soundVolume += 5;
-									WGE_SetChannelsVolume(config.soundVolume);
+									wgeSetChannelsVolume(config.soundVolume);
 								end;
 							end;
 							case 5:
@@ -433,11 +433,11 @@ begin
 						
 					end;
 					//decrementar valor
-					if (WGE_CheckControl(CTRL_LEFT,E_DOWN))
+					if (wgeCheckControl(CTRL_LEFT,E_DOWN))
 						switch (optionNum)
 							case 1:
 								config.videoMode > 0 ? config.videoMode -- : config.videoMode = 2;
-								WGE_InitScreen();
+								wgeInitScreen();
 							end;
 							case 2:
 								config.lang == ENG_LANG ? config.lang = ESP_LANG : config.lang = ENG_LANG;
@@ -446,7 +446,7 @@ begin
 							case 4:
 								if (config.soundVolume > 0)
 									config.soundVolume -= 5;
-									WGE_SetChannelsVolume(config.soundVolume);
+									wgeSetChannelsVolume(config.soundVolume);
 								end;
 							end;
 							case 5:
@@ -462,7 +462,7 @@ begin
 						
 					end;
 					//seleccionar opcion
-					if (WGE_CheckControl(CTRL_START,E_DOWN))
+					if (wgeCheckControl(CTRL_START,E_DOWN))
 						switch (optionNum)
 							case 3: //Controls
 								game.state = MENU_CONTROLS;
@@ -480,14 +480,14 @@ begin
 					//redibujamos menu
 					if (redrawMenu)
 						//escribimos las opciones
-						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+						wgeWriteDialogOptions(idDialog,optionString,optionNum);
 						//escribimos los valores
-						WGE_WriteDialogValues(idDialog,gameTexts[config.lang][CONFIG_VAL1_TEXT],1,config.videoMode);
-						WGE_WriteDialogValues(idDialog,gameTexts[config.lang][CONFIG_VAL2_TEXT],2,config.lang);
-						WGE_WriteDialogVariable(idDialog,0,100,config.soundVolume,4);
-						WGE_WriteDialogVariable(idDialog,0,100,config.musicVolume,5);
+						wgeWriteDialogValues(idDialog,gameTexts[config.lang][CONFIG_VAL1_TEXT],1,config.videoMode);
+						wgeWriteDialogValues(idDialog,gameTexts[config.lang][CONFIG_VAL2_TEXT],2,config.lang);
+						wgeWriteDialogVariable(idDialog,0,100,config.soundVolume,4);
+						wgeWriteDialogVariable(idDialog,0,100,config.musicVolume,5);
 						//cada vez que se redibuja el menu, reproducimos sonido
-						WGE_PlayEntitySnd(id,gameSound[MENU_SND]);
+						wgePlayEntitySnd(id,gameSound[MENU_SND]);
 						//reiniciamos flag
 						redrawMenu = false;
 					end;
@@ -509,25 +509,25 @@ begin
 				optionString = gameTexts[config.lang][CONFIG_CONTROLS_TEXT];
 				
 				//componemos un cuadro de dialogo
-				idDialog = WGE_Dialog(cResX>>1,cResY>>1,150,(text_height(fntGame,optionString)*2)+(dialogTextMarginY*2)+(dialogMenuPadding*2));
+				idDialog = wgeDialog(cResX>>1,cResY>>1,150,(text_height(fntGame,optionString)*2)+(dialogTextMarginY*2)+(dialogMenuPadding*2));
 				
 				//escribimos las opciones
-				WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+				wgeWriteDialogOptions(idDialog,optionString,optionNum);
 				
 				//gestion del menu
 				while (optionNum <> 0)
 					//bajar opcion
-					if (WGE_CheckControl(CTRL_DOWN,E_DOWN) && optionNum<3)
+					if (wgeCheckControl(CTRL_DOWN,E_DOWN) && optionNum<3)
 						optionNum++;
 						redrawMenu = true;
 					end;
 					//subir opcion
-					if (WGE_CheckControl(CTRL_UP,E_DOWN) && optionNum>1)
+					if (wgeCheckControl(CTRL_UP,E_DOWN) && optionNum>1)
 						optionNum--;
 						redrawMenu = true;
 					end;
 					//seleccionar opcion
-					if (WGE_CheckControl(CTRL_START,E_DOWN))
+					if (wgeCheckControl(CTRL_START,E_DOWN))
 						switch (optionNum)
 							case 1: //Keyboard
 								//cambiamos de paso
@@ -547,9 +547,9 @@ begin
 					
 					if (redrawMenu)
 						//escribimos las opciones
-						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+						wgeWriteDialogOptions(idDialog,optionString,optionNum);
 						//cada vez que se redibuja el menu, reproducimos sonido
-						WGE_PlayEntitySnd(id,gameSound[MENU_SND]);
+						wgePlayEntitySnd(id,gameSound[MENU_SND]);
 						redrawMenu = false;
 					end;
 					
@@ -569,42 +569,42 @@ begin
 				optionString = gameTexts[config.lang][CONFIG_CONTROLS_LIST_TEXT];
 				
 				//componemos un cuadro de dialogo
-				idDialog = WGE_Dialog(cResX>>1,cResY>>1,200,(text_height(fntGame,optionString)*7)+(dialogTextMarginY*2)+(dialogMenuPadding*7));
+				idDialog = wgeDialog(cResX>>1,cResY>>1,200,(text_height(fntGame,optionString)*7)+(dialogTextMarginY*2)+(dialogMenuPadding*7));
 				
 				//escribimos las opciones
-				WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+				wgeWriteDialogOptions(idDialog,optionString,optionNum);
 				//escribimos los valores
-				WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_UP]]+";",1,0);
-				WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_DOWN]]+";",2,0);
-				WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_LEFT]]+";",3,0);
-				WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_RIGHT]]+";",4,0);
-				WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_JUMP]]+";",5,0);
-				WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+";",6,0);
-				WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_START]]+";",7,0);
+				wgeWriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_UP]]+";",1,0);
+				wgeWriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_DOWN]]+";",2,0);
+				wgeWriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_LEFT]]+";",3,0);
+				wgeWriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_RIGHT]]+";",4,0);
+				wgeWriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_JUMP]]+";",5,0);
+				wgeWriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+";",6,0);
+				wgeWriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_START]]+";",7,0);
 				
 				//gestion del menu
 				while (optionNum <> 0)
 					//bajar opcion
-					if (WGE_CheckControl(CTRL_DOWN,E_DOWN) && optionNum<8)
+					if (wgeCheckControl(CTRL_DOWN,E_DOWN) && optionNum<8)
 						optionNum++;
 						redrawMenu = true;
 					end;
 					//bajar opcion
-					if (WGE_CheckControl(CTRL_UP,E_DOWN) && optionNum>1)
+					if (wgeCheckControl(CTRL_UP,E_DOWN) && optionNum>1)
 						optionNum--;
 						redrawMenu = true;
 					end;
 					//seleccionar opcion
-					if (WGE_CheckControl(CTRL_START,E_DOWN))
+					if (wgeCheckControl(CTRL_START,E_DOWN))
 						switch (optionNum)
 							case 1..7: //redefinir controles
-								WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+								wgeWriteDialogOptions(idDialog,optionString,optionNum);
 								//escribimos press key en el control a cambiar
-								WGE_WriteDialogValues(idDialog,gameTexts[config.lang][PRESS_KEY_TEXT],optionNum,0);
+								wgeWriteDialogValues(idDialog,gameTexts[config.lang][PRESS_KEY_TEXT],optionNum,0);
 								//esperamos a que se pulse la nueva tecla
 								repeat
 									frame;
-								until (WGE_CheckControl(CTRL_KEY_ANY,E_DOWN));
+								until (wgeCheckControl(CTRL_KEY_ANY,E_DOWN));
 								//si no hemos cancelado el cambio
 								if (lastKeyEvent <> _ESC)
 									//asignamos esa tecla a las teclas configuradas
@@ -625,17 +625,17 @@ begin
 					//redibujamos menu
 					if (redrawMenu)
 						//escribimos las opciones
-						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+						wgeWriteDialogOptions(idDialog,optionString,optionNum);
 						//escribimos los valores
-						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_UP]]+";",1,0);
-						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_DOWN]]+";",2,0);
-						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_LEFT]]+";",3,0);
-						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_RIGHT]]+";",4,0);
-						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_JUMP]]+";",5,0);
-						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+";",6,0);
-						WGE_WriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_START]]+";",7,0);
+						wgeWriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_UP]]+";",1,0);
+						wgeWriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_DOWN]]+";",2,0);
+						wgeWriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_LEFT]]+";",3,0);
+						wgeWriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_RIGHT]]+";",4,0);
+						wgeWriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_JUMP]]+";",5,0);
+						wgeWriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_ACTION_ATACK]]+";",6,0);
+						wgeWriteDialogValues(idDialog,";"+keyStrings[configuredKeys[CTRL_START]]+";",7,0);
 						//cada vez que se redibuja el menu, reproducimos sonido
-						WGE_PlayEntitySnd(id,gameSound[MENU_SND]);
+						wgePlayEntitySnd(id,gameSound[MENU_SND]);
 						//reseteamos flag
 						redrawMenu = false;
 					end;
@@ -656,42 +656,42 @@ begin
 				optionString = optionString = gameTexts[config.lang][CONFIG_CONTROLS_LIST_TEXT];;
 				
 				//componemos un cuadro de dialogo
-				idDialog = WGE_Dialog(cResX>>1,cResY>>1,200,(text_height(fntGame,optionString)*7)+(dialogTextMarginY*2)+(dialogMenuPadding*7));
+				idDialog = wgeDialog(cResX>>1,cResY>>1,200,(text_height(fntGame,optionString)*7)+(dialogTextMarginY*2)+(dialogMenuPadding*7));
 				
 				//escribimos las opciones
-				WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+				wgeWriteDialogOptions(idDialog,optionString,optionNum);
 				//escribimos los valores
-				WGE_WriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_UP]]+";",1,0);
-				WGE_WriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_DOWN]]+";",2,0);
-				WGE_WriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_LEFT]]+";",3,0);
-				WGE_WriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_RIGHT]]+";",4,0);
-				WGE_WriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_JUMP]]+";",5,0);
-				WGE_WriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_ACTION_ATACK]]+";",6,0);
-				WGE_WriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_START]]+";",7,0);
+				wgeWriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_UP]]+";",1,0);
+				wgeWriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_DOWN]]+";",2,0);
+				wgeWriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_LEFT]]+";",3,0);
+				wgeWriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_RIGHT]]+";",4,0);
+				wgeWriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_JUMP]]+";",5,0);
+				wgeWriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_ACTION_ATACK]]+";",6,0);
+				wgeWriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_START]]+";",7,0);
 				
 				//gestion del menu
 				while (optionNum <> 0)
 					//bajar opcion
-					if (WGE_CheckControl(CTRL_DOWN,E_DOWN) && optionNum<8)
+					if (wgeCheckControl(CTRL_DOWN,E_DOWN) && optionNum<8)
 						optionNum++;
 						redrawMenu = true;
 					end;
 					//bajar opcion
-					if (WGE_CheckControl(CTRL_UP,E_DOWN) && optionNum>1)
+					if (wgeCheckControl(CTRL_UP,E_DOWN) && optionNum>1)
 						optionNum--;
 						redrawMenu = true;
 					end;
 					//seleccionar opcion
-					if (WGE_CheckControl(CTRL_START,E_DOWN))
+					if (wgeCheckControl(CTRL_START,E_DOWN))
 						switch (optionNum)
 							case 1..7: //redefinir controles
-								WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+								wgeWriteDialogOptions(idDialog,optionString,optionNum);
 								//escribimos press key en el control a cambiar
-								WGE_WriteDialogValues(idDialog,gameTexts[config.lang][PRESS_BUTTON_TEXT],optionNum,0);
+								wgeWriteDialogValues(idDialog,gameTexts[config.lang][PRESS_BUTTON_TEXT],optionNum,0);
 								//esperamos a que se pulse la nueva tecla
 								repeat
 									frame;
-								until (WGE_CheckControl(CTRL_BUTTON_ANY,E_DOWN) || WGE_Key(_ESC,E_DOWN));
+								until (wgeCheckControl(CTRL_BUTTON_ANY,E_DOWN) || wgeKey(_ESC,E_DOWN));
 								//si no hemos cancelado el cambio
 								if (lastKeyEvent <> _ESC)
 									//asignamos esa tecla a las teclas configuradas
@@ -712,17 +712,17 @@ begin
 					//redibujamos menu
 					if (redrawMenu)
 						//escribimos las opciones
-						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+						wgeWriteDialogOptions(idDialog,optionString,optionNum);
 						//escribimos los valores
-						WGE_WriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_UP]]+";",1,0);
-						WGE_WriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_DOWN]]+";",2,0);
-						WGE_WriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_LEFT]]+";",3,0);
-						WGE_WriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_RIGHT]]+";",4,0);
-						WGE_WriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_JUMP]]+";",5,0);
-						WGE_WriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_ACTION_ATACK]]+";",6,0);
-						WGE_WriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_START]]+";",7,0);
+						wgeWriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_UP]]+";",1,0);
+						wgeWriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_DOWN]]+";",2,0);
+						wgeWriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_LEFT]]+";",3,0);
+						wgeWriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_RIGHT]]+";",4,0);
+						wgeWriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_JUMP]]+";",5,0);
+						wgeWriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_ACTION_ATACK]]+";",6,0);
+						wgeWriteDialogValues(idDialog,";"+joyStrings[configuredButtons[CTRL_START]]+";",7,0);
 						//cada vez que se redibuja el menu, reproducimos sonido
-						WGE_PlayEntitySnd(id,gameSound[MENU_SND]);
+						wgePlayEntitySnd(id,gameSound[MENU_SND]);
 						//reseteamos flag
 						redrawMenu = false;
 					end;
@@ -738,10 +738,10 @@ begin
 			case PRELUDE:
 				
 				//creamos animacion "OldMan"
-				WGE_Animation(fpgGame,13,13,130,112,0,ANIM_LOOP);
+				wgeAnimation(fpgGame,13,13,130,112,0,ANIM_LOOP);
 				
 				//reproducimos la musica del nivel
-				WGE_PlayMusicLevel();
+				wgePlayMusicLevel();
 				
 				//encendemos pantalla
 				wgeFadeIn(FADE_SCREEN);
@@ -758,13 +758,13 @@ begin
 				signal(idPlayer,s_freeze);
 				
 				//mostramos los textos del preludio
-				idDialog = WGE_Dialog(cResX>>1,cHUDRegionY+(cHUDRegionH>>1),cHUDRegionW-10,25);
+				idDialog = wgeDialog(cResX>>1,cHUDRegionY+(cHUDRegionH>>1),cHUDRegionW-10,25);
 				from i=PRELUDE1_TEXT to PRELUDE4_TEXT;
 					delete_text(all_text);
-					WGE_Write(fntGame,10,cHUDRegionY+(25>>1),ALIGN_CENTER_LEFT,gameTexts[config.lang][i]);
+					wgeWrite(fntGame,10,cHUDRegionY+(25>>1),ALIGN_CENTER_LEFT,gameTexts[config.lang][i]);
 					repeat
 						frame;
-					until(WGE_CheckControl(CTRL_ANY,E_DOWN));
+					until(wgeCheckControl(CTRL_ANY,E_DOWN));
 				end;
 				//eliminamos cuadro de texto
 				delete_text(all_text);
@@ -773,23 +773,23 @@ begin
 				//parpadea y desaparece el "old man"
 				clockCounter = 0;
 				repeat
-					blinkEntity(get_id(TYPE WGE_Animation));
+					blinkEntity(get_id(TYPE wgeAnimation));
 					frame;
 				until (tickClock(cNumFPS*4));
-				signal(TYPE WGE_Animation,s_kill);
+				signal(TYPE wgeAnimation,s_kill);
 				
 				//retardo
-				WGE_Wait(60);
+				wgeWait(60);
 				
 				//subimos la puerta cambiando los tiles correspondientes
 				from i=7 to 5 step -1;
-					WGE_ReplaceTile(i,10,999);
-					WGE_ReplaceTile(i,11,999);
-					WGE_ReplaceTile(i,12,999);
+					wgeReplaceTile(i,10,999);
+					wgeReplaceTile(i,11,999);
+					wgeReplaceTile(i,12,999);
 					//reproducimos sonido
-					WGE_PlayEntitySnd(id,objectSound[DOOR_SND]);
+					wgePlayEntitySnd(id,objectSound[DOOR_SND]);
 					//retardo				
-					WGE_Wait(50);
+					wgeWait(50);
 				end;
 				
 				//reproducimos animacion player
@@ -816,7 +816,7 @@ begin
 			case LEVEL_SELECT:			
 								
 				//comprobacion entrada puertas
-				if (WGE_CheckControl(CTRL_UP,E_DOWN))  
+				if (wgeCheckControl(CTRL_UP,E_DOWN))  
 					//Puerta 1: Woods
 					if (colCheckAABB(idPlayer,79,108,30,40,INFOONLY) && game.levelStatus[WOODS_LEVEL] == LEVEL_UNCOMPLETED)
 						//iniciamos nivel
@@ -852,18 +852,18 @@ begin
 			end;
 			case LOADLEVEL:		
 				//Cargamos el mapeado del nivel
-				WGE_LoadMapLevel(levelFiles[game.numLevel].MapFile,levelFiles[game.numLevel].TileFile);
+				wgeLoadMapLevel(levelFiles[game.numLevel].MapFile,levelFiles[game.numLevel].TileFile);
 				//Cargamos el archivo de datos del nivel
-				WGE_LoadLevelData(levelFiles[game.numLevel].DataFile);
+				wgeLoadLevelData(levelFiles[game.numLevel].DataFile);
 				//Cargamos la musica del nivel
 				level.idMusicLevel = load_song(levelFiles[game.numLevel].MusicFile);
 								
 				//Iniciamos Scroll
-				WGE_InitScroll();
+				wgeInitScroll();
 				//Dibujamos el mapeado
-				WGE_DrawMap();
+				wgeDrawMap();
 				//Creamos el nivel cargado
-				WGE_CreateLevel();
+				wgeCreateLevel();
 				
 				//Creamos el jugador
 				player();
@@ -893,7 +893,7 @@ begin
 						//si no suena la musica, la reproducimos
 						if (!is_playing_song())
 							//reproducimos la musica del nivel
-							WGE_PlayMusicLevel();
+							wgePlayMusicLevel();
 						end;
 						
 						//desperamos los tiles para hacer replace
@@ -921,7 +921,7 @@ begin
 							//si esta completado
 							if (game.levelStatus[i] == LEVEL_COMPLETED)
 								//lanzamos animacion de tapiar
-								WGE_Animation(fpgGame,18,22,levelDoorX,levelDoorY,10,ANIM_ONCE);
+								wgeAnimation(fpgGame,18,22,levelDoorX,levelDoorY,10,ANIM_ONCE);
 								game.levelStatus[i] = LEVEL_DOOR_CLOSED;
 								idPlayer.this.fX	= levelDoorX;
 								idPlayer.x 			= levelDoorX;
@@ -929,12 +929,12 @@ begin
 							//si ya está tapiado
 							if (game.levelStatus[i] == LEVEL_DOOR_CLOSED)
 								//cambiamos los tiles por tapiado
-								WGE_ReplaceTile(5,startDoorTile,16);
-								WGE_ReplaceTile(5,startDoorTile+1,17);
-								WGE_ReplaceTile(6,startDoorTile,1);
-								WGE_ReplaceTile(6,startDoorTile+1,1);
-								WGE_ReplaceTile(7,startDoorTile,1);
-								WGE_ReplaceTile(7,startDoorTile+1,1);
+								wgeReplaceTile(5,startDoorTile,16);
+								wgeReplaceTile(5,startDoorTile+1,17);
+								wgeReplaceTile(6,startDoorTile,1);
+								wgeReplaceTile(6,startDoorTile+1,1);
+								wgeReplaceTile(7,startDoorTile,1);
+								wgeReplaceTile(7,startDoorTile+1,1);
 							end;
 						end;
 						
@@ -969,13 +969,13 @@ begin
 				game.actualLevelTime = level.levelTime;
 				
 				//reproducimos la musica del nivel
-				WGE_PlayMusicLevel();
+				wgePlayMusicLevel();
 								
 				//encendemos pantalla
 				wgeFadeIn(FADE_SCREEN);
 				
 				//esperamos fin intro
-				while (!WGE_MusicIntroEnded())
+				while (!wgeMusicIntroEnded())
 					frame;
 				end;
 
@@ -990,7 +990,7 @@ begin
 				//loop musica nivel
 				if (!game.boss || memBoss)
 					if (!is_playing_song())
-						WGE_RepeatMusicLevel();
+						wgeRepeatMusicLevel();
 					end;
 				else
 					wgeFadeOut(FADE_MUSIC);
@@ -1008,7 +1008,7 @@ begin
 					game.actualLevelTime--;
 					//sonido cuenta atrás
 					if (game.actualLevelTime <= 30)
-						WGE_PlayEntitySnd(id,gameSound[COUNTDOWN_SND]);
+						wgePlayEntitySnd(id,gameSound[COUNTDOWN_SND]);
 					end;
 				end;
 				
@@ -1030,7 +1030,7 @@ begin
 				   )									
 					//reproducimos sonido si no es muerte por region
 					if (!out_region(idPlayer,cGameRegion) )
-						WGE_PlayEntitySnd(id,playerSound[DEAD_SND]);
+						wgePlayEntitySnd(id,playerSound[DEAD_SND]);
 					end;
 					//creamos el proceso/animacion muerte
 					idDeadPlayer = deadPlayer();
@@ -1067,7 +1067,7 @@ begin
 				end;
 				
 				//pausa del juego
-				if ((WGE_CheckControl(CTRL_START,E_DOWN) || !window_status ) && !game.paused )
+				if ((wgeCheckControl(CTRL_START,E_DOWN) || !window_status ) && !game.paused )
 					game.paused = true;
 					//congelamos procesos
 					gameSignal(s_freeze_tree);
@@ -1077,7 +1077,7 @@ begin
 					//pausamos musica
 					pause_song();
 					//reproducimos sonido
-					WGE_PlayEntitySnd(id,gameSound[PAUSE_SND]);
+					wgePlayEntitySnd(id,gameSound[PAUSE_SND]);
 					
 					//iniciamos la opcion del menu
 					optionNum = 1;
@@ -1085,10 +1085,10 @@ begin
 					//componemos lista menu
 					optionString = gameTexts[config.lang][MENU_PAUSE_TEXT];
 					//componemos un cuadro de dialogo
-					idDialog = WGE_Dialog(cResX>>1,cResY>>1,150,(text_height(fntGame,optionString)*2)+(dialogTextMarginY*2)+(dialogMenuPadding*2));
+					idDialog = wgeDialog(cResX>>1,cResY>>1,150,(text_height(fntGame,optionString)*2)+(dialogTextMarginY*2)+(dialogMenuPadding*2));
 					
 					//escribimos las opciones
-					WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+					wgeWriteDialogOptions(idDialog,optionString,optionNum);
 					
 					//texto pausa
 					pauseText = write(fntGame,cResX>>1,cResY-15,ALIGN_CENTER,gameTexts[config.lang][PAUSE_TEXT]);
@@ -1097,17 +1097,17 @@ begin
 				//Menu Pausa
 				if (game.paused)
 					//bajar opcion
-					if (WGE_CheckControl(CTRL_DOWN,E_DOWN) && optionNum<3)
+					if (wgeCheckControl(CTRL_DOWN,E_DOWN) && optionNum<3)
 						optionNum++;
 						redrawMenu = true;
 					end;
 					//subir opcion
-					if (WGE_CheckControl(CTRL_UP,E_DOWN) && optionNum>1)
+					if (wgeCheckControl(CTRL_UP,E_DOWN) && optionNum>1)
 						optionNum--;
 						redrawMenu = true;
 					end;
 					//seleccionar opcion
-					if (WGE_CheckControl(CTRL_START,E_DOWN))
+					if (wgeCheckControl(CTRL_START,E_DOWN))
 						switch (optionNum)
 							case 1: //Resume
 								optionNum = 0;
@@ -1119,7 +1119,7 @@ begin
 								game.paused = false;
 								resume_song();
 								//reproducimos sonido
-								WGE_PlayEntitySnd(id,gameSound[PAUSE_SND]);
+								wgePlayEntitySnd(id,gameSound[PAUSE_SND]);
 							end;
 							case 2: //Restart
 								optionNum = 0;
@@ -1155,11 +1155,11 @@ begin
 					
 					if (redrawMenu)
 						//escribimos las opciones
-						WGE_WriteDialogOptions(idDialog,optionString,optionNum);
+						wgeWriteDialogOptions(idDialog,optionString,optionNum);
 						//texto pausa
 						pauseText = write(fntGame,cResX>>1,cResY-15,ALIGN_CENTER,gameTexts[config.lang][PAUSE_TEXT]);
 						//cada vez que se redibuja el menu, reproducimos sonido
-						WGE_PlayEntitySnd(id,gameSound[MENU_SND]);
+						wgePlayEntitySnd(id,gameSound[MENU_SND]);
 						redrawMenu = false;
 					end;					
 				end;
@@ -1184,7 +1184,7 @@ begin
 						end;
 					end;
 					//Reiniciamos el nivel
-					WGE_RestartLevel();
+					wgeRestartLevel();
 					
 					//se despiertan los procesos para
 					//actualizar el restart
@@ -1214,7 +1214,7 @@ begin
 				wgeFadeOut(FADE_SCREEN);
 								
 				//reiniciamos el nivel
-				WGE_RestartLevel();
+				wgeRestartLevel();
 								
 				//se despiertan los procesos para
 				//actualizar el restart
@@ -1234,13 +1234,13 @@ begin
 				game.actualLevelTime = level.levelTime;
 				
 				//reproducimos la musica del nivel
-				WGE_PlayMusicLevel();
+				wgePlayMusicLevel();
 				
 				//encendemos pantalla
 				wgeFadeIn(FADE_SCREEN);
 				
 				//esperamos fin intro
-				while (!WGE_MusicIntroEnded())
+				while (!wgeMusicIntroEnded())
 					frame;
 				end;
 								
@@ -1272,14 +1272,14 @@ begin
 					game.actualLevelTime--;
 					game.score++;
 					//reproducimos sonido
-					WGE_PlayEntitySnd(id,gameSound[TIMESCORE_SND]);
+					wgePlayEntitySnd(id,gameSound[TIMESCORE_SND]);
 					frame;
 				until (game.actualLevelTime <= 0);
 				
 				//reproducimos sonido
-				WGE_PlayEntitySnd(id,gameSound[STOPSCORE_SND]);
+				wgePlayEntitySnd(id,gameSound[STOPSCORE_SND]);
 				
-				WGE_Wait(100);
+				wgeWait(100);
 				
 				//apagamos pantalla
 				wgeFadeOut(FADE_SCREEN);
@@ -1287,7 +1287,7 @@ begin
 				//limpiamos el nivel
 				clearLevel();
 				//espera
-				WGE_Wait(100);
+				wgeWait(100);
 				
 				//marcamos el nivel como completado
 				game.levelStatus[game.numLevel] = LEVEL_COMPLETED;
@@ -1308,7 +1308,7 @@ begin
 				write(fntGame,cResx>>1,cGameRegionH>>1,ALIGN_CENTER,gameTexts[config.lang][GAMEOVER_TEXT]);
 				repeat
 					frame;
-				until(WGE_CheckControl(CTRL_START,E_DOWN));
+				until(wgeCheckControl(CTRL_START,E_DOWN));
 				//apagamos pantalla
 				wgeFadeOut(FADE_SCREEN);
 				//continuamos juego
@@ -1331,7 +1331,7 @@ begin
 				game.state = SPLASH;
 			end;
 			case ATTRACTMODE:
-				if (controlLoggerFinished || WGE_CheckControl(CTRL_START,E_PRESSED))
+				if (controlLoggerFinished || wgeCheckControl(CTRL_START,E_PRESSED))
 					//apagamos pantalla y sonido
 					wgeFadeOut(FADE_SCREEN | FADE_MUSIC);
 					//desactivamos flag
@@ -1352,7 +1352,7 @@ begin
 				end;
 			end;
 			case TUTORIAL:
-				if (controlLoggerFinished || WGE_CheckControl(CTRL_ANY,E_DOWN))
+				if (controlLoggerFinished || wgeCheckControl(CTRL_ANY,E_DOWN))
 					//paramos reproduccion
 					StopControlPlaying = true;
 					//apagamos pantalla y sonido
@@ -1396,7 +1396,7 @@ begin
 end;
 
 //Inicialización del modo grafico
-function WGE_InitScreen()
+function wgeInitScreen()
 begin
 	//Complete restore para evitar "flickering" (no funciona)
 	//hay un bug con una combinacion de scalemode y restore_type. Si no pongo complete restore y
@@ -1450,7 +1450,7 @@ begin
 end;
 
 //Definicion Region y Scroll
-function WGE_InitScroll()
+function wgeInitScroll()
 begin
 	
 	//Caida de frames radical si el mapa del scroll es pequeño (por tener que repetirlo?)
@@ -1459,12 +1459,12 @@ begin
 	scroll[cGameScroll].ratio = 100;
 	log("Scroll creado",DEBUG_ENGINE);
 	
-	WGE_ControlScroll();
+	wgeControlScroll();
 
 end;
 
 //Desactivación del engine y liberacion de memoria
-function WGE_Quit()
+function wgeQuit()
 private
 	int i; //variable auxiliar
 begin
@@ -1493,7 +1493,7 @@ end;
 
 //Funcion que setea el modo alpha.Solo se usa cuando se necesita porque
 //demora unos segundos generar las tablas de transparencia
-process WGE_InitAlpha()
+process wgeInitAlpha()
 begin
 	log("Activando modo alpha",DEBUG_ENGINE);
 		
@@ -1504,7 +1504,7 @@ begin
 end;
 
 //Genera in archivo de nivel aleatorio
-function WGE_GenLevelData(string file_)
+function wgeGenLevelData(string file_)
 private 
 	int levelFile;		//Archivo del nivel
 	int i,j;			//Indices auxiliares
@@ -1543,7 +1543,7 @@ begin
 end;
 
 //Cargamos archivo del tileMap
-Function WGE_LoadMapLevel(string file_,string fpgFile)
+Function wgeLoadMapLevel(string file_,string fpgFile)
 private 
 	int levelMapFile;		//Archivo del nivel
 	int i,j;				//Indices auxiliares
@@ -1554,7 +1554,7 @@ Begin
 	//Comprobamos si existe el archivo de mapa del nivel
 	if (not fexists(file_))
 		log("No existe el fichero de mapa: " + file_,DEBUG_ENGINE);
-		WGE_Quit();
+		wgeQuit();
 	end;
 	
 	//Limpiamos la memoria dinamica
@@ -1587,7 +1587,7 @@ Begin
 		//comprobamos el direccionamiento
 		if ( tileMap == NULL )
 			log("Fallo alocando memoria dinámica (tileMap)",DEBUG_ENGINE);
-			WGE_Quit();
+			wgeQuit();
 		end;
 		//segunda dimension
 		from i = 0 to level.numTilesY-1;
@@ -1595,7 +1595,7 @@ Begin
 			//comprobamos el direccionamiento
 			if ( tileMap[i] == NULL )
 				log("Fallo alocando memoria dinámica (tileMap["+i+"])",DEBUG_ENGINE);
-				WGE_Quit();
+				wgeQuit();
 			end;	
 		end;
 	#endif
@@ -1605,7 +1605,7 @@ Begin
 		for (j=0;j<level.numTilesX;j++)
 			if (fread(levelMapFile,tileMap[i][j].tileGraph)  == 0)
 				log("Fallo leyendo grafico de tiles ("+j+","+i+") en: " + file_,DEBUG_ENGINE);
-				WGE_Quit();
+				wgeQuit();
 			end;
 			//comprobamos si tiene animacion
 			if (tileMap[i][j].tileGraph > 128)
@@ -1621,7 +1621,7 @@ Begin
 		for (j=0;j<level.numTilesX;j++)
 			if (fread(levelMapFile,mapTileCode) == 0)
 				log("Fallo leyendo codigo de tiles ("+j+","+i+") en: " + file_,DEBUG_ENGINE);
-				WGE_Quit();
+				wgeQuit();
 			else
 				//decodificamos los datos del codigo de tile a propiedades
 				tileMap[i][j].tileShape = isBitSet(mapTileCode,BIT_TILE_SHAPE);
@@ -1638,7 +1638,7 @@ Begin
 	end;  
 	
 	//Si algun tile usa alpha, lo inicializamos
-	if (mapUsesAlpha) WGE_InitAlpha(); end;
+	if (mapUsesAlpha) wgeInitAlpha(); end;
 	
 	//leemos numero de animaciones
 	fread(levelMapFile,tileAnimations.numAnimations);
@@ -1652,7 +1652,7 @@ Begin
 			//comprobamos el direccionamiento
 			if ( tileAnimations.tileAnimTable == NULL )
 				log("Fallo alocando memoria dinámica (tileAnimations)",DEBUG_ENGINE);
-				WGE_Quit();
+				wgeQuit();
 			end;
 		#endif
 		
@@ -1660,7 +1660,7 @@ Begin
 		for (i=0;i<tileAnimations.numAnimations;i++)
 			if (fread(levelMapFile,tileAnimations.tileAnimTable[i].numFrames)  == 0)
 				log("Fallo leyendo numero de frames secuencia ("+i+") en: " + file_,DEBUG_ENGINE);
-				WGE_Quit();
+				wgeQuit();
 			end;
 			//Creamos la matriz dinamica de los graficos de los frames de animacion
 			#ifdef DYNAMIC_MEM
@@ -1669,7 +1669,7 @@ Begin
 				//comprobamos el direccionamiento
 				if ( tileAnimations.tileAnimTable.frameGraph == NULL )
 					log("Fallo alocando memoria dinámica (tileAnimTable.frameGraph) en secuencia"+i,DEBUG_ENGINE);
-					WGE_Quit();
+					wgeQuit();
 				end;
 			#endif
 			//Creamos la matriz dinamica de la duracion de cada frame de animacion
@@ -1679,18 +1679,18 @@ Begin
 				//comprobamos el direccionamiento
 				if ( tileAnimations.tileAnimTable.frameTime == NULL )
 					log("Fallo alocando memoria dinámica (tileAnimTable.frameTime) en secuencia"+i,DEBUG_ENGINE);
-					WGE_Quit();
+					wgeQuit();
 				end;
 			#endif
 			//Cargamos los frames de la secuencia actual
 			for (j=0;j<tileAnimations.tileAnimTable[i].numFrames;j++)
 				if (fread(levelMapFile,tileAnimations.tileAnimTable[i].frameGraph[j])  == 0)
 					log("Fallo leyendo grafico de frames secuencia ("+i+") en numero de frame ("+j+"): " + file_,DEBUG_ENGINE);
-					WGE_Quit();
+					wgeQuit();
 				end;
 				if (fread(levelMapFile,tileAnimations.tileAnimTable[i].frameTime[j])  == 0)
 					log("Fallo leyendo duracion de frames secuencia ("+i+") en numero de frame ("+j+"): " + file_,DEBUG_ENGINE);
-					WGE_Quit();
+					wgeQuit();
 				end;
 			end;
 		end;
@@ -1698,7 +1698,7 @@ Begin
 		for (i=0;i<tileAnimations.numAnimations;i++)
 			if (fread(levelMapFile,tileAnimations.tileAnimTable[i].tileCode)  == 0)
 				log("Fallo leyendo codigo de tile de secuencia ("+i+") + " + file_,DEBUG_ENGINE);
-				WGE_Quit();
+				wgeQuit();
 			end;
 		end;
 	end;
@@ -1719,7 +1719,7 @@ Begin
 End;
 
 //funcion para generar un archivo de mapa especificando numero de tiles o aleatorio (numero tiles=0)
-function WGE_GenRandomMapFile(string file_,int numTilesX,int numTilesY)
+function wgeGenRandomMapFile(string file_,int numTilesX,int numTilesY)
 private 
 	int levelMapFile;		//Archivo del nivel
 	int i,j;				//Indices auxiliares
@@ -1772,7 +1772,7 @@ Begin
 end;
 
 //funcion para generar un archivo de mapa especificando el matriz de obstaculos
-function WGE_GenMatrixMapFile(string file_)
+function wgeGenMatrixMapFile(string file_)
 private 
 	int levelMapFile;		//Archivo del nivel
 	int i,j;				//Indices auxiliares
@@ -1849,7 +1849,7 @@ Begin
 	
 end;
 
-function WGE_DrawMap()
+function wgeDrawMap()
 private
 	int i,j,					//Indices auxiliares
 	int x_inicial,y_inicial;	//Posiciones iniciales del mapeado			
@@ -1881,7 +1881,7 @@ Begin
 	log("Mapa dibujado correctamente. Creados "+numTilesDraw+" tiles",DEBUG_ENGINE);
 	
 	//lanzamos proceso actualizador animaciones de tiles
-	WGE_UpdateTileAnimations();
+	wgeUpdateTileAnimations();
 End;
 
 //Proceso tile
@@ -2092,14 +2092,14 @@ BEGIN
 end;
 
 //funcion que cambia el grafico de un tile
-function WGE_ReplaceTile(i,j,tileGraph)
+function wgeReplaceTile(i,j,tileGraph)
 begin
 	tileMap[i][j].tileGraph = tileGraph;
 	tileMap[i][j].refresh = true;
 end;
 
 //Cargamos datos del nivel
-Function WGE_LoadLevelData(string file_)
+Function wgeLoadLevelData(string file_)
 private 
 	int levelDataFile;		//Archivo del nivel
 	int i,j;				//Indices auxiliares
@@ -2108,7 +2108,7 @@ Begin
 	//Comprobamos si existe el archivo de datos del nivel
 	if (not fexists(file_))
 		log("No existe el fichero de datos nivel: " + file_,DEBUG_ENGINE);
-		WGE_Quit();
+		wgeQuit();
 	end;
 	
 	//leemos el archivo de mapa
@@ -2140,7 +2140,7 @@ Begin
 		//comprobamos el direccionamiento
 		if ( objects == NULL )
 			log("Fallo alocando memoria dinámica (objects)",DEBUG_ENGINE);
-			WGE_Quit();
+			wgeQuit();
 		end;
 	#endif
 	
@@ -2167,7 +2167,7 @@ Begin
 		//comprobamos el direccionamiento
 		if ( monsters == NULL )
 			log("Fallo alocando memoria dinámica (monsters)",DEBUG_ENGINE);
-			WGE_Quit();
+			wgeQuit();
 		end;
 	#endif
 	
@@ -2194,7 +2194,7 @@ Begin
 		//comprobamos el direccionamiento
 		if ( platforms == NULL )
 			log("Fallo alocando memoria dinámica (platforms)",DEBUG_ENGINE);
-			WGE_Quit();
+			wgeQuit();
 		end;
 	#endif
 	
@@ -2221,7 +2221,7 @@ Begin
 		//comprobamos el direccionamiento
 		if ( level.checkPoints == NULL )
 			log("Fallo alocando memoria dinámica (checkPoints)",DEBUG_ENGINE);
-			WGE_Quit();
+			wgeQuit();
 		end;
 	#endif
 	
@@ -2244,7 +2244,7 @@ Begin
 End;
 
 //Creacion de los elementos del nivel
-function WGE_CreateLevel()
+function wgeCreateLevel()
 private 
 	int i;			//Indices auxiliares
 end
@@ -2270,25 +2270,25 @@ Begin
 End;
 
 //Funcion que reinicia un nivel ya creado
-function WGE_RestartLevel()
+function wgeRestartLevel()
 private 
 	int i;			//Indices auxiliares
 end
 Begin
     //detenemos los procesos
-	signal(TYPE WGE_ControlScroll,s_kill_tree);
-	signal(TYPE WGE_UpdateTileAnimations,s_kill_tree);
+	signal(TYPE wgeControlScroll,s_kill_tree);
+	signal(TYPE wgeUpdateTileAnimations,s_kill_tree);
 	signal(TYPE pTile,s_kill_tree);
 	if (exists(idPlayer)) 
 		signal(idPlayer,s_kill);
 	end;	
 	
 	//Cargamos el mapeado del nivel por si se ha modificado en runtime
-	WGE_LoadMapLevel(levelFiles[game.numLevel].MapFile,levelFiles[game.numLevel].TileFile);
+	wgeLoadMapLevel(levelFiles[game.numLevel].MapFile,levelFiles[game.numLevel].TileFile);
 	//arrancamos el control de scroll
-	WGE_ControlScroll();
+	wgeControlScroll();
 	//dibujamos el mapa
-	WGE_DrawMap();
+	wgeDrawMap();
 	
 	//Reiniciamos los procesos del nivel
 	restartEntityType(TYPE object);
@@ -2302,7 +2302,7 @@ Begin
 End;
 
 //Proceso que controla el movimiento del scroll
-process WGE_ControlScroll()
+process wgeControlScroll()
 private
 	byte doTransition;		//flag de hacer transicion
 	
@@ -2519,7 +2519,7 @@ begin
 	//dormimos el proceso jugador
 	signal(idPlayer,s_sleep);
 	//dormimos el control del scroll
-	signal(TYPE WGE_ControlScroll,s_sleep);
+	signal(TYPE wgeControlScroll,s_sleep);
 	//dormimos el resto de entidades
 	signal(type object,s_sleep_tree);
 	signal(type monster,s_sleep_tree);
@@ -2528,10 +2528,10 @@ begin
 	//creamos una animacion del personaje segun su estado
 	switch (idPlayer.this.state)
 		case MOVE_ON_STAIRS_STATE:
-			animPlayer = WGE_Animation(fpgPlayer,19, 20,idPlayer.x,idPlayer.y,8,ANIM_LOOP);
+			animPlayer = wgeAnimation(fpgPlayer,19, 20,idPlayer.x,idPlayer.y,8,ANIM_LOOP);
 		end;
 		case MOVE_STATE:
-			animPlayer = WGE_Animation(fpgPlayer,3, 8,idPlayer.x,idPlayer.y,4,ANIM_LOOP);
+			animPlayer = wgeAnimation(fpgPlayer,3, 8,idPlayer.x,idPlayer.y,4,ANIM_LOOP);
 		end;
 		default:
 			//buscamos si hay algun objeto recogido para crear su animacion
@@ -2539,14 +2539,14 @@ begin
 				idObj = get_id(TYPE object);
 				if (idObj <> 0 )
 					if (idObj.this.state == PICKED_STATE)
-						animObject = WGE_Animation(level.fpgObjects,idObj.son.graph,idObj.son.graph,idObj.x,idObj.y,8,ANIM_LOOP);
+						animObject = wgeAnimation(level.fpgObjects,idObj.son.graph,idObj.son.graph,idObj.x,idObj.y,8,ANIM_LOOP);
 						animObject.flags = idObj.flags;
 						signal(idObj,s_sleep_tree);
 					end;
 				end;
 			until (idObj == 0 || animObject <> 0);
 			
-			animPlayer = WGE_Animation(fpgPlayer,idPlayer.graph,idPlayer.graph,idPlayer.x,idPlayer.y,8,ANIM_LOOP);
+			animPlayer = wgeAnimation(fpgPlayer,idPlayer.graph,idPlayer.graph,idPlayer.x,idPlayer.y,8,ANIM_LOOP);
 		end;
 	end;
 	
@@ -2588,7 +2588,7 @@ begin
 			if (idPlayer.this.state == MOVE_ON_STAIRS_STATE)
 				//reproducimos sonido en cada loop
 				if (tickClock(16))
-					WGE_PlayEntitySnd(id,playerSound[STAIRS_SND]);
+					wgePlayEntitySnd(id,playerSound[STAIRS_SND]);
 				end;
 			end;
 			
@@ -2655,7 +2655,7 @@ begin
 		
 	//despertamos los procesos
 	signal(idPlayer,s_wakeup);
-	signal(TYPE WGE_ControlScroll,s_wakeup);
+	signal(TYPE wgeControlScroll,s_wakeup);
 	if (idObj <> 0 )
 		signal(idObj,s_wakeup_tree);
 	end;
@@ -2705,7 +2705,7 @@ begin
 end
 
 
-function int WGE_Wait(int t)
+function int wgeWait(int t)
 Begin
     t += timer[0];
     While(timer[0]<t) frame; End
@@ -2833,8 +2833,8 @@ end;
 //funcion que envia signals a los tipos del juego
 function gameSignal(int _signal)
 begin
-	signal(TYPE WGE_ControlScroll,_signal);
-	signal(TYPE WGE_UpdateTileAnimations,_signal);
+	signal(TYPE wgeControlScroll,_signal);
+	signal(TYPE wgeUpdateTileAnimations,_signal);
 	signal(TYPE pTile,_signal);
 	if (exists(idPlayer) ) 
 		signal(idPlayer,_signal);
@@ -3005,41 +3005,41 @@ begin
 	fileError 	  = false;
 	
 	//musicas generales
-	(gameMusic[DEAD_MUS]        = WGE_LoadMusic("mus\dead.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
-	(gameMusic[END_LEVEL_MUS]   = WGE_LoadMusic("mus\levelEnd.ogg")) 	<= 0 ? fileError = true : numSoundFiles++;
-	(gameMusic[BOSS_MUS]    	= WGE_LoadMusic("mus\boss.ogg"))		<= 0 ? fileError = true : numSoundFiles++;
-	(gameMusic[INTRO_MUS]    	= WGE_LoadMusic("mus\intro.ogg"))		<= 0 ? fileError = true : numSoundFiles++;
+	(gameMusic[DEAD_MUS]        = wgeLoadMusic("mus\dead.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
+	(gameMusic[END_LEVEL_MUS]   = wgeLoadMusic("mus\levelEnd.ogg")) 	<= 0 ? fileError = true : numSoundFiles++;
+	(gameMusic[BOSS_MUS]    	= wgeLoadMusic("mus\boss.ogg"))		<= 0 ? fileError = true : numSoundFiles++;
+	(gameMusic[INTRO_MUS]    	= wgeLoadMusic("mus\intro.ogg"))		<= 0 ? fileError = true : numSoundFiles++;
 	
 	//sonidos generales
-	(gameSound[PAUSE_SND] 		= WGE_LoadSound("snd\pause.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
-	(gameSound[TIMESCORE_SND] 	= WGE_LoadSound("snd\timeScor.ogg")) 	<= 0 ? fileError = true : numSoundFiles++;
-	(gameSound[STOPSCORE_SND] 	= WGE_LoadSound("snd\endScore.ogg")) 	<= 0 ? fileError = true : numSoundFiles++;
-	(gameSound[COUNTDOWN_SND] 	= WGE_LoadSound("snd\count.ogg")) 	    <= 0 ? fileError = true : numSoundFiles++;
-	(gameSound[MENU_SND]	 	= WGE_LoadSound("snd\menu.ogg")) 	    <= 0 ? fileError = true : numSoundFiles++;
+	(gameSound[PAUSE_SND] 		= wgeLoadSound("snd\pause.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
+	(gameSound[TIMESCORE_SND] 	= wgeLoadSound("snd\timeScor.ogg")) 	<= 0 ? fileError = true : numSoundFiles++;
+	(gameSound[STOPSCORE_SND] 	= wgeLoadSound("snd\endScore.ogg")) 	<= 0 ? fileError = true : numSoundFiles++;
+	(gameSound[COUNTDOWN_SND] 	= wgeLoadSound("snd\count.ogg")) 	    <= 0 ? fileError = true : numSoundFiles++;
+	(gameSound[MENU_SND]	 	= wgeLoadSound("snd\menu.ogg")) 	    <= 0 ? fileError = true : numSoundFiles++;
 	
     //sonidos del jugador
-	(playerSound[BOUNCE_SND] 	= WGE_LoadSound("snd\bounce.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
-	(playerSound[DEAD_SND] 		= WGE_LoadSound("snd\dead.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;	
-	(playerSound[HURT_SND]		= WGE_LoadSound("snd\hurt.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;	
-	(playerSound[JUMP_SND] 		= WGE_LoadSound("snd\jump.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;	
-	(playerSound[PICK_SND]		= WGE_LoadSound("snd\pick.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;	
-	(playerSound[STAIRS_SND]	= WGE_LoadSound("snd\stairs.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;	
-	(playerSound[THROW_SND] 	= WGE_LoadSound("snd\throw.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
-	(playerSound[NOPICK_SND] 	= WGE_LoadSound("snd\noPick.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
+	(playerSound[BOUNCE_SND] 	= wgeLoadSound("snd\bounce.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
+	(playerSound[DEAD_SND] 		= wgeLoadSound("snd\dead.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;	
+	(playerSound[HURT_SND]		= wgeLoadSound("snd\hurt.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;	
+	(playerSound[JUMP_SND] 		= wgeLoadSound("snd\jump.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;	
+	(playerSound[PICK_SND]		= wgeLoadSound("snd\pick.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;	
+	(playerSound[STAIRS_SND]	= wgeLoadSound("snd\stairs.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;	
+	(playerSound[THROW_SND] 	= wgeLoadSound("snd\throw.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
+	(playerSound[NOPICK_SND] 	= wgeLoadSound("snd\noPick.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
 	
 	//sonidos de objetos
-	(objectSound[BREAK_SND] 	= WGE_LoadSound("snd\break.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
-	(objectSound[KILL_SND]		= WGE_LoadSound("snd\kill.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
-	(objectSound[KILLSOLID_SND] = WGE_LoadSound("snd\killSolid.ogg")) 	<= 0 ? fileError = true : numSoundFiles++;
-	(objectSound[PICKITEM_SND] 	= WGE_LoadSound("snd\pickItem.ogg")) 	<= 0 ? fileError = true : numSoundFiles++;
-	(objectSound[PICKCOIN_SND] 	= WGE_LoadSound("snd\pickCoin.ogg")) 	<= 0 ? fileError = true : numSoundFiles++;
-	(objectSound[PICKSTAR_SND] 	= WGE_LoadSound("snd\star.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
-	(objectSound[PICKTRIE_SND] 	= WGE_LoadSound("snd\trie.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
-	(objectSound[DOOR_SND] 	    = WGE_LoadSound("snd\door.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
+	(objectSound[BREAK_SND] 	= wgeLoadSound("snd\break.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
+	(objectSound[KILL_SND]		= wgeLoadSound("snd\kill.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
+	(objectSound[KILLSOLID_SND] = wgeLoadSound("snd\killSolid.ogg")) 	<= 0 ? fileError = true : numSoundFiles++;
+	(objectSound[PICKITEM_SND] 	= wgeLoadSound("snd\pickItem.ogg")) 	<= 0 ? fileError = true : numSoundFiles++;
+	(objectSound[PICKCOIN_SND] 	= wgeLoadSound("snd\pickCoin.ogg")) 	<= 0 ? fileError = true : numSoundFiles++;
+	(objectSound[PICKSTAR_SND] 	= wgeLoadSound("snd\star.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
+	(objectSound[PICKTRIE_SND] 	= wgeLoadSound("snd\trie.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
+	(objectSound[DOOR_SND] 	    = wgeLoadSound("snd\door.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
 	
 	//sonidos de enemigos
-	(monsterSound[BUBBLE_SND]	= WGE_LoadSound("snd\bubble.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
-	(monsterSound[EXPLODE_SND]	= WGE_LoadSound("snd\explode.ogg"))		<= 0 ? fileError = true : numSoundFiles++;
+	(monsterSound[BUBBLE_SND]	= wgeLoadSound("snd\bubble.ogg")) 		<= 0 ? fileError = true : numSoundFiles++;
+	(monsterSound[EXPLODE_SND]	= wgeLoadSound("snd\explode.ogg"))		<= 0 ? fileError = true : numSoundFiles++;
 	
 	fileError ? log("Ha habido un fallo en algun archivo de sonido",DEBUG_SOUND) : log("Cargados "+numSoundFiles+" archivos de sonido",DEBUG_SOUND);
 	
@@ -3075,19 +3075,19 @@ begin
 	timer[cMusicTimer] = 0;
 	
 	//mostramos pantallas y texto de introduccion
-	WGE_Write(fntGame,cResX>>1,cResY>>1,ALIGN_CENTER,gameTexts[config.lang][INTRO1_TEXT]);
+	wgeWrite(fntGame,cResX>>1,cResY>>1,ALIGN_CENTER,gameTexts[config.lang][INTRO1_TEXT]);
 	introMusicTransition(4.0);
 		
 	put(fpgGame,16,cResX>>1,cResY>>1);
 	introMusicTransition(8.0);
 	
-	WGE_Write(fntGame,10,50,ALIGN_CENTER_LEFT,gameTexts[config.lang][INTRO2_TEXT]);
+	wgeWrite(fntGame,10,50,ALIGN_CENTER_LEFT,gameTexts[config.lang][INTRO2_TEXT]);
 	introMusicTransition(18.0);
 	
 	put(fpgGame,17,cResX>>1,cResY>>1);
 	introMusicTransition(22.0);
 	
-	WGE_Write(fntGame,10,50,ALIGN_CENTER_LEFT,gameTexts[config.lang][INTRO3_TEXT]);
+	wgeWrite(fntGame,10,50,ALIGN_CENTER_LEFT,gameTexts[config.lang][INTRO3_TEXT]);
 	introMusicTransition(30.0);	
 	
 	//definimos regiones para el scroll de la intro
@@ -3109,11 +3109,11 @@ begin
 	scroll[4].x0=64;
 	scroll[5].x0=154;
 	//creamos las animaciones estaticas
-	introAnimations[0] = WGE_GameAnimation(fpgGame,9,9,172,120,10,ANIM_LOOP);
-	introAnimations[1] = WGE_GameAnimation(fpgGame,10,10,122,54,10,ANIM_LOOP);
+	introAnimations[0] = wgeGameAnimation(fpgGame,9,9,172,120,10,ANIM_LOOP);
+	introAnimations[1] = wgeGameAnimation(fpgGame,10,10,122,54,10,ANIM_LOOP);
 	
 	//encedemos pantalla
-	WGE_Wait(150);
+	wgeWait(150);
 	wgeFadeIn(FADE_SCREEN);
 	
 	//hacemos el barrido de perspectiva hasta tiempo definido
@@ -3151,9 +3151,9 @@ private
 	string textmsg;					//Texto Splash
 begin
 	//creamos los procesos de animacion
-	gameAnimations[0] = WGE_GameAnimation(fpgGame,9,9,54,120,10,ANIM_LOOP);
-	gameAnimations[1] = WGE_GameAnimation(fpgGame,10,10,178,54,10,ANIM_LOOP);
-	gameAnimations[2] = WGE_GameAnimation(fpgGame,11,11,cResX>>1,192>>1,10,ANIM_LOOP);
+	gameAnimations[0] = wgeGameAnimation(fpgGame,9,9,54,120,10,ANIM_LOOP);
+	gameAnimations[1] = wgeGameAnimation(fpgGame,10,10,178,54,10,ANIM_LOOP);
+	gameAnimations[2] = wgeGameAnimation(fpgGame,11,11,cResX>>1,192>>1,10,ANIM_LOOP);
 	gameAnimations[2].z--;
 	
 	//definimos regiones para el scroll del splash
@@ -3255,7 +3255,7 @@ begin
 		fread(configFile,config.videoMode);
 		fread(configFile,config.lang);
 		fread(configFile,config.soundVolume);
-		WGE_SetChannelsVolume(config.soundVolume);
+		wgeSetChannelsVolume(config.soundVolume);
 		
 		fread(configFile,config.musicVolume);
 		set_song_volume(config.musicVolume*1.28);
@@ -3329,7 +3329,7 @@ begin
 		log("Archivo de idioma ENG leído",DEBUG_ENGINE);
 	else
 		log("Falta el archivo de ENG",DEBUG_ENGINE);
-		WGE_Quit();
+		wgeQuit();
 	end;
 	
 	//Cargamos el idioma Español
@@ -3402,32 +3402,32 @@ begin
 	//reemplazamos los tiles necesarios para encerrar al player segun el nivel
 	switch (game.numlevel)
 		case WOODS_LEVEL:
-			WGE_ReplaceTile(36,80,104);
+			wgeReplaceTile(36,80,104);
 			tileMap[36][80].tileCode = SOLID;
-			WGE_Wait(20);
-			WGE_ReplaceTile(37,80,104);
+			wgeWait(20);
+			wgeReplaceTile(37,80,104);
 			tileMap[37][80].tileCode = SOLID;
-			WGE_Wait(20);
-			WGE_ReplaceTile(38,80,104);
+			wgeWait(20);
+			wgeReplaceTile(38,80,104);
 			tileMap[38][80].tileCode = SOLID;
-			WGE_Wait(20);
-			WGE_ReplaceTile(39,80,104);
+			wgeWait(20);
+			wgeReplaceTile(39,80,104);
 			tileMap[39][80].tileCode = SOLID;
-			WGE_Wait(20);
+			wgeWait(20);
 		end;
 		case TOYLAND_LEVEL:
-			WGE_ReplaceTile(29,63,3);
+			wgeReplaceTile(29,63,3);
 			tileMap[29][63].tileCode = SOLID;
-			WGE_Wait(20);
-			WGE_ReplaceTile(30,63,3);
+			wgeWait(20);
+			wgeReplaceTile(30,63,3);
 			tileMap[30][63].tileCode = SOLID;
-			WGE_Wait(20);
-			WGE_ReplaceTile(31,63,3);
+			wgeWait(20);
+			wgeReplaceTile(31,63,3);
 			tileMap[31][63].tileCode = SOLID;
-			WGE_Wait(20);
-			WGE_ReplaceTile(32,63,3);
+			wgeWait(20);
+			wgeReplaceTile(32,63,3);
 			tileMap[32][63].tileCode = SOLID;
-			WGE_Wait(20);
+			wgeWait(20);
 		end;
 	end;
 end;

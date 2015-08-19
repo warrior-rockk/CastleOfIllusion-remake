@@ -60,7 +60,7 @@ Global
 end;
 	
 //declaracion de proceso dialogo
-declare process WGE_Dialog(int x,int y,int _width,int _height)
+declare process wgeDialog(int x,int y,int _width,int _height)
 public
 	int width;
 	int height;

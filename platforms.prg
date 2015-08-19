@@ -483,7 +483,7 @@ begin
 				setBit(this.props,NO_COLLISION);
 				
 				//retardo inicial
-				if (WGE_Animate(0,0,20,ANIM_ONCE))
+				if (wgeAnimate(0,0,20,ANIM_ONCE))
 					this.state = MOVE_STATE;
 				end;
 
@@ -520,7 +520,7 @@ begin
 			end;
 			case PUSHED_STATE:
 				//cambio de estado tras espera
-				if (WGE_Animate(30,30,10,ANIM_ONCE))
+				if (wgeAnimate(30,30,10,ANIM_ONCE))
 					this.state = MOVE_UP_STATE;
 					//guardamos flag para impulsar
 					if (idPlatform == father)
@@ -539,12 +539,12 @@ begin
 					this.state = MOVE_STATE;
 					this.fY = startY;
 					//impulsamos al player
-					if (memPlayerImpulse && WGE_CheckControl(CTRL_JUMP,E_PRESSED))						
+					if (memPlayerImpulse && wgeCheckControl(CTRL_JUMP,E_PRESSED))						
 						idPlayer.this.vY = -cSpringBoxJumpImpulse;
-						WGE_PlayEntitySnd(idPlayer,playerSound[JUMP_SND]);
+						wgePlayEntitySnd(idPlayer,playerSound[JUMP_SND]);
 					elseif (idPlatform == father)
 						idPlayer.this.vY = -cSpringBoxImpulse;
-						WGE_PlayEntitySnd(idPlayer,playerSound[JUMP_SND]);
+						wgePlayEntitySnd(idPlayer,playerSound[JUMP_SND]);
 					end;
 					memPlayerImpulse = false;
 				end;

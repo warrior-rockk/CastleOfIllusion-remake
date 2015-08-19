@@ -7,7 +7,7 @@
 // ========================================================================
 
 //Funcion que crea puntos de colision del jugador
-function int WGE_CreatePlayerColPoints(entity idEntity)
+function int wgeCreatePlayerColPoints(entity idEntity)
 begin
 	
 	idEntity.this.colPoint[RIGHT_UP_POINT].x 			= (idEntity.this.ancho>>1)-1;
@@ -65,7 +65,7 @@ begin
 end;
 
 //Funcion que crea puntos de colision de un objeto
-function int WGE_CreateObjectColPoints(entity idEntity)
+function int wgeCreateObjectColPoints(entity idEntity)
 
 begin
 		

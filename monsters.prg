@@ -157,7 +157,7 @@ begin
 	xVel   = 0.2;
 	atackRangeX = 50;
 	
-	WGE_CreateObjectColPoints(id);
+	wgeCreateObjectColPoints(id);
 	
 	friction = floorFriction;
 	
@@ -191,7 +191,7 @@ begin
 				this.vX = xVel;
 				
 				//animacion movimiento
-				WGE_Animate(1,6,5,ANIM_LOOP);	
+				wgeAnimate(1,6,5,ANIM_LOOP);	
 				
 				//si existe el player
 				if (exists(idPlayer) )
@@ -276,7 +276,7 @@ begin
 	
 	isBitSet(flags,B_HMIRROR) ? xVel = -2 : 	xVel   = 2;
 	
-	WGE_CreateObjectColPoints(id);
+	wgeCreateObjectColPoints(id);
 	
 	friction = floorFriction;
 	
@@ -301,7 +301,7 @@ begin
 				//detenemos movimiento
 				this.vX = 0;
 				//pausa con animacion mirando al frente
-				if (WGE_Animate(11,11,5,ANIM_ONCE))
+				if (wgeAnimate(11,11,5,ANIM_ONCE))
 					collided = false;
 					this.state = MOVE_STATE;
 					this.vX = xVel;
@@ -319,7 +319,7 @@ begin
 				//actualizamos movimiento
 				this.vX = xVel;
 				//animacion movimiento
-				WGE_Animate(9,10,5,ANIM_LOOP);
+				wgeAnimate(9,10,5,ANIM_LOOP);
 				//sentido del grafico
 				xVel < 0 ? setBit(flags,B_HMIRROR) : unsetBit(flags,B_HMIRROR);
 			end;
@@ -330,7 +330,7 @@ begin
 				setBit(this.props,MONS_HARMLESS);
 				//animacion toque durante 8 animaciones
 				if (hurtedCounter < 8)
-					if (WGE_Animate(12,14,5,ANIM_LOOP))
+					if (wgeAnimate(12,14,5,ANIM_LOOP))
 						hurtedCounter++;
 					end;
 				else
@@ -393,7 +393,7 @@ begin
 	this.fX = x;
 	this.fY = y;
 	
-	WGE_CreateObjectColPoints(id);
+	wgeCreateObjectColPoints(id);
 	
 	this.state = IDLE_STATE;
 	
@@ -413,7 +413,7 @@ begin
 		//maquina de estados
 		switch (this.state)
 			case IDLE_STATE: 
-				WGE_Animate(15,16,30,ANIM_LOOP);
+				wgeAnimate(15,16,30,ANIM_LOOP);
 			end;
 			case HURT_STATE: //toque
 				this.state = DEAD_STATE;
@@ -498,7 +498,7 @@ begin
 	//direccion inicial del movimiento
 	isBitSet(flags,B_HMIRROR) ? dir = -1 : dir = 1;
 	
-	WGE_CreateObjectColPoints(id);
+	wgeCreateObjectColPoints(id);
 	
 	friction = floorFriction;
 	
@@ -532,7 +532,7 @@ begin
 		switch (this.state)
 			case IDLE_STATE:
 				//animacion movimiento
-				if (WGE_Animate(22,23,20,ANIM_LOOP))
+				if (wgeAnimate(22,23,20,ANIM_LOOP))
 					idleCount++;
 					//cada X ciclos de animacion, salto grande
 					if (idleCount >= cChessHorseIdleCycles*cChessHorseNumCycles)
@@ -757,14 +757,14 @@ begin
 			end;
 			case DEAD_STATE:
 				this.vX = 0;
-				if (WGE_Animate(21,21,20,ANIM_ONCE))
+				if (wgeAnimate(21,21,20,ANIM_ONCE))
 					//volvemos a ser no persistentes
 					unSetBit(this.props,PERSISTENT);
 					//volvemos a estado inicial
 					this.state = INVISIBLE_STATE;
 				end;
 				//reproducimos sonido
-				WGE_PlayEntityStateSnd(id,monsterSound[BUBBLE_SND]);
+				wgePlayEntityStateSnd(id,monsterSound[BUBBLE_SND]);
 			end;
 		end;
 		
@@ -823,7 +823,7 @@ begin
 	this.fX = x;
 	this.fY = y;
 	
-	WGE_CreateObjectColPoints(id);
+	wgeCreateObjectColPoints(id);
 	
 	friction = floorFriction;
 	
@@ -948,7 +948,7 @@ begin
 	this.fX = x;
 	this.fY = y;
 	
-	WGE_CreateObjectColPoints(id);
+	wgeCreateObjectColPoints(id);
 	
 	friction = floorFriction;
 	
@@ -1060,7 +1060,7 @@ begin
 	setBit(this.props,NO_PHYSICS);
 	dir = 1;
 	
-	WGE_CreateObjectColPoints(id);
+	wgeCreateObjectColPoints(id);
 	
 	friction = floorFriction;
 	
@@ -1100,7 +1100,7 @@ begin
 				//detenemos el movimiento
 				this.vY = 0;
 				//tiempo detenido con grafico de toque
-				if (WGE_Animate(35,35,40,ANIM_ONCE))
+				if (wgeAnimate(35,35,40,ANIM_ONCE))
 					this.state = MOVE_STATE;
 				end;
 			end;
@@ -1158,7 +1158,7 @@ begin
 	
 	isBitSet(flags,B_HMIRROR) ? dir = 1: dir = -1;
 	
-	WGE_CreateObjectColPoints(id);
+	wgeCreateObjectColPoints(id);
 	
 	friction = floorFriction;
 	
@@ -1183,7 +1183,7 @@ begin
 				//detenemos movimiento
 				this.vX = 0;
 				//pausa con animacion mirando al frente
-				if (WGE_Animate(38,38,5,ANIM_ONCE))
+				if (wgeAnimate(38,38,5,ANIM_ONCE))
 					collided = false;
 					this.state = MOVE_STATE;
 					this.vX = cToyCarVel*dir;
@@ -1200,7 +1200,7 @@ begin
 				//actualizamos movimiento
 				this.vX = cToyCarVel*dir;
 				//animacion movimiento
-				WGE_Animate(36,37,10,ANIM_LOOP);
+				wgeAnimate(36,37,10,ANIM_LOOP);
 				//sentido del grafico
 				dir < 0 ? unSetBit(flags,B_HMIRROR) : SetBit(flags,B_HMIRROR);
 			end;
@@ -1210,7 +1210,7 @@ begin
 				//no dañamos en este estado
 				setBit(this.props,MONS_HARMLESS);
 				//animacion toque
-				if (WGE_Animate(39,39,100,ANIM_LOOP))			
+				if (wgeAnimate(39,39,100,ANIM_LOOP))			
 					//pasado el tiempo, volvemos a movernos
 					this.state = MOVE_STATE;
 					this.vX = cToyCarVel*dir;
@@ -1316,7 +1316,7 @@ begin
 	//direccion inicial del movimiento
 	isBitSet(flags,B_HMIRROR) ? dir = -1 : dir = 1;
 	
-	WGE_CreateObjectColPoints(id);
+	wgeCreateObjectColPoints(id);
 	
 	friction = floorFriction;
 	
@@ -1355,7 +1355,7 @@ begin
 					graph = 0;
 				else
 					//animacion puerta que se abre
-					if (WGE_Animate(46,48,10,ANIM_ONCE))
+					if (wgeAnimate(46,48,10,ANIM_ONCE))
 						//sale de la caja
 						graph = 43;
 						this.vY = -cBossClownVelY;
@@ -1380,7 +1380,7 @@ begin
 				else
 					this.state = ATACK_STATE;	
 					//reproducimos sonido
-					WGE_PlayEntitySnd(id,monsterSound[EXPLODE_SND]);					
+					wgePlayEntitySnd(id,monsterSound[EXPLODE_SND]);					
 				end;
 			end;
 			case ATACK_STATE:							
@@ -1399,7 +1399,7 @@ begin
 				end;
 				
 				//cambio de paso cuando acabe animacion
-				if (WGE_Animate(42,43,20,ANIM_ONCE))
+				if (wgeAnimate(42,43,20,ANIM_ONCE))
 					this.state = MOVE_STATE;
 				end;
 				
@@ -1411,7 +1411,7 @@ begin
 				//detenemos el movimiento
 				this.vX = 0;
 				//espera hasta el siguiente salto
-				if (WGE_Animate(40,40,80,ANIM_ONCE))
+				if (wgeAnimate(40,40,80,ANIM_ONCE))
 					//corregimos direccion
 					if (exists(idPlayer) )
 						if (idPlayer.this.fX > this.fX)
@@ -1452,7 +1452,7 @@ begin
 						unSetBit(flags,B_ABLEND);
 					else
 						//animacion daño
-						if (WGE_Animate(44,45,20,ANIM_LOOP))
+						if (wgeAnimate(44,45,20,ANIM_LOOP))
 							currentHurtTime++;
 						end;
 						//parpadeo
@@ -1511,7 +1511,7 @@ begin
 			this.fY += this.vY;
 			positionToInt(id);
 			
-			WGE_Animate(graph,graph,20,ANIM_LOOP);
+			wgeAnimate(graph,graph,20,ANIM_LOOP);
 			
 			frame;
 	//morimos al salirnos de la pantalla
@@ -1551,7 +1551,7 @@ begin
 			this.fY += this.vY;
 			positionToInt(id);
 			
-			WGE_Animate(iniGraph,endGraph,5,ANIM_LOOP);
+			wgeAnimate(iniGraph,endGraph,5,ANIM_LOOP);
 			
 			frame;
 	//morimos al salirnos de la pantalla

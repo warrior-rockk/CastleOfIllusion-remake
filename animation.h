@@ -11,14 +11,14 @@
 #define ANIM_ONCE   1
 
 //declaracion de proceso animation
-Declare Process WGE_Animation(int file,int startFrame, int endFrame,int x,int y,int animationSpeed,int mode)
+Declare Process wgeAnimation(int file,int startFrame, int endFrame,int x,int y,int animationSpeed,int mode)
 public
 	_entityPublicData this;			//datos publicos de entidad
 end
 end
 
 //declaracion de proceso gameAnimation
-Declare Process WGE_GameAnimation(int file,int startFrame, int endFrame,int x,int y,int animationSpeed,int mode)
+Declare Process wgeGameAnimation(int file,int startFrame, int endFrame,int x,int y,int animationSpeed,int mode)
 public
 	_entityPublicData this;			//datos publicos de entidad
 end

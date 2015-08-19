@@ -1,6 +1,5 @@
 BUGS:   -las musicas de nivel deberian cargarse en el load_files??
-		-llamar a las funciones WGE_Loop wgeLoop,etc..
-         -tiles que se quedan en negro al reiniciar nivel!! (activadas funciones para debuggearlo)
+		-tiles que se quedan en negro al reiniciar nivel!! (activadas funciones para debuggearlo)
 		-jarra se enganchó en la pared izquierda (al lanzarla o al caerse por tocar pompa?)
 		-que la doorbutton abra nada mas pulsar el boton
 		-no es practico  el margin de outregion de los objetos ya que no aparecen al salirte un poco
@@ -28,7 +27,7 @@ ENGINE: -Limpiar las utilidades de creacion de niveles/pngfpg para que sea mas g
 		-crear variables de velocidad por defecto para poder asignar velocidades a las cosas proporcionales y desde un mismo lugar
 		-separar correctamente lo que pertenece al engine general y lo que seria game concreto de castle. Luego podria convertirse en una libreria .dcl
 		-que le pases como argumento los logs de debug (los niveles o el debug completo)
-		-en el WGE_LOOP, como se hace bucles con frame, no se ejecuta el contador de frames. ¿Es un problema??
+		-en el wgeLOOP, como se hace bucles con frame, no se ejecuta el contador de frames. ¿Es un problema??
 		-pasar todos los repeats de get_id a whiles
 		-Se puede llegar a configurar que al hacer un transition entre rooms, esten congelados, desaparezcan o sigan en movimiento las entidades.
 		 COn sleep desaparecen y queda como en master system pero con freeze se congelan y queda mas real.

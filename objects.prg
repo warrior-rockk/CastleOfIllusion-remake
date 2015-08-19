@@ -141,7 +141,7 @@ begin
 	this.fX = x;
 	this.fY = y;
 	
-	WGE_CreateObjectColPoints(id);
+	wgeCreateObjectColPoints(id);
 	
 	friction = floorFriction;
 	
@@ -230,7 +230,7 @@ begin
 				//no es colisionable
 				setBit(this.props,NO_COLLISION);
 				//tiempo en posicion recogiendolo
-				if (WGE_Animate(graph,graph,10,ANIM_ONCE))
+				if (wgeAnimate(graph,graph,10,ANIM_ONCE))
 					this.state = PICKED_STATE;
 				end;
 			end;
@@ -308,9 +308,9 @@ begin
 						colID.this.state = HURT_STATE;
 						//reproducimos sonido
 						if (isBitSet(this.props,OBJ_BREAKABLE))
-							WGE_PlayEntitySnd(id,objectSound[KILL_SND]);
+							wgePlayEntitySnd(id,objectSound[KILL_SND]);
 						else
-							WGE_PlayEntitySnd(id,objectSound[KILLSOLID_SND]);
+							wgePlayEntitySnd(id,objectSound[KILLSOLID_SND]);
 						end;
 					end;
 					
@@ -331,7 +331,7 @@ begin
 						//cambiamos de estado
 						this.state = DEAD_STATE;
 						//reproducimos sonido
-						WGE_PlayEntitySnd(id,objectSound[BREAK_SND]);
+						wgePlayEntitySnd(id,objectSound[BREAK_SND]);
 					end;
 				else
 					//si no ha colisionado y toca suelo, cambiamos de estado
@@ -362,7 +362,7 @@ begin
 			end;
 			case DEAD_STATE:
 				//lanzamos animacion explosion objeto
-				WGE_Animation(file,2,3,x,y,10,ANIM_ONCE);
+				wgeAnimation(file,2,3,x,y,10,ANIM_ONCE);
 				//reseteamos flag boton si lo hubiera seteado el proceso
 				if (idButton == father) 
 					idButton = 0;
@@ -439,7 +439,7 @@ begin
 	this.fY = y;
 	this.vY = cItemVelY;
 	
-	WGE_CreateObjectColPoints(id);
+	wgeCreateObjectColPoints(id);
 	
 	friction = floorFriction;
 	
@@ -500,22 +500,22 @@ begin
 				
 				//animacion del item
 				if (isBitSet(this.props,OBJ_ITEM_COIN))
-					WGE_Animate(25,26,20,ANIM_LOOP);
+					wgeAnimate(25,26,20,ANIM_LOOP);
 				end;
 				if (isBitSet(this.props,OBJ_ITEM_BIG_COIN))
-					WGE_Animate(6,7,20,ANIM_LOOP);
+					wgeAnimate(6,7,20,ANIM_LOOP);
 				end;
 				if (isBitSet(this.props,OBJ_ITEM_FOOD))
-					WGE_Animate(31,28,20,ANIM_LOOP);
+					wgeAnimate(31,28,20,ANIM_LOOP);
 				end;
 				if (isBitSet(this.props,OBJ_ITEM_BIG_FOOD))
-					WGE_Animate(28,28,20,ANIM_LOOP);
+					wgeAnimate(28,28,20,ANIM_LOOP);
 				end;
 				if (isBitSet(this.props,OBJ_ITEM_TRIE))
-					WGE_Animate(27,27,20,ANIM_LOOP);
+					wgeAnimate(27,27,20,ANIM_LOOP);
 				end;
 				if (isBitSet(this.props,OBJ_ITEM_STAR))
-					WGE_Animate(11,12,20,ANIM_LOOP);
+					wgeAnimate(11,12,20,ANIM_LOOP);
 				end;
 				if (isBitSet(this.props,OBJ_ITEM_GEM))
 					//si no tenemos flag de bossKilled
@@ -524,7 +524,7 @@ begin
 						graph = 0;
 						this.vY = 0;
 					else
-						WGE_Animate(13,13,10,ANIM_LOOP);
+						wgeAnimate(13,13,10,ANIM_LOOP);
 					end;
 				end;
 			end;
@@ -537,38 +537,38 @@ begin
 						//incrementa puntuacion
 						game.score += cSmallCoinScore;
 						//reproducimos sonido
-						WGE_PlayEntitySnd(id,objectSound[PICKCOIN_SND]);
+						wgePlayEntitySnd(id,objectSound[PICKCOIN_SND]);
 					end;
 					if (isBitSet(this.props,OBJ_ITEM_BIG_COIN))
 						//incrementa puntuacion
 						game.score += cBigCoinScore;
 						//reproducimos sonido
-						WGE_PlayEntitySnd(id,objectSound[PICKCOIN_SND]);
+						wgePlayEntitySnd(id,objectSound[PICKCOIN_SND]);
 					end;
 					if (isBitSet(this.props,OBJ_ITEM_FOOD))
 						//incrementa 1 energia
 						game.playerLife ++;
 						//reproducimos sonido
-						WGE_PlayEntitySnd(id,objectSound[PICKITEM_SND]);
+						wgePlayEntitySnd(id,objectSound[PICKITEM_SND]);
 					end;
 					if (isBitSet(this.props,OBJ_ITEM_BIG_FOOD))
 						//incrementa toda la energia
 						game.playerLife = game.playerMaxLife;
 						//reproducimos sonido
-						WGE_PlayEntitySnd(id,objectSound[PICKITEM_SND]);
+						wgePlayEntitySnd(id,objectSound[PICKITEM_SND]);
 					end;
 					if (isBitSet(this.props,OBJ_ITEM_TRIE))
 						//incrementa 1 vida
 						game.playerTries++;
 						//reproducimos sonido
-						WGE_PlayEntitySnd(id,objectSound[PICKTRIE_SND]);
+						wgePlayEntitySnd(id,objectSound[PICKTRIE_SND]);
 					end;
 					if (isBitSet(this.props,OBJ_ITEM_STAR))
 						//añade una estrella a la vida
 						game.playerMaxLife += 1;
 						game.playerLife = game.playerMaxLife;
 						//reproducimos sonido
-						WGE_PlayEntitySnd(id,objectSound[PICKSTAR_SND]);
+						wgePlayEntitySnd(id,objectSound[PICKSTAR_SND]);
 					end;
 					if (isBitSet(this.props,OBJ_ITEM_GEM))
 						//fin del nivel actual
@@ -636,7 +636,7 @@ begin
 	this.fX = x;
 	this.fY = y;
 		
-	WGE_CreateObjectColPoints(id);
+	wgeCreateObjectColPoints(id);
 	
 	friction = floorFriction;
 	
@@ -742,7 +742,7 @@ begin
 	this.fX = x;
 	this.fY = y;
 		
-	WGE_CreateObjectColPoints(id);
+	wgeCreateObjectColPoints(id);
 	
 	friction = floorFriction;
 	
@@ -800,7 +800,7 @@ begin
 							//cambiamos estado
 							this.state = PUSHED_STATE;
 							//reproducimos sonido
-							WGE_PlayEntityStateSnd(id,objectSound[DOOR_SND]);
+							wgePlayEntityStateSnd(id,objectSound[DOOR_SND]);
 						end;
 					end;
 				end;
@@ -811,7 +811,7 @@ begin
 				//le quitamos grafico
 				graph = 0;
 				//reproducimos sonido
-				WGE_PlayEntityStateSnd(id,objectSound[DOOR_SND]);
+				wgePlayEntityStateSnd(id,objectSound[DOOR_SND]);
 				
 				//si se suelta el boton
 				if (idButton == 0 )
@@ -849,7 +849,7 @@ begin
 							//cambiamos de estado
 							this.state = IDLE_STATE;
 							//reproducimos sonido
-							WGE_PlayEntityStateSnd(id,objectSound[DOOR_SND]);
+							wgePlayEntityStateSnd(id,objectSound[DOOR_SND]);
 						end;
 					end;
 				end;
@@ -912,7 +912,7 @@ begin
 	this.fX = x;
 	this.fY = y;
 		
-	WGE_CreateObjectColPoints(id);
+	wgeCreateObjectColPoints(id);
 	
 	friction = floorFriction;
 	
@@ -977,7 +977,7 @@ begin
 							//cambiamos estado
 							this.state = PUSHED_STATE;
 							//reproducimos sonido
-							WGE_PlayEntityStateSnd(id,objectSound[DOOR_SND]);
+							wgePlayEntityStateSnd(id,objectSound[DOOR_SND]);
 						end;
 					end;
 				end;
@@ -1044,7 +1044,7 @@ begin
 	this.fX = x;
 	this.fY = y;
 		
-	WGE_CreateObjectColPoints(id);
+	wgeCreateObjectColPoints(id);
 	
 	friction = floorFriction;
 	

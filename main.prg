@@ -33,13 +33,13 @@ Process main()
 Begin
 		
 	//Iniciamos el engine
-	WGE_Init();
+	wgeInit();
 	
 	//Bucle principal
 	Loop
 		//salimos el juego
 		if(key(_esc)) 
-			WGE_Quit();
+			wgeQuit();
 		End;
 		
 		Frame;
