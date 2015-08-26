@@ -42,7 +42,7 @@
 //Constantes
 const
 	cNumLanguages	= 2; 			//Numero de idiomas
-	cNumGameTexts   = 25;			//Numero de textos
+	cNumGameTexts   = 26;			//Numero de textos
 	
 	//Cuadros dialogo
 	dialogTextMarginX		= 30;			//Margen horizontal texto

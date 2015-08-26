@@ -949,6 +949,12 @@ begin
 					end;
 					default:
 						if (attractActive)
+							//encendemos pantalla
+							wgeFadeIn(FADE_SCREEN);
+						
+							//se despiertan los procesos
+							gameSignal(s_wakeup_tree);
+							
 							//reproducimos partida AttractMode
 							controlLoggerPlayer("partida.rec");
 							write_var(fntGame,(cHUDRegionW >> 1),cHUDRegionY+cHUDTimeY,ALIGN_CENTER,textMsg);
