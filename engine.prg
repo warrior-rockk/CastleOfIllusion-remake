@@ -1439,13 +1439,13 @@ begin
 	
 	//resolucion depende del modo de compilacion
 	#ifdef RELEASE
-		set_mode(cResX,cResY,8,MODE_WAITVSYNC);
+		set_mode(cResX,cResY,8);
 	#else
-		//set_mode(cResX,300,8);
-		set_mode(cResX,300,8,MODE_WAITVSYNC);//MODE_WAITVSYNC FIJA LOS FRAMES A 60
+		//set_mode(cResX,300,8,MODE_WAITVSYNC);//MODE_WAITVSYNC FIJA LOS FRAMES A 60
+		set_mode(cResX,300,8);
 	#endif
 	
-	//seteamos fps
+	//seteamos fps (rendimiento 02/09/15: 300fps)
 	set_fps(60,0);
 	//definimos la region del scroll
 	define_region(cGameRegion,cGameRegionX,cGameRegionY,cGameRegionW,cGameRegionH);
