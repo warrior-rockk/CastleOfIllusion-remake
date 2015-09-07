@@ -11,6 +11,15 @@
 //Proceso encargado de actualizar el estado de los controles
 process wgeUpdateControls()
 begin
+	//en el primer flanco de updateControls, llamamos 2 veces a las funciones de refresco
+	//para que actualicen la tabla de estado de ciclo anterior y actual
+	//actualizamos el estado de las teclas
+	keyStateUpdate();
+	keyStateUpdate();
+	//actualizamos el estado de los botones
+	joyStateUpdate();
+	joyStateUpdate();
+	
 	loop
 		//actualizamos el estado de las teclas
 		keyStateUpdate();

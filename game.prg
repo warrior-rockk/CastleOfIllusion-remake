@@ -71,10 +71,10 @@ begin
 	game.playerLife 	= 3;
 	game.playerMaxLife  = 3;
 	game.score      	= 0;
-	game.numLevel       = CANDYLAND_LEVEL; //TUTORIAL_LEVEL;
+	game.numLevel       = TUTORIAL_LEVEL;
 	
 	//estado inicial
-	firstRun ? game.state = LANG_SEL : game.state = LOADLEVEL; //INTRO;
+	firstRun ? game.state = LANG_SEL : game.state = INTRO;
 	
 	//Iniciamos modo grafico
 	wgeInitScreen();
