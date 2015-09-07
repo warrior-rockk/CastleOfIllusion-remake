@@ -55,20 +55,14 @@ begin
 		end;
 
 		//reiniciar nivel
-		if (wgeKey(_r,E_DOWN) && game.state == PLAYLEVEL)
-			//matamos al player
-			if (exists(idPlayer))
-				signal(idPlayer,s_kill);
-				idPlayer = 0;
-			end;
-			//congelamos los procesos
-			gameSignal(s_freeze_tree);
+		if (wgeKey(_r,E_DOWN))
 			//reiniciamos nivel
-			game.state = RESTARTLEVEL;
+			game.playerLife = 0;
+			game.playerTries++;
 		end;
 		
 		//saltar nivel
-		if (wgeKey(_n,E_DOWN) && game.state == PLAYLEVEL)
+		if (wgeKey(_n,E_DOWN))
 			game.actualLevelTime = 1;
 			game.endLevel = true;
 		end;

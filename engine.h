@@ -17,28 +17,6 @@
 #define tickClock(a)    ((clockCounter % a) == 0 && clockTick)	//Funcion que devuelve flanco de numero de frames especificados
 #define tick100ms       ((clockCounter % (cNumFPS/10)) == 0 && clockTick) //Flanco de 100ms
 
-//Estado del juego
-#define	SPLASH			0
-#define MENU			1
-#define LOADLEVEL   	2
-#define PLAYLEVEL   	3
-#define RESTARTLEVEL	5
-#define LEVELENDED  	6
-#define GAMEOVER        7
-#define CONTINUEGAME    8
-#define ATTRACTMODE     9
-#define TUTORIAL        10
-#define INTRO           11
-#define MENU_CONFIG     12
-#define MENU_CONTROLS   13
-#define MENU_KEYS       14
-#define MENU_BUTTONS    15
-#define LANG_SEL        16
-#define PRELUDE         17
-#define LEVEL_SELECT    18
-#define INITLEVEL		19
-#define RESTARTGAME     20
-
 //Codigo del tile
 //bits del 0 al 4 del mapa de tiles
 //				Tipo 0: No Solido
@@ -101,18 +79,6 @@
 #define NO_PHYSICS              2       //No le afecta las fisicas
 #define PERSISTENT              4       //No desaparece al salir de la region
 
-//efectos de sonido generales
-#define PAUSE_SND				0
-#define TIMESCORE_SND           1
-#define STOPSCORE_SND			2
-#define COUNTDOWN_SND           3
-#define MENU_SND                4
-
-//musicas generales
-#define DEAD_MUS				0
-#define END_LEVEL_MUS           1
-#define BOSS_MUS				3
-#define INTRO_MUS               4
 
 //parametros del checkInRegion
 #define CHECKREGION_ALL         0		//Comprueba en toda la region
@@ -129,20 +95,6 @@
 #define MODE_WINDOW				0
 #define	MODE_2XSCALE			1
 #define MODE_FULLSCREEN			2
-
-//identificadores de los niveles
-#define PRELUDE_LEVEL			1
-#define TUTORIAL_LEVEL			2
-#define LEVEL_SELECT_LEVEL		3
-#define TOYLAND_LEVEL			4
-#define TOYLAND_2_LEVEL			5
-#define WOODS_LEVEL             6
-#define CANDYLAND_LEVEL         7
-
-//Estado de los niveles
-#define LEVEL_UNCOMPLETED       0
-#define LEVEL_COMPLETED         1
-#define LEVEL_DOOR_CLOSED       2
 
 //Tipos de fade
 #define FADE_SCREEN             1
@@ -163,7 +115,6 @@ const
 	cTilePrior		 	=-1;
 	cScrollPrior 	 	=-2;
 	
-
 	//Profundidades
 	cZCursor    	 =-4; 		     		//Profundidad del cursor de Debug
 	cZMap2	    	 =-3;     				//Profundidad del mapeado encima del player
@@ -408,9 +359,6 @@ Global
 	float waterFriction     = 0.9;				//Friccion agua
 	float maxEntityVelY     = 4.0;				//Velocidad maxima Y global para todas las entidades
 	
-	//generales
-	int idButton;					//Identificador de proceso pulsando boton
-	int idKey;						//Identificar de proceso abriendo puerta
 	byte stopScrollXL;				//Flag de detencion scroll horizonal derecho
 	byte stopScrollXR;				//Flag de detencion scroll horizonal derecho
 	byte stopScrollY;				//Flag de detencion scroll vertical
@@ -420,6 +368,9 @@ Global
 	int mapTriangle45;
 	int mapStairs;
 	int mapSolidOnFall;
+	//generales
+	int idButton;					//Identificador de proceso pulsando boton
+	int idKey;						//Identificar de proceso abriendo puerta
 	int firstRun;					//flag de primer arranque
 End;
 

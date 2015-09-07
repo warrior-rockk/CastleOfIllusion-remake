@@ -1,6 +1,7 @@
 <NotepadPlus>
     <Project name="Warcom_Game_Engine">
         <File name="main.prg" />
+        <File name="game.prg" />
         <File name="player.prg" />
         <File name="engine.prg" />
         <File name="objects.prg" />
@@ -12,6 +13,7 @@
         <File name="platforms.prg" />
         <File name="sound.prg" />
         <File name="interface.prg" />
+        <File name="game.h" />
         <File name="engine.h" />
         <File name="player.h" />
         <File name="animation.h" />

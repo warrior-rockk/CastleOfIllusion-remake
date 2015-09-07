@@ -1,6 +1,6 @@
 // ========================================================================
-//  Warcom Game Engine
-//  Motor para juegos plataformas 2D
+//  Castle of Illusion Remake
+//  Remake del COI de Master System en Bennu
 //  21/07/14
 // ========================================================================
 
@@ -27,13 +27,14 @@ import "mod_joy";
 import "mod_wm";
 
 include "engine.h";      //archivo de definiciones,constantes y variables globales
+include "game.h";		 //archivo principal del juego
 
 //Proceso principal
 Process main()
 Begin
 		
-	//Iniciamos el engine
-	wgeInit();
+	//iniciamos el juego
+	gameInit();
 	
 	//Bucle principal
 	Loop
