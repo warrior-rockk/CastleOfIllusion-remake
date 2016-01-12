@@ -1,4 +1,6 @@
-BUGS:   -las musicas de nivel deberian cargarse en el load_files??
+BUGS:   -si activas el modo debug fuera de un playlevel, falla.
+		-el sonido del doorselect debe ser ciclico
+		-las musicas de nivel deberian cargarse en el load_files??
 		-tiles que se quedan en negro al reiniciar nivel!! (activadas funciones para debuggearlo)
 		-jarra se enganchó en la pared izquierda (al lanzarla o al caerse por tocar pompa?)
 		-que la doorbutton abra nada mas pulsar el boton

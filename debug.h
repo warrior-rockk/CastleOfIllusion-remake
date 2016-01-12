@@ -7,7 +7,7 @@
 // ========================================================================
 
 //Defines generales
-#define USE_DEBUG;										//Utilizando rutinas de debug
+//#define USE_DEBUG;										//Utilizando rutinas de debug
 
 //Niveles Debug
 #define DEBUG_ENGINE		0

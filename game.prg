@@ -76,6 +76,13 @@ begin
 	//estado inicial
 	firstRun ? game.state = LANG_SEL : game.state = INTRO;
 	
+	//iniciaciones en compilacion release
+	#ifdef RELEASE
+		//desactivamos niveles inacabados
+		game.levelStatus[WOODS_LEVEL] 		= LEVEL_DOOR_CLOSED;
+		game.levelStatus[CANDYLAND_LEVEL] 	= LEVEL_DOOR_CLOSED;
+	#endif
+	
 	//Iniciamos modo grafico
 	wgeInitScreen();
 	
@@ -86,7 +93,7 @@ end;
 //Bucle principal del juego
 process gameLoop()
 private
-	int i,j; 									//Variables auxiliares
+	int i,j; 								//Variables auxiliares
 	int counterTime;						//tiempo de paso
 	
 	int levelDoorX;							//Posicion X de la puerta de seleccion nivel
@@ -755,38 +762,123 @@ begin
 			case LEVEL_SELECT:			
 								
 				//comprobacion entrada puertas
-				if (wgeCheckControl(CTRL_UP,E_DOWN))  
-					//Puerta 1: Woods
-					if (colCheckAABB(idPlayer,79,108,30,40,INFOONLY) && game.levelStatus[WOODS_LEVEL] == LEVEL_UNCOMPLETED)
-						//iniciamos nivel
-						game.numLevel = WOODS_LEVEL;
-						//cambio de estado				
-						game.state = LOADLEVEL;
+				if (!game.paused)
+					if (wgeCheckControl(CTRL_UP,E_DOWN))  
+						//Puerta 1: Woods
+						if (colCheckAABB(idPlayer,79,108,30,40,INFOONLY) && game.levelStatus[WOODS_LEVEL] == LEVEL_UNCOMPLETED)
+							//iniciamos nivel
+							game.numLevel = WOODS_LEVEL;
+							//cambio de estado				
+							game.state = LOADLEVEL;
+						end;
+						//Puerta 2: Toyland
+						if (colCheckAABB(idPlayer,143,108,30,40,INFOONLY) && game.levelStatus[TOYLAND_LEVEL] == LEVEL_UNCOMPLETED)
+							//iniciamos nivel
+							game.numLevel = TOYLAND_LEVEL;
+							//cambio de estado				
+							game.state = LOADLEVEL;
+						end;
+						//Puerta 3
+						if (colCheckAABB(idPlayer,208,108,30,40,INFOONLY) && game.levelStatus[CANDYLAND_LEVEL] == LEVEL_UNCOMPLETED)
+							//iniciamos nivel
+							game.numLevel = CANDYLAND_LEVEL;
+							//cambio de estado				
+							game.state = LOADLEVEL;
+						end;
 					end;
-					//Puerta 2: Toyland
-					if (colCheckAABB(idPlayer,143,108,30,40,INFOONLY) && game.levelStatus[TOYLAND_LEVEL] == LEVEL_UNCOMPLETED)
-						//iniciamos nivel
-						game.numLevel = TOYLAND_LEVEL;
-						//cambio de estado				
-						game.state = LOADLEVEL;
-					end;
-					//Puerta 3
-					if (colCheckAABB(idPlayer,208,108,30,40,INFOONLY) && game.levelStatus[CANDYLAND_LEVEL] == LEVEL_UNCOMPLETED)
-						//iniciamos nivel
-						game.numLevel = CANDYLAND_LEVEL;
-						//cambio de estado				
-						game.state = LOADLEVEL;
+					
+					if (game.state <> LEVEL_SELECT)
+						//congelamos al personaje
+						signal(idPlayer,s_freeze);
+						//apagamos pantalla y sonido
+						wgeFadeOut(FADE_SCREEN | FADE_MUSIC);
+						//limpiamos el nivel
+						clearLevel();
+						
 					end;
 				end;
 				
-				if (game.state <> LEVEL_SELECT)
-					//congelamos al personaje
-					signal(idPlayer,s_freeze);
-					//apagamos pantalla y sonido
-					wgeFadeOut(FADE_SCREEN | FADE_MUSIC);
-					//limpiamos el nivel
-					clearLevel();
+				//Pausa
+				if ((wgeCheckControl(CTRL_START,E_DOWN) || !window_status ) && !game.paused )
+					game.paused = true;
+					//congelamos procesos
+					gameSignal(s_freeze_tree);
+					//quitamos el HUD
+					signal(TYPE HUD,s_kill);
+					frame;
+					//pausamos musica
+					pause_song();
+					//reproducimos sonido
+					wgePlayEntitySnd(id,gameSound[PAUSE_SND]);
 					
+					//iniciamos la opcion del menu
+					optionNum = 1;
+			
+					//componemos lista menu
+					optionString = gameTexts[config.lang][MENU_PAUSE_DOORS_TEXT];
+					//componemos un cuadro de dialogo
+					idDialog = wgeDialog(cResX>>1,cResY>>1,150,(text_height(fntGame,optionString)*1)+(dialogTextMarginY*2)+(dialogMenuPadding*1));
+					
+					//escribimos las opciones
+					wgeWriteDialogOptions(idDialog,optionString,optionNum);
+					
+					//texto pausa
+					pauseText = write(fntGame,cResX>>1,cResY-15,ALIGN_CENTER,gameTexts[config.lang][PAUSE_TEXT]);
+				end;
+				
+				//Menu Pausa
+				if (game.paused)
+					//bajar opcion
+					if (wgeCheckControl(CTRL_DOWN,E_DOWN) && optionNum<2)
+						optionNum++;
+						redrawMenu = true;
+					end;
+					//subir opcion
+					if (wgeCheckControl(CTRL_UP,E_DOWN) && optionNum>1)
+						optionNum--;
+						redrawMenu = true;
+					end;
+					//seleccionar opcion
+					if (wgeCheckControl(CTRL_START,E_DOWN))
+						switch (optionNum)
+							case 1: //Resume
+								optionNum = 0;
+								signal(idDialog,s_kill);
+								delete_text(all_text);
+								HUD();
+								gameSignal(s_wakeup_tree);
+								
+								game.paused = false;
+								resume_song();
+								//reproducimos sonido
+								wgePlayEntitySnd(id,gameSound[PAUSE_SND]);
+							end;
+							case 2: //Exit
+								optionNum = 0;
+								game.paused = false;
+								memBoss = false;
+								signal(idDialog,s_kill);
+								delete_text(all_text);
+								stop_song();
+								//apagamos pantalla
+								wgeFadeOut(FADE_SCREEN);
+								//limpiamos el nivel
+								clearLevel();
+								//continuamos juego
+								game.state = RESTARTGAME;
+							end;
+						end;
+					end;
+					
+					if (redrawMenu)
+						//escribimos las opciones
+						wgeWriteDialogOptions(idDialog,optionString,optionNum);
+						//texto pausa
+						pauseText = write(fntGame,cResX>>1,cResY-15,ALIGN_CENTER,gameTexts[config.lang][PAUSE_TEXT]);
+						//cada vez que se redibuja el menu, reproducimos sonido
+						wgePlayEntitySnd(id,gameSound[MENU_SND]);
+						redrawMenu = false;
+					end;					
 				end;
 			end;
 			case LOADLEVEL:		

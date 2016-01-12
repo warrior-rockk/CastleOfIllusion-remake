@@ -147,41 +147,45 @@ function log(string texto,int debugLevel)
 private
 	string header;		//cabecera del log
 begin
-	header = "[" + ftime("%d-%m-%Y %H:%M:%S:%C",time()) + "] ";
-		
-	switch (debugLevel)
-		case DEBUG_ENGINE:
-			if (traceEngine)
-				say (header + "WGE: " + texto);
-			end;
-		end;
-		case DEBUG_PLAYER:
-			if (tracePlayer)
-				say (header + "wgePlayer: " + texto);
-			end;
-		end;
-		case DEBUG_TILES:
-			if (traceTiles)
-				say (header + "wgeTiles: " + texto);
-			end;
-		end;
-		case DEBUG_MONSTERS:
-			if (traceMonsters)
-				say (header + "wgeMonsters: " + texto);
-			end;
-		end;
-		case DEBUG_OBJECTS:
-			if (traceOBJECTS)
-				say (header + "wgeObjects: " + texto);
-			end;
-		end;
-		case DEBUG_SOUND:
-			if (traceSOUND)
-				say (header + "wgeSound: " + texto);
-			end;
-		end;
-	end;
+	//si se define el uso de debug
+	#ifdef USE_DEBUG
 	
+		header = "[" + ftime("%d-%m-%Y %H:%M:%S:%C",time()) + "] ";
+			
+		switch (debugLevel)
+			case DEBUG_ENGINE:
+				if (traceEngine)
+					say (header + "wgeEngine: " + texto);
+				end;
+			end;
+			case DEBUG_PLAYER:
+				if (tracePlayer)
+					say (header + "wgePlayer: " + texto);
+				end;
+			end;
+			case DEBUG_TILES:
+				if (traceTiles)
+					say (header + "wgeTiles: " + texto);
+				end;
+			end;
+			case DEBUG_MONSTERS:
+				if (traceMonsters)
+					say (header + "wgeMonsters: " + texto);
+				end;
+			end;
+			case DEBUG_OBJECTS:
+				if (traceOBJECTS)
+					say (header + "wgeObjects: " + texto);
+				end;
+			end;
+			case DEBUG_SOUND:
+				if (traceSOUND)
+					say (header + "wgeSound: " + texto);
+				end;
+			end;
+		end;
+	
+	#endif
 end;
 
 process wgeDebugCursor()

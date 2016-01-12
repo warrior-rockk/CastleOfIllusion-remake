@@ -39,9 +39,11 @@ Begin
 	//Bucle principal
 	Loop
 		//salimos el juego
-		if(key(_esc)) 
-			wgeQuit();
-		End;
+		#ifndef RELEASE
+			if(key(_esc)) 
+				wgeQuit();
+			End;
+		#endif
 		
 		Frame;
 	End;
