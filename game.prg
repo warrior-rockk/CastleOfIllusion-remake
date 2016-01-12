@@ -760,7 +760,11 @@ begin
 				
 			end;
 			case LEVEL_SELECT:			
-								
+				//loop musica nivel
+				if (!is_playing_song())
+					wgeRepeatMusicLevel();
+				end;
+					
 				//comprobacion entrada puertas
 				if (!game.paused)
 					if (wgeCheckControl(CTRL_UP,E_DOWN))  
