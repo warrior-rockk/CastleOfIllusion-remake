@@ -41,7 +41,7 @@ Global
 	byte keyUse = 0;            						//Seleccion Flanco
     byte keyState[127][1];      						//Mapa estados en flanco anterior y actual
 	byte configuredKeys[7] = _UP,_DOWN,_LEFT,_RIGHT,
-							_X,_Z,_ENTER;	//configuracion de teclas
+							_Z,_X,_ENTER;	//configuracion de teclas
 	
 	//joystick
 	byte joyUse = 0;									//Seleccion Flanco
