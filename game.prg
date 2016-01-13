@@ -74,7 +74,7 @@ begin
 	game.numLevel       = TUTORIAL_LEVEL;
 	
 	//estado inicial
-	game.state = LOADING;
+	firstRun ? game.state = LANG_SEL : game.state = LOADING;
 	
 	//iniciaciones en compilacion release
 	#ifdef RELEASE
@@ -135,7 +135,7 @@ begin
 				//borramos texto
 				delete_text(all_text);
 				//cambiamos de estado
-				firstRun ? game.state = LANG_SEL : game.state = INTRO;
+				game.state = INTRO;
 			end;
 			case LANG_SEL:
 				//si es la primera ejecucion, elegimos idioma
@@ -147,7 +147,7 @@ begin
 				//componemos opciones menu
 				optionString = gameTexts[config.lang][LAN_SEL_TEXT];
 				//componemos un cuadro de dialogo
-				idDialog = wgeDialog(cResX>>1,cResY>>1,200,(text_height(fntGame,optionString)*2)+(dialogTextMarginY*2)+(dialogMenuPadding*2));
+				idDialog = wgeDialog(cResX>>1,cResY>>1,200,(text_height(fntGame,optionString)*1)+(dialogTextMarginY*2)+(dialogMenuPadding*1));
 				
 				//lo redibujamos inicialmente
 				redrawMenu	= true;
