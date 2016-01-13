@@ -38,7 +38,8 @@ ENGINE: -Limpiar las utilidades de creacion de niveles/pngfpg para que sea mas g
 		-efectos de paleta: relampagos,agua,etc..
 		-Tareas de inicializacion del engine:el mapa que esta en la posicion de mapStairs, se borra¿¿¿ ¿es por culpa de tener id 0 el 	sistema y el primer fpg?
 
-DEBUG:escribir el log a archivo??. Se puede hacer en una bat que diriga la salida del ejectuable a archivo >
+DEBUG:  -poder crear objetos y monstruos a parte de las rocas?
+		-escribir el log a archivo??. Se puede hacer en una bat que diriga la salida del ejectuable a archivo >
          -moverse por el mapeado con boton central raton y poder depositar al player
 		 
 

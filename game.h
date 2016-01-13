@@ -25,6 +25,7 @@
 #define LEVEL_SELECT    18
 #define INITLEVEL		19
 #define RESTARTGAME     20
+#define LOADING         21
 
 //efectos de sonido generales
 #define PAUSE_SND				0
@@ -52,6 +53,11 @@
 #define LEVEL_UNCOMPLETED       0
 #define LEVEL_COMPLETED         1
 #define LEVEL_DOOR_CLOSED       2
+
+//constantes
+const 
+	cLoadingDelay = 	5;		//Retardo carga para setear resolucion
+end;
 
 //Variables globales
 global

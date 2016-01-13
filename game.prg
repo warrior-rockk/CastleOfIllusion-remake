@@ -74,7 +74,7 @@ begin
 	game.numLevel       = TUTORIAL_LEVEL;
 	
 	//estado inicial
-	firstRun ? game.state = LANG_SEL : game.state = INTRO;
+	game.state = LOADING;
 	
 	//iniciaciones en compilacion release
 	#ifdef RELEASE
@@ -120,6 +120,23 @@ begin
 					
 		//estado del juego
 		switch (game.state)
+			case LOADING:
+				//retardo para que la resolucion se setee correctamente
+				write(fntGame,cResX>>1,cResY>>1,ALIGN_CENTER,gameTexts[config.lang][LOADING_TEXT]);
+				
+				//tiempo de seteo resolucion o pulsacion tecla
+				repeat
+					counterTime++;
+					frame;
+				until(wgeCheckControl(CTRL_ANY,E_DOWN) || (counterTime >= cNumFPS*cLoadingDelay));
+				
+				//apagamos pantalla
+				wgeFadeOut(FADE_SCREEN);
+				//borramos texto
+				delete_text(all_text);
+				//cambiamos de estado
+				firstRun ? game.state = LANG_SEL : game.state = INTRO;
+			end;
 			case LANG_SEL:
 				//si es la primera ejecucion, elegimos idioma
 				firstRun = false;
