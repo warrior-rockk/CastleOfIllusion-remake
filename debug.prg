@@ -228,16 +228,16 @@ begin
 			
 			if (posTileX < level.numTilesX && x >= 0 &&
 			    posTileY < level.numTilesY && y >= 0  )
-				log("TilePosX: "+posTileX+" TilePosY: "+posTileY + 
+				say("TilePosX: "+posTileX+" TilePosY: "+posTileY + 
 				    " TileGraph: "+tileMap[posTileY][posTileX].tileGraph + 
 					" TileShape: "+tileMap[posTileY][posTileX].tileShape +
 					" TileProf: " +tileMap[posTileY][posTileX].tileProf +
 					" TileAlpha: "+tileMap[posTileY][posTileX].tileAlpha +
 					" TileCode: " +tileMap[posTileY][posTileX].tileCode + 
-					" ProcessID: "+collision(type pTile),DEBUG_TILES);
+					" ProcessID: "+collision_box(type pTile));
 			else
-				log("TilePosX: "+posTileX+" TilePosY: "+posTileY + 
-				    " fuera del mapeado",DEBUG_TILES);
+				say("TilePosX: "+posTileX+" TilePosY: "+posTileY + 
+				    " fuera del mapeado");
 			end;
 			
 			wgeWait(20);
