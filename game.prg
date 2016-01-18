@@ -309,7 +309,8 @@ begin
 								//apagamos pantalla
 								wgeFadeOut(FADE_SCREEN);
 								//cambiamos de paso
-								game.state = LOADLEVEL;
+								game.numLevel 	= TUTORIAL_LEVEL;
+								game.state 		= LOADLEVEL;
 							end;
 							case 2: //Config
 								game.state = MENU_CONFIG;
