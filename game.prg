@@ -31,8 +31,8 @@ begin
 	levelFiles[TOYLAND_LEVEL].MusicFile 		= "mus\ToyLand.ogg";
 	levelFiles[TOYLAND_LEVEL].MusicIntroEnd 	= 1.87;
 	//Toyland Act 2
-	levelFiles[TOYLAND_2_LEVEL].MapFile 		= "levels\ToyLand2\ToyLand2.bin";
-	levelFiles[TOYLAND_2_LEVEL].DataFile 		= "levels\ToyLand2\ToyLand2.dat";
+	levelFiles[TOYLAND_2_LEVEL].MapFile 		= "levels\ToyLand2\ToyLand2_2.bin";
+	levelFiles[TOYLAND_2_LEVEL].DataFile 		= "levels\ToyLand2\ToyLand2_2.dat";
 	levelFiles[TOYLAND_2_LEVEL].TileFile 		= "levels\ToyLand2\tiles.fpg";
 	levelFiles[TOYLAND_2_LEVEL].MusicFile 		= "mus\ToyLand.ogg";
 	levelFiles[TOYLAND_2_LEVEL].MusicIntroEnd 	= 1.87;
@@ -71,10 +71,10 @@ begin
 	game.playerLife 	= 3;
 	game.playerMaxLife  = 3;
 	game.score      	= 0;
-	game.numLevel       = TUTORIAL_LEVEL;
+	game.numLevel       = TOYLAND_2_LEVEL;
 	
 	//estado inicial
-	firstRun ? game.state = LANG_SEL : game.state = LOADING;
+	firstRun ? game.state = LANG_SEL : game.state = LOADLEVEL;
 	
 	//iniciaciones en compilacion release
 	#ifdef RELEASE

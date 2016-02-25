@@ -1,4 +1,5 @@
-BUGS:   -las musicas de nivel deberian cargarse en el load_files??
+BUGS:   -no deberia comprobar la posicion del scroll cada frame del wgeScroll. Solo cuando muera por ejemplo
+		-las musicas de nivel deberian cargarse en el load_files??
 		-tiles que se quedan en negro al reiniciar nivel!! (activadas funciones para debuggearlo)
 		-jarra se enganchó en la pared izquierda (al lanzarla o al caerse por tocar pompa?)
 		-que la doorbutton abra nada mas pulsar el boton

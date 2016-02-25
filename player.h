@@ -66,7 +66,7 @@ Const
 	cPlayerWaterVelMaxY     = 1;			//Velocidad Maxima Y Player en agua
 	cPlayerVelYStairs       = 1;			//Velocidad movimiento en escalera
 	cPlayerAtackBounce      = 2.3;//4;      //Rebote al romper objet/atacar
-	cPlayerPowerAtackBounce = 1.02;//1.4;   //Extra de rebote al romper/atacar
+	cPlayerPowerAtackBounce = 1.3;//1.4;   //Extra de rebote al romper/atacar
 	cPlayerPowerJumpFactor  = 0.25;			//Factor de incremento poder salto
 	cPlayerWaterJumpFactor  = 0.15;			//Factor de incremento salto en agua
 	cPlayerMaxPowerJump     = 16;           //Maximo incremento poder salto
