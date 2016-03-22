@@ -92,9 +92,9 @@
 #define STATUS_FROZEN			4	// The specified process is frozen.
 
 //modos de video
-#define MODE_WINDOW				0
-#define	MODE_2XSCALE			1
-#define MODE_FULLSCREEN			2
+#define CONFIG_MODE_WINDOW			0
+#define	CONFIG_MODE_2XSCALE			1
+#define CONFIG_MODE_FULLSCREEN		2
 
 //Tipos de fade
 #define FADE_SCREEN             1

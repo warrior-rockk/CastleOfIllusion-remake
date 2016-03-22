@@ -95,14 +95,14 @@ begin
 	
 	//INT get_desktop_size ( <INT POINTER width>, <INT POINTER height> )
 	switch (config.videoMode)
-		case MODE_WINDOW:
+		case CONFIG_MODE_WINDOW:
 			full_screen = false;
 			scale_mode=SCALE_NONE;
 		end;
-		case MODE_2XSCALE:
+		case CONFIG_MODE_2XSCALE:
 			scale_mode=SCALE_NORMAL2X;
 		end;
-		case MODE_FULLSCREEN:
+		case CONFIG_MODE_FULLSCREEN:
 			scale_mode=SCALE_NORMAL2X;
 			full_screen = true;
 		end;
