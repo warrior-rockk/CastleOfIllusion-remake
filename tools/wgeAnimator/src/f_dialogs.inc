@@ -37,14 +37,14 @@ Funcion de usuario:
 *******************************************************************
 */
 
-PROCESS MessageBox(STRING title, STRING msg, INT style)
+PROCESS MessageBox(int posX,int posY,STRING title, STRING msg, INT style)
 PRIVATE
 	INT id_window;
 	INT id_btnYes, id_btnNo;
 	INT id_label;
 BEGIN
 	signal(father, s_freeze);
-	id_window = window(320, 240, title, BDR_STATIC);
+	id_window = window(posX, posY, title, BDR_STATIC);
 	id_label  = label(id_window, 10, 30, msg);
 	set_active_win(id_window);
 	

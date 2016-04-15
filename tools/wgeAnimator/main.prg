@@ -291,8 +291,6 @@ begin
 	end;
 	
 	//cerramos el archivo
-	fclose(animFile);	
-	
-	MessageBox("Guardar animaciones", "Animaciones guardadas con éxito",MB_INFO);
+	fclose(animFile);		
 	
 end;
