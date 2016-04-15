@@ -111,7 +111,7 @@ Begin
 		
 		//avance animaciones
 		if (key(_PGDN))
-			if (actualAnim < 5)
+			if (actualAnim < numAnims-1)
 				actualAnim++;
 				editValue[0].caption  = animationData[actualAnim].startFrame; 	
 				editValue[1].caption  = animationData[actualAnim].endFrame;
@@ -231,30 +231,43 @@ private
 begin
 	//abrimos el archivo de animaciones
 	animFile = fopen("../../playerAnims.h",O_READ);
+	//contamos las lineas
+	while (!feof(animFile))
+		if (fgets(animFile) <> "")
+			numAnims++;
+		end;
+	end;
+	//volvemos al principio del archivo
+	frewind(animFile);
+	//iniciamos el array dinamico
+	animationData = calloc(numAnims,sizeof(_animationData));
 	
 	//recorremos las lineas del archivo y las tratamos
 	while (!feof(animFile))
 		fileLine = fgets(animFile);		
 		
-		// separamos por comas
-		stringPieces = split(",",fileLine,&auxString,10);
-		//quitamos el define
-		auxString[0] = regex_replace("#define ","",auxString[0]);
-		//quitamos tabulados del nombre
-		stringPieces = split(chr(9),auxString[0],&auxString2,10);
-		
-		//seteamos los datos
-		animationData[numLine].name		 	= auxString2[0];
-		animationData[numLine].startFrame 	= auxString2[stringPieces-1];
-		animationData[numLine].endFrame 	= auxString[1];
-		animationData[numLine].animSpeed 	= auxString[2];
-		animationData[numLine].animMode 	= auxString[3];
-		
-		numLine++;
+		if (fileLine <> "")
+			// separamos por comas
+			stringPieces = split(",",fileLine,&auxString,10);
+			//quitamos el define
+			auxString[0] = regex_replace("#define ","",auxString[0]);
+			//quitamos tabulados del nombre
+			stringPieces = split(chr(9),auxString[0],&auxString2,10);
+			
+			//seteamos los datos
+			animationData[numLine].name		 	= auxString2[0];
+			animationData[numLine].startFrame 	= auxString2[stringPieces-1];
+			animationData[numLine].endFrame 	= auxString[1];
+			animationData[numLine].animSpeed 	= auxString[2];
+			animationData[numLine].animMode 	= auxString[3];
+			
+			numLine++;
+		end;
 	end;
 	
 	//cerramos el archivo
 	fclose(animFile);	
+	
 end;
 
 //funcion para salvar una tabla de animacion
@@ -269,7 +282,7 @@ begin
 	animFile = fopen("../../playerAnims.h",O_WRITE);
 	
 	//recorremos las animaciones
-	for (i=0;i<6;i++)
+	for (i=0;i<numAnims;i++)
 		//componemos la linea de animacion
 		fileLine = "#define "+animationData[i].name;
 		//añadimos tabuladores para alinear

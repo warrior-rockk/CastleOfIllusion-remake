@@ -79,6 +79,15 @@ Type _TileAnimation
 	
 end;
 
+//datos animacion
+Type _animationData
+		string name    = "_NEW_ANIMATION";
+		int startFrame = 1;
+		int endFrame   = 2;
+		int animSpeed  = 10;
+		int animMode   = 0;
+end;
+
 //globales
 Global
 	byte clockTick;				//Flanco Tiempo
@@ -91,14 +100,9 @@ Global
 	//gui
 	int frVentana;
 	int editValue[5];
-	//datos animacion
-	struct animationData[6]
-		string name    = "_NEW_ANIMATION";
-		int startFrame = 1;
-		int endFrame   = 2;
-		int animSpeed  = 10;
-		int animMode   = 0;
-	end;
+	//array dinamico datos animacion
+	_animationData* animationData;	
+	int numAnims = 0;
 	int actualAnim = 0;
 end;
 
