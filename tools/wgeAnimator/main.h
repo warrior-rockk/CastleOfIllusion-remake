@@ -90,14 +90,16 @@ Global
 	
 	//gui
 	int frVentana;
-	int editValue[4];
+	int editValue[5];
 	//datos animacion
-	struct animationData
+	struct animationData[6]
+		string name    = "_NEW_ANIMATION";
 		int startFrame = 1;
 		int endFrame   = 2;
 		int animSpeed  = 10;
 		int animMode   = 0;
 	end;
+	int actualAnim = 0;
 end;
 
 //Declaracion de proceso entidad. 
