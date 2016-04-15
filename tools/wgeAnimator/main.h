@@ -15,8 +15,8 @@ Const
 	cResY 			= 240;
 	cFps 			= 60;
 	cClockTimer 	= 0;					//numero de timer para el reloj
-	//cTimeInterval   = 1; 					//Intervalo reloj: cTimeInterval*16ms
-    cTimeInterval   = 1.66;					//Intervalo reloj: (1/fps)*100 (100 = 1 seg)
+	cTimeInterval   = 1; 					//Intervalo reloj: cTimeInterval*16ms
+    //cTimeInterval   = 1.66;				//Modo nuevo: Intervalo reloj: (1/fps)*100 (100 = 1 seg)
 	
 	cGameRegion 	= 1;    				//Numero Region Pantalla Juego
 	
@@ -91,12 +91,13 @@ Global
 	//gui
 	int frVentana;
 	int editValue[4];
-	//datos
-	int startFrame = 1;
-	int endFrame   = 2;
-	int animSpeed  = 10;
-	int animMode   = 0;
-	
+	//datos animacion
+	struct animationData
+		int startFrame = 1;
+		int endFrame   = 2;
+		int animSpeed  = 10;
+		int animMode   = 0;
+	end;
 end;
 
 //Declaracion de proceso entidad. 

@@ -52,7 +52,7 @@ Begin
 	fuit_init("src/default.fpg", "src/cursors.fpg");
 	
 	//Arrancamos el reloj general
-	//wgeClock();
+	wgeClock();
 	
 	animationDraw();
 	
@@ -62,10 +62,10 @@ Begin
 	//Bucle principal
 	repeat
 		//recojemos los datos del gui
-		startFrame 	= editValue[0].caption;
-		endFrame 	= editValue[1].caption;
-		animSpeed 	= editValue[2].caption;
-		animMode 	= editValue[3].caption;
+		animationData.startFrame 	= editValue[0].caption;
+		animationData.endFrame 		= editValue[1].caption;
+		animationData.nimSpeed 		= editValue[2].caption;
+		animationData.animMode 		= editValue[3].caption;
 		
 		//cambio color fondo
 		if (key(_f))
@@ -117,9 +117,9 @@ begin
 	loop
 		//contador de reloj por frames.A 60 fps = 16ms 
 		clockCounter++;
-		clockTick = true;
+		
 		//Flanco de reloj segun intervalo escogido
-		/*if (clockCounter % cTimeInterval == 0) 
+		if (clockCounter % cTimeInterval == 0) 
 			if (!clockTickMem)
 				clockTick = true;
 				clockTickMem = true;
@@ -127,7 +127,7 @@ begin
 		else
 			clockTick = false;
 			clockTickMem = false;
-		end;*/
+		end;
 		
 		frame;
 	end;
@@ -139,7 +139,8 @@ begin
 	x = cAnimationX;
 	y = cAnimationY;
 	loop
-		wgeAnimate2(startFrame,endFrame,animSpeed,animMode);
+		wgeAnimate(startFrame,endFrame,animSpeed,animMode);
+		//wgeAnimate2(startFrame,endFrame,animSpeed,animMode);
 		frame;
 	end;
 end;
