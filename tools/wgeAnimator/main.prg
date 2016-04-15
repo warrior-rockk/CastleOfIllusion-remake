@@ -150,6 +150,7 @@ Begin
 		Frame;
 	until(cant_win()==0);
 	
+	free(animationData);
 	exit("",0);
 	
 End; //Fin del main
