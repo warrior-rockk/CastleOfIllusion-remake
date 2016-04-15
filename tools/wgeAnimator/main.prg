@@ -84,7 +84,7 @@ Begin
 		end;
 		
 		//cambio escala
-		if (key(_s))
+		if (key(_s) && !key(_CONTROL))
 			scaleMode = scaleMode == 2 ? 0 : scaleMode+1;
 			switch (scaleMode)
 				case 0:
@@ -141,7 +141,7 @@ Begin
 		
 		//salvar las animaciones
 		if (key(_CONTROL) && key(_s))
-			saveAnimations();
+			saveAnimFile();
 			repeat	
 				frame;
 			until(not key(_s));
@@ -262,27 +262,37 @@ function saveAnimFile()
 private
 	int animFile;
 	string fileLine;
-	string auxString[9];
-	string auxString2[9];
-	int stringPieces;
-	int numLine = 0;
+	int i,j;
+	int numTabs;
 begin
 	//abrimos el archivo de animaciones
 	animFile = fopen("../../playerAnims.h",O_WRITE);
 	
 	//recorremos las animaciones
-	for (int i=0;i<6;i++)
+	for (i=0;i<6;i++)
 		//componemos la linea de animacion
-		fileLine = "#define "+animationData[i].name+chr(9)+chr(9)+chr(9)+chr(9)+chr(9);
+		fileLine = "#define "+animationData[i].name;
+		//añadimos tabuladores para alinear
+		numTabs = 11 - (len(animationData[i].name) / 4);
+		for (j=0;j<numTabs;j++)
+			fileLine = fileLine + chr(9);
+		end;
 		fileLine = fileLine + animationData[i].startFrame + ",";
 		fileLine = fileLine + animationData[i].endFrame + ",";
 		fileLine = fileLine + animationData[i].animSpeed + ",";
-		fileLine = fileLine + animationData[i].animMode + ",";
+		if (animationData[i].animMode == ANIM_LOOP)
+			fileLine = fileLine + "ANIM_LOOP";
+		end;
+		if (animationData[i].animMode == ANIM_ONCE)
+			fileLine = fileLine + "ANIM_ONCE";
+		end;
 		//la escribimos
 		fputs(animFile,fileLine);
 	end;
 	
 	//cerramos el archivo
 	fclose(animFile);	
+	
+	MessageBox("Guardar animaciones", "Animaciones guardadas con éxito",MB_INFO);
 	
 end;
