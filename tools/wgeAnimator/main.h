@@ -11,7 +11,7 @@
 
 //constantes
 Const
-	cResX 			= 320;
+	cResX 			= 426;
 	cResY 			= 240;
 	cFps 			= 60;
 	cClockTimer 	= 0;					//numero de timer para el reloj
@@ -36,7 +36,7 @@ Const
 	cAnimationY	    = cResY >> 2;
 	
 	//gui
-	cWindowWidth	= 300;
+	cWindowWidth	= 400;
 	cWindowHeight   = 100;
 	cWindowX		= 10;
 	cWindowY        = cResY >> 1;

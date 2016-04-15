@@ -99,7 +99,7 @@ Begin
 				end;
 				case 2:
 					scale_mode = SCALE_NONE;
-					scale_resolution = 10240768;
+					scale_resolution = 13650768;
 					set_mode(cResX,cResY);
 				end;
 			end;
@@ -216,7 +216,7 @@ begin
 	
 	label(frVentana,cWindowMarginX,cWindowMarginY*3,"Nombre:");
 	editValue[4] = input_box(frVentana,cMarginX*2,cWindowMarginY*3,animationData[actualAnim].name);
-	editValue[4].ancho = 200;
+	editValue[4].ancho = 320;
 end;
 
 //funcion para cargar una tabla de animacion
