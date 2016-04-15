@@ -270,29 +270,19 @@ begin
 	//abrimos el archivo de animaciones
 	animFile = fopen("../../playerAnims.h",O_WRITE);
 	
-	//recorremos las lineas del archivo y las tratamos
-	while (!feof(animFile))
-		fileLine = fgets(animFile);		
-		
-		// separamos por comas
-		stringPieces = split(",",fileLine,&auxString,10);
-		//quitamos el define
-		auxString[0] = regex_replace("#define ","",auxString[0]);
-		//quitamos tabulados del nombre
-		stringPieces = split(chr(9),auxString[0],&auxString2,10);
-		
-		//seteamos los datos
-		animationData[numLine].name		 	= auxString2[0];
-		animationData[numLine].startFrame 	= auxString2[stringPieces-1];
-		animationData[numLine].endFrame 	= auxString[1];
-		animationData[numLine].animSpeed 	= auxString[2];
-		animationData[numLine].animMode 	= auxString[3];
-		
-		numLine++;
+	//recorremos las animaciones
+	for (int i=0;i<6;i++)
+		//componemos la linea de animacion
+		fileLine = "#define "+animationData[i].name+chr(9)+chr(9)+chr(9)+chr(9)+chr(9);
+		fileLine = fileLine + animationData[i].startFrame + ",";
+		fileLine = fileLine + animationData[i].endFrame + ",";
+		fileLine = fileLine + animationData[i].animSpeed + ",";
+		fileLine = fileLine + animationData[i].animMode + ",";
+		//la escribimos
+		fputs(animFile,fileLine);
 	end;
 	
 	//cerramos el archivo
-	fclose(animFile);
-		
+	fclose(animFile);	
 	
 end;
