@@ -6,6 +6,9 @@
 //  Definiciones del player
 // ========================================================================
 
+//incluimos las tabla de animaciones
+include "playerAnims.h"
+
 //estados del player
 #define IDLE_STATE				0
 #define MOVE_STATE          	1

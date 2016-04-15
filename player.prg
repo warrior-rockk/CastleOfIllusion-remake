@@ -805,7 +805,7 @@ BEGIN
 						wgeAnimate(80,81,10,ANIM_LOOP);
 						SetBit(flags,B_HMIRROR);
 					else
-						wgeAnimate(1,2,40,ANIM_LOOP);
+						wgeAnimate(_ANIM_PLY_IDLE);
 					end;
 				end;
 			end;

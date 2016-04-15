@@ -1,34 +1,38 @@
 <NotepadPlus>
     <Project name="Warcom_Game_Engine">
         <Folder name="code (.prg)">
-			<File name="main.prg" />
-			<File name="game.prg" />
-			<File name="player.prg" />
-			<File name="engine.prg" />
-			<File name="objects.prg" />
-			<File name="animation.prg" />
-			<File name="collisions.prg" />
-			<File name="debug.prg" />
-			<File name="monsters.prg" />
-			<File name="controls.prg" />
-			<File name="platforms.prg" />
-			<File name="sound.prg" />
-			<File name="interface.prg" />
-        </folder>
-		<Folder name="definitions (.h)">
-			<File name="game.h" />
-			<File name="engine.h" />
-			<File name="player.h" />
-			<File name="animation.h" />
-			<File name="collisions.h" />
-			<File name="monsters.h" />
-			<File name="debug.h" />
-			<File name="controls.h" />
-			<File name="platforms.h" />
-			<File name="sound.h" />
-			<File name="objects.h" />
-			<File name="interface.h" />
-        </folder>
-		<File name="TODO.txt" />
+            <File name="main.prg" />
+            <File name="game.prg" />
+            <File name="player.prg" />
+            <File name="engine.prg" />
+            <File name="objects.prg" />
+            <File name="animation.prg" />
+            <File name="collisions.prg" />
+            <File name="debug.prg" />
+            <File name="monsters.prg" />
+            <File name="controls.prg" />
+            <File name="platforms.prg" />
+            <File name="sound.prg" />
+            <File name="interface.prg" />
+        </Folder>
+        <Folder name="definitions (.h)">
+            <File name="game.h" />
+            <File name="engine.h" />
+            <File name="player.h" />
+            <File name="animation.h" />
+            <File name="collisions.h" />
+            <File name="monsters.h" />
+            <File name="debug.h" />
+            <File name="controls.h" />
+            <File name="platforms.h" />
+            <File name="sound.h" />
+            <File name="objects.h" />
+            <File name="interface.h" />
+        </Folder>
+        <File name="TODO.txt" />
+        <Folder name="tools">
+            <File name="tools\wgeAnimator\main.h" />
+            <File name="tools\wgeAnimator\main.prg" />
+        </Folder>
     </Project>
 </NotepadPlus>
