@@ -128,3 +128,58 @@ while(tileAnimations.numAnimations > 0 )
 	frame;
 end;
 end;
+
+//Pruebas para cambiar funcion de animacion general
+function int wgeAnimate2(int startFrame, int endFrame, int animationSpeed,int mode)
+private
+byte animFinished;	//flag de animacion terminada
+entity idFather;	//entidad del proceso padre
+begin
+	animFinished = false;
+	idFather = father.id;
+	
+	//escalamos la velocidad pasada al intervalo de fps
+	animationSpeed = animationSpeed/cTimeInterval;
+	
+	//no puede tener velocidad 0
+	if (animationSpeed == 0) animationSpeed = 1; end;
+	
+	//si el proceso cambia de estado, se reseta cuenta
+	if ( idFather.this.prevState <> idFather.this.state )
+		idFather.this.frameCount = 0;
+	end;
+	
+	//si el proceso no tiene grafico aun, se le asigna el startFrame
+	if (idFather.graph == 0)
+		idFather.graph = startFrame;
+	end;
+	
+	//evitamos el primer frame
+	if (idfather.this.frameCount <> 0)
+	    //si toca animar en el frame correspondiente
+		if ( (idfather.this.frameCount % animationSpeed ) == 0)	
+			//incrementamos frame si estamos en el rango
+			if (idfather.graph < endFrame && idfather.graph >= startFrame)
+				idfather.graph++;
+			else 
+				//si hemos llegado al final, pasamos al inicio
+				if (mode == ANIM_LOOP)
+					idfather.graph = startFrame; 
+				end;
+				animFinished =  true;
+			end;
+		else
+		//si no nos toca animar, reseteamos a inicio en caso de que estemos fuera de rango
+			if (idfather.graph > endFrame || idfather.graph < startFrame)
+				idfather.graph = startFrame; 
+			end;
+		end;
+	end;
+	
+	//incrementamos contador local 
+	idfather.this.frameCount++;
+	
+	//devolvemos finalizado
+	return animFinished;
+
+end;
