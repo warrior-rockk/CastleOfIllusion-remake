@@ -241,12 +241,28 @@ end;
 
 //proceso principal animacion
 process animationDraw()
+private
+	byte finish;
+	int delayOnce;
 begin
 	file = fpgFile;
 	x = cAnimationX;
 	y = cAnimationY;
 	loop
-		wgeAnimate(animationData[actualAnim].startFrame,animationData[actualAnim].endFrame,animationData[actualAnim].animSpeed,animationData[actualAnim].animMode);
+		finish = wgeAnimate(animationData[actualAnim].startFrame,animationData[actualAnim].endFrame,animationData[actualAnim].animSpeed,animationData[actualAnim].animMode);
+		//si la animacion es ONCE, esperamos un retardo para volverla a reproducir
+		if (animationData[actualAnim].animMode == ANIM_ONCE)
+			if (finish)
+				delayOnce++;
+			end;
+			if (delayOnce > 10)
+				graph = 0;
+				delayOnce = 0;
+			end;
+		else
+			delayOnce = 0;
+		end;
+		
 		//wgeAnimate2(startFrame,endFrame,animSpeed,animMode);
 		frame;
 	end;
@@ -280,7 +296,7 @@ begin
 	button[_BT_DEL] = button(frVentana,cMarginX*11,cMarginY*2,"Delete");
 	button[_BT_DEL].ancho = 50;
 	
-	label[0] = label(frVentana,cWindowWidth-cMarginX,cWindowMarginY,actualAnim+"/"+(numAnims-1));
+	label[0] = label(frVentana,cWindowWidth-cMarginX*2,cWindowMarginY,actualAnim+"/"+(numAnims-1));
 	
 	label(frVentana,cWindowMarginX,cWindowMarginY*3,"Nombre:");
 	editValue[4] = input_box(frVentana,cMarginX*2,cWindowMarginY*3,animationData[actualAnim].name);
@@ -340,8 +356,8 @@ begin
 			animationData[numLine].startFrame 	= auxString2[stringPieces-1];
 			animationData[numLine].endFrame 	= auxString[1];
 			animationData[numLine].animSpeed 	= auxString[2];
-			animationData[numLine].animMode 	= auxString[3];
-			
+			animationData[numLine].animMode     = auxString[3] == "ANIM_ONCE" ? ANIM_ONCE : ANIM_LOOP;
+						
 			numLine++;
 		end;
 	end;
@@ -400,18 +416,21 @@ private
 	int gridCol 	= 12;
 	int lastGraph	= 1;
 begin
+	//paramos proceso principal
 	signal(father,s_sleep);
 	signal(TYPE window,s_sleep_tree);
 	
+	//creamos mapa tamaño pantalla
 	set_text_color(100);
 	idMap = map_new(cResX,cResY,8,0);
 	map_clear(0,idMap,0);
 	
+	//dibujamos la primera rejilla
 	for (i=lastGraph;i<gridRow*gridCol;i++)
 		map_block_copy(fpgFile,idMap,(((i-1)%gridCol)*gridX),((i/gridCol)*gridY),i,0,0,gridX,gridY,0);	
 		write(0,(((i-1)%gridCol)*gridX),((i/gridCol)*gridY),0,0,i);
 	end;
-	
+	//mostramos el mapa
 	lastGraph = gridRow*gridCol;
 	screen_put(0,idMap);
 	
