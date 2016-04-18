@@ -100,7 +100,7 @@ Global
 		byte 			numAnimations;			//Numero de animaciones
 		_tileAnimation* tileAnimTable; 			//Array dinamico de animaciones de tile
 	end;
-	
+	fpgFile;						//archivo fpg que se usara
 	//gui
 	int frVentana;
 	int editValue[5];

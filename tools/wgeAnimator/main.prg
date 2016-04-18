@@ -53,6 +53,9 @@ Begin
 	
 	//iniciamos libreria gui
 	fuit_init("src/default.fpg", "src/cursors.fpg");
+		
+	//cargamos el archivo que se usará
+	fpgFile = load_fpg("../../gfx/player.fpg");
 	
 	//Arrancamos el reloj general
 	wgeClock();
@@ -193,6 +196,17 @@ Begin
 			refreshGui();
 		end;
 		
+		//lista graficos
+		if (key(_l) && active_control==0)
+			//eliminamos animacion
+			signal(TYPE animationDraw,s_kill);
+			//dibujamos lista de graficos
+			drawGraphicList();
+			repeat	
+				frame;
+			until(not key(_l));
+		end;
+		
 		Frame;
 	until(cant_win()==0 || key(_esc));
 	
@@ -228,7 +242,7 @@ end;
 //proceso principal animacion
 process animationDraw()
 begin
-	file = load_fpg("../../gfx/player.fpg");
+	file = fpgFile;
 	x = cAnimationX;
 	y = cAnimationY;
 	loop
@@ -373,4 +387,83 @@ begin
 	//cerramos el archivo
 	fclose(animFile);		
 	
+end;
+
+//proceso que muestra los graficos del archivo fpg
+process drawGraphicList()
+private
+	int i;
+	int idMap;
+	int gridX 		= 40;
+	int gridY 		= 40;
+	int gridRow		= 6;
+	int gridCol 	= 12;
+	int lastGraph	= 1;
+begin
+	signal(father,s_sleep);
+	signal(TYPE window,s_sleep_tree);
+	
+	set_text_color(100);
+	idMap = map_new(cResX,cResY,8,0);
+	map_clear(0,idMap,0);
+	
+	for (i=lastGraph;i<gridRow*gridCol;i++)
+		map_block_copy(fpgFile,idMap,(((i-1)%gridCol)*gridX),((i/gridCol)*gridY),i,0,0,gridX,gridY,0);	
+		write(0,(((i-1)%gridCol)*gridX),((i/gridCol)*gridY),0,0,i);
+	end;
+	
+	lastGraph = gridRow*gridCol;
+	screen_put(0,idMap);
+	
+	repeat
+		//avance graficos
+		if (key(_PGDN))
+			if (lastGraph < 1000)
+				map_clear(0,idMap,0);
+				delete_text(all_text);
+				for (i=lastGraph;i<(lastGraph+(gridRow*gridCol));i++)
+					map_block_copy(fpgFile,idMap,(((i-lastGraph)%gridCol)*gridX),(((i-lastGraph)/gridCol)*gridY),i,0,0,gridX,gridY,0);	
+					write(0,(((i-lastGraph)%gridCol)*gridX),(((i-lastGraph)/gridCol)*gridY),0,0,i);
+				end;
+				lastGraph = lastGraph + (gridRow*gridCol);
+				screen_put(0,idMap);
+			end;
+			repeat	
+				frame;
+			until(not key(_PGDN));
+		end;
+		
+		//retroceso graficos
+		if (key(_PGUP))
+			lastGraph -= 2*(gridRow*gridCol);
+			if (lastGraph < 1)
+				lastGraph = 1;
+			end;		
+			map_clear(0,idMap,0);
+			delete_text(all_text);
+			for (i=lastGraph;i<(lastGraph+(gridRow*gridCol));i++)
+				map_block_copy(fpgFile,idMap,(((i-lastGraph)%gridCol)*gridX),(((i-lastGraph)/gridCol)*gridY),i,0,0,gridX,gridY,0);	
+				write(0,(((i-lastGraph)%gridCol)*gridX),(((i-lastGraph)/gridCol)*gridY),0,0,i);
+			end;
+			
+			screen_put(0,idMap);
+			lastGraph = lastGraph + (gridRow*gridCol);
+			repeat	
+				frame;
+			until(not key(_PGUP));
+		end;
+		
+		frame;
+	until(key(_esc));
+	
+	repeat
+		frame;
+	until(!key(_esc));
+	
+	clear_screen();
+	delete_text(all_text);
+	
+	signal(father,s_wakeup);
+	signal(TYPE window,s_wakeup_tree);
+	animationDraw();
 end;
