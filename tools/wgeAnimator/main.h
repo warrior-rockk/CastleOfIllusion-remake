@@ -100,6 +100,7 @@ Global
 	//gui
 	int frVentana;
 	int editValue[5];
+	int label[1];
 	//array dinamico datos animacion
 	_animationData* animationData;	
 	int numAnims = 0;

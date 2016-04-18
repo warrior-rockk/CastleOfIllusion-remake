@@ -1,8 +1,6 @@
 -pasar los defines a formato _NOMBRE (guion bajo y mayusculas)
 -Olvidarse del clocktick y usar bien el ctimerinterval para que 100 sea 1seg y crear varias marcas de flanco de tiempos determinados para tener tiempos fijos.
 -pasar los parametros de las animaciones a defines de cada parametro para tenerlas organizadas en el archivo .h
--crear una utilidad de animacion que abra el archivo del player (o el que sea) y puedas ponerle los parametros de la animacion y verla en directo con posiblidad de, cuando estas satisfecho, exportarlo para incluirlo en el player.h o a lo mejor crear nuevo archivo rollo player_anims.h...
-
 
 BUGS:   -no deberia comprobar la posicion del scroll cada frame del wgeScroll. Solo cuando muera por ejemplo
 		-las musicas de nivel deberian cargarse en el load_files??

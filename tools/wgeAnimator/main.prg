@@ -147,6 +147,9 @@ Begin
 			until(not key(_s));
 		end;
 		
+		//actualizamos gui
+		refreshGui();
+					
 		Frame;
 	until(cant_win()==0);
 	
@@ -215,9 +218,18 @@ begin
 	editValue[3] = input_box(frVentana,cMarginX*7,cMarginY*2,animationData[actualAnim].animMode);
 	editValue[3].ancho = 30;
 	
+	label[0] = label(frVentana,cWindowWidth-cMarginX,cWindowMarginY,actualAnim+"/"+(numAnims-1));
+	
 	label(frVentana,cWindowMarginX,cWindowMarginY*3,"Nombre:");
 	editValue[4] = input_box(frVentana,cMarginX*2,cWindowMarginY*3,animationData[actualAnim].name);
 	editValue[4].ancho = 320;
+end;
+
+//funcion que actualiza el gui
+function refreshGui()
+begin
+	//actualizamos animacion actual / totales
+	label[0].caption = actualAnim+"/"+(numAnims-1);
 end;
 
 //funcion para cargar una tabla de animacion
