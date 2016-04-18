@@ -45,29 +45,33 @@ PRIVATE
 BEGIN
 	signal(father, s_freeze);
 	id_window = window(posX, posY, title, BDR_STATIC);
+	id_window.alto = 100;
 	id_label  = label(id_window, 10, 30, msg);
+	id_label.ancho = 180;
 	set_active_win(id_window);
 	
 	IF (style == MB_INFO)
-		id_btnYes = button(id_window, 65, 150, "Aceptar");
+		id_btnYes = button(id_window, 65, 50, "Aceptar");
 	END
 	
 	IF (style == MB_YESNO)
-		id_label  = label(id_window, 10, 30, msg);
-		id_btnYes = button(id_window, 20, 150, "Sí");
-		id_btnNo  = button(id_window, 110, 150, "No");
+		id_btnYes = button(id_window, 20, 50, "Sí");
+		id_btnNo  = button(id_window, 110, 50, "No");
 	END
 		
 	LOOP
-	/*
-		IF (id_btnNo.event == UI_CLICK)
-			destroy_window(id_window);
+	
+		IF (style == MB_YESNO)
+			IF (id_btnNo.event == UI_CLICK)
+				signal(father, s_wakeup);
+				destroy_window(id_window);
+			END
 		END
-	*/
+	
 		IF (id_btnYes.event == UI_CLICK)
+			signal(father, s_wakeup);
 			destroy_window(id_window);
 			ret_yes = TRUE;
-			signal(father, s_wakeup);
 		END
 	  FRAME;
 	END

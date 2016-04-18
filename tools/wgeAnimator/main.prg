@@ -49,6 +49,7 @@ Begin
 	//iniciamos video	
 	set_mode(cResX,cResY);
 	set_fps(cFps,0);
+	set_title("wgeAnimation Tool");
 	
 	//iniciamos libreria gui
 	fuit_init("src/default.fpg", "src/cursors.fpg");
@@ -75,7 +76,7 @@ Begin
 		animationData[actualAnim].name	 		= editValue[4].caption;
 		
 		//cambio color fondo
-		if (key(_f))
+		if (key(_f) && active_control==0)
 			backColor = backColor == 0 ? 255 : 0;
 			map_clear(0,0,backColor);
 			repeat	
@@ -84,7 +85,7 @@ Begin
 		end;
 		
 		//cambio escala
-		if (key(_s) && !key(_CONTROL))
+		if (key(_s) && !key(_CONTROL) && active_control==0)
 			scaleMode = scaleMode == 2 ? 0 : scaleMode+1;
 			switch (scaleMode)
 				case 0:
@@ -110,7 +111,7 @@ Begin
 		end;
 		
 		//avance animaciones
-		if (key(_PGDN))
+		if (key(_PGDN) && active_control==0)
 			if (actualAnim < numAnims-1)
 				actualAnim++;
 				//actualizamos gui
@@ -122,7 +123,7 @@ Begin
 		end;
 		
 		//retroceso animaciones
-		if (key(_PGUP))
+		if (key(_PGUP) && active_control==0)
 			if (actualAnim > 0)
 				actualAnim--;
 				//actualizamos gui
@@ -134,11 +135,15 @@ Begin
 		end;
 		
 		//salvar las animaciones
-		if (key(_CONTROL) && key(_s))
-			saveAnimFile();
+		if (key(_CONTROL) && key(_s) && active_control==0)
 			repeat	
 				frame;
 			until(not key(_s));
+			if (MessageBox(100,80,"Salvar Animaciones","¿Desea salvar la tabla de animaciones?",MB_YESNO).ret_yes)
+				saveAnimFile();
+			end;
+			signal(TYPE MessageBox,s_kill);
+			active_control = 0;
 		end;
 		
 		//nueva animacion
@@ -189,7 +194,7 @@ Begin
 		end;
 		
 		Frame;
-	until(cant_win()==0);
+	until(cant_win()==0 || key(_esc));
 	
 	free(animationData);
 	exit("",0);
