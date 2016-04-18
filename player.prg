@@ -779,30 +779,30 @@ BEGIN
 				if ((on45Slope && !isBitSet(flags,B_HMIRROR)) ||
 				    (on135Slope && isBitSet(flags,B_HMIRROR)) )
 					if (picked)
-						wgeAnimate(57,58,40,ANIM_LOOP);
+						wgeAnimate(_ANIM_PLY_IDLE_SLOPE_UP_PICK);
 					else
-						wgeAnimate(45,46,40,ANIM_LOOP);
+						wgeAnimate(_ANIM_PLY_IDLE_SLOPE_UP);
 					end;
 				elseif ( (on45Slope && isBitSet(flags,B_HMIRROR)) ||
 						(on135Slope && !isBitSet(flags,B_HMIRROR)) )
 					if (picked)
-						wgeAnimate(59,60,40,ANIM_LOOP);
+						wgeAnimate(_ANIM_PLY_IDLE_SLOPE_DOWN_PICK);
 					else
-						wgeAnimate(37,38,40,ANIM_LOOP);
+						wgeAnimate(_ANIM_PLY_IDLE_SLOPE_DOWN);
 					end;
 				elseif (picked)
-					wgeAnimate(22,22,40,ANIM_LOOP);
+					wgeAnimate(_ANIM_PLY_IDLE_PICK);
 				else
 					//si la mitad del cuerpo esta en el aire
 					if (getTileCode(id,DOWN_R_POINT) <> NOCOL && 
 					    getTileCode(id,DOWN_L_POINT) == NOCOL )
 						//animacion de tambaleo
-						wgeAnimate(80,81,10,ANIM_LOOP);
+						wgeAnimate(_ANIM_PLY_IDLE_BORDER);
 						unSetBit(flags,B_HMIRROR);
 					elseif (getTileCode(id,DOWN_L_POINT) <> NOCOL && 
 					        getTileCode(id,DOWN_R_POINT) == NOCOL )
 						//animacion de tambaleo
-						wgeAnimate(80,81,10,ANIM_LOOP);
+						wgeAnimate(_ANIM_PLY_IDLE_BORDER);
 						SetBit(flags,B_HMIRROR);
 					else
 						wgeAnimate(_ANIM_PLY_IDLE);
@@ -813,30 +813,30 @@ BEGIN
 				if ((on45Slope && !isBitSet(flags,B_HMIRROR)) ||
 				    (on135Slope && isBitSet(flags,B_HMIRROR)) )
 					if (picked)
-						wgeAnimate(61,66,4,ANIM_LOOP);
+						wgeAnimate(_ANIM_PLY_MOVE_SLOPE_UP_PICK);
 					else
-						wgeAnimate(39,44,4,ANIM_LOOP);
+						wgeAnimate(_ANIM_PLY_MOVE_SLOPE_UP);
 					end;
 				elseif ( (on45Slope && isBitSet(flags,B_HMIRROR)) ||
 						(on135Slope && !isBitSet(flags,B_HMIRROR)) )
 					if (picked)
-						wgeAnimate(67,72,4,ANIM_LOOP);
+						wgeAnimate(_ANIM_PLY_MOVE_SLOPE_DOWN_PICK);
 					else
-						wgeAnimate(47,52,4,ANIM_LOOP);
+						wgeAnimate(_ANIM_PLY_MOVE_SLOPE_DOWN);
 					end;
 				elseif (picked)
-					wgeAnimate(27,29,4,ANIM_LOOP);
+					wgeAnimate(_ANIM_PLY_MOVE_PICK);
 				else
-					wgeAnimate(3,8,4,ANIM_LOOP);
+					wgeAnimate(_ANIM_PLY_MOVE);
 				end;			
 			end;
 			case FALL_STATE:
 				if (picked)
-					wgeAnimate(31,31,1,ANIM_LOOP);
+					wgeAnimate(_ANIM_PLY_FALL_PICK);
 				elseif (onWater)
-					wgeAnimate(73,76,10,ANIM_LOOP);
+					wgeAnimate(_ANIM_PLY_SWIM);
 				else
-					wgeAnimate(11,11,1,ANIM_LOOP);
+					wgeAnimate(_ANIM_PLY_FALL);
 				end;
 			end;
 			case JUMP_STATE:
@@ -848,96 +848,95 @@ BEGIN
 					end;
 					
 					if (picked)
-						wgeAnimate(30,30,1,ANIM_LOOP);
+						wgeAnimate(_ANIM_PLY_JUMP_UP_PICK);
 					elseif (onWater)
-						wgeAnimate(73,76,10,ANIM_LOOP);
+						wgeAnimate(_ANIM_PLY_SWIM);
 					else
-						wgeAnimate(10,10,1,ANIM_LOOP);	
+						wgeAnimate(_ANIM_PLY_JUMP_UP);	
 					end;
 				//bajando
 				else
 					if (picked)
-						wgeAnimate(31,31,1,ANIM_LOOP);
+						wgeAnimate(_ANIM_PLY_JUMP_DOWN_PICK);
 					elseif (onWater)
-						wgeAnimate(73,76,10,ANIM_LOOP);
+						wgeAnimate(_ANIM_PLY_SWIM);
 					else
-						wgeAnimate(11,11,1,ANIM_LOOP);
+						wgeAnimate(_ANIM_PLY_JUMP_DOWN);
 					end;
 				end;
 			end;
 			case CROUCH_STATE:
 				if ((on45Slope && !isBitSet(flags,B_HMIRROR)) ||
 				    (on135Slope && isBitSet(flags,B_HMIRROR)) )
-					wgeAnimate(53,54,20,ANIM_LOOP);
+					wgeAnimate(_ANIM_PLY_CROUCH_SLOPE_UP);
 				elseif ( (on45Slope && isBitSet(flags,B_HMIRROR)) ||
 						(on135Slope && !isBitSet(flags,B_HMIRROR)) )
-					wgeAnimate(55,56,40,ANIM_LOOP);
+					wgeAnimate(_ANIM_PLY_CROUCH_SLOPE_DOWN);
 				else
-					wgeAnimate(16,17,40,ANIM_LOOP);
+					wgeAnimate(_ANIM_PLY_CROUCH);
 				end;
 			end;
 			case BREAK_STATE:
-				wgeAnimate(9,9,1,ANIM_LOOP);
+				wgeAnimate(_ANIM_PLY_BREAK);
 			end;
 			case BREAK_FALL_STATE:
-				wgeAnimate(12,12,1,ANIM_LOOP);
+				wgeAnimate(_ANIM_PLY_FALL);
 			end;
 			case BREAK_ATACK_STATE:
-				if (wgeAnimate(14,15,10,ANIM_LOOP))
+				if (wgeAnimate(_ANIM_PLY_BREAK_ATACK))
 					this.state = IDLE_STATE;
 				end;
 			end;
 			case BREAK_SLOPING_STATE:
 				if (abs(this.vX) < 0.5)
-					if (wgeAnimate(14,15,10,ANIM_ONCE))
+					if (wgeAnimate(_ANIM_PLY_BREAK_SLOPING_END))
 						this.state = IDLE_STATE;
 					end;
 				else
-					wgeAnimate(13,13,1,ANIM_LOOP);
+					wgeAnimate(_ANIM_PLY_BREAK_SLOPING);
 				end;
 			end;
 			case ON_STAIRS_STATE:
-				wgeAnimate(18,18,1,ANIM_LOOP);
+				wgeAnimate(_ANIM_PLY_ON_STAIRS);
 			end
 			case MOVE_ON_STAIRS_STATE:
 				//reproducimos sonido estado
 				wgePlayEntityStateSnd(id,playerSound[STAIRS_SND]);
 				
-				if (wgeAnimate(19,20,8,ANIM_LOOP))
+				if (wgeAnimate(_ANIM_PLY_MOVE_ON_STAIRS))
 					//reproducimos sonido en cada loop
 					wgePlayEntitySnd(id,playerSound[STAIRS_SND]);
 				end;
 			end
 			case ATACK_STATE:
-				wgeAnimate(13,13,1,ANIM_LOOP);
+				wgeAnimate(_ANIM_PLY_ATACK);
 			end
 			case SLOPING_STATE:
 				if (abs(this.vX) < 0.5)
-					if (wgeAnimate(14,15,10,ANIM_ONCE))
+					if (wgeAnimate(_ANIM_PLY_BREAK_SLOPING_END))
 						this.state = IDLE_STATE;
 					end;
 				else
-					wgeAnimate(13,13,1,ANIM_LOOP);
+					wgeAnimate(_ANIM_PLY_BREAK_SLOPING);
 				end;
 			end
 			case PICKING_STATE:
-				wgeAnimate(25,26,40,ANIM_LOOP);
+				wgeAnimate(_ANIM_PLY_PICKING);
 			end;
 			case PICKED_STATE:
 				//reproducimos sonido estado
 				wgePlayEntityStateSnd(id,playerSound[PICK_SND]);
 				
-				if (wgeAnimate(21,21,10,ANIM_ONCE))
+				if (wgeAnimate(_ANIM_PLY_PICKED))
 					this.state = IDLE_STATE;
 					picking = false;
 				end;
 			end;
 			case FAILPICKED_STATE:
-				if (wgeAnimate(85,85,20,ANIM_ONCE))
+				if (wgeAnimate(_ANIM_PLY_FAILPICKED))
 					this.state = PICKING_STATE;
 					failPick = false;
 				end;
-				say("a");
 				//reproducimos sonido
 				wgePlayEntityStateSnd(id,playerSound[NOPICK_SND]);
 			end;
@@ -946,12 +945,12 @@ BEGIN
 				wgePlayEntityStateSnd(id,playerSound[THROW_SND]);
 				
 				if (jumping)
-					if (wgeAnimate(24,24,10,ANIM_ONCE))
+					if (wgeAnimate(_ANIM_PLY_THROWING_JUMP))
 						this.state = IDLE_STATE;
 						throwing = false;
 					end;
 				else
-					if (wgeAnimate(23,23,10,ANIM_ONCE))
+					if (wgeAnimate(_ANIM_PLY_THROWING))
 						this.state = IDLE_STATE;
 						throwing = false;
 					end;
@@ -961,7 +960,7 @@ BEGIN
 				//reproducimos sonido estado
 				wgePlayEntityStateSnd(id,playerSound[HURT_SND]);
 				
-				if (wgeAnimate(32,33,15,ANIM_ONCE))					
+				if (wgeAnimate(_ANIM_PLY_HURT))					
 					this.state = IDLE_STATE;
 					hurt = false;
 				end;
@@ -970,7 +969,7 @@ BEGIN
 				//el wgeLoop lee este estado
 			end;
 			default:
-				wgeAnimate(1,2,40,ANIM_LOOP);
+				wgeAnimate(_ANIM_PLY_IDLE);
 			end;
 		end;
 		
@@ -1050,7 +1049,7 @@ begin
 			this.fY += this.vY;
 			positionToInt(id);
 			
-			wgeAnimate(34,36,10,ANIM_ONCE);
+			wgeAnimate(_ANIM_PLY_DEAD);
 			
 			frame;
 	//morimos al salirnos de la pantalla
