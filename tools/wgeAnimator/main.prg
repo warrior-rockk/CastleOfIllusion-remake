@@ -57,6 +57,11 @@ Begin
 	//cargamos el archivo que se usará
 	fpgFile = load_fpg("../../gfx/player.fpg");
 	
+	//contamos mapas del archivo
+	for (i=1;i<1000;i++)
+		numMaps += map_exists(fpgFile,i);
+	end;
+	
 	//Arrancamos el reloj general
 	wgeClock();
 	
@@ -437,7 +442,7 @@ begin
 	repeat
 		//avance graficos
 		if (key(_PGDN))
-			if (lastGraph < 1000)
+			if (lastGraph < numMaps)
 				map_clear(0,idMap,0);
 				delete_text(all_text);
 				for (i=lastGraph;i<(lastGraph+(gridRow*gridCol));i++)

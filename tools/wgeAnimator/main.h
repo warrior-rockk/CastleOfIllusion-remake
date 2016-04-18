@@ -100,7 +100,8 @@ Global
 		byte 			numAnimations;			//Numero de animaciones
 		_tileAnimation* tileAnimTable; 			//Array dinamico de animaciones de tile
 	end;
-	fpgFile;						//archivo fpg que se usara
+	int fpgFile;						//archivo fpg que se usara
+	int numMaps = 0;						//numero de maps del fpg
 	//gui
 	int frVentana;
 	int editValue[5];
