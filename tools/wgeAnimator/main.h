@@ -9,6 +9,10 @@
 //Definiciones
 #define tickClock(a)    ((clockCounter % a) == 0 && clockTick)	//Funcion que devuelve flanco de numero de frames especificados
 
+//elementos del gui
+#define _BT_NEW		0
+#define _BT_DEL		1
+
 //constantes
 Const
 	cResX 			= 426;
@@ -101,6 +105,7 @@ Global
 	int frVentana;
 	int editValue[5];
 	int label[1];
+	int button[2];
 	//array dinamico datos animacion
 	_animationData* animationData;	
 	int numAnims = 0;

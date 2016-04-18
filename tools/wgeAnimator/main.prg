@@ -44,7 +44,7 @@ Process main()
 private
 	byte backColor = 0;
 	byte scaleMode = 0;
-	
+	int i;
 Begin
 	//iniciamos video	
 	set_mode(cResX,cResY);
@@ -113,11 +113,8 @@ Begin
 		if (key(_PGDN))
 			if (actualAnim < numAnims-1)
 				actualAnim++;
-				editValue[0].caption  = animationData[actualAnim].startFrame; 	
-				editValue[1].caption  = animationData[actualAnim].endFrame;
-				editValue[2].caption  = animationData[actualAnim].animSpeed;
-				editValue[3].caption  = animationData[actualAnim].animMode;
-				editValue[4].caption  = animationData[actualAnim].name;
+				//actualizamos gui
+				refreshGui();
 			end;
 			repeat	
 				frame;
@@ -128,11 +125,8 @@ Begin
 		if (key(_PGUP))
 			if (actualAnim > 0)
 				actualAnim--;
-				editValue[0].caption  = animationData[actualAnim].startFrame; 	
-				editValue[1].caption  = animationData[actualAnim].endFrame;
-				editValue[2].caption  = animationData[actualAnim].animSpeed;
-				editValue[3].caption  = animationData[actualAnim].animMode;
-				editValue[4].caption  = animationData[actualAnim].name;
+				//actualizamos gui
+				refreshGui();
 			end;
 			repeat	
 				frame;
@@ -147,9 +141,53 @@ Begin
 			until(not key(_s));
 		end;
 		
-		//actualizamos gui
-		refreshGui();
-					
+		//nueva animacion
+		if (button[_BT_NEW].event == ui_click)
+			//incrementamos animacion
+			numAnims++;
+			//realocamos el array dinamico
+			animationData = realloc(animationData,(numAnims*sizeof(_animationData)));
+			//inicializamos la nueva animacion
+			animationData[numAnims-1].startFrame 	= 1;
+			animationData[numAnims-1].endFrame 		= 2;
+			animationData[numAnims-1].animSpeed 	= 10;
+			animationData[numAnims-1].animMode 		= 0;
+			animationData[numAnims-1].name	 		= "_NEW_ANIMATION";
+			//saltamos a esa animacion
+			actualAnim = numAnims-1;
+			//actualizamos gui
+			refreshGui();
+		end;
+		
+		//borrar animacion
+		if (button[_BT_DEL].event == ui_click)
+			//si hay mas de una animacion
+			if (numAnims-1 > 0)
+				//reordenamos la tabla
+				for (i=actualAnim;i<numAnims-1;i++)
+					animationData[i].startFrame 	= animationData[i+1].startFrame;
+					animationData[i].endFrame 		= animationData[i+1].endFrame;
+					animationData[i].animSpeed 		= animationData[i+1].animSpeed;
+					animationData[i].animMode 		= animationData[i+1].animMode;
+					animationData[i].name	 		= animationData[i+1].name;
+				end;
+				//decrementamos animaciones
+				numAnims--;
+				//realocamos la tabla quitando la ultima posicion
+				animationData = realloc(animationData,(numAnims*sizeof(_animationData)));
+				//si hemos eliminado la ultima animacion, la actual es la nueva ultima
+				actualAnim = actualAnim > numAnims-1 ? numAnims-1 : actualAnim;
+			else
+				animationData[0].startFrame 	= 0;
+				animationData[0].endFrame 		= 0;
+				animationData[0].animSpeed 		= 0;
+				animationData[0].animMode 		= 0;
+				animationData[0].name	 		= "";
+			end;
+			//actualizamos gui
+			refreshGui();
+		end;
+		
 		Frame;
 	until(cant_win()==0);
 	
@@ -218,6 +256,11 @@ begin
 	editValue[3] = input_box(frVentana,cMarginX*7,cMarginY*2,animationData[actualAnim].animMode);
 	editValue[3].ancho = 30;
 	
+	button[_BT_NEW] = button(frVentana,cMarginX*9,cMarginY*2,"Nuevo");
+	button[_BT_NEW].ancho = 50;
+	button[_BT_DEL] = button(frVentana,cMarginX*11,cMarginY*2,"Delete");
+	button[_BT_DEL].ancho = 50;
+	
 	label[0] = label(frVentana,cWindowWidth-cMarginX,cWindowMarginY,actualAnim+"/"+(numAnims-1));
 	
 	label(frVentana,cWindowMarginX,cWindowMarginY*3,"Nombre:");
@@ -228,6 +271,12 @@ end;
 //funcion que actualiza el gui
 function refreshGui()
 begin
+	//actualizamos campos
+	editValue[0].caption  = animationData[actualAnim].startFrame; 	
+	editValue[1].caption  = animationData[actualAnim].endFrame;
+	editValue[2].caption  = animationData[actualAnim].animSpeed;
+	editValue[3].caption  = animationData[actualAnim].animMode;
+	editValue[4].caption  = animationData[actualAnim].name;
 	//actualizamos animacion actual / totales
 	label[0].caption = actualAnim+"/"+(numAnims-1);
 end;
