@@ -1,3 +1,6 @@
+-al hacer libreria engine, permitir ciertos defines en el programa principal
+antes de llamar a la libreria que habilitan o deshabilitan funciones como 
+por ejemplo #define slopesEnabled o dinamycMem
 -pasar los defines a formato _NOMBRE (guion bajo y mayusculas)
 -Olvidarse del clocktick y usar bien el ctimerinterval para que 100 sea 1seg y crear varias marcas de flanco de tiempos determinados para tener tiempos fijos.
 -pasar los parametros de las animaciones a defines de cada parametro para tenerlas organizadas en el archivo .h
