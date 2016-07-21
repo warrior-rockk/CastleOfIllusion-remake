@@ -1,3 +1,8 @@
+RENDIMIENTO: (rendimiento 02/09/15: 300fps)
+			-Matar todos los procesos tile ahorra unos 300fps. Si quito TOODOS los procesos del juego, solo tengo 700fps de rendimiento. Eliminar entidades, control scroll,etc.. no ahorra nada.
+			-Paaaarece que ganamos 20fps por hacer scaleresolution al doble de resolucion que usando scaleMode2X
+			
+
 -al hacer libreria engine, permitir ciertos defines en el programa principal
 antes de llamar a la libreria que habilitan o deshabilitan funciones como 
 por ejemplo #define slopesEnabled o dinamycMem
