@@ -71,16 +71,23 @@ begin
 	game.playerLife 	= 3;
 	game.playerMaxLife  = 3;
 	game.score      	= 0;
-	game.numLevel       = TOYLAND_2_LEVEL;
+	game.numLevel       = TUTORIAL_LEVEL;
 	
 	//estado inicial
-	firstRun ? game.state = LANG_SEL : game.state = LOADLEVEL;
+	firstRun ? game.state = LANG_SEL : game.state = LOADING;
 	
 	//iniciaciones en compilacion release
 	#ifdef RELEASE
 		//desactivamos niveles inacabados
 		game.levelStatus[WOODS_LEVEL] 		= LEVEL_DOOR_CLOSED;
 		game.levelStatus[CANDYLAND_LEVEL] 	= LEVEL_DOOR_CLOSED;
+	#endif
+	
+	//iniciaciones en modo compilacion debug
+	#ifndef RELEASE
+		//comenzamos en un nivel en concreto
+		game.numLevel  	= TOYLAND_2_LEVEL;
+		game.state 		= LOADLEVEL;
 	#endif
 	
 	//Iniciamos modo grafico
