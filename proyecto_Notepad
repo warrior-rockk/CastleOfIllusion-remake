@@ -30,10 +30,10 @@
             <File name="interface.h" />
             <File name="playerAnims.h" />
         </Folder>
-        <File name="TODO.txt" />
         <Folder name="tools">
             <File name="tools\wgeAnimator\main.h" />
             <File name="tools\wgeAnimator\main.prg" />
         </Folder>
+        <File name="TODO.txt" />
     </Project>
 </NotepadPlus>
