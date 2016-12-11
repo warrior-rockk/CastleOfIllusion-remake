@@ -16,6 +16,7 @@
 #define DEBUG_MONSTERS      3
 #define DEBUG_OBJECTS       4
 #define DEBUG_SOUND         5
+#define DEBUG_CONTROLS      6
 
 //Colores Cajas Colision
 #define DEBUG_PLAYER_COLOR  	300
@@ -35,9 +36,10 @@ End;
 //variables globales
 Global
 	byte traceEngine 	= 1;		//flag de activacion nivel debug
-	byte tracePlayer 	= 1;		//flag de activacion nivel debug
+	byte tracePlayer 	= 0;		//flag de activacion nivel debug
 	byte traceTiles	 	= 0;		//flag de activacion nivel debug
 	byte traceMonsters 	= 1;		//flag de activacion nivel debug
 	byte traceObjects   = 1;		//flag de activacion nivel debug
-	byte traceSound		= 1;		//flag de activacion nivel debug
+	byte traceSound		= 0;		//flag de activacion nivel debug
+	byte traceControls	= 0;		//flag de activacion nivel debug
 end;

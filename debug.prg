@@ -150,7 +150,8 @@ private
 	string header;		//cabecera del log
 begin
 	//si se define el uso de debug
-	#ifdef USE_DEBUG
+	//log siempre
+	//#ifdef USE_DEBUG
 	
 		header = "[" + ftime("%d-%m-%Y %H:%M:%S:%C",time()) + "] ";
 			
@@ -185,9 +186,14 @@ begin
 					say (header + "wgeSound: " + texto);
 				end;
 			end;
+			case DEBUG_CONTROLS:
+				if (traceControls)
+					say (header + "wgeControls: " + texto);
+				end;
+			end;
 		end;
 	
-	#endif
+	//#endif
 end;
 
 process wgeDebugCursor()
