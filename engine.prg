@@ -1667,7 +1667,7 @@ begin
 		
 		log("Archivo de configuración leído",DEBUG_ENGINE);
 	else
-		config.videoMode   = 2;
+		config.videoMode   = CONFIG_MODE_2XSCALE;
 		config.soundVolume = 100;
 		config.musicVolume = 100;
 		
