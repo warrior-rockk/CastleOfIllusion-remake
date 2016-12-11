@@ -10,7 +10,9 @@ por ejemplo #define slopesEnabled o dinamycMem
 -Olvidarse del clocktick y usar bien el ctimerinterval para que 100 sea 1seg y crear varias marcas de flanco de tiempos determinados para tener tiempos fijos.
 -pasar los parametros de las animaciones a defines de cada parametro para tenerlas organizadas en el archivo .h
 
-BUGS:   -no deberia comprobar la posicion del scroll cada frame del wgeScroll. Solo cuando muera por ejemplo
+BUGS:   -Comprobar si resolucion compatible al pasar a pantalla completa y setear la mas cercana!!
+		-mas logs en cargas dinamicas de nivel
+         -no deberia comprobar la posicion del scroll cada frame del wgeScroll. Solo cuando muera por ejemplo
 		-las musicas de nivel deberian cargarse en el load_files??
 		-tiles que se quedan en negro al reiniciar nivel!! (activadas funciones para debuggearlo)
 		-jarra se enganchó en la pared izquierda (al lanzarla o al caerse por tocar pompa?)
