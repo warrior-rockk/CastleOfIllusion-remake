@@ -1,0 +1,1 @@
+"Castle of Illusion.exe" >>log.txt
