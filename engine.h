@@ -221,12 +221,12 @@ Type _TileAnimation
 	#ifdef DYNAMIC_MEM
 		byte* frameGraph;   	//array dinamico del grafico del frame
 	#else
-		byte  frameGraph;		//Array estatico del grafico del frame
+		byte  frameGraph[100];		//Array estatico del grafico del frame
 	#endif
 	#ifdef DYNAMIC_MEM
 		byte* frameTime;   		//array dinamico de duracion del frame
 	#else
-		byte  frameTime;		//Array estatico de duracion del frame
+		byte  frameTime[100];		//Array estatico de duracion del frame
 	#endif
 end;
 

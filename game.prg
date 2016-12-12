@@ -179,8 +179,7 @@ begin
 								optionString = gameTexts[config.lang][LAN_SEL_TEXT];
 							end;
 						end;
-						
-						saveGameConfig();
+												
 						redrawMenu = true;						
 					end;
 					//decrementar valor
@@ -199,6 +198,7 @@ begin
 					if (wgeCheckControl(CTRL_START,E_DOWN))
 						switch (optionNum)
 							case 2: //Aceptar
+								saveGameConfig();
 								game.state = INTRO;
 								//salir del menu
 								optionNum = 0;

@@ -235,9 +235,9 @@ Begin
 	end;
 	
 	//Limpiamos la memoria dinamica
-	#ifdef DYNAMIC_MEM
+	/*#ifdef DYNAMIC_MEM
 		free(tileMap);
-	#endif
+	#endif*/
 	
 	//liberamos archivos cargados
 	if (level.fpgTiles <> 0 ) unload_fpg(level.fpgTiles); end;
@@ -255,6 +255,7 @@ Begin
 	fread(levelMapFile,level.numTilesX);   //cargamos el numero de columnas de tiles
 	fread(levelMapFile,level.numTilesY);   //cargamos el numero de filas de tiles
 	
+	log("Fichero mapa leído con " + level.numTiles + " Tiles. " + level.numTilesX + " Tiles en X y " + level.numTilesY + " Tiles en Y",DEBUG_ENGINE);
 	
 	//Creamos la matriz dinamica del tileMap
 	#ifdef DYNAMIC_MEM
@@ -275,6 +276,7 @@ Begin
 				wgeQuit();
 			end;	
 		end;
+		log("Memoria dinamica para mapa asignada correctamente",DEBUG_ENGINE);
 	#endif
 	
 	//Cargamos la informacion del grafico de los tiles del fichero de mapa
@@ -289,7 +291,9 @@ Begin
 				tileMap[i][j].numAnimation = (255 - tileMap[i][j].tileGraph)+1;
 			end;
 		end;
+		
 	end;
+	log("Cargados numeros graficos del mapa",DEBUG_ENGINE);
 	
 	//Cargamos el codigo de los tiles del fichero de mapa
 	mapUsesAlpha = 0;	//seteamos que no usuara propiedad alpha el mapa
@@ -313,12 +317,14 @@ Begin
 			end;
 		end;
 	end;  
+	log("Cargados codigos del mapa",DEBUG_ENGINE);
 	
 	//Si algun tile usa alpha, lo inicializamos
 	if (mapUsesAlpha) wgeInitAlpha(); end;
 	
 	//leemos numero de animaciones
 	fread(levelMapFile,tileAnimations.numAnimations);
+	log("Leidas "+tileAnimations.numAnimations+" animaciones del mapa",DEBUG_ENGINE);
 	
 	//si existe alguna animacion
 	if ( tileAnimations.numAnimations > 0 )
@@ -331,6 +337,7 @@ Begin
 				log("Fallo alocando memoria dinámica (tileAnimations)",DEBUG_ENGINE);
 				wgeQuit();
 			end;
+			log("Memoria dinamica para animaciones del mapa asignada correctamente",DEBUG_ENGINE);
 		#endif
 		
 		//Cargamos las secuencias de animacion
@@ -348,6 +355,7 @@ Begin
 					log("Fallo alocando memoria dinámica (tileAnimTable.frameGraph) en secuencia"+i,DEBUG_ENGINE);
 					wgeQuit();
 				end;
+				log("Memoria dinamica para (tileAnimTable.frameGraph) asignada correctamente",DEBUG_ENGINE);
 			#endif
 			//Creamos la matriz dinamica de la duracion de cada frame de animacion
 			#ifdef DYNAMIC_MEM
@@ -358,6 +366,7 @@ Begin
 					log("Fallo alocando memoria dinámica (tileAnimTable.frameTime) en secuencia"+i,DEBUG_ENGINE);
 					wgeQuit();
 				end;
+				log("Memoria dinamica para (tileAnimTable.frameTime) asignada correctamente",DEBUG_ENGINE);
 			#endif
 			//Cargamos los frames de la secuencia actual
 			for (j=0;j<tileAnimations.tileAnimTable[i].numFrames;j++)
@@ -380,9 +389,10 @@ Begin
 		end;
 	end;
 	
+	
 	//cerramos el archivo
 	fclose(levelMapFile);
-	log("Fichero mapa leído con " + level.numTiles + " Tiles. " + level.numTilesX + " Tiles en X y " + level.numTilesY + " Tiles en Y",DEBUG_ENGINE);   
+	log("Fichero de mapa cerrado",DEBUG_ENGINE);   
 
 	//Comprobamos si existe el archivo grafico de tiles
 	if (fexists(fpgFile))
@@ -813,6 +823,7 @@ Begin
 			log("Fallo alocando memoria dinámica (objects)",DEBUG_ENGINE);
 			wgeQuit();
 		end;
+		log("Memoria dinamica para objetos asignada",DEBUG_ENGINE);
 	#endif
 	
 	//leemos los objetos
@@ -827,6 +838,7 @@ Begin
 		fread(levelDataFile,objects[i].objectFlags);
 		fread(levelDataFile,objects[i].objectProps);
 	end;
+	log("Objetos leidos correctamente",DEBUG_ENGINE);
 	
 	//numero de enemigos
 	fread(levelDataFile,level.numMonsters);
@@ -840,6 +852,7 @@ Begin
 			log("Fallo alocando memoria dinámica (monsters)",DEBUG_ENGINE);
 			wgeQuit();
 		end;
+		log("Memoria dinamica para enemigos asignada",DEBUG_ENGINE);
 	#endif
 	
 	//leemos los enemigos
@@ -854,6 +867,7 @@ Begin
 		fread(levelDataFile,monsters[i].monsterFlags);
 		fread(levelDataFile,monsters[i].monsterProps);
 	end;
+	log("Enemigos leidos correctamente",DEBUG_ENGINE);
 	
 	//numero de plataformas
 	fread(levelDataFile,level.numPlatforms);
@@ -867,6 +881,7 @@ Begin
 			log("Fallo alocando memoria dinámica (platforms)",DEBUG_ENGINE);
 			wgeQuit();
 		end;
+		log("Memoria dinamica para plataformas asignada",DEBUG_ENGINE);
 	#endif
 	
 	//leemos las plataformas
@@ -881,6 +896,7 @@ Begin
 		fread(levelDataFile,Platforms[i].PlatformFlags);
 		fread(levelDataFile,Platforms[i].PlatformProps);
 	end;
+	log("Plataformas leidas correctamente",DEBUG_ENGINE);
 	
 	//numero de checkpoints
 	fread(levelDataFile,level.numCheckPoints);
@@ -894,6 +910,7 @@ Begin
 			log("Fallo alocando memoria dinámica (checkPoints)",DEBUG_ENGINE);
 			wgeQuit();
 		end;
+		log("Memoria dinamica para checkpoints asignada",DEBUG_ENGINE);
 	#endif
 	
 	//leemos los checkpoints
@@ -902,6 +919,7 @@ Begin
 		fread(levelDataFile,level.checkpoints[i].position.y);
 		fread(levelDataFile,level.checkpoints[i]._flags);
 	end;
+	log("Checkpoints leidos correctamente",DEBUG_ENGINE);
 	
 	//cerramos el archivo
 	fclose(levelDataFile);
@@ -927,16 +945,19 @@ Begin
 	from i=0 to level.numObjects-1;
 		object(objects[i].objectType,objects[i].objectGraph,objects[i].objectX0,objects[i].objectY0,objects[i].objectAncho,objects[i].objectAlto,objects[i].objectAxisAlign,objects[i].objectFlags,objects[i].objectProps);	
 	end;
-		
+	log("Creados "+ level.numObjects +" objetos",DEBUG_ENGINE);
+	
 	//creamos los enemigos del nivel
 	from i=0 to level.numMonsters-1;
 		monster(monsters[i].monsterType,monsters[i].monsterX0,monsters[i].monsterY0,monsters[i].monsterAncho,monsters[i].monsterAlto,monsters[i].monsterAxisAlign,monsters[i].monsterFlags,monsters[i].monsterProps);	
 	end;
+	log("Creados "+ level.numMonsters +" enemigos",DEBUG_ENGINE);
 	
 	//creamos las plataformas del nivel
 	from i=0 to level.numPlatforms-1;
 		platform(platforms[i].platformType,platforms[i].platformGraph,platforms[i].platformX0,platforms[i].platformY0,platforms[i].platformAncho,platforms[i].platformAlto,platforms[i].platformAxisAlign,platforms[i].platformFlags,platforms[i].platformProps);		
 	end;
+	log("Creadas "+ level.numPlatforms +" plataformas",DEBUG_ENGINE);
 	
 End;
 
@@ -946,6 +967,8 @@ private
 	int i;			//Indices auxiliares
 end
 Begin
+	log("Se resetea el nivel",DEBUG_ENGINE);
+
     //detenemos los procesos
 	signal(TYPE wgeControlScroll,s_kill_tree);
 	signal(TYPE wgeUpdateTileAnimations,s_kill_tree);
@@ -953,6 +976,19 @@ Begin
 	if (exists(idPlayer)) 
 		signal(idPlayer,s_kill);
 	end;	
+
+	//limpiamos la memoria dinamica de LoadMap
+	#ifdef DYNAMIC_MEM
+		if (tileMap != NULL)
+			free(tileMap);
+			tileMap = NULL;			
+		end;
+		if (tileAnimations.tileAnimTable != NULL)
+			free(tileAnimations.tileAnimTable);	
+			tileAnimations.tileAnimTable = NULL;			
+		end;
+		log("Memoria dinamica de mapa liberada",DEBUG_ENGINE);
+	#endif
 	
 	//Cargamos el mapeado del nivel por si se ha modificado en runtime
 	wgeLoadMapLevel(levelFiles[game.numLevel].MapFile,levelFiles[game.numLevel].TileFile);
@@ -1521,6 +1557,8 @@ end;
 //funcion para limpiar y descargar archivos del nivel actual
 function clearLevel()
 begin
+	log("Se limpia el nivel",DEBUG_ENGINE);
+	
 	//matamos los procesos
 	gameSignal(s_kill_tree);
 	idPlayer = 0;
@@ -1533,12 +1571,33 @@ begin
 	
 	//Limpiamos la memoria dinamica
 	#ifdef DYNAMIC_MEM
-		free(objects);
-		free(monsters);
-		free(platforms);
+		if (objects != NULL)
+			free(objects);
+			objects = NULL;			
+		end;
+		if (monsters != NULL)
+			free(monsters);
+			monsters = NULL;			
+		end;
+		if (platforms != NULL)
+			free(platforms);
+
+			platforms = NULL;			
+		end;
+		if (tileMap != NULL)
+			free(tileMap);
+			tileMap = NULL;			
+		end;
+		if (level.checkPoints != NULL)
+			free(level.checkPoints);
+			level.checkPoints = NULL;			
+		end;
 		//free(paths);
-		free(tileMap);
-		free(tileAnimations);
+		if (tileAnimations.tileAnimTable != NULL)
+			free(tileAnimations.tileAnimTable);	
+			tileAnimations.tileAnimTable = NULL;
+		end;
+		log("Memoria dinamica total liberada",DEBUG_ENGINE);
 	#endif
 	
 	//liberamos archivos cargados
