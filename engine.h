@@ -96,6 +96,14 @@
 #define	CONFIG_MODE_2XSCALE			1
 #define CONFIG_MODE_FULLSCREEN		2
 
+//relaciones de aspecto
+#define AR_UNK		0
+#define AR_4_3		1
+#define AR_16_10	2
+#define AR_16_9		3
+#define AR_5_4		4
+#define AR_5_3		5
+
 //Tipos de fade
 #define FADE_SCREEN             1
 #define FADE_MUSIC 	            2
@@ -185,6 +193,13 @@ const
 End;
 
 //Data Types
+
+//modo de video
+type _videoMode
+	int rW;
+	int rH;
+	int aRatio;
+end;
 
 //Punto
 Type _point						//Tipo de dato punto

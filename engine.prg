@@ -103,7 +103,7 @@ begin
 			scale_mode=SCALE_NORMAL2X;
 		end;
 		case CONFIG_MODE_FULLSCREEN:
-			scale_mode=SCALE_NORMAL2X;
+			//scale_mode=SCALE_NORMAL2X;
 			full_screen = true;
 		end;
 	end;
@@ -113,7 +113,9 @@ begin
 		set_mode(cResX,cResY,8);
 	#else
 		//set_mode(cResX,300,8,MODE_WAITVSYNC);//MODE_WAITVSYNC FIJA LOS FRAMES A 60
-		set_mode(cResX,300,8);
+		//set_mode(cResX,300,8);
+		//setOptimalVideoMode(cResX,cResY,8,MODE_FULLSCREEN);
+		set_mode(cResX,cResY,8);
 	#endif
 	
 	//seteamos fps (rendimiento 02/09/15: 300fps)
@@ -1844,4 +1846,162 @@ begin
 		  frame; 
 	end;
 
+end;
+
+//funcion que setea el modo de video mas optimo al sistema
+function setOptimalVideoMode(int resX,int resY,int resDepth,int resMode)
+private
+	byte ARatio;
+	int sW;
+	int sH;
+	int* modes;
+	_videoMode* videoModes;
+	byte outAR  = false;
+	int numModes = 0;
+	int i;
+begin
+	//si el modo es ventana, no ajustamos nada (de momento)
+	if (false)//isBitSet(resMode,MODE_WINDOW))
+		sW = resX;
+		sH = resY;
+	else
+		//Obtenemos el aspect ratio de la resolucion pedida
+		aRatio = getAspectRatio(resX,resY);
+		say("Modo pedido:"+resX+"x"+resY+" - "+aRatio);
+		
+		//comprobamos si el modo pedido es correcto
+		if (mode_is_ok(resX,resY,resDepth,resMode) == resDepth)
+			sW = resX;
+			sH = resY;
+			say("Modo soportado por el sistema");
+		else 
+			say("Modo no soportado por el sistema");
+			//obtenemos los modos soportados por el sistema
+			say("Modos disponibles:");
+			modes = get_modes(resDepth, resMode);
+			while (*modes)
+				if (numModes == 0)
+					videoModes = calloc(1,sizeof(_videoMode));
+				else
+					videoModes = realloc(videoModes,(numModes+1)*sizeof(_videoMode));
+				end;
+				videoModes[numModes].rW = *modes++;
+				videoModes[numModes].rH = *modes++;
+				//obtenemos aspect ratio
+				videoModes[numModes].aRatio = getAspectRatio(videoModes[numModes].rW,videoModes[numModes].rH);
+				say(videoModes[numModes].rW + " X "+videoModes[numModes].rH + " - " + videoModes[numModes].aRatio);
+				
+				numModes++;
+				
+			end;
+			
+			//buscamos el modo mas parecido
+					
+			//si la pedida es mas pequeña que el modo mas bajo
+			if (resX < videoModes[numModes-1].rW)
+				//Seteamos el modo mas bajo
+				sW = videoModes[numModes-1].rW;
+				sH = videoModes[numModes-1].rH;
+				if (videoModes[numModes-1].aRatio != ARatio)
+					outAR = true;
+				end;
+				say("Usamos el modo mas bajo de los soportados");
+			//si la pedida es mas grande que el modo mas alto
+			elseif (resX > videoModes[0].rW)
+				//seteamos el modo mas alto
+				sW = videoModes[0].rW;
+				sH = videoModes[0].rH;
+				if (videoModes[0].aRatio != ARatio)
+					outAR = true;
+				end;
+				say("Usamos el modo mas alto de los soportados");		
+			else
+				//recorremos los modos para buscar el modo mas cercano al pedido
+				for (i=0;i<numModes;i++)
+					if (videoModes[i].rW < resX )
+						if (i>0)
+							sW = videoModes[i-1].rW;
+							sH = videoModes[i-1].rH;
+							if (videoModes[i-1].aRatio != ARatio)
+								outAR = true;
+							end;
+							break;
+						else
+							sW = videoModes[i].rW;
+							sH = videoModes[i].rH;
+							if (videoModes[i].aRatio != ARatio)
+								outAR = true;
+							end;
+							say("Solo hay un modo posible");
+						end;
+					else
+						sW = videoModes[i].rW;
+						sH = videoModes[i].rH;
+					end;
+				end;
+				
+				if (sW<>0 && sH<>0)
+					if (!outAR)
+						say("Encontrado modo en tu aspect Ratio:"+sW+"x"+sH);
+					else
+						say("Encontrado modo fuera de tu aspect Ratio:"+sW+"x"+sH);
+					end;
+				end;
+			end;
+					
+			//si la resolucion difiere de la pedida
+			if (sW != resX || sH != resY)
+				//reescalamos a la encontrada
+				say("Reescalamos");
+				scale_resolution = (sW*10000) + sH;
+				if (outAR)
+					scale_resolution_aspectratio = SRA_STRETCH;
+					say("Aplicamos Strech al escalado");
+				else			
+					scale_resolution_aspectratio = SRA_PRESERVE;
+					say("Preservamos aspect ratio al escalado");
+				end;
+				//pero seteamos resolucion original
+				sW = resX;
+				sH = resY;
+			//resolucion identica
+			else
+				say("No reescalamos");
+			end;
+			//liberamos puntero resoluciones
+			free(videoModes);
+		end;
+	end;
+	
+	//seteamos modo
+	set_mode(sW,sH,resDepth);
+	say("Modo seteado a "+sW+" x " + sH);
+	//obtenemos el modo seteado por la tarjeta grafica
+	get_desktop_size(&sW,&sH);
+	say("Sistema se setea a:" + sW+" x " + sH);
+	
+end;
+
+//obtenemos el aspect ratio
+function byte getAspectRatio(int resX,int resY)
+private
+	float f1,f2,fResult;
+begin
+	f1 = resX;
+	f2 = resY;
+	fResult = f1 / f2;
+	
+	if (fResult >= 1.33 && fResult <= 1.34)
+		return AR_4_3;
+	elseif(fResult >= 1.77 && fResult <= 1.78)
+		return AR_16_9;
+	elseif(fResult == 1.6)
+		return AR_16_10;
+	elseif(fResult >= 1.25 && fResult <= 1.26)
+		return AR_5_4;
+	elseif(fResult >= 1.66 && fResult <= 1.67)
+		return AR_5_3;	
+	else
+		return AR_UNK;			
+	end;
 end;
