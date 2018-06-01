@@ -204,11 +204,11 @@ private
 	object idObj;	//Objeto de debug;
 begin
 	//creamos el cursor de debug
-	cursorMap = map_new(cTileSize,cTileSize,8);
+	cursorMap = map_new(cTileSize>>1,cTileSize>>1,8);
 	drawing_map(0,cursorMap);
 	drawing_color(cCursorColor);
-	draw_line(1,chalfTSize,cTileSize,chalfTSize);
-	draw_line(chalfTSize,1,chalfTSize,cTileSize);
+	draw_line(1,chalfTSize>>1,cTileSize>>1,chalfTSize>>1);
+	draw_line(chalfTSize>>1,1,chalfTSize>>1,cTileSize>>1);
 	
 	//visualizamos cursor
 	graph = cursorMap; 
