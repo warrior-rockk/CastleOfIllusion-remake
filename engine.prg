@@ -550,6 +550,8 @@ Begin
 	x_inicial = scroll[cGameScroll].x0;
 	y_inicial = scroll[cGameScroll].y0;
 	
+	numPTiles = 0;
+	
 	//creamos los procesos tiles segun la posicion x e y iniciales y la longitud de resolucion de pantalla
 	//En los extremos de la pantalla se crean el numero definido de tiles (TILESOFFSCREEN) extras para asegurar la fluidez
 	for (i=((y_inicial/cTileSize)-cTilesYOffScreen);i<(((cGameRegionH+y_inicial)/cTileSize)+cTilesYOffScreen);i++)
@@ -561,7 +563,7 @@ Begin
 		end;
 	end;
 
-	log("Mapa dibujado correctamente. Creados "+numTilesDraw+" tiles",DEBUG_ENGINE);
+	log("Mapa dibujado correctamente. Creados "+numTilesDraw+" tiles, "+numPTiles+" procesos",DEBUG_ENGINE);
 	
 	//lanzamos proceso actualizador animaciones de tiles
 	wgeUpdateTileAnimations();
@@ -594,6 +596,9 @@ BEGIN
 	//establecemos su posicion inicial
 	x = (j*cTileSize)+cHalfTSize;
 	y = (i*cTileSize)+cHalfTSize;
+	
+	numPTiles++;
+	log("Tile:Creado tile: "+i+" "+j+" En posicion:"+x+" "+y+" con id:"+id,DEBUG_TILES);
 	
 	loop
 				
@@ -772,6 +777,10 @@ BEGIN
 		frame;
 	
 	end;
+
+OnExit	
+	log("Tile eliminado: "+i+","+j,DEBUG_TILES);
+	numPTiles--;
 end;
 
 //funcion que cambia el grafico de un tile
@@ -979,6 +988,10 @@ Begin
 		signal(idPlayer,s_kill);
 	end;	
 
+	//frame de sincronizacion para que desaparezcan los procesos matados
+	//creo qur provocaba que se eliminaran tiles despues de crearloss
+	frame(0);
+	
 	//limpiamos la memoria dinamica de LoadMap
 	#ifdef DYNAMIC_MEM
 		if (tileMap != NULL)

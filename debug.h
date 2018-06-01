@@ -42,4 +42,5 @@ Global
 	byte traceObjects   = 1;		//flag de activacion nivel debug
 	byte traceSound		= 0;		//flag de activacion nivel debug
 	byte traceControls	= 0;		//flag de activacion nivel debug
+	int numPTiles       = 0;		//numero de procesos tiles creados
 end;
