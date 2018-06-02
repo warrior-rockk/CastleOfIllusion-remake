@@ -487,14 +487,17 @@ begin
 					end;
 				end;
 				
-				//comprobamos si colisiona con el jugador
-				colDir = colCheckProcess(id,idPlayer,INFOONLY);
-				//si colisiona, eliminamos el item
-				if (colDir <> NOCOL)
-					//si no es gema de fin de nivel o si lo es, que tengamos flag de bossKilled
-					if (!isBitSet(this.props,OBJ_ITEM_GEM) || game.bossKilled)
-						this.state = DEAD_STATE;
-						picked = true;
+				//si el objeto está cayendo o quieto (para evitar cogerlo cuando sale y no verlo)
+				if (this.vY >= 0 || grounded)
+					//comprobamos si colisiona con el jugador
+					colDir = colCheckProcess(id,idPlayer,INFOONLY);
+					//si colisiona, eliminamos el item
+					if (colDir <> NOCOL)
+						//si no es gema de fin de nivel o si lo es, que tengamos flag de bossKilled
+						if (!isBitSet(this.props,OBJ_ITEM_GEM) || game.bossKilled)
+							this.state = DEAD_STATE;
+							picked = true;
+						end;
 					end;
 				end;
 				
