@@ -1491,10 +1491,10 @@ begin
 	if (idEntity <> idPlayer)
 		return true;
 	else
-		return ((posY*cTileSize)+cTileSize) >= scroll[cGameScroll].y0 &&
-			   (posY*cTileSize) <= scroll[cGameScroll].y0+cGameRegionH &&
-			   ((posX*cTileSize)+cTileSize) >= scroll[cGameScroll].x0 &&
-			   (posX*cTileSize) <= scroll[cGameScroll].x0+cGameRegionW;
+		return ((posY*cTileSize)+cTileSize) > scroll[cGameScroll].y0 &&
+			   (posY*cTileSize) < scroll[cGameScroll].y0+cGameRegionH &&
+			   ((posX*cTileSize)+cTileSize) > scroll[cGameScroll].x0 &&
+			   (posX*cTileSize) < scroll[cGameScroll].x0+cGameRegionW;
 	end;
 end;
 

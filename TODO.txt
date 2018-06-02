@@ -11,9 +11,7 @@ por ejemplo #define slopesEnabled o dinamycMem
 -pasar los parametros de las animaciones a defines de cada parametro para tenerlas organizadas en el archivo .h
 -abrir el config en ingame??
 
-BUGS:   -Al saltar en zona que no hay tiles superiores, no deberia ser sólido (falla en toyland en:level.playerx0 = 1751
-		level.playery0 = 241)
-		-Comprobar si resolucion compatible al pasar a pantalla completa y setear la mas cercana!!
+BUGS:   -Comprobar si resolucion compatible al pasar a pantalla completa y setear la mas cercana!!
 		-mas logs en cargas dinamicas de nivel
          -no deberia comprobar la posicion del scroll cada frame del wgeScroll. Solo cuando muera por ejemplo
 		-las musicas de nivel deberian cargarse en el load_files??
