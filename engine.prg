@@ -111,11 +111,13 @@ begin
 	//resolucion depende del modo de compilacion
 	#ifdef RELEASE
 		set_mode(cResX,cResY,8);
+		setOptimalVideoMode(cResX,cResY,8,MODE_FULLSCREEN);
 	#else
 		//set_mode(cResX,300,8,MODE_WAITVSYNC);//MODE_WAITVSYNC FIJA LOS FRAMES A 60
 		//set_mode(cResX,300,8);
-		//setOptimalVideoMode(cResX,cResY,8,MODE_FULLSCREEN);
-		set_mode(cResX,cResY,8);
+		
+		setOptimalVideoMode(cResX,cResY,8,MODE_FULLSCREEN);
+		//set_mode(cResX,cResY,8);
 	#endif
 	
 	//seteamos fps (rendimiento 02/09/15: 300fps)
@@ -1873,6 +1875,7 @@ private
 	int numModes = 0;
 	int i;
 begin
+	
 	//si el modo es ventana, no ajustamos nada (de momento)
 	if (false)//isBitSet(resMode,MODE_WINDOW))
 		sW = resX;
@@ -1961,14 +1964,15 @@ begin
 					end;
 				end;
 			end;
-					
+		    /*
 			//si la resolucion difiere de la pedida
 			if (sW != resX || sH != resY)
 				//reescalamos a la encontrada
 				say("Reescalamos");
 				scale_resolution = (sW*10000) + sH;
 				if (outAR)
-					scale_resolution_aspectratio = SRA_STRETCH;
+					//scale_resolution_aspectratio = SRA_STRETCH;
+					scale_resolution_aspectratio = SRA_PRESERVE;
 					say("Aplicamos Strech al escalado");
 				else			
 					scale_resolution_aspectratio = SRA_PRESERVE;
@@ -1980,7 +1984,7 @@ begin
 			//resolucion identica
 			else
 				say("No reescalamos");
-			end;
+			end;*/
 			//liberamos puntero resoluciones
 			free(videoModes);
 		end;
